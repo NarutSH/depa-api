@@ -1,0 +1,199 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserType {
+  company
+  freelance
+  guest
+}
+
+model User {
+  id String @id @default(uuid()) @db.Uuid
+
+  fullnameTh String
+  fullnameEn String?
+
+  about       String?
+  phoneNumber String?
+  email       String? @unique
+  website     String?
+  address     String?
+
+  userType UserType? @default(guest)
+
+  createdAt DateTime   @default(now()) @db.Timestamptz()
+  updatedAt DateTime   @updatedAt @db.Timestamptz()
+  freelance Freelance?
+  company   Company?
+}
+
+model CompanyRevenue {
+  id        String  @id @default(uuid()) @db.Uuid
+  year      Int
+  total     Float
+  companyId String  @db.Uuid
+  company   Company @relation(fields: [companyId], references: [id])
+
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @updatedAt @db.Timestamptz()
+
+  @@unique([companyId, year])
+}
+
+model FreelanceRevenue {
+  id          String @id @default(uuid()) @db.Uuid
+  year        Int
+  total       Float
+  freelanceId String @db.Uuid
+
+  createdAt DateTime  @default(now()) @db.Timestamptz()
+  updatedAt DateTime  @updatedAt @db.Timestamptz()
+  Freelance Freelance @relation(fields: [freelanceId], references: [id])
+
+  @@unique([freelanceId, year])
+}
+
+model RevenueStream {
+  id   String @id @default(uuid()) @db.Uuid
+  year Int
+
+  industryTypeSlug String // game 
+  // industryType     IndustryType @relation(fields: [industryTypeSlug], references: [slug], onDelete: Restrict)
+
+  categorySlug String // arcade
+  // category     Category @relation(fields: [categorySlug], references: [slug], onDelete: Restrict)
+
+  sourceSlug String // ipOwner , publisherImporter , outsourcing ,other
+  // Source     Source @relation(fields: [sourceSlug], references: [slug], onDelete: Restrict)
+
+  channelSlug String // retail , digital , inAppPurchase
+  // channel     Channel @relation(fields: [channelSlug], references: [slug], onDelete: Restrict)
+
+  segment String
+
+  percent    Float
+  ctrPercent Float
+  value      Float?
+  companyId  String @db.Uuid
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: NoAction)
+
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @updatedAt @db.Timestamptz()
+
+  @@unique([companyId, year, industryTypeSlug, categorySlug, sourceSlug, channelSlug, segment])
+}
+
+model Company {
+  id         String  @id @default(uuid()) @db.Uuid
+  juristicId String  @unique
+  nameTh     String
+  nameEn     String?
+
+  description String?
+
+  address     String?
+  subDistrict String?
+  district    String?
+  province    String?
+  postalCode  String?
+
+  registerdCapital Float?
+  employeeCount    Int?
+
+  phoneNumber String?
+  email       String?
+  website     String?
+  logo        String?
+  userId      String  @unique @db.Uuid
+  user        User    @relation(fields: [userId], references: [id])
+
+  createdAt  DateTime @default(now()) @db.Timestamptz()
+  updatedAt  DateTime @updatedAt @db.Timestamptz()
+  industries String[]
+
+  companyRevenue CompanyRevenue[]
+  revenueStream  RevenueStream[]
+}
+
+model Freelance {
+  id          String  @id @default(uuid()) @db.Uuid
+  firstNameTh String
+  lastNameTh  String
+  firstNameEn String?
+  lastNameEn  String?
+
+  address     String?
+  subDistrict String?
+  district    String?
+  province    String?
+  postalCode  String?
+
+  phoneNumber String?
+  email       String? @unique
+  juristicId  String? @unique
+
+  industryTypes    String[] // ['game', 'animation']
+  skills           String[] // [{ name: 'game-design', category: 'game' }]
+  freelanceRevenue FreelanceRevenue[] // [{ year: 2021, value: 1000000 }]
+
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @updatedAt @db.Timestamptz()
+
+  userId String @unique @db.Uuid
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+// model Industry {
+//   id        String     @id @default(uuid()) @db.Uuid
+//   name      String
+//   slug      String     @unique
+//   createdAt DateTime   @default(now()) @db.Timestamptz()
+//   updatedAt DateTime   @updatedAt @db.Timestamptz()
+//   Category  Category[]
+//   Source    Source[]
+//   Channel   Channel[]
+// }
+
+// model Category {
+//   id         String   @id @default(uuid()) @db.Uuid
+//   name       String
+//   slug       String   @unique
+//   createdAt  DateTime @default(now()) @db.Timestamptz()
+//   updatedAt  DateTime @updatedAt @db.Timestamptz()
+//   industryId String   @db.Uuid
+//   industry   Industry @relation(fields: [industryId], references: [id])
+// }
+
+// model Source {
+//   id   String @id @default(uuid()) @db.Uuid
+//   name String
+
+//   slug       String   @unique
+//   createdAt  DateTime @default(now()) @db.Timestamptz()
+//   updatedAt  DateTime @updatedAt @db.Timestamptz()
+//   industryId String   @db.Uuid
+//   industry   Industry @relation(fields: [industryId], references: [id])
+// }
+
+// model Channel {
+//   id         String   @id @default(uuid()) @db.Uuid
+//   name       String
+//   slug       String   @unique
+//   createdAt  DateTime @default(now()) @db.Timestamptz()
+//   updatedAt  DateTime @updatedAt @db.Timestamptz()
+//   industryId String   @db.Uuid
+//   industry   Industry @relation(fields: [industryId], references: [id])
+// }
