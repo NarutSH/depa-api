@@ -9,12 +9,12 @@ export class RevenueStreamService {
   async getAll() {
     return this.prismaService.revenueStream.findMany();
   }
-  async getByCompanyId(companyId: string) {
-    console.log('getByCompanyId', companyId);
+  async getByCompanyId(companyJuristicId: string) {
+    console.log('getByCompanyId', companyJuristicId);
 
     return this.prismaService.revenueStream.findMany({
       where: {
-        companyId,
+        companyJuristicId,
       },
     });
   }
@@ -31,9 +31,9 @@ export class RevenueStreamService {
       create: data,
       update: data,
       where: {
-        companyId_year_industryTypeSlug_categorySlug_sourceSlug_channelSlug_segment:
+        companyJuristicId_year_industryTypeSlug_categorySlug_sourceSlug_channelSlug_segment:
           {
-            companyId: data.companyId,
+            companyJuristicId: data.companyJuristicId,
             year: data.year,
             industryTypeSlug: data.industryTypeSlug,
             categorySlug: data.categorySlug,

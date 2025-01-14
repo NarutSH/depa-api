@@ -83,17 +83,17 @@ model RevenueStream {
 
   segment String
 
-  percent    Float
-  ctrPercent Float
-  value      Float?
-  companyId  String @db.Uuid
-
-  company Company @relation(fields: [companyId], references: [id], onDelete: NoAction)
+  percent           Float
+  ctrPercent        Float
+  value             Float?
+  // companyId  String @db.Uuid
+  companyJuristicId String
+  company           Company @relation(fields: [companyJuristicId], references: [juristicId], onDelete: Restrict)
 
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @updatedAt @db.Timestamptz()
 
-  @@unique([companyId, year, industryTypeSlug, categorySlug, sourceSlug, channelSlug, segment])
+  @@unique([companyJuristicId, year, industryTypeSlug, categorySlug, sourceSlug, channelSlug, segment])
 }
 
 model Company {
@@ -125,7 +125,8 @@ model Company {
   industries String[]
 
   companyRevenue CompanyRevenue[]
-  revenueStream  RevenueStream[]
+
+  RevenueStream RevenueStream[]
 }
 
 model Freelance {

@@ -29,7 +29,7 @@ export class CreateRevenueStreamDto {
   value?: number;
 
   @IsString()
-  companyId: string;
+  companyJuristicId: string;
 
   @IsOptional()
   companyRevenueId?: string;
