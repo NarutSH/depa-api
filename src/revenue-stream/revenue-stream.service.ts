@@ -31,7 +31,7 @@ export class RevenueStreamService {
       create: data,
       update: data,
       where: {
-        companyJuristicId_year_industryTypeSlug_categorySlug_sourceSlug_channelSlug_segment:
+        companyJuristicId_year_industryTypeSlug_categorySlug_sourceSlug_channelSlug_segmentSlug:
           {
             companyJuristicId: data.companyJuristicId,
             year: data.year,
@@ -39,7 +39,7 @@ export class RevenueStreamService {
             categorySlug: data.categorySlug,
             sourceSlug: data.sourceSlug,
             channelSlug: data.channelSlug,
-            segment: data.segment,
+            segmentSlug: data.segmentSlug,
           },
       },
     });

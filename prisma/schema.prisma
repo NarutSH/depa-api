@@ -19,6 +19,34 @@ enum UserType {
   guest
 }
 
+enum PortfolioImageType {
+  cover
+  gallery
+  main
+}
+
+enum FavoriteAction {
+  favorite
+  unfavorite
+}
+
+enum StandardsType {
+  ERSB
+  PEGI
+  CERO
+  USK
+  ACB
+  IARC
+  GRAC
+  VSC
+  OFLC
+  BBFC
+  FPB
+  RARS
+  GSRB
+  GSRR
+}
+
 model User {
   id String @id @default(uuid()) @db.Uuid
 
@@ -37,6 +65,7 @@ model User {
   updatedAt DateTime   @updatedAt @db.Timestamptz()
   freelance Freelance?
   company   Company?
+  Favorite  Favorite[]
 }
 
 model CompanyRevenue {
@@ -47,7 +76,7 @@ model CompanyRevenue {
   company   Company @relation(fields: [companyId], references: [id])
 
   createdAt DateTime @default(now()) @db.Timestamptz()
-  updatedAt DateTime @updatedAt @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
 
   @@unique([companyId, year])
 }
@@ -59,7 +88,7 @@ model FreelanceRevenue {
   freelanceId String @db.Uuid
 
   createdAt DateTime  @default(now()) @db.Timestamptz()
-  updatedAt DateTime  @updatedAt @db.Timestamptz()
+  updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
   Freelance Freelance @relation(fields: [freelanceId], references: [id])
 
   @@unique([freelanceId, year])
@@ -69,19 +98,20 @@ model RevenueStream {
   id   String @id @default(uuid()) @db.Uuid
   year Int
 
-  industryTypeSlug String // game 
-  // industryType     IndustryType @relation(fields: [industryTypeSlug], references: [slug], onDelete: Restrict)
+  industryTypeSlug String
+  industry         Industry @relation(fields: [industryTypeSlug], references: [slug])
 
-  categorySlug String // arcade
-  // category     Category @relation(fields: [categorySlug], references: [slug], onDelete: Restrict)
+  categorySlug String
+  category     Category @relation(fields: [categorySlug, industryTypeSlug], references: [slug, industrySlug])
 
-  sourceSlug String // ipOwner , publisherImporter , outsourcing ,other
-  // Source     Source @relation(fields: [sourceSlug], references: [slug], onDelete: Restrict)
+  sourceSlug String
+  source     Source @relation(fields: [sourceSlug, industryTypeSlug], references: [slug, industrySlug])
 
-  channelSlug String // retail , digital , inAppPurchase
-  // channel     Channel @relation(fields: [channelSlug], references: [slug], onDelete: Restrict)
+  channelSlug String
+  channel     Channel @relation(fields: [channelSlug, industryTypeSlug], references: [slug, industrySlug])
 
-  segment String
+  segmentSlug String
+  segment     Segment @relation(fields: [segmentSlug, industryTypeSlug], references: [slug, industrySlug])
 
   percent           Float
   ctrPercent        Float
@@ -91,9 +121,9 @@ model RevenueStream {
   company           Company @relation(fields: [companyJuristicId], references: [juristicId], onDelete: Restrict)
 
   createdAt DateTime @default(now()) @db.Timestamptz()
-  updatedAt DateTime @updatedAt @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
 
-  @@unique([companyJuristicId, year, industryTypeSlug, categorySlug, sourceSlug, channelSlug, segment])
+  @@unique([companyJuristicId, year, industryTypeSlug, categorySlug, sourceSlug, channelSlug, segmentSlug])
 }
 
 model Company {
@@ -121,12 +151,13 @@ model Company {
   user        User    @relation(fields: [userId], references: [id])
 
   createdAt  DateTime @default(now()) @db.Timestamptz()
-  updatedAt  DateTime @updatedAt @db.Timestamptz()
+  updatedAt  DateTime @default(now()) @updatedAt @db.Timestamptz()
   industries String[]
 
   companyRevenue CompanyRevenue[]
 
   RevenueStream RevenueStream[]
+  Portfolio     Portfolio[]
 }
 
 model Freelance {
@@ -147,54 +178,179 @@ model Freelance {
   juristicId  String? @unique
 
   industryTypes    String[] // ['game', 'animation']
-  skills           String[] // [{ name: 'game-design', category: 'game' }]
+  skills           Skill[] // [{ name: 'game-design', category: 'game' }]
   freelanceRevenue FreelanceRevenue[] // [{ year: 2021, value: 1000000 }]
 
   createdAt DateTime @default(now()) @db.Timestamptz()
-  updatedAt DateTime @updatedAt @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
 
-  userId String @unique @db.Uuid
-  user   User   @relation(fields: [userId], references: [id])
+  userId    String      @unique @db.Uuid
+  user      User        @relation(fields: [userId], references: [id])
+  Portfolio Portfolio[]
 }
 
-// model Industry {
-//   id        String     @id @default(uuid()) @db.Uuid
-//   name      String
-//   slug      String     @unique
-//   createdAt DateTime   @default(now()) @db.Timestamptz()
-//   updatedAt DateTime   @updatedAt @db.Timestamptz()
-//   Category  Category[]
-//   Source    Source[]
-//   Channel   Channel[]
-// }
+model Industry {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
 
-// model Category {
-//   id         String   @id @default(uuid()) @db.Uuid
-//   name       String
-//   slug       String   @unique
-//   createdAt  DateTime @default(now()) @db.Timestamptz()
-//   updatedAt  DateTime @updatedAt @db.Timestamptz()
-//   industryId String   @db.Uuid
-//   industry   Industry @relation(fields: [industryId], references: [id])
-// }
+  Skill    Skill[]
+  Source   Source[]
+  Channel  Channel[]
+  Segment  Segment[]
+  Category Category[]
 
-// model Source {
-//   id   String @id @default(uuid()) @db.Uuid
-//   name String
+  Standards     Standards[]
+  RevenueStream RevenueStream[]
+}
 
-//   slug       String   @unique
-//   createdAt  DateTime @default(now()) @db.Timestamptz()
-//   updatedAt  DateTime @updatedAt @db.Timestamptz()
-//   industryId String   @db.Uuid
-//   industry   Industry @relation(fields: [industryId], references: [id])
-// }
+model Category {
+  id            String          @id @default(uuid()) @db.Uuid
+  name          String
+  slug          String
+  createdAt     DateTime        @default(now()) @db.Timestamptz()
+  updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz()
+  industrySlug  String
+  industry      Industry        @relation(fields: [industrySlug], references: [slug])
+  RevenueStream RevenueStream[]
 
-// model Channel {
-//   id         String   @id @default(uuid()) @db.Uuid
-//   name       String
-//   slug       String   @unique
-//   createdAt  DateTime @default(now()) @db.Timestamptz()
-//   updatedAt  DateTime @updatedAt @db.Timestamptz()
-//   industryId String   @db.Uuid
-//   industry   Industry @relation(fields: [industryId], references: [id])
-// }
+  @@unique([slug, industrySlug])
+}
+
+model Source {
+  id            String          @id @default(uuid()) @db.Uuid
+  name          String
+  slug          String
+  createdAt     DateTime        @default(now()) @db.Timestamptz()
+  updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz()
+  industrySlug  String
+  industry      Industry        @relation(fields: [industrySlug], references: [slug])
+  RevenueStream RevenueStream[]
+
+  @@unique([slug, industrySlug])
+}
+
+model Channel {
+  id            String          @id @default(uuid()) @db.Uuid
+  name          String
+  slug          String
+  createdAt     DateTime        @default(now()) @db.Timestamptz()
+  updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz()
+  industrySlug  String
+  industry      Industry        @relation(fields: [industrySlug], references: [slug])
+  RevenueStream RevenueStream[]
+
+  @@unique([slug, industrySlug])
+}
+
+model Segment {
+  id            String          @id @default(uuid()) @db.Uuid
+  name          String
+  slug          String          @unique
+  createdAt     DateTime        @default(now()) @db.Timestamptz()
+  updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz()
+  industrySlug  String
+  industry      Industry        @relation(fields: [industrySlug], references: [slug])
+  RevenueStream RevenueStream[]
+
+  @@unique([slug, industrySlug])
+}
+
+model Portfolio {
+  id               String  @id @default(uuid()) @db.Uuid
+  title            String
+  description      String?
+  cover_image      String?
+  link             String?
+  industryTypeSlug String
+
+  tags        String[]
+  looking_for String[]
+
+  freelanceId String?    @db.Uuid
+  freelance   Freelance? @relation(fields: [freelanceId], references: [id])
+
+  companyJuristicId String?
+  company           Company? @relation(fields: [companyJuristicId], references: [juristicId])
+
+  createdAt DateTime             @default(now()) @db.Timestamptz()
+  updatedAt DateTime             @default(now()) @updatedAt @db.Timestamptz()
+  Favorite  Favorite[]
+  Image     PortfolioImage[]
+  standards PortfolioStandards[]
+}
+
+model PortfolioStandards {
+  id          String    @id @default(uuid()) @db.Uuid
+  portfolioId String    @db.Uuid
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id])
+
+  standardsId String    @db.Uuid
+  standards   Standards @relation(fields: [standardsId], references: [id])
+
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
+
+  @@unique([portfolioId, standardsId])
+}
+
+model PortfolioImage {
+  id          String             @id @default(uuid()) @db.Uuid
+  url         String
+  description String?
+  type        PortfolioImageType @default(gallery)
+  portfolioId String             @db.Uuid
+  portfolio   Portfolio          @relation(fields: [portfolioId], references: [id])
+
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
+}
+
+model Favorite {
+  id          String    @id @default(uuid()) @db.Uuid
+  portfolioId String    @db.Uuid
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id])
+
+  userId String         @db.Uuid
+  user   User           @relation(fields: [userId], references: [id])
+  action FavoriteAction
+
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
+
+  @@unique([userId, portfolioId])
+}
+
+model Standards {
+  id          String  @id @default(uuid()) @db.Uuid
+  name        String
+  description String?
+
+  type StandardsType
+
+  industrySlug String
+  industry     Industry @relation(fields: [industrySlug], references: [slug])
+
+  image              String?
+  createdAt          DateTime             @default(now()) @db.Timestamptz()
+  updatedAt          DateTime             @default(now()) @updatedAt @db.Timestamptz()
+  PortfolioStandards PortfolioStandards[]
+}
+
+model Skill {
+  id           String   @id @default(uuid()) @db.Uuid
+  title        String
+  slug         String
+  group        String?
+  industrySlug String
+  industry     Industry @relation(fields: [industrySlug], references: [slug])
+
+  createdAt   DateTime   @default(now()) @db.Timestamptz()
+  updatedAt   DateTime   @default(now()) @updatedAt @db.Timestamptz()
+  Freelance   Freelance? @relation(fields: [freelanceId], references: [id])
+  freelanceId String?    @db.Uuid
+
+  @@unique([slug, industrySlug])
+}

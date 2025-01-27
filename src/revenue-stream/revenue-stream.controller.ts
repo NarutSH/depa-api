@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { RevenueStreamService } from './revenue-stream.service';
 import { CreateRevenueStreamDto } from './dto/create-revenue-stream.dto';
 
@@ -12,7 +12,7 @@ export class RevenueStreamController {
   }
 
   @Get('company/:companyId')
-  async getByCompanyId(@Param('companyId') companyId: string) {
+  async getByCompanyId(companyId: string) {
     return this.revenueStreamService.getByCompanyId(companyId);
   }
 

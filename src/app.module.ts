@@ -4,6 +4,10 @@ import { UsersModule } from './users/users.module';
 import { CompanyModule } from './company/company.module';
 import { RevenueStreamModule } from './revenue-stream/revenue-stream.module';
 import { CompanyRevenueModule } from './company-revenue/company-revenue.module';
+import { PortfolioModule } from './portfolio/portfolio.module';
+import { StandardsModule } from './standards/standards.module';
+import { UploadModule } from './upload/upload.module';
+import { IndustryModule } from './industry/industry.module';
 
 @Module({
   imports: [
@@ -11,6 +15,10 @@ import { CompanyRevenueModule } from './company-revenue/company-revenue.module';
     CompanyModule,
     RevenueStreamModule,
     CompanyRevenueModule,
+    PortfolioModule,
+    StandardsModule,
+    UploadModule,
+    IndustryModule,
   ],
   providers: [PrismaService],
 })

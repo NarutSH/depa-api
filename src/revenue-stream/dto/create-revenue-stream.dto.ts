@@ -14,7 +14,7 @@ export class CreateRevenueStreamDto {
   sourceSlug: string;
 
   @IsString()
-  segment: string;
+  segmentSlug: string;
 
   @IsString()
   channelSlug: string;
