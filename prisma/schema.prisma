@@ -45,6 +45,12 @@ enum StandardsType {
   RARS
   GSRB
   GSRR
+
+  MPA
+  EIRIN
+  NBTC
+
+  ESRB
 }
 
 model User {
@@ -58,6 +64,7 @@ model User {
   email       String? @unique
   website     String?
   address     String?
+  image       String?
 
   userType UserType? @default(guest)
 

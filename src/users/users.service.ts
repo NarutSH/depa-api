@@ -15,7 +15,7 @@ export class UsersService {
     return this.prismaService.user.create({ data });
   }
 
-  async updateUser(id: string, data: CreateUserDto) {
+  async updateUser(id: string, data: UpdateUserDto) {
     return this.prismaService.user.update({ where: { id: id }, data });
   }
   async updateUserByEmail(email: string, data: UpdateUserDto) {

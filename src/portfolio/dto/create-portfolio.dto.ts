@@ -36,7 +36,7 @@ export class CreatePortfolioDto {
 
   // @IsArray()
   @IsOptional()
-  looking_for: string[];
+  looking_for?: string[];
 }
 
 export class CreatePortfolioWithImagesAndStandardsDto extends CreatePortfolioDto {
