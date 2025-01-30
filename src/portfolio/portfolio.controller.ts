@@ -28,6 +28,11 @@ export class PortfolioController {
     return this.portfolioService.getPortfolios();
   }
 
+  @Get(':id')
+  async getPortfolio(@Param('id') id: string) {
+    return this.portfolioService.getPortfolioById(id);
+  }
+
   @Get('company/:companyJuristicId')
   async getPortfolioByCompanyJuristicId(
     @Param('companyJuristicId') companyJuristicId: string,
@@ -35,6 +40,11 @@ export class PortfolioController {
     return this.portfolioService.getPortfolioByCompanyJuristicId(
       companyJuristicId,
     );
+  }
+
+  @Get('industry/:industrySlug')
+  async getPortfolioByIndustry(@Param('industrySlug') industrySlug: string) {
+    return this.portfolioService.getPortfolioByIndustry(industrySlug);
   }
 
   @Post()
@@ -54,8 +64,6 @@ export class PortfolioController {
       main_image: Express.Multer.File[];
     },
   ) {
-    console.log('files ===>', files);
-
     const payload: CreatePortfolioDto = {
       title: data.title,
       description: data.description,

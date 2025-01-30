@@ -34,8 +34,67 @@ export class PortfolioService {
   }
 
   async getPortfolioById(id: string) {
-    return this.prismaService.portfolio.findUnique({
+    const model = await this.prismaService.portfolio.findUnique({
       where: { id },
+      include: {
+        standards: {
+          select: {
+            standards: {
+              select: {
+                name: true,
+                description: true,
+                type: true,
+                image: true,
+              },
+            },
+          },
+        },
+        Image: {
+          select: {
+            url: true,
+            type: true,
+            description: true,
+          },
+        },
+        company: true,
+        freelance: true,
+      },
+    });
+
+    return {
+      ...model,
+      standards: model.standards.map((s) => s.standards),
+    };
+  }
+
+  async getPortfolioByIndustry(industrySlug: string) {
+    return this.prismaService.portfolio.findMany({
+      where: {
+        industryTypeSlug: industrySlug,
+      },
+      include: {
+        standards: {
+          select: {
+            standards: {
+              select: {
+                name: true,
+                description: true,
+                type: true,
+                image: true,
+              },
+            },
+          },
+        },
+        Image: {
+          select: {
+            url: true,
+            type: true,
+            description: true,
+          },
+        },
+        company: true,
+        freelance: true,
+      },
     });
   }
 
