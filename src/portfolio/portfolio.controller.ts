@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -69,8 +70,8 @@ export class PortfolioController {
       description: data.description,
       freelanceId: data.freelanceId,
       companyJuristicId: data.companyJuristicId,
-      tags: data.tags,
-      looking_for: data.looking_for,
+      tags: data.tags ?? [],
+      looking_for: data.looking_for ?? [],
       link: data.link,
       industryTypeSlug: data.industryTypeSlug,
     };
@@ -81,11 +82,12 @@ export class PortfolioController {
       ? data.standards
       : [data.standards];
 
-    await this.portfolioService.addStandardsToPortfolio(
-      resPort.id,
-      arrayStandards,
-    );
-
+    if (arrayStandards.filter((el) => el).length) {
+      await this.portfolioService.addStandardsToPortfolio(
+        resPort.id,
+        arrayStandards,
+      );
+    }
     const resImages = await this.uploadService.uploadMultiFile(
       files.images,
       'portfolio',
@@ -126,5 +128,10 @@ export class PortfolioController {
 
     return resPort;
     // return files;
+  }
+
+  @Delete(':id')
+  async deletePortfolio(@Param('id') id: string) {
+    return this.portfolioService.deletePortfolio(id);
   }
 }

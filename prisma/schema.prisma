@@ -292,10 +292,10 @@ model Portfolio {
 model PortfolioStandards {
   id          String    @id @default(uuid()) @db.Uuid
   portfolioId String    @db.Uuid
-  portfolio   Portfolio @relation(fields: [portfolioId], references: [id])
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
 
   standardsId String    @db.Uuid
-  standards   Standards @relation(fields: [standardsId], references: [id])
+  standards   Standards @relation(fields: [standardsId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()

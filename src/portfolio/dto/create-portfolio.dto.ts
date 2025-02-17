@@ -41,7 +41,8 @@ export class CreatePortfolioDto {
 
 export class CreatePortfolioWithImagesAndStandardsDto extends CreatePortfolioDto {
   @IsArray()
-  standards: string[];
+  @IsOptional()
+  standards?: string[];
 
   //   @IsArray()
   //   @IsInstance(File, { each: true })

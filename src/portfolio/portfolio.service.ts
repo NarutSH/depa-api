@@ -177,4 +177,22 @@ export class PortfolioService {
 
     return result;
   }
+
+  async deletePortfolio(id: string) {
+    const portfolio = await this.prismaService.portfolio.findUnique({
+      where: { id },
+    });
+
+    if (!portfolio) {
+      throw new NotFoundException(`Portfolio with id ${id} not found`);
+    }
+
+    await this.prismaService.portfolioImage.deleteMany({
+      where: { portfolioId: id },
+    });
+    await this.prismaService.portfolioStandards.deleteMany({
+      where: { portfolioId: id },
+    });
+    return this.prismaService.portfolio.delete({ where: { id } });
+  }
 }
