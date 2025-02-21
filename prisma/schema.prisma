@@ -66,6 +66,11 @@ model User {
   address     String?
   image       String?
 
+  industries  String[]
+  tags        Json[]   @default([])
+  channels    Json[]   @default([])
+  specialists Json[]   @default([])
+
   userType UserType? @default(guest)
 
   createdAt DateTime   @default(now()) @db.Timestamptz()

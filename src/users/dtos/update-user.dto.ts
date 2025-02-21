@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsArray, IsJSON, IsOptional, IsString } from 'class-validator';
 
 class UpdateUserDto {
   @IsString()
@@ -24,6 +24,31 @@ class UpdateUserDto {
   @IsOptional()
   @IsString()
   location?: string;
+
+  @IsArray()
+  @IsOptional()
+  industries?: string[];
+
+  @IsArray()
+  @IsOptional()
+  tags?: Array<{
+    category: string;
+    name: string;
+  }>;
+
+  @IsArray()
+  @IsOptional()
+  channels?: Array<{
+    category: string;
+    name: string;
+  }>;
+
+  @IsArray()
+  @IsOptional()
+  specialists?: Array<{
+    category: string;
+    name: string;
+  }>;
 }
 
 export default UpdateUserDto;

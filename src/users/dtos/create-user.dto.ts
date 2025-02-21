@@ -1,4 +1,10 @@
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsEmail,
+  IsOptional,
+  IsString,
+  IsJSON,
+} from 'class-validator';
 
 class CreateUserDto {
   @IsString()
@@ -26,6 +32,28 @@ class CreateUserDto {
   @IsOptional()
   @IsString()
   location?: string;
+
+  @IsArray()
+  industries: string[];
+
+  @IsArray()
+  @IsOptional()
+  tags?: Array<{
+    category: string;
+    name: string;
+  }>;
+
+  @IsArray()
+  channels: Array<{
+    category: string;
+    name: string;
+  }>;
+
+  @IsArray()
+  specialists: Array<{
+    category: string;
+    name: string;
+  }>;
 }
 
 export default CreateUserDto;
