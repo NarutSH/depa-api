@@ -126,6 +126,34 @@ export class PortfolioService {
       },
     });
   }
+  async getPortfolioByFreelanceId(freelanceId: string) {
+    return this.prismaService.portfolio.findMany({
+      where: { freelanceId },
+
+      include: {
+        standards: {
+          select: {
+            standards: {
+              select: {
+                name: true,
+                description: true,
+                type: true,
+                image: true,
+              },
+            },
+          },
+        },
+        freelance: true,
+        Image: {
+          select: {
+            url: true,
+            type: true,
+            description: true,
+          },
+        },
+      },
+    });
+  }
 
   async createPortfolio(data: CreatePortfolioDto) {
     if (!data.freelanceId && !data.companyJuristicId) {

@@ -8,6 +8,7 @@ import { PortfolioModule } from './portfolio/portfolio.module';
 import { StandardsModule } from './standards/standards.module';
 import { UploadModule } from './upload/upload.module';
 import { IndustryModule } from './industry/industry.module';
+import { FreelanceModule } from './freelance/freelance.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { IndustryModule } from './industry/industry.module';
     StandardsModule,
     UploadModule,
     IndustryModule,
+    FreelanceModule,
   ],
   providers: [PrismaService],
 })

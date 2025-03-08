@@ -42,6 +42,10 @@ export class PortfolioController {
       companyJuristicId,
     );
   }
+  @Get('freelance/:freelanceId')
+  async getPortfolioByFreelanceId(@Param('freelanceId') freelanceId: string) {
+    return this.portfolioService.getPortfolioByFreelanceId(freelanceId);
+  }
 
   @Get('industry/:industrySlug')
   async getPortfolioByIndustry(@Param('industrySlug') industrySlug: string) {
