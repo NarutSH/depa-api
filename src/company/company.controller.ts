@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CompanyService } from './company.service';
 import CreateCompanyDto from './dto/create-company.dto';
 
@@ -7,8 +15,8 @@ export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
   @Get()
-  async getAl() {
-    return this.companyService.getAl();
+  async getAl(@Query('industry') industry: string) {
+    return this.companyService.getAl(industry);
   }
 
   @Get('user/:userId')

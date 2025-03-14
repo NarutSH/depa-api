@@ -6,6 +6,17 @@ import { CreateFreelanceDto } from './dto/create-freelance.dto';
 export class FreelanceService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async getAl(industry: string) {
+    const whereClause = industry ? { industryTypes: { has: industry } } : {};
+
+    return this.prismaService.freelance.findMany({
+      where: whereClause,
+      include: {
+        user: true,
+      },
+    });
+  }
+
   async create(data: CreateFreelanceDto) {
     try {
       const company = await this.prismaService.freelance.create({
@@ -14,7 +25,7 @@ export class FreelanceService {
       return company;
     } catch (error) {
       if (error.code === 'P2002') {
-        throw new NotFoundException(`already exists`);
+        throw new NotFoundException(error);
       }
       throw error;
     }

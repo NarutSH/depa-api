@@ -6,8 +6,14 @@ import CreateCompanyDto from './dto/create-company.dto';
 export class CompanyService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getAl() {
-    return this.prismaService.company.findMany();
+  async getAl(industry: string) {
+    const whereClause = industry ? { industries: { has: industry } } : {};
+    return this.prismaService.company.findMany({
+      where: whereClause,
+      include: {
+        user: true,
+      },
+    });
   }
 
   async getByUserId(userId: string) {
