@@ -92,8 +92,16 @@ export class PortfolioService {
             description: true,
           },
         },
-        company: true,
-        freelance: true,
+        company: {
+          include: {
+            user: true,
+          },
+        },
+        freelance: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
   }
