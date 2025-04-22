@@ -17,6 +17,7 @@ enum UserType {
   company
   freelance
   guest
+  admin
 }
 
 enum PortfolioImageType {

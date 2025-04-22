@@ -7,6 +7,9 @@ import {
   Post,
   UploadedFiles,
   UseInterceptors,
+  UseGuards,
+  Req,
+  ForbiddenException,
 } from '@nestjs/common';
 import { PortfolioService } from './portfolio.service';
 import {
@@ -16,6 +19,11 @@ import {
 import { UploadService } from 'src/upload/upload.service';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { PortfolioImageType } from '@prisma/client';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/auth/roles.enum';
+import { Request } from 'express';
 
 @Controller('portfolio')
 export class PortfolioController {
@@ -24,6 +32,7 @@ export class PortfolioController {
     private readonly uploadService: UploadService,
   ) {}
 
+  // Public endpoints accessible by anyone
   @Get()
   async getPortfolios() {
     return this.portfolioService.getPortfolios();
@@ -42,6 +51,7 @@ export class PortfolioController {
       companyJuristicId,
     );
   }
+
   @Get('freelance/:freelanceId')
   async getPortfolioByFreelanceId(@Param('freelanceId') freelanceId: string) {
     return this.portfolioService.getPortfolioByFreelanceId(freelanceId);
@@ -52,7 +62,10 @@ export class PortfolioController {
     return this.portfolioService.getPortfolioByIndustry(industrySlug);
   }
 
+  // Protected endpoint with role-based access
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.COMPANY, Role.FREELANCE)
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'images', maxCount: 6 },
@@ -68,7 +81,32 @@ export class PortfolioController {
       cover: Express.Multer.File[];
       main_image: Express.Multer.File[];
     },
+    @Req() req: Request,
   ) {
+    const user = req.user as any;
+
+    // Security check: Ensure user can only create portfolio for themselves
+    // Admins can create for anyone
+    if (user.userType !== Role.ADMIN) {
+      if (
+        user.userType === Role.COMPANY &&
+        user.company?.juristicId !== data.companyJuristicId
+      ) {
+        throw new ForbiddenException(
+          'You can only create portfolios for your own company',
+        );
+      }
+
+      if (
+        user.userType === Role.FREELANCE &&
+        user.freelance?.id !== data.freelanceId
+      ) {
+        throw new ForbiddenException(
+          'You can only create portfolios for yourself',
+        );
+      }
+    }
+
     const payload: CreatePortfolioDto = {
       title: data.title,
       description: data.description,
@@ -131,11 +169,29 @@ export class PortfolioController {
     );
 
     return resPort;
-    // return files;
   }
 
   @Delete(':id')
-  async deletePortfolio(@Param('id') id: string) {
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.COMPANY, Role.FREELANCE)
+  async deletePortfolio(@Param('id') id: string, @Req() req: Request) {
+    const user = req.user as any;
+
+    // If not admin, verify ownership before delete
+    if (user.userType !== Role.ADMIN) {
+      const portfolio = await this.portfolioService.getPortfolioById(id);
+
+      // Check if portfolio belongs to the user
+      if (
+        (user.userType === Role.COMPANY &&
+          portfolio.companyJuristicId !== user.company?.juristicId) ||
+        (user.userType === Role.FREELANCE &&
+          portfolio.freelanceId !== user.freelance?.id)
+      ) {
+        throw new ForbiddenException('You can only delete your own portfolios');
+      }
+    }
+
     return this.portfolioService.deletePortfolio(id);
   }
 }
