@@ -14,21 +14,46 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    // payload should contain user id from JWT
-    const userId = payload.sub;
+    // Check for either sub or memberid in the token
+    const userId = payload.sub || payload.memberid;
+    const email = payload.email;
 
-    if (!userId) {
+    if (!userId && !email) {
       throw new UnauthorizedException('Invalid token payload');
     }
 
-    // Find the user using the id from the token
-    const user = await this.usersService.getUserById(userId);
+    try {
+      // Try to get user by ID first if available
+      if (userId) {
+        const user = await this.usersService.getUserById(userId);
+        return {
+          ...user,
+          userType: payload.userType, // Make sure userType is included
+        };
+      }
 
-    if (!user) {
+      // Fall back to email if ID is not available
+      if (email) {
+        const user = await this.usersService.getUserByEmail(email);
+        return {
+          ...user,
+          userType: payload.userType, // Make sure userType is included
+        };
+      }
+    } catch (error) {
+      console.log('Error fetching user:', error);
+      // Handle case where user doesn't exist in database yet
+      // But token is valid (e.g., first-time user creating profile)
+      if (email && payload.userType) {
+        return {
+          email: email,
+          userType: payload.userType,
+          // Include other fields from payload as needed
+          id: userId || null,
+        };
+      }
+
       throw new UnauthorizedException('User not found');
     }
-
-    // Return the user object to be added to the request
-    return user;
   }
 }

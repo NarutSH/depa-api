@@ -6,10 +6,11 @@ import { Reflector } from '@nestjs/core';
 @Injectable()
 export class AuthGuard extends JwtAuthGuard {
   constructor(
-    private reflector: Reflector,
+    reflector: Reflector,
     private rolesGuard: RolesGuard,
   ) {
-    super();
+    // Pass the reflector to the parent class constructor
+    super(reflector);
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

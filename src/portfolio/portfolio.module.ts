@@ -4,9 +4,16 @@ import { PortfolioService } from './portfolio.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UploadService } from 'src/upload/upload.service';
 import { ProviderService } from 'src/utils/provider';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @Module({
   controllers: [PortfolioController],
-  providers: [PortfolioService, PrismaService, UploadService, ProviderService],
+  providers: [
+    PortfolioService,
+    PrismaService,
+    UploadService,
+    ProviderService,
+    RolesGuard,
+  ],
 })
 export class PortfolioModule {}

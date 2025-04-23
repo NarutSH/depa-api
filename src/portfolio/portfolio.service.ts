@@ -1,7 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePortfolioDto } from './dto/create-portfolio.dto';
-import { PortfolioImageType } from '@prisma/client';
+import { FavoriteAction, PortfolioImageType } from '@prisma/client';
+import { CreateCommentDto } from './dto/create-comment.dto';
 
 @Injectable()
 export class PortfolioService {
@@ -186,8 +191,6 @@ export class PortfolioService {
   }
 
   async addStandardsToPortfolio(portfolioId: string, standardIds: string[]) {
-    // console.log('standardIds====>', standardIds);
-
     const result = await this.prismaService.portfolioStandards.createMany({
       data: standardIds.map((id) => ({
         portfolioId,
@@ -230,5 +233,311 @@ export class PortfolioService {
       where: { portfolioId: id },
     });
     return this.prismaService.portfolio.delete({ where: { id } });
+  }
+
+  async toggleFavorite(
+    portfolioId: string,
+    userId: string,
+    action: FavoriteAction,
+  ) {
+    const portfolio = await this.prismaService.portfolio.findUnique({
+      where: { id: portfolioId },
+    });
+
+    if (!portfolio) {
+      throw new NotFoundException(`Portfolio with id ${portfolioId} not found`);
+    }
+
+    const existingFavorite = await this.prismaService.favorite.findUnique({
+      where: {
+        userId_portfolioId: {
+          userId,
+          portfolioId,
+        },
+      },
+    });
+
+    if (existingFavorite && existingFavorite.action === action) {
+      return existingFavorite;
+    }
+
+    if (existingFavorite) {
+      return this.prismaService.favorite.update({
+        where: {
+          userId_portfolioId: {
+            userId,
+            portfolioId,
+          },
+        },
+        data: {
+          action,
+        },
+      });
+    }
+
+    return this.prismaService.favorite.create({
+      data: {
+        portfolioId,
+        userId,
+        action,
+      },
+    });
+  }
+
+  async getFavoriteStatus(portfolioId: string, userId: string) {
+    const favorite = await this.prismaService.favorite.findUnique({
+      where: {
+        userId_portfolioId: {
+          userId,
+          portfolioId,
+        },
+      },
+    });
+
+    return {
+      portfolioId,
+      userId,
+      isFavorite: favorite?.action === FavoriteAction.favorite,
+      action: favorite?.action || null,
+    };
+  }
+
+  async getUserFavorites(userId: string) {
+    const favorites = await this.prismaService.favorite.findMany({
+      where: {
+        userId,
+        action: FavoriteAction.favorite,
+      },
+      include: {
+        portfolio: {
+          include: {
+            standards: {
+              select: {
+                standards: {
+                  select: {
+                    name: true,
+                    description: true,
+                    type: true,
+                    image: true,
+                  },
+                },
+              },
+            },
+            Image: {
+              select: {
+                url: true,
+                type: true,
+                description: true,
+              },
+            },
+            company: true,
+            freelance: true,
+          },
+        },
+      },
+    });
+
+    return favorites;
+  }
+
+  async createComment(userId: string, data: CreateCommentDto) {
+    const portfolio = await this.prismaService.portfolio.findUnique({
+      where: { id: data.portfolioId },
+    });
+
+    if (!portfolio) {
+      throw new NotFoundException(
+        `Portfolio with id ${data.portfolioId} not found`,
+      );
+    }
+
+    if (data.parentId) {
+      const parentComment =
+        await this.prismaService.portfolioComment.findUnique({
+          where: { id: data.parentId },
+        });
+
+      if (!parentComment) {
+        throw new NotFoundException(
+          `Parent comment with id ${data.parentId} not found`,
+        );
+      }
+
+      if (parentComment.portfolioId !== data.portfolioId) {
+        throw new ForbiddenException(
+          'Parent comment does not belong to this portfolio',
+        );
+      }
+
+      if (parentComment.parentId) {
+        throw new ForbiddenException('Only one level of replies is allowed');
+      }
+    }
+
+    return this.prismaService.portfolioComment.create({
+      data: {
+        content: data.content,
+        portfolioId: data.portfolioId,
+        userId,
+        parentId: data.parentId,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullnameTh: true,
+            fullnameEn: true,
+            email: true,
+            image: true,
+            userType: true,
+          },
+        },
+      },
+    });
+  }
+
+  async getPortfolioComments(portfolioId: string) {
+    const portfolio = await this.prismaService.portfolio.findUnique({
+      where: { id: portfolioId },
+    });
+
+    if (!portfolio) {
+      throw new NotFoundException(`Portfolio with id ${portfolioId} not found`);
+    }
+
+    const comments = await this.prismaService.portfolioComment.findMany({
+      where: {
+        portfolioId,
+        parentId: null,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullnameTh: true,
+            fullnameEn: true,
+            email: true,
+            image: true,
+            userType: true,
+          },
+        },
+        replies: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                fullnameTh: true,
+                fullnameEn: true,
+                email: true,
+                image: true,
+                userType: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return comments;
+  }
+
+  async updateComment(id: string, userId: string, content: string) {
+    const comment = await this.prismaService.portfolioComment.findUnique({
+      where: { id },
+      include: {
+        portfolio: {
+          include: {
+            freelance: true,
+            company: true,
+          },
+        },
+      },
+    });
+
+    if (!comment) {
+      throw new NotFoundException(`Comment with id ${id} not found`);
+    }
+
+    if (comment.userId !== userId) {
+      throw new ForbiddenException('You can only edit your own comments');
+    }
+
+    return this.prismaService.portfolioComment.update({
+      where: { id },
+      data: { content },
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullnameTh: true,
+            fullnameEn: true,
+            email: true,
+            image: true,
+            userType: true,
+          },
+        },
+        replies: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                fullnameTh: true,
+                fullnameEn: true,
+                email: true,
+                image: true,
+                userType: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  async deleteComment(id: string, userId: string, userType: string) {
+    const comment = await this.prismaService.portfolioComment.findUnique({
+      where: { id },
+      include: {
+        portfolio: {
+          include: {
+            freelance: true,
+            company: true,
+          },
+        },
+      },
+    });
+
+    if (!comment) {
+      throw new NotFoundException(`Comment with id ${id} not found`);
+    }
+
+    if (userType === 'admin') {
+      return this.prismaService.portfolioComment.delete({
+        where: { id },
+      });
+    }
+
+    if (comment.userId !== userId) {
+      const portfolio = comment.portfolio;
+      const isOwner =
+        (portfolio.freelanceId && portfolio.freelance?.userId === userId) ||
+        (portfolio.companyJuristicId && portfolio.company?.userId === userId);
+
+      if (!isOwner) {
+        throw new ForbiddenException(
+          'You can only delete your own comments or comments on your portfolio',
+        );
+      }
+    }
+
+    return this.prismaService.portfolioComment.delete({
+      where: { id },
+    });
   }
 }

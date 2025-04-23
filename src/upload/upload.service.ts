@@ -25,7 +25,8 @@ export class UploadService {
     const uploadResults = [];
 
     for (const file of files) {
-      const uniqueFilename = `${file.originalname}-${Date.now()}`;
+      const sanitizedName = file.originalname.replace(/[^a-zA-Z0-9.]/g, '');
+      const uniqueFilename = `${sanitizedName}-${Date.now()}`;
 
       const { data, error } = await this.supabase.storage
         .from(bucketName)

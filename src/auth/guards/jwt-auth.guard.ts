@@ -4,17 +4,38 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  canActivate(context: ExecutionContext) {
-    return super.canActivate(context);
+  constructor(private readonly reflector = new Reflector()) {
+    super();
   }
 
-  handleRequest(err, user) {
+  canActivate(context: ExecutionContext) {
+    // Call the parent canActivate method directly
+    const canActivate = super.canActivate(context);
+
+    if (canActivate instanceof Promise) {
+      return canActivate.then((result) => {
+        // Log debugging information
+        const request = context.switchToHttp().getRequest();
+        console.log('JWT Auth result:', result);
+        console.log('JWT Auth user:', request.user);
+        return result;
+      });
+    }
+
+    return canActivate;
+  }
+
+  handleRequest(err, user, info) {
+    console.log('JWT handleRequest:', { err, userExists: !!user, info });
+
     if (err || !user) {
       throw err || new UnauthorizedException('Authentication required');
     }
+
     return user;
   }
 }
