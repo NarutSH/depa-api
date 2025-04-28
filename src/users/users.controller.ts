@@ -118,8 +118,6 @@ export class UsersController {
   async createUser(@Body() body: CreateUserDto, @Req() req: Request) {
     const user = req.user as any;
 
-    console.log('user===>', user);
-
     // Ensure the email in the profile matches the authenticated user
     if (user.email !== body.email) {
       throw new ForbiddenException(

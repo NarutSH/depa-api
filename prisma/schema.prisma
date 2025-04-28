@@ -148,6 +148,9 @@ model Company {
 
   description String?
 
+  image       String?
+  cover_image String?
+
   address     String?
   subDistrict String?
   district    String?
@@ -180,6 +183,9 @@ model Freelance {
   lastNameTh  String
   firstNameEn String?
   lastNameEn  String?
+
+  image       String?
+  cover_image String?
 
   address     String?
   subDistrict String?

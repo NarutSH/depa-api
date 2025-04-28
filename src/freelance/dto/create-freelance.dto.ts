@@ -1,4 +1,4 @@
-import { IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsOptional, IsString } from 'class-validator';
 
 export class CreateFreelanceDto {
   @IsString()
@@ -52,4 +52,12 @@ export class CreateFreelanceDto {
   @IsOptional()
   @IsString({ each: true })
   industryTypes?: string[];
+
+  @IsString()
+  @IsOptional()
+  image?: string;
+
+  @IsString()
+  @IsOptional()
+  cover_image?: string;
 }

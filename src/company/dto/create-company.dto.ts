@@ -54,6 +54,14 @@ class CreateCompanyDto {
 
   @IsString()
   userId: string;
+
+  @IsOptional()
+  @IsString()
+  image?: string;
+
+  @IsOptional()
+  @IsString()
+  cover_image?: string;
 }
 
 export default CreateCompanyDto;

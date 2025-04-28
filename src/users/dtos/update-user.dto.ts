@@ -1,4 +1,4 @@
-import { IsArray, IsJSON, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 
 class UpdateUserDto {
   @IsString()
