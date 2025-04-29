@@ -185,6 +185,9 @@ export class PortfolioService {
       looking_for: Array.isArray(data.looking_for)
         ? data.looking_for
         : [data.looking_for],
+      // standards: Array.isArray(data.standards)
+      //   ? data.standards
+      //   : [data.standards],
     };
 
     return this.prismaService.portfolio.create({ data: makeData });
