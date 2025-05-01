@@ -19,16 +19,20 @@ class CreateCompanyDto {
   address: string;
 
   @IsString()
-  subDistrict: string;
+  @IsOptional()
+  subDistrict?: string;
 
   @IsString()
-  district: string;
+  @IsOptional()
+  district?: string;
 
   @IsString()
-  province: string;
+  @IsOptional()
+  province?: string;
 
   @IsString()
-  postalCode: string;
+  @IsOptional()
+  postalCode?: string;
 
   @IsNumber()
   registerdCapital: number;
