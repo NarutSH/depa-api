@@ -8,8 +8,10 @@ export class UploadService {
   ) {}
 
   async uploadFile(file: Express.Multer.File, bucketName: string) {
-    const sanitizedName = file.originalname.replace(/[^a-zA-Z0-9.]/g, '');
-    const uniqueFilename = `${sanitizedName}-${Date.now()}`;
+    const [fileName, fileType] = file.originalname.split('.');
+
+    const sanitizedName = fileName.replace(/[^a-zA-Z0-9.]/g, '');
+    const uniqueFilename = `${sanitizedName}-${Date.now()}.${fileType}`;
 
     const { data, error } = await this.supabase.storage
       .from(bucketName)
@@ -26,8 +28,10 @@ export class UploadService {
     const uploadResults = [];
 
     for (const file of files) {
-      const sanitizedName = file.originalname.replace(/[^a-zA-Z0-9.]/g, '');
-      const uniqueFilename = `${sanitizedName}-${Date.now()}`;
+      const [fileName, fileType] = file.originalname.split('.');
+
+      const sanitizedName = fileName.replace(/[^a-zA-Z0-9.]/g, '');
+      const uniqueFilename = `${sanitizedName}-${Date.now()}.${fileType}`;
 
       const { data, error } = await this.supabase.storage
         .from(bucketName)

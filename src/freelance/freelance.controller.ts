@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { FreelanceService } from './freelance.service';
 import { CreateFreelanceDto } from './dto/create-freelance.dto';
 
@@ -24,5 +32,13 @@ export class FreelanceController {
   @Get('/juristic/:juristicId')
   async getByJuristicId(@Param('juristicId') juristicId: string) {
     return this.freelanceService.getByJuristicId(juristicId);
+  }
+
+  @Patch(':freelanceId')
+  async update(
+    @Param('freelanceId') freelanceId: string,
+    @Body() data: Partial<CreateFreelanceDto>,
+  ) {
+    return this.freelanceService.update(freelanceId, data);
   }
 }

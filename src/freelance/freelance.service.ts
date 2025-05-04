@@ -52,4 +52,21 @@ export class FreelanceService {
     }
     return freelance;
   }
+
+  async update(freelanceId: string, data: Partial<CreateFreelanceDto>) {
+    try {
+      const updatedFreelance = await this.prismaService.freelance.update({
+        where: { id: freelanceId },
+        data,
+      });
+      return updatedFreelance;
+    } catch (error) {
+      if (error.code === 'P2025') {
+        throw new NotFoundException(
+          `Freelance with userId ${freelanceId} not found`,
+        );
+      }
+      throw error;
+    }
+  }
 }
