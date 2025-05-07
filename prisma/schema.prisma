@@ -74,8 +74,8 @@ model User {
 
   userType UserType? @default(guest)
 
-  createdAt DateTime   @default(now()) @db.Timestamptz()
-  updatedAt DateTime   @updatedAt @db.Timestamptz()
+  createdAt DateTime           @default(now()) @db.Timestamptz()
+  updatedAt DateTime           @updatedAt @db.Timestamptz()
   freelance Freelance?
   company   Company?
   Favorite  Favorite[]
@@ -292,8 +292,12 @@ model Portfolio {
   freelanceId String?    @db.Uuid
   freelance   Freelance? @relation(fields: [freelanceId], references: [id])
 
+  companyId String?  @db.Uuid
+  company   Company? @relation(fields: [companyId], references: [id])
+
+  // legacy
   companyJuristicId String?
-  company           Company? @relation(fields: [companyJuristicId], references: [juristicId])
+  // company           Company? @relation(fields: [companyJuristicId], references: [juristicId])
 
   createdAt DateTime             @default(now()) @db.Timestamptz()
   updatedAt DateTime             @default(now()) @updatedAt @db.Timestamptz()
@@ -377,18 +381,18 @@ model Skill {
 }
 
 model PortfolioComment {
-  id        String   @id @default(uuid()) @db.Uuid
-  content   String
-  portfolioId String  @db.Uuid
-  portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
-  userId    String   @db.Uuid
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  id          String    @id @default(uuid()) @db.Uuid
+  content     String
+  portfolioId String    @db.Uuid
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  userId      String    @db.Uuid
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   // For replies (1-level depth only)
-  parentId  String?  @db.Uuid
-  parent    PortfolioComment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
-  replies   PortfolioComment[] @relation("CommentReplies")
-  
+  parentId String?            @db.Uuid
+  parent   PortfolioComment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  PortfolioComment[] @relation("CommentReplies")
+
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
 }

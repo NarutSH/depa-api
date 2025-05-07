@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "UserType" AS ENUM ('company', 'freelance', 'guest');
+CREATE TYPE "UserType" AS ENUM ('company', 'freelance', 'guest', 'admin');
 
 -- CreateEnum
 CREATE TYPE "PortfolioImageType" AS ENUM ('cover', 'gallery', 'main');
@@ -8,7 +8,7 @@ CREATE TYPE "PortfolioImageType" AS ENUM ('cover', 'gallery', 'main');
 CREATE TYPE "FavoriteAction" AS ENUM ('favorite', 'unfavorite');
 
 -- CreateEnum
-CREATE TYPE "StandardsType" AS ENUM ('ERSB', 'PEGI', 'CERO', 'USK', 'ACB', 'IARC', 'GRAC', 'VSC', 'OFLC', 'BBFC', 'FPB', 'RARS', 'GSRB', 'GSRR');
+CREATE TYPE "StandardsType" AS ENUM ('ERSB', 'PEGI', 'CERO', 'USK', 'ACB', 'IARC', 'GRAC', 'VSC', 'OFLC', 'BBFC', 'FPB', 'RARS', 'GSRB', 'GSRR', 'MPA', 'EIRIN', 'NBTC', 'ESRB');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -20,6 +20,11 @@ CREATE TABLE "User" (
     "email" TEXT,
     "website" TEXT,
     "address" TEXT,
+    "image" TEXT,
+    "industries" TEXT[],
+    "tags" JSONB[] DEFAULT ARRAY[]::JSONB[],
+    "channels" JSONB[] DEFAULT ARRAY[]::JSONB[],
+    "specialists" JSONB[] DEFAULT ARRAY[]::JSONB[],
     "userType" "UserType" DEFAULT 'guest',
     "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ NOT NULL,
@@ -77,6 +82,8 @@ CREATE TABLE "Company" (
     "nameTh" TEXT NOT NULL,
     "nameEn" TEXT,
     "description" TEXT,
+    "image" TEXT,
+    "cover_image" TEXT,
     "address" TEXT,
     "subDistrict" TEXT,
     "district" TEXT,
@@ -103,6 +110,8 @@ CREATE TABLE "Freelance" (
     "lastNameTh" TEXT NOT NULL,
     "firstNameEn" TEXT,
     "lastNameEn" TEXT,
+    "image" TEXT,
+    "cover_image" TEXT,
     "address" TEXT,
     "subDistrict" TEXT,
     "district" TEXT,
@@ -189,6 +198,7 @@ CREATE TABLE "Portfolio" (
     "tags" TEXT[],
     "looking_for" TEXT[],
     "freelanceId" UUID,
+    "companyId" UUID,
     "companyJuristicId" TEXT,
     "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -258,6 +268,19 @@ CREATE TABLE "Skill" (
     "freelanceId" UUID,
 
     CONSTRAINT "Skill_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PortfolioComment" (
+    "id" UUID NOT NULL,
+    "content" TEXT NOT NULL,
+    "portfolioId" UUID NOT NULL,
+    "userId" UUID NOT NULL,
+    "parentId" UUID,
+    "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "PortfolioComment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -360,13 +383,13 @@ ALTER TABLE "Segment" ADD CONSTRAINT "Segment_industrySlug_fkey" FOREIGN KEY ("i
 ALTER TABLE "Portfolio" ADD CONSTRAINT "Portfolio_freelanceId_fkey" FOREIGN KEY ("freelanceId") REFERENCES "Freelance"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Portfolio" ADD CONSTRAINT "Portfolio_companyJuristicId_fkey" FOREIGN KEY ("companyJuristicId") REFERENCES "Company"("juristicId") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Portfolio" ADD CONSTRAINT "Portfolio_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "PortfolioStandards" ADD CONSTRAINT "PortfolioStandards_portfolioId_fkey" FOREIGN KEY ("portfolioId") REFERENCES "Portfolio"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "PortfolioStandards" ADD CONSTRAINT "PortfolioStandards_portfolioId_fkey" FOREIGN KEY ("portfolioId") REFERENCES "Portfolio"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "PortfolioStandards" ADD CONSTRAINT "PortfolioStandards_standardsId_fkey" FOREIGN KEY ("standardsId") REFERENCES "Standards"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "PortfolioStandards" ADD CONSTRAINT "PortfolioStandards_standardsId_fkey" FOREIGN KEY ("standardsId") REFERENCES "Standards"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PortfolioImage" ADD CONSTRAINT "PortfolioImage_portfolioId_fkey" FOREIGN KEY ("portfolioId") REFERENCES "Portfolio"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -385,3 +408,12 @@ ALTER TABLE "Skill" ADD CONSTRAINT "Skill_industrySlug_fkey" FOREIGN KEY ("indus
 
 -- AddForeignKey
 ALTER TABLE "Skill" ADD CONSTRAINT "Skill_freelanceId_fkey" FOREIGN KEY ("freelanceId") REFERENCES "Freelance"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PortfolioComment" ADD CONSTRAINT "PortfolioComment_portfolioId_fkey" FOREIGN KEY ("portfolioId") REFERENCES "Portfolio"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PortfolioComment" ADD CONSTRAINT "PortfolioComment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PortfolioComment" ADD CONSTRAINT "PortfolioComment_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "PortfolioComment"("id") ON DELETE CASCADE ON UPDATE CASCADE;

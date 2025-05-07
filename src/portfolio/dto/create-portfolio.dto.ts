@@ -1,10 +1,4 @@
-import {
-  IsArray,
-  IsInstance,
-  IsOptional,
-  IsString,
-  IsUrl,
-} from 'class-validator';
+import { IsArray, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export class CreatePortfolioDto {
   @IsString()
@@ -24,6 +18,10 @@ export class CreatePortfolioDto {
   @IsString()
   @IsOptional()
   freelanceId?: string;
+
+  @IsString()
+  @IsOptional()
+  companyId?: string;
 
   @IsString()
   @IsOptional()
