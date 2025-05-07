@@ -327,7 +327,7 @@ model PortfolioImage {
   description String?
   type        PortfolioImageType @default(gallery)
   portfolioId String             @db.Uuid
-  portfolio   Portfolio          @relation(fields: [portfolioId], references: [id])
+  portfolio   Portfolio          @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()

@@ -179,6 +179,8 @@ export class PortfolioService {
       );
     }
 
+    console.log('createPortfolio', data);
+
     const makeData = {
       ...data,
       tags: Array.isArray(data.tags) ? data.tags : [data.tags],

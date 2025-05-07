@@ -122,6 +122,7 @@ export class PortfolioController {
       title: data.title,
       description: data.description,
       freelanceId: data.freelanceId,
+      companyId: data.companyId,
       companyJuristicId: data.companyJuristicId,
       tags: data.tags ?? [],
       looking_for: data.looking_for ?? [],
