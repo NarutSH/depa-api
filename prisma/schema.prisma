@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../prisma/generated"
 }
 
 datasource db {
@@ -73,6 +74,7 @@ model User {
   specialists Json[]   @default([])
 
   userType UserType? @default(guest)
+  role     UserType? @default(guest)
 
   createdAt DateTime           @default(now()) @db.Timestamptz()
   updatedAt DateTime           @updatedAt @db.Timestamptz()
@@ -127,9 +129,10 @@ model RevenueStream {
   segmentSlug String
   segment     Segment @relation(fields: [segmentSlug, industryTypeSlug], references: [slug, industrySlug])
 
-  percent           Float
-  ctrPercent        Float
-  value             Float?
+  percent    Float
+  ctrPercent Float
+  value      Float?
+
   // companyId  String @db.Uuid
   companyJuristicId String
   company           Company @relation(fields: [companyJuristicId], references: [juristicId], onDelete: Restrict)
@@ -167,14 +170,33 @@ model Company {
   userId      String  @unique @db.Uuid
   user        User    @relation(fields: [userId], references: [id])
 
-  createdAt  DateTime @default(now()) @db.Timestamptz()
-  updatedAt  DateTime @default(now()) @updatedAt @db.Timestamptz()
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
+
+  // Legacy field - keep this
   industries String[]
+
+  // New relation using join table
+  industriesRelated CompanyIndustry[]
 
   companyRevenue CompanyRevenue[]
 
   RevenueStream RevenueStream[]
   Portfolio     Portfolio[]
+}
+
+// New model for the many-to-many relationship
+model CompanyIndustry {
+  companyId String  @db.Uuid
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  industrySlug String
+  industry     Industry @relation(fields: [industrySlug], references: [slug], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
+
+  @@id([companyId, industrySlug])
 }
 
 model Freelance {
@@ -197,7 +219,12 @@ model Freelance {
   email       String? @unique
   juristicId  String? @unique
 
-  industryTypes    String[] // ['game', 'animation']
+  // Legacy field - keep this
+  industryTypes String[] // ['game', 'animation']
+
+  // New relation using join table
+  industriesRelated FreelanceIndustry[]
+
   skills           Skill[] // [{ name: 'game-design', category: 'game' }]
   freelanceRevenue FreelanceRevenue[] // [{ year: 2021, value: 1000000 }]
 
@@ -207,6 +234,20 @@ model Freelance {
   userId    String      @unique @db.Uuid
   user      User        @relation(fields: [userId], references: [id])
   Portfolio Portfolio[]
+}
+
+// New model for the many-to-many relationship
+model FreelanceIndustry {
+  freelanceId String    @db.Uuid
+  freelance   Freelance @relation(fields: [freelanceId], references: [id], onDelete: Cascade)
+
+  industrySlug String
+  industry     Industry @relation(fields: [industrySlug], references: [slug], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
+
+  @@id([freelanceId, industrySlug])
 }
 
 model Industry {
@@ -222,14 +263,47 @@ model Industry {
   Segment  Segment[]
   Category Category[]
 
+  companies   CompanyIndustry[]
+  freelancers FreelanceIndustry[]
+
   Standards     Standards[]
   RevenueStream RevenueStream[]
+
+  Tag        Tag[]
+  LookingFor LookingFor[]
+}
+
+model Tag {
+  id   String @id @default(uuid()) @db.Uuid
+  name String
+  slug String @unique
+
+  industrySlug String
+  industry     Industry @relation(fields: [industrySlug], references: [slug])
+
+  createdAt    DateTime       @default(now()) @db.Timestamptz()
+  updatedAt    DateTime       @default(now()) @updatedAt @db.Timestamptz()
+  PortfolioTag PortfolioTag[]
+}
+
+model LookingFor {
+  id   String @id @default(uuid()) @db.Uuid
+  name String
+  slug String @unique
+
+  industrySlug String
+  industry     Industry @relation(fields: [industrySlug], references: [slug])
+
+  createdAt           DateTime              @default(now()) @db.Timestamptz()
+  updatedAt           DateTime              @default(now()) @updatedAt @db.Timestamptz()
+  PortfolioLookingFor PortfolioLookingFor[]
 }
 
 model Category {
-  id            String          @id @default(uuid()) @db.Uuid
-  name          String
-  slug          String
+  id   String @id @default(uuid()) @db.Uuid
+  name String
+  slug String @unique
+
   createdAt     DateTime        @default(now()) @db.Timestamptz()
   updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz()
   industrySlug  String
@@ -242,7 +316,7 @@ model Category {
 model Source {
   id            String          @id @default(uuid()) @db.Uuid
   name          String
-  slug          String
+  slug          String          @unique
   createdAt     DateTime        @default(now()) @db.Timestamptz()
   updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz()
   industrySlug  String
@@ -255,7 +329,7 @@ model Source {
 model Channel {
   id            String          @id @default(uuid()) @db.Uuid
   name          String
-  slug          String
+  slug          String          @unique
   createdAt     DateTime        @default(now()) @db.Timestamptz()
   updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz()
   industrySlug  String
@@ -286,8 +360,13 @@ model Portfolio {
   link             String?
   industryTypeSlug String
 
+  // Legacy fields - keep these
   tags        String[]
   looking_for String[]
+
+  // New relations
+  industryTags       PortfolioTag[]
+  industryLookingFor PortfolioLookingFor[]
 
   freelanceId String?    @db.Uuid
   freelance   Freelance? @relation(fields: [freelanceId], references: [id])
@@ -305,6 +384,34 @@ model Portfolio {
   Image     PortfolioImage[]
   standards PortfolioStandards[]
   comments  PortfolioComment[]
+}
+
+// New join table for Portfolio-Tag relationship
+model PortfolioTag {
+  portfolioId String    @db.Uuid
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  tagSlug String
+  tag     Tag    @relation(fields: [tagSlug], references: [slug], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
+
+  @@id([portfolioId, tagSlug])
+}
+
+// New join table for Portfolio-LookingFor relationship
+model PortfolioLookingFor {
+  portfolioId String    @db.Uuid
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  lookingForSlug String
+  lookingFor     LookingFor @relation(fields: [lookingForSlug], references: [slug], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
+
+  @@id([portfolioId, lookingForSlug])
 }
 
 model PortfolioStandards {
@@ -365,10 +472,11 @@ model Standards {
 }
 
 model Skill {
-  id           String   @id @default(uuid()) @db.Uuid
-  title        String
-  slug         String
-  group        String?
+  id    String  @id @default(uuid()) @db.Uuid
+  title String
+  slug  String
+  group String?
+
   industrySlug String
   industry     Industry @relation(fields: [industrySlug], references: [slug])
 

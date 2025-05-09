@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
 import axios from 'axios';
+import { UsersService } from '../users/users.service';
 
 // Define interface for TechHunt login response and export it
 export interface TechHuntLoginResponse {
@@ -13,12 +13,11 @@ export interface TechHuntLoginResponse {
   email?: string;
   ResultList?: any[];
   data?: any[];
-  access_token?: string; // Added access_token field
 }
 
 // Define interface for our backend's structured response
 export interface TechHuntLoginResult {
-  thirdPartyResponse: TechHuntLoginResponse;
+  techhuntResponse: TechHuntLoginResponse;
   user: any | null;
   access_token: string | null;
 }
@@ -47,11 +46,6 @@ export class AuthService {
       return null;
     }
 
-    // In a real app, you would compare hashed passwords here
-    // Example with bcrypt (would require bcrypt to be installed):
-    // const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    // For now, we're just validating if the user exists
     return user;
   }
 
@@ -112,6 +106,7 @@ export class AuthService {
 
       // Get or create user in our system based on third-party response
       let user;
+
       try {
         // Try to get existing user
         user = await this.usersService.getUserByEmail(
@@ -125,20 +120,20 @@ export class AuthService {
       // Create a simplified JWT payload from TechHunt data with only memberid, email and userType
       const jwtPayload = {
         id: user?.id || null,
-        memberid: loginData.memberid || '',
         email: loginData.email || username,
-        userType: user?.userType || 'guest',
+        sessiontoken: loginData.sessiontoken || null,
+        memberid: loginData.memberid || null,
       };
 
       // Generate access token using TechHunt data
       const access_token = this.jwtService.sign(jwtPayload);
 
       // Always include the access token in the loginData response
-      loginData.access_token = access_token;
+      // loginData.access_token = access_token;
 
       // Return formatted response with session data
       return {
-        thirdPartyResponse: loginData,
+        techhuntResponse: loginData,
         user: user || null,
         access_token: access_token,
       };
