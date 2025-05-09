@@ -1,8 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { BypassRolesGuard } from './auth/guards/bypass-roles.guard';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
@@ -12,12 +10,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  // Set up global bypass guard - TEMPORARY for development
-  console.log(
-    '⚠️  WARNING: Using bypass authentication for all routes - DO NOT USE IN PRODUCTION ⚠️',
-  );
-  const reflector = new Reflector();
-  app.useGlobalGuards(new BypassRolesGuard(reflector));
+  // Auth guards removed - will be reimplemented
 
   // Swagger documentation setup
   const config = new DocumentBuilder()

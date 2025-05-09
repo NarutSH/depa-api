@@ -8,7 +8,6 @@ import {
   Post,
   Req,
   UploadedFiles,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
@@ -22,7 +21,6 @@ import {
 } from '@nestjs/swagger';
 import { PortfolioImageType } from '@prisma/client';
 import { Request } from 'express';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UploadService } from 'src/upload/upload.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import {
@@ -31,7 +29,6 @@ import {
 } from './dto/create-portfolio.dto';
 import { FavoritePortfolioDto } from './dto/favorite-portfolio.dto';
 import { PortfolioService } from './portfolio.service';
-// import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @ApiTags('portfolio')
 @Controller('portfolio')
@@ -184,7 +181,7 @@ export class PortfolioController {
   }
 
   @Post('favorite')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async toggleFavorite(
     @Body() favoriteDto: FavoritePortfolioDto,
     @Req() req: Request,
@@ -198,7 +195,7 @@ export class PortfolioController {
   }
 
   @Get('favorite/:portfolioId')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async getFavoriteStatus(
     @Param('portfolioId') portfolioId: string,
     @Req() req: Request,
@@ -208,7 +205,7 @@ export class PortfolioController {
   }
 
   @Get('favorites/user')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async getUserFavorites(@Req() req: Request) {
     const user = req.user as any;
     return this.portfolioService.getUserFavorites(user.userId);
@@ -260,7 +257,7 @@ export class PortfolioController {
   @ApiResponse({ status: 201, description: 'Comment created successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized - must be logged in' })
   @Post('comments')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async createComment(
     @Body() commentDto: CreateCommentDto,
@@ -279,7 +276,7 @@ export class PortfolioController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden - not your comment' })
   @Patch('comments/:commentId')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async updateComment(
     @Param('commentId') commentId: string,
@@ -299,7 +296,7 @@ export class PortfolioController {
     description: 'Forbidden - not allowed to delete this comment',
   })
   @Delete('comments/:commentId')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async deleteComment(
     @Param('commentId') commentId: string,

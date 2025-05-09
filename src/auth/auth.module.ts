@@ -5,13 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { RolesGuard } from './guards/roles.guard';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import { AuthGuard } from './guards/auth.guard';
 import { Reflector } from '@nestjs/core';
-import { BypassAuthGuard } from './guards/bypass-auth.guard';
-import { BypassJwtAuthGuard } from './guards/bypass-jwt-auth.guard';
-import { BypassRolesGuard } from './guards/bypass-roles.guard';
 
 @Module({
   imports: [
@@ -28,29 +22,7 @@ import { BypassRolesGuard } from './guards/bypass-roles.guard';
     }),
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    JwtStrategy,
-    RolesGuard,
-    AuthGuard,
-    Reflector,
-    BypassRolesGuard,
-    BypassAuthGuard,
-    BypassJwtAuthGuard,
-    // Override the standard guards with bypass guards for global use
-    {
-      provide: 'APP_GUARD',
-      useClass: BypassRolesGuard,
-    },
-  ],
-  exports: [
-    AuthService,
-    JwtStrategy,
-    RolesGuard,
-    AuthGuard,
-    BypassRolesGuard,
-    BypassAuthGuard,
-    BypassJwtAuthGuard,
-  ],
+  providers: [AuthService, Reflector],
+  exports: [AuthService],
 })
 export class AuthModule {}
