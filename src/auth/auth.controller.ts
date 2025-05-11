@@ -1,23 +1,28 @@
-import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
-import { AuthService, TechHuntLoginResult } from './auth.service';
 import {
-  ApiTags,
-  ApiOperation,
+  Body,
+  Controller,
+  Post,
+  UnauthorizedException,
+  HttpCode,
+  UseGuards,
+} from '@nestjs/common';
+import {
   ApiBody,
-  ApiResponse,
+  ApiOperation,
   ApiProperty,
+  ApiResponse,
+  ApiTags,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
-import { IsEmail, IsString } from 'class-validator';
-
-class LoginDto {
-  @ApiProperty({ description: 'User email address' })
-  @IsEmail()
-  email: string;
-
-  @ApiProperty({ description: 'User password' })
-  @IsString()
-  password: string;
-}
+import { IsString } from 'class-validator';
+import {
+  AuthService,
+  TechHuntLoginResult,
+  RefreshTokenResponse,
+} from './auth.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { User } from './decorators/user.decorator';
+import { Public } from './decorators/public.decorator';
 
 class TechhuntLoginDto {
   @ApiProperty({ description: 'Username or email address' })
@@ -29,29 +34,18 @@ class TechhuntLoginDto {
   password: string;
 }
 
+class RefreshTokenDto {
+  @ApiProperty({ description: 'The refresh token' })
+  @IsString()
+  refreshToken: string;
+}
+
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('login')
-  @ApiOperation({ summary: 'Login with email and password' })
-  @ApiBody({ type: LoginDto })
-  @ApiResponse({ status: 200, description: 'Login successful' })
-  @ApiResponse({ status: 401, description: 'Invalid credentials' })
-  async login(@Body() loginDto: LoginDto) {
-    const user = await this.authService.validateUser(
-      loginDto.email,
-      //   loginDto.password,
-    );
-
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    return this.authService.login(user);
-  }
-
+  @Public()
   @Post('techhunt-login')
   @ApiOperation({ summary: 'Login through TechHunt API' })
   @ApiBody({ type: TechhuntLoginDto })
@@ -69,5 +63,66 @@ export class AuthController {
     } catch (error) {
       throw new UnauthorizedException(error.message || 'TechHunt login failed');
     }
+  }
+
+  @Public()
+  @Post('refresh')
+  @ApiOperation({ summary: 'Refresh access token using refresh token' })
+  @ApiBody({ type: RefreshTokenDto })
+  @ApiResponse({ status: 200, description: 'Token refreshed successfully' })
+  @ApiResponse({ status: 401, description: 'Invalid or expired refresh token' })
+  @HttpCode(200)
+  async refreshTokens(
+    @Body() refreshTokenDto: RefreshTokenDto,
+  ): Promise<RefreshTokenResponse> {
+    try {
+      return await this.authService.refreshTokens(refreshTokenDto.refreshToken);
+    } catch (error) {
+      throw new UnauthorizedException(
+        error.message || 'Failed to refresh token',
+      );
+    }
+  }
+
+  @Post('logout')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Log out and revoke refresh token' })
+  @ApiBody({ type: RefreshTokenDto })
+  @ApiResponse({ status: 200, description: 'Logged out successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @HttpCode(200)
+  async logout(
+    @Body() refreshTokenDto: RefreshTokenDto,
+  ): Promise<{ success: boolean }> {
+    // Revoke the provided refresh token
+    const success = await this.authService.revokeRefreshToken(
+      refreshTokenDto.refreshToken,
+    );
+
+    return { success };
+  }
+
+  @Post('logout-all')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Log out from all devices by revoking all refresh tokens',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'All sessions logged out successfully',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @HttpCode(200)
+  async logoutAll(@User() user: any): Promise<{ success: boolean }> {
+    if (!user?.id) {
+      throw new UnauthorizedException('Invalid user session');
+    }
+
+    // Revoke all refresh tokens for this user
+    const success = await this.authService.revokeAllUserRefreshTokens(user.id);
+
+    return { success };
   }
 }

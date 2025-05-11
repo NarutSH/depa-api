@@ -38,6 +38,44 @@ export class UsersService {
     return user;
   }
 
+  async getMe(userId: string) {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+      include: {
+        company: {
+          include: {
+            companyRevenue: true,
+          },
+        },
+        freelance: {
+          include: {
+            freelanceRevenue: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User not found`);
+    }
+
+    return user;
+  }
+
+  async findOne(id: string) {
+    try {
+      // Uses the existing getUserById but handles the NotFoundException gracefully
+      // This is what the JWT strategy expects
+      return await this.getUserById(id);
+    } catch (error) {
+      // Return null instead of throwing an exception for the JWT strategy
+      if (error instanceof NotFoundException) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
   async getUserByEmail(email: string) {
     const user = await this.prismaService.user.findUnique({
       where: { email: email },

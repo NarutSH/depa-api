@@ -45,6 +45,32 @@ export class UsersController {
     return this.usersService.getAllUsers();
   }
 
+  // Get current user profile
+  @Get('me')
+  // @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Get current user profile',
+    description: 'Retrieves the profile of the currently authenticated user.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Current user profile retrieved successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - requires authentication',
+  })
+  async getMe(@Req() req: Request) {
+    console.log('req==>', req);
+    const user = req.user as any;
+
+    if (!user?.id) {
+      throw new ForbiddenException('User ID not found in request');
+    }
+
+    return this.usersService.getMe(user.id);
+  }
+
   // User profile access - restricted by role
   @Get(':id')
   // @UseGuards(JwtAuthGuard, RolesGuard)

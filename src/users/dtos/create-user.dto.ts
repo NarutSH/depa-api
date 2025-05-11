@@ -4,7 +4,8 @@ import { IsArray, IsEmail, IsOptional, IsString } from 'class-validator';
 class CreateUserDto {
   @ApiProperty({ description: 'User full name in Thai' })
   @IsString()
-  fullnameTh: string;
+  @IsOptional()
+  fullnameTh?: string;
 
   @ApiPropertyOptional({ description: 'User full name in English' })
   @IsOptional()
