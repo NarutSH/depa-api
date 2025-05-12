@@ -26,11 +26,14 @@ export class CreateRevenueStreamDto {
   ctrPercent: number;
 
   @IsOptional()
+  @IsNumber()
   value?: number;
 
   @IsString()
+  @IsNotEmpty()
   companyJuristicId: string;
 
   @IsOptional()
-  companyRevenueId?: string;
+  @IsString()
+  companyId?: string; // Optional as it's typically derived from companyJuristicId
 }

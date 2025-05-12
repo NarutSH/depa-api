@@ -40,8 +40,4 @@ export class UpdateRevenueStreamDto {
   @IsOptional()
   @IsString()
   companyJuristicId?: string;
-
-  @IsOptional()
-  @IsString()
-  companyRevenueId?: string;
 }
