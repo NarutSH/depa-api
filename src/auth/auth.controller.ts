@@ -25,11 +25,14 @@ import { User } from './decorators/user.decorator';
 import { Public } from './decorators/public.decorator';
 
 class TechhuntLoginDto {
-  @ApiProperty({ description: 'Username or email address' })
+  @ApiProperty({
+    description: 'Username or email address',
+    example: 'mathuros@playpark.com',
+  })
   @IsString()
   username: string;
 
-  @ApiProperty({ description: 'User password' })
+  @ApiProperty({ description: 'User password', example: 'TH@digital' })
   @IsString()
   password: string;
 }
@@ -40,7 +43,7 @@ class RefreshTokenDto {
   refreshToken: string;
 }
 
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}

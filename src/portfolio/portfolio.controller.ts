@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UploadedFiles,
   UseInterceptors,
@@ -16,12 +17,14 @@ import {
   ApiBody,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { PortfolioImageType } from '@prisma/client';
+// import { PortfolioImageType } from '@prisma/client';
 import { Request } from 'express';
 import { UploadService } from 'src/upload/upload.service';
+import { QueryMetadataDto, ResponseMetadata } from 'src/utils';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import {
   CreatePortfolioDto,
@@ -29,8 +32,11 @@ import {
 } from './dto/create-portfolio.dto';
 import { FavoritePortfolioDto } from './dto/favorite-portfolio.dto';
 import { PortfolioService } from './portfolio.service';
+import { PortfolioImageType } from 'generated/prisma';
+// import { PortfolioImageType } from 'src/generated/prisma';
 
-@ApiTags('portfolio')
+@ApiTags('Portfolio')
+@ApiBearerAuth()
 @Controller('portfolio')
 export class PortfolioController {
   constructor(
@@ -40,8 +46,47 @@ export class PortfolioController {
 
   // Public endpoints accessible by anyone
   @Get()
-  async getPortfolios() {
-    return this.portfolioService.getPortfolios();
+  @ApiOperation({
+    summary:
+      'Get all portfolios with pagination, filtering, sorting, and search capabilities',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved portfolios',
+    type: ResponseMetadata,
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number (1-based)',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Items per page',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String,
+    description: 'Search term for title and description',
+  })
+  @ApiQuery({
+    name: 'sort',
+    required: false,
+    type: String,
+    description: 'Sort field and direction (e.g., title:asc, createdAt:desc)',
+  })
+  @ApiQuery({
+    name: 'filter',
+    required: false,
+    type: Object,
+    description: 'Filter criteria (e.g., industryTypeSlug)',
+  })
+  async getPortfolios(@Query() query: QueryMetadataDto) {
+    return this.portfolioService.getPortfolios(query);
   }
 
   @Get(':id')

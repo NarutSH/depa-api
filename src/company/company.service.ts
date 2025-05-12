@@ -1,10 +1,75 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import CreateCompanyDto from './dto/create-company.dto';
+import { QueryMetadataDto } from 'src/utils';
 
 @Injectable()
 export class CompanyService {
   constructor(private readonly prismaService: PrismaService) {}
+
+  async getCompanies(query: QueryMetadataDto) {
+    const { page = 1, limit = 10, search, sort, filter } = query;
+    const skip = query.getSkip();
+    const sortObj = query.getSortObject();
+
+    // Base query conditions
+    const whereConditions: any = {};
+
+    // Apply search if provided
+    if (search) {
+      whereConditions.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        { nameEn: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    // Apply additional filters if provided
+    if (filter) {
+      if (filter.industry) {
+        whereConditions.industries = { has: filter.industry };
+      }
+      // Add more filters as needed
+    }
+
+    // Get total count
+    const total = await this.prismaService.company.count({
+      where: whereConditions,
+    });
+
+    // Get paginated data
+    const data = await this.prismaService.company.findMany({
+      where: whereConditions,
+      skip,
+      take: limit,
+      orderBy: sortObj || { createdAt: 'desc' },
+      include: {
+        user: true,
+        companyRevenue: {
+          orderBy: {
+            year: 'desc',
+          },
+        },
+      },
+    });
+
+    // Calculate pagination metadata
+    const totalPages = Math.ceil(total / limit);
+    const hasNext = page < totalPages;
+    const hasPrevious = page > 1;
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages,
+        hasNext,
+        hasPrevious,
+      },
+    };
+  }
 
   async getAl(industry: string) {
     const whereClause = industry ? { industries: { has: industry } } : {};

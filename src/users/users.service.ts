@@ -2,13 +2,72 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import CreateUserDto from './dtos/create-user.dto';
 import UpdateUserDto from './dtos/update-user.dto';
+import { QueryMetadataDto, ResponseMetadata } from 'src/utils';
+import { QueryUtilsService } from 'src/utils/services/query-utils.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly queryUtils: QueryUtilsService,
+  ) {}
 
-  async getAllUsers() {
-    return this.prismaService.user.findMany();
+  async getAllUsers(queryDto: QueryMetadataDto) {
+    // Ensure we have valid pagination values
+    const page = Number(queryDto.page) || 1;
+    const limit = Number(queryDto.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    // Define searchable fields for users
+    const searchableFields = ['email', 'fullnameTh', 'fullnameEn', 'about'];
+
+    // Build where clause for filtering and searching
+    const where = this.queryUtils.buildWhereClause(queryDto, searchableFields);
+
+    // Build orderBy clause for sorting
+    const orderBy = this.queryUtils.buildOrderByClause(queryDto, {
+      createdAt: 'desc',
+    });
+
+    // Execute the query with pagination
+    const [users, total] = await Promise.all([
+      this.prismaService.user.findMany({
+        where,
+        orderBy,
+        skip,
+        take: limit,
+        include: {
+          company: {
+            select: {
+              id: true,
+              nameTh: true,
+              nameEn: true,
+              juristicId: true,
+            },
+          },
+          freelance: {
+            select: {
+              id: true,
+              firstNameTh: true,
+              lastNameTh: true,
+              firstNameEn: true,
+              lastNameEn: true,
+              juristicId: true,
+            },
+          },
+        },
+      }),
+      this.prismaService.user.count({ where }),
+    ]);
+
+    // Return paginated response with metadata
+    return ResponseMetadata.paginated(
+      users,
+      total,
+      page,
+      limit,
+      'Users retrieved successfully',
+    );
   }
 
   async createUser(data: CreateUserDto) {

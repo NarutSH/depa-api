@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
 } from '@nestjs/common';
 import CreateUserDto from './dtos/create-user.dto';
@@ -17,13 +18,15 @@ import {
   ApiBody,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { Role } from '../auth/roles.enum';
+import QueryMetadataDto from './dtos/query-metadata.dto';
 
-@ApiTags('users')
+@ApiTags('Users')
 @ApiBearerAuth()
 @Controller('users')
 export class UsersController {
@@ -41,8 +44,32 @@ export class UsersController {
     description: 'List of all users retrieved successfully',
   })
   @ApiResponse({ status: 403, description: 'Forbidden - requires admin role' })
-  async getAllUsers() {
-    return this.usersService.getAllUsers();
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number (1-based)',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Items per page',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String,
+    description: 'Search term for email, fullnameTh, fullnameEn',
+  })
+  @ApiQuery({
+    name: 'sort',
+    required: false,
+    type: String,
+    description: 'Sort field and direction (e.g., email:asc, createdAt:desc)',
+  })
+  async getAllUsers(@Query() query: QueryMetadataDto) {
+    return this.usersService.getAllUsers(query);
   }
 
   // Get current user profile

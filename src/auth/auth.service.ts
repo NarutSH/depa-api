@@ -9,8 +9,7 @@ import { UsersService } from '../users/users.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 import { addDays } from 'date-fns';
-import { UserType } from 'src/generated/prisma';
-// import { UserType } from 'prisma/generated';
+import { UserType } from 'generated/prisma';
 
 // Define interface for TechHunt login response and export it
 export interface TechHuntLoginResponse {

@@ -8,7 +8,14 @@ async function bootstrap() {
 
   app.enableCors();
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true, // Enable automatic transformation
+      transformOptions: {
+        enableImplicitConversion: true, // Enable implicit conversion of primitive types
+      },
+    }),
+  );
 
   // Auth guards removed - will be reimplemented
 
@@ -18,6 +25,11 @@ async function bootstrap() {
     .setDescription('The DEPA API documentation')
     .setVersion('1.0')
     .addBearerAuth()
+    .addTag('Auth', 'Authentication endpoints')
+    .addTag('Users', 'User management endpoints')
+    .addTag('Portfolio', 'Portfolio management endpoints')
+    .addTag('Company', 'Company management endpoints')
+    .addTag('Freelance', 'Freelance management endpoints')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
