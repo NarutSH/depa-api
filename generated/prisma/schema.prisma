@@ -207,14 +207,14 @@ model RevenueStream {
   ctrPercent Float
   value      Float?
 
-  // companyId  String @db.Uuid
+  companyId         String  @db.Uuid
   companyJuristicId String
-  company           Company @relation(fields: [companyJuristicId], references: [juristicId], onDelete: Restrict)
+  company           Company @relation(fields: [companyId], references: [id], onDelete: Restrict)
 
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
 
-  @@unique([companyJuristicId, year, industryTypeSlug, categorySlug, sourceSlug, channelSlug, segmentSlug])
+  @@unique([companyId, year, industryTypeSlug, categorySlug, sourceSlug, channelSlug, segmentSlug])
 }
 
 model Company {
@@ -432,7 +432,9 @@ model Segment {
 model Portfolio {
   id               String  @id @default(uuid()) @db.Uuid
   title            String
+  title_en         String?
   description      String?
+  description_en   String?
   cover_image      String?
   link             String?
   industryTypeSlug String

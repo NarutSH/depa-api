@@ -207,6 +207,7 @@ exports.Prisma.RevenueStreamScalarFieldEnum = {
   percent: 'percent',
   ctrPercent: 'ctrPercent',
   value: 'value',
+  companyId: 'companyId',
   companyJuristicId: 'companyJuristicId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -338,7 +339,9 @@ exports.Prisma.SegmentScalarFieldEnum = {
 exports.Prisma.PortfolioScalarFieldEnum = {
   id: 'id',
   title: 'title',
+  title_en: 'title_en',
   description: 'description',
+  description_en: 'description_en',
   cover_image: 'cover_image',
   link: 'link',
   industryTypeSlug: 'industryTypeSlug',

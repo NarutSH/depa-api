@@ -13167,6 +13167,7 @@ export namespace Prisma {
     percent: number | null
     ctrPercent: number | null
     value: number | null
+    companyId: string | null
     companyJuristicId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -13183,6 +13184,7 @@ export namespace Prisma {
     percent: number | null
     ctrPercent: number | null
     value: number | null
+    companyId: string | null
     companyJuristicId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -13199,6 +13201,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value: number
+    companyId: number
     companyJuristicId: number
     createdAt: number
     updatedAt: number
@@ -13231,6 +13234,7 @@ export namespace Prisma {
     percent?: true
     ctrPercent?: true
     value?: true
+    companyId?: true
     companyJuristicId?: true
     createdAt?: true
     updatedAt?: true
@@ -13247,6 +13251,7 @@ export namespace Prisma {
     percent?: true
     ctrPercent?: true
     value?: true
+    companyId?: true
     companyJuristicId?: true
     createdAt?: true
     updatedAt?: true
@@ -13263,6 +13268,7 @@ export namespace Prisma {
     percent?: true
     ctrPercent?: true
     value?: true
+    companyId?: true
     companyJuristicId?: true
     createdAt?: true
     updatedAt?: true
@@ -13366,6 +13372,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value: number | null
+    companyId: string
     companyJuristicId: string
     createdAt: Date
     updatedAt: Date
@@ -13401,6 +13408,7 @@ export namespace Prisma {
     percent?: boolean
     ctrPercent?: boolean
     value?: boolean
+    companyId?: boolean
     companyJuristicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -13423,6 +13431,7 @@ export namespace Prisma {
     percent?: boolean
     ctrPercent?: boolean
     value?: boolean
+    companyId?: boolean
     companyJuristicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -13445,6 +13454,7 @@ export namespace Prisma {
     percent?: boolean
     ctrPercent?: boolean
     value?: boolean
+    companyId?: boolean
     companyJuristicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -13467,12 +13477,13 @@ export namespace Prisma {
     percent?: boolean
     ctrPercent?: boolean
     value?: boolean
+    companyId?: boolean
     companyJuristicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type RevenueStreamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "year" | "industryTypeSlug" | "categorySlug" | "sourceSlug" | "channelSlug" | "segmentSlug" | "percent" | "ctrPercent" | "value" | "companyJuristicId" | "createdAt" | "updatedAt", ExtArgs["result"]["revenueStream"]>
+  export type RevenueStreamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "year" | "industryTypeSlug" | "categorySlug" | "sourceSlug" | "channelSlug" | "segmentSlug" | "percent" | "ctrPercent" | "value" | "companyId" | "companyJuristicId" | "createdAt" | "updatedAt", ExtArgs["result"]["revenueStream"]>
   export type RevenueStreamInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     industry?: boolean | IndustryDefaultArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
@@ -13519,6 +13530,7 @@ export namespace Prisma {
       percent: number
       ctrPercent: number
       value: number | null
+      companyId: string
       companyJuristicId: string
       createdAt: Date
       updatedAt: Date
@@ -13961,6 +13973,7 @@ export namespace Prisma {
     readonly percent: FieldRef<"RevenueStream", 'Float'>
     readonly ctrPercent: FieldRef<"RevenueStream", 'Float'>
     readonly value: FieldRef<"RevenueStream", 'Float'>
+    readonly companyId: FieldRef<"RevenueStream", 'String'>
     readonly companyJuristicId: FieldRef<"RevenueStream", 'String'>
     readonly createdAt: FieldRef<"RevenueStream", 'DateTime'>
     readonly updatedAt: FieldRef<"RevenueStream", 'DateTime'>
@@ -27314,7 +27327,9 @@ export namespace Prisma {
   export type PortfolioMinAggregateOutputType = {
     id: string | null
     title: string | null
+    title_en: string | null
     description: string | null
+    description_en: string | null
     cover_image: string | null
     link: string | null
     industryTypeSlug: string | null
@@ -27328,7 +27343,9 @@ export namespace Prisma {
   export type PortfolioMaxAggregateOutputType = {
     id: string | null
     title: string | null
+    title_en: string | null
     description: string | null
+    description_en: string | null
     cover_image: string | null
     link: string | null
     industryTypeSlug: string | null
@@ -27342,7 +27359,9 @@ export namespace Prisma {
   export type PortfolioCountAggregateOutputType = {
     id: number
     title: number
+    title_en: number
     description: number
+    description_en: number
     cover_image: number
     link: number
     industryTypeSlug: number
@@ -27360,7 +27379,9 @@ export namespace Prisma {
   export type PortfolioMinAggregateInputType = {
     id?: true
     title?: true
+    title_en?: true
     description?: true
+    description_en?: true
     cover_image?: true
     link?: true
     industryTypeSlug?: true
@@ -27374,7 +27395,9 @@ export namespace Prisma {
   export type PortfolioMaxAggregateInputType = {
     id?: true
     title?: true
+    title_en?: true
     description?: true
+    description_en?: true
     cover_image?: true
     link?: true
     industryTypeSlug?: true
@@ -27388,7 +27411,9 @@ export namespace Prisma {
   export type PortfolioCountAggregateInputType = {
     id?: true
     title?: true
+    title_en?: true
     description?: true
+    description_en?: true
     cover_image?: true
     link?: true
     industryTypeSlug?: true
@@ -27477,7 +27502,9 @@ export namespace Prisma {
   export type PortfolioGroupByOutputType = {
     id: string
     title: string
+    title_en: string | null
     description: string | null
+    description_en: string | null
     cover_image: string | null
     link: string | null
     industryTypeSlug: string
@@ -27510,7 +27537,9 @@ export namespace Prisma {
   export type PortfolioSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    title_en?: boolean
     description?: boolean
+    description_en?: boolean
     cover_image?: boolean
     link?: boolean
     industryTypeSlug?: boolean
@@ -27535,7 +27564,9 @@ export namespace Prisma {
   export type PortfolioSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    title_en?: boolean
     description?: boolean
+    description_en?: boolean
     cover_image?: boolean
     link?: boolean
     industryTypeSlug?: boolean
@@ -27553,7 +27584,9 @@ export namespace Prisma {
   export type PortfolioSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    title_en?: boolean
     description?: boolean
+    description_en?: boolean
     cover_image?: boolean
     link?: boolean
     industryTypeSlug?: boolean
@@ -27571,7 +27604,9 @@ export namespace Prisma {
   export type PortfolioSelectScalar = {
     id?: boolean
     title?: boolean
+    title_en?: boolean
     description?: boolean
+    description_en?: boolean
     cover_image?: boolean
     link?: boolean
     industryTypeSlug?: boolean
@@ -27584,7 +27619,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type PortfolioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "cover_image" | "link" | "industryTypeSlug" | "tags" | "looking_for" | "freelanceId" | "companyId" | "companyJuristicId" | "createdAt" | "updatedAt", ExtArgs["result"]["portfolio"]>
+  export type PortfolioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "title_en" | "description" | "description_en" | "cover_image" | "link" | "industryTypeSlug" | "tags" | "looking_for" | "freelanceId" | "companyId" | "companyJuristicId" | "createdAt" | "updatedAt", ExtArgs["result"]["portfolio"]>
   export type PortfolioInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     industryTags?: boolean | Portfolio$industryTagsArgs<ExtArgs>
     industryLookingFor?: boolean | Portfolio$industryLookingForArgs<ExtArgs>
@@ -27620,7 +27655,9 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       title: string
+      title_en: string | null
       description: string | null
+      description_en: string | null
       cover_image: string | null
       link: string | null
       industryTypeSlug: string
@@ -28064,7 +28101,9 @@ export namespace Prisma {
   interface PortfolioFieldRefs {
     readonly id: FieldRef<"Portfolio", 'String'>
     readonly title: FieldRef<"Portfolio", 'String'>
+    readonly title_en: FieldRef<"Portfolio", 'String'>
     readonly description: FieldRef<"Portfolio", 'String'>
+    readonly description_en: FieldRef<"Portfolio", 'String'>
     readonly cover_image: FieldRef<"Portfolio", 'String'>
     readonly link: FieldRef<"Portfolio", 'String'>
     readonly industryTypeSlug: FieldRef<"Portfolio", 'String'>
@@ -37561,6 +37600,7 @@ export namespace Prisma {
     percent: 'percent',
     ctrPercent: 'ctrPercent',
     value: 'value',
+    companyId: 'companyId',
     companyJuristicId: 'companyJuristicId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -37728,7 +37768,9 @@ export namespace Prisma {
   export const PortfolioScalarFieldEnum: {
     id: 'id',
     title: 'title',
+    title_en: 'title_en',
     description: 'description',
+    description_en: 'description_en',
     cover_image: 'cover_image',
     link: 'link',
     industryTypeSlug: 'industryTypeSlug',
@@ -38559,6 +38601,7 @@ export namespace Prisma {
     percent?: FloatFilter<"RevenueStream"> | number
     ctrPercent?: FloatFilter<"RevenueStream"> | number
     value?: FloatNullableFilter<"RevenueStream"> | number | null
+    companyId?: UuidFilter<"RevenueStream"> | string
     companyJuristicId?: StringFilter<"RevenueStream"> | string
     createdAt?: DateTimeFilter<"RevenueStream"> | Date | string
     updatedAt?: DateTimeFilter<"RevenueStream"> | Date | string
@@ -38581,6 +38624,7 @@ export namespace Prisma {
     percent?: SortOrder
     ctrPercent?: SortOrder
     value?: SortOrderInput | SortOrder
+    companyId?: SortOrder
     companyJuristicId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -38594,7 +38638,7 @@ export namespace Prisma {
 
   export type RevenueStreamWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    companyJuristicId_year_industryTypeSlug_categorySlug_sourceSlug_channelSlug_segmentSlug?: RevenueStreamCompanyJuristicIdYearIndustryTypeSlugCategorySlugSourceSlugChannelSlugSegmentSlugCompoundUniqueInput
+    companyId_year_industryTypeSlug_categorySlug_sourceSlug_channelSlug_segmentSlug?: RevenueStreamCompanyIdYearIndustryTypeSlugCategorySlugSourceSlugChannelSlugSegmentSlugCompoundUniqueInput
     AND?: RevenueStreamWhereInput | RevenueStreamWhereInput[]
     OR?: RevenueStreamWhereInput[]
     NOT?: RevenueStreamWhereInput | RevenueStreamWhereInput[]
@@ -38607,6 +38651,7 @@ export namespace Prisma {
     percent?: FloatFilter<"RevenueStream"> | number
     ctrPercent?: FloatFilter<"RevenueStream"> | number
     value?: FloatNullableFilter<"RevenueStream"> | number | null
+    companyId?: UuidFilter<"RevenueStream"> | string
     companyJuristicId?: StringFilter<"RevenueStream"> | string
     createdAt?: DateTimeFilter<"RevenueStream"> | Date | string
     updatedAt?: DateTimeFilter<"RevenueStream"> | Date | string
@@ -38616,7 +38661,7 @@ export namespace Prisma {
     channel?: XOR<ChannelScalarRelationFilter, ChannelWhereInput>
     segment?: XOR<SegmentScalarRelationFilter, SegmentWhereInput>
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
-  }, "id" | "companyJuristicId_year_industryTypeSlug_categorySlug_sourceSlug_channelSlug_segmentSlug">
+  }, "id" | "companyId_year_industryTypeSlug_categorySlug_sourceSlug_channelSlug_segmentSlug">
 
   export type RevenueStreamOrderByWithAggregationInput = {
     id?: SortOrder
@@ -38629,6 +38674,7 @@ export namespace Prisma {
     percent?: SortOrder
     ctrPercent?: SortOrder
     value?: SortOrderInput | SortOrder
+    companyId?: SortOrder
     companyJuristicId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -38653,6 +38699,7 @@ export namespace Prisma {
     percent?: FloatWithAggregatesFilter<"RevenueStream"> | number
     ctrPercent?: FloatWithAggregatesFilter<"RevenueStream"> | number
     value?: FloatNullableWithAggregatesFilter<"RevenueStream"> | number | null
+    companyId?: UuidWithAggregatesFilter<"RevenueStream"> | string
     companyJuristicId?: StringWithAggregatesFilter<"RevenueStream"> | string
     createdAt?: DateTimeWithAggregatesFilter<"RevenueStream"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"RevenueStream"> | Date | string
@@ -39539,7 +39586,9 @@ export namespace Prisma {
     NOT?: PortfolioWhereInput | PortfolioWhereInput[]
     id?: UuidFilter<"Portfolio"> | string
     title?: StringFilter<"Portfolio"> | string
+    title_en?: StringNullableFilter<"Portfolio"> | string | null
     description?: StringNullableFilter<"Portfolio"> | string | null
+    description_en?: StringNullableFilter<"Portfolio"> | string | null
     cover_image?: StringNullableFilter<"Portfolio"> | string | null
     link?: StringNullableFilter<"Portfolio"> | string | null
     industryTypeSlug?: StringFilter<"Portfolio"> | string
@@ -39563,7 +39612,9 @@ export namespace Prisma {
   export type PortfolioOrderByWithRelationInput = {
     id?: SortOrder
     title?: SortOrder
+    title_en?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
+    description_en?: SortOrderInput | SortOrder
     cover_image?: SortOrderInput | SortOrder
     link?: SortOrderInput | SortOrder
     industryTypeSlug?: SortOrder
@@ -39590,7 +39641,9 @@ export namespace Prisma {
     OR?: PortfolioWhereInput[]
     NOT?: PortfolioWhereInput | PortfolioWhereInput[]
     title?: StringFilter<"Portfolio"> | string
+    title_en?: StringNullableFilter<"Portfolio"> | string | null
     description?: StringNullableFilter<"Portfolio"> | string | null
+    description_en?: StringNullableFilter<"Portfolio"> | string | null
     cover_image?: StringNullableFilter<"Portfolio"> | string | null
     link?: StringNullableFilter<"Portfolio"> | string | null
     industryTypeSlug?: StringFilter<"Portfolio"> | string
@@ -39614,7 +39667,9 @@ export namespace Prisma {
   export type PortfolioOrderByWithAggregationInput = {
     id?: SortOrder
     title?: SortOrder
+    title_en?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
+    description_en?: SortOrderInput | SortOrder
     cover_image?: SortOrderInput | SortOrder
     link?: SortOrderInput | SortOrder
     industryTypeSlug?: SortOrder
@@ -39636,7 +39691,9 @@ export namespace Prisma {
     NOT?: PortfolioScalarWhereWithAggregatesInput | PortfolioScalarWhereWithAggregatesInput[]
     id?: UuidWithAggregatesFilter<"Portfolio"> | string
     title?: StringWithAggregatesFilter<"Portfolio"> | string
+    title_en?: StringNullableWithAggregatesFilter<"Portfolio"> | string | null
     description?: StringNullableWithAggregatesFilter<"Portfolio"> | string | null
+    description_en?: StringNullableWithAggregatesFilter<"Portfolio"> | string | null
     cover_image?: StringNullableWithAggregatesFilter<"Portfolio"> | string | null
     link?: StringNullableWithAggregatesFilter<"Portfolio"> | string | null
     industryTypeSlug?: StringWithAggregatesFilter<"Portfolio"> | string
@@ -40732,6 +40789,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutRevenueStreamInput
@@ -40753,6 +40811,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyId: string
     companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -40764,6 +40823,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutRevenueStreamNestedInput
@@ -40785,6 +40845,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyId?: StringFieldUpdateOperationsInput | string
     companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40801,6 +40862,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyId: string
     companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -40812,6 +40874,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -40827,6 +40890,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyId?: StringFieldUpdateOperationsInput | string
     companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41796,7 +41860,9 @@ export namespace Prisma {
   export type PortfolioCreateInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -41818,7 +41884,9 @@ export namespace Prisma {
   export type PortfolioUncheckedCreateInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -41840,7 +41908,9 @@ export namespace Prisma {
   export type PortfolioUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -41862,7 +41932,9 @@ export namespace Prisma {
   export type PortfolioUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -41884,7 +41956,9 @@ export namespace Prisma {
   export type PortfolioCreateManyInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -41900,7 +41974,9 @@ export namespace Prisma {
   export type PortfolioUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -41914,7 +41990,9 @@ export namespace Prisma {
   export type PortfolioUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -43087,8 +43165,8 @@ export namespace Prisma {
     isNot?: SegmentWhereInput
   }
 
-  export type RevenueStreamCompanyJuristicIdYearIndustryTypeSlugCategorySlugSourceSlugChannelSlugSegmentSlugCompoundUniqueInput = {
-    companyJuristicId: string
+  export type RevenueStreamCompanyIdYearIndustryTypeSlugCategorySlugSourceSlugChannelSlugSegmentSlugCompoundUniqueInput = {
+    companyId: string
     year: number
     industryTypeSlug: string
     categorySlug: string
@@ -43108,6 +43186,7 @@ export namespace Prisma {
     percent?: SortOrder
     ctrPercent?: SortOrder
     value?: SortOrder
+    companyId?: SortOrder
     companyJuristicId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -43131,6 +43210,7 @@ export namespace Prisma {
     percent?: SortOrder
     ctrPercent?: SortOrder
     value?: SortOrder
+    companyId?: SortOrder
     companyJuristicId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -43147,6 +43227,7 @@ export namespace Prisma {
     percent?: SortOrder
     ctrPercent?: SortOrder
     value?: SortOrder
+    companyId?: SortOrder
     companyJuristicId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -43802,7 +43883,9 @@ export namespace Prisma {
   export type PortfolioCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    title_en?: SortOrder
     description?: SortOrder
+    description_en?: SortOrder
     cover_image?: SortOrder
     link?: SortOrder
     industryTypeSlug?: SortOrder
@@ -43818,7 +43901,9 @@ export namespace Prisma {
   export type PortfolioMaxOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    title_en?: SortOrder
     description?: SortOrder
+    description_en?: SortOrder
     cover_image?: SortOrder
     link?: SortOrder
     industryTypeSlug?: SortOrder
@@ -43832,7 +43917,9 @@ export namespace Prisma {
   export type PortfolioMinOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    title_en?: SortOrder
     description?: SortOrder
+    description_en?: SortOrder
     cover_image?: SortOrder
     link?: SortOrder
     industryTypeSlug?: SortOrder
@@ -49512,6 +49599,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutRevenueStreamInput
@@ -49532,6 +49620,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -49549,7 +49638,9 @@ export namespace Prisma {
   export type PortfolioCreateWithoutCompanyInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -49570,7 +49661,9 @@ export namespace Prisma {
   export type PortfolioUncheckedCreateWithoutCompanyInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -49749,6 +49842,7 @@ export namespace Prisma {
     percent?: FloatFilter<"RevenueStream"> | number
     ctrPercent?: FloatFilter<"RevenueStream"> | number
     value?: FloatNullableFilter<"RevenueStream"> | number | null
+    companyId?: UuidFilter<"RevenueStream"> | string
     companyJuristicId?: StringFilter<"RevenueStream"> | string
     createdAt?: DateTimeFilter<"RevenueStream"> | Date | string
     updatedAt?: DateTimeFilter<"RevenueStream"> | Date | string
@@ -49776,7 +49870,9 @@ export namespace Prisma {
     NOT?: PortfolioScalarWhereInput | PortfolioScalarWhereInput[]
     id?: UuidFilter<"Portfolio"> | string
     title?: StringFilter<"Portfolio"> | string
+    title_en?: StringNullableFilter<"Portfolio"> | string | null
     description?: StringNullableFilter<"Portfolio"> | string | null
+    description_en?: StringNullableFilter<"Portfolio"> | string | null
     cover_image?: StringNullableFilter<"Portfolio"> | string | null
     link?: StringNullableFilter<"Portfolio"> | string | null
     industryTypeSlug?: StringFilter<"Portfolio"> | string
@@ -50153,7 +50249,9 @@ export namespace Prisma {
   export type PortfolioCreateWithoutFreelanceInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -50174,7 +50272,9 @@ export namespace Prisma {
   export type PortfolioUncheckedCreateWithoutFreelanceInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -50829,6 +50929,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutRevenueStreamInput
@@ -50848,6 +50949,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyId: string
     companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -51566,6 +51668,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutRevenueStreamInput
@@ -51584,6 +51687,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyId: string
     companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -51713,6 +51817,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutRevenueStreamInput
@@ -51731,6 +51836,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyId: string
     companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -51860,6 +51966,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutRevenueStreamInput
@@ -51878,6 +51985,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyId: string
     companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -52045,6 +52153,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutRevenueStreamInput
@@ -52063,6 +52172,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyId: string
     companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -52662,7 +52772,9 @@ export namespace Prisma {
   export type PortfolioCreateWithoutIndustryTagsInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -52683,7 +52795,9 @@ export namespace Prisma {
   export type PortfolioUncheckedCreateWithoutIndustryTagsInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -52745,7 +52859,9 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutIndustryTagsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -52766,7 +52882,9 @@ export namespace Prisma {
   export type PortfolioUncheckedUpdateWithoutIndustryTagsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -52818,7 +52936,9 @@ export namespace Prisma {
   export type PortfolioCreateWithoutIndustryLookingForInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -52839,7 +52959,9 @@ export namespace Prisma {
   export type PortfolioUncheckedCreateWithoutIndustryLookingForInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -52899,7 +53021,9 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutIndustryLookingForInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -52920,7 +53044,9 @@ export namespace Prisma {
   export type PortfolioUncheckedUpdateWithoutIndustryLookingForInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -52970,7 +53096,9 @@ export namespace Prisma {
   export type PortfolioCreateWithoutStandardsInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -52991,7 +53119,9 @@ export namespace Prisma {
   export type PortfolioUncheckedCreateWithoutStandardsInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -53055,7 +53185,9 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutStandardsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -53076,7 +53208,9 @@ export namespace Prisma {
   export type PortfolioUncheckedUpdateWithoutStandardsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -53130,7 +53264,9 @@ export namespace Prisma {
   export type PortfolioCreateWithoutImageInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -53151,7 +53287,9 @@ export namespace Prisma {
   export type PortfolioUncheckedCreateWithoutImageInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -53188,7 +53326,9 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutImageInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -53209,7 +53349,9 @@ export namespace Prisma {
   export type PortfolioUncheckedUpdateWithoutImageInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -53230,7 +53372,9 @@ export namespace Prisma {
   export type PortfolioCreateWithoutFavoriteInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -53251,7 +53395,9 @@ export namespace Prisma {
   export type PortfolioUncheckedCreateWithoutFavoriteInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -53349,7 +53495,9 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutFavoriteInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -53370,7 +53518,9 @@ export namespace Prisma {
   export type PortfolioUncheckedUpdateWithoutFavoriteInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -53836,7 +53986,9 @@ export namespace Prisma {
   export type PortfolioCreateWithoutCommentsInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -53857,7 +54009,9 @@ export namespace Prisma {
   export type PortfolioUncheckedCreateWithoutCommentsInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -54010,7 +54164,9 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutCommentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -54031,7 +54187,9 @@ export namespace Prisma {
   export type PortfolioUncheckedUpdateWithoutCommentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -54390,6 +54548,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -54397,7 +54556,9 @@ export namespace Prisma {
   export type PortfolioCreateManyCompanyInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -54457,6 +54618,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutRevenueStreamNestedInput
@@ -54477,6 +54639,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -54492,6 +54655,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -54499,7 +54663,9 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutCompanyInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -54520,7 +54686,9 @@ export namespace Prisma {
   export type PortfolioUncheckedUpdateWithoutCompanyInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -54541,7 +54709,9 @@ export namespace Prisma {
   export type PortfolioUncheckedUpdateManyWithoutCompanyInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -54580,7 +54750,9 @@ export namespace Prisma {
   export type PortfolioCreateManyFreelanceInput = {
     id?: string
     title: string
+    title_en?: string | null
     description?: string | null
+    description_en?: string | null
     cover_image?: string | null
     link?: string | null
     industryTypeSlug: string
@@ -54669,7 +54841,9 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutFreelanceInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -54690,7 +54864,9 @@ export namespace Prisma {
   export type PortfolioUncheckedUpdateWithoutFreelanceInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -54711,7 +54887,9 @@ export namespace Prisma {
   export type PortfolioUncheckedUpdateManyWithoutFreelanceInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
@@ -54804,6 +54982,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyId: string
     companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -55058,6 +55237,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutRevenueStreamNestedInput
@@ -55077,6 +55257,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyId?: StringFieldUpdateOperationsInput | string
     companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55092,6 +55273,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyId?: StringFieldUpdateOperationsInput | string
     companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55232,6 +55414,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyId: string
     companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -55243,6 +55426,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutRevenueStreamNestedInput
@@ -55261,6 +55445,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyId?: StringFieldUpdateOperationsInput | string
     companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55275,6 +55460,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyId?: StringFieldUpdateOperationsInput | string
     companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55289,6 +55475,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyId: string
     companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -55300,6 +55487,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutRevenueStreamNestedInput
@@ -55318,6 +55506,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyId?: StringFieldUpdateOperationsInput | string
     companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55332,6 +55521,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyId?: StringFieldUpdateOperationsInput | string
     companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55346,6 +55536,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyId: string
     companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -55363,6 +55554,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutRevenueStreamNestedInput
@@ -55381,6 +55573,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyId?: StringFieldUpdateOperationsInput | string
     companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55395,6 +55588,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyId?: StringFieldUpdateOperationsInput | string
     companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55427,6 +55621,7 @@ export namespace Prisma {
     percent: number
     ctrPercent: number
     value?: number | null
+    companyId: string
     companyJuristicId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -55438,6 +55633,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutRevenueStreamNestedInput
@@ -55456,6 +55652,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyId?: StringFieldUpdateOperationsInput | string
     companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55470,6 +55667,7 @@ export namespace Prisma {
     percent?: FloatFieldUpdateOperationsInput | number
     ctrPercent?: FloatFieldUpdateOperationsInput | number
     value?: NullableFloatFieldUpdateOperationsInput | number | null
+    companyId?: StringFieldUpdateOperationsInput | string
     companyJuristicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

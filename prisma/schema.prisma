@@ -432,7 +432,9 @@ model Segment {
 model Portfolio {
   id               String  @id @default(uuid()) @db.Uuid
   title            String
+  title_en         String?
   description      String?
+  description_en   String?
   cover_image      String?
   link             String?
   industryTypeSlug String
