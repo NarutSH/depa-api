@@ -79,6 +79,18 @@ export class RevenueStreamService {
    * Get revenue streams by company ID with optional filtering, pagination, and sorting
    */
   async getByCompanyId(companyJuristicId: string, query?: QueryMetadataDto) {
+    // Find company ID first
+    const company = await this.prismaService.company.findUnique({
+      where: { juristicId: companyJuristicId },
+      select: { id: true },
+    });
+
+    if (!company) {
+      throw new NotFoundException(
+        `Company with juristic ID ${companyJuristicId} not found`,
+      );
+    }
+
     // Define searchable fields
     const searchFields = [
       'industryTypeSlug',
@@ -89,7 +101,7 @@ export class RevenueStreamService {
     ];
 
     // Build base query with company filter
-    const baseFilter = { companyJuristicId };
+    const baseFilter = { companyId: company.id };
 
     // Merge with additional filters from query
     const where = query
@@ -120,6 +132,14 @@ export class RevenueStreamService {
         source: true,
         channel: true,
         segment: true,
+        company: {
+          select: {
+            id: true,
+            juristicId: true,
+            nameTh: true,
+            nameEn: true,
+          },
+        },
       },
     });
 
@@ -170,8 +190,67 @@ export class RevenueStreamService {
    */
   async create(data: CreateRevenueStreamDto) {
     try {
-      return await this.prismaService.revenueStream.create({
-        data,
+      // First get the company ID based on juristic ID
+      const company = await this.prismaService.company.findUnique({
+        where: { juristicId: data.companyJuristicId },
+        select: { id: true },
+      });
+
+      if (!company) {
+        throw new NotFoundException(
+          `Company with juristic ID ${data.companyJuristicId} not found`,
+        );
+      }
+
+      // Transform the DTO into the format Prisma expects
+      const createData = {
+        year: data.year,
+        percent: data.percent,
+        ctrPercent: data.ctrPercent,
+        value: data.value,
+        companyJuristicId: data.companyJuristicId,
+        company: {
+          connect: { id: company.id },
+        },
+        industry: {
+          connect: { slug: data.industryTypeSlug },
+        },
+        category: {
+          connect: {
+            slug_industrySlug: {
+              slug: data.categorySlug,
+              industrySlug: data.industryTypeSlug,
+            },
+          },
+        },
+        source: {
+          connect: {
+            slug_industrySlug: {
+              slug: data.sourceSlug,
+              industrySlug: data.industryTypeSlug,
+            },
+          },
+        },
+        channel: {
+          connect: {
+            slug_industrySlug: {
+              slug: data.channelSlug,
+              industrySlug: data.industryTypeSlug,
+            },
+          },
+        },
+        segment: {
+          connect: {
+            slug_industrySlug: {
+              slug: data.segmentSlug,
+              industrySlug: data.industryTypeSlug,
+            },
+          },
+        },
+      };
+
+      return this.prismaService.revenueStream.create({
+        data: createData,
         include: {
           industry: true,
           category: true,
@@ -268,11 +347,79 @@ export class RevenueStreamService {
    * Upsert a revenue stream record (create if not exists, update if exists)
    */
   async upsertRevenueStream(data: CreateRevenueStreamDto) {
+    // First get the company ID based on juristic ID
+    const company = await this.prismaService.company.findUnique({
+      where: { juristicId: data.companyJuristicId },
+      select: { id: true },
+    });
+
+    if (!company) {
+      throw new NotFoundException(
+        `Company with juristic ID ${data.companyJuristicId} not found`,
+      );
+    }
+
+    // Create data for Prisma - only include what's needed
+    const createData = {
+      year: data.year,
+      percent: data.percent,
+      ctrPercent: data.ctrPercent,
+      value: data.value,
+      companyJuristicId: data.companyJuristicId,
+      // Don't include direct assignments for fields that will be set by relations
+      company: {
+        connect: { id: company.id },
+      },
+      industry: {
+        connect: { slug: data.industryTypeSlug },
+      },
+      category: {
+        connect: {
+          slug_industrySlug: {
+            slug: data.categorySlug,
+            industrySlug: data.industryTypeSlug,
+          },
+        },
+      },
+      source: {
+        connect: {
+          slug_industrySlug: {
+            slug: data.sourceSlug,
+            industrySlug: data.industryTypeSlug,
+          },
+        },
+      },
+      channel: {
+        connect: {
+          slug_industrySlug: {
+            slug: data.channelSlug,
+            industrySlug: data.industryTypeSlug,
+          },
+        },
+      },
+      segment: {
+        connect: {
+          slug_industrySlug: {
+            slug: data.segmentSlug,
+            industrySlug: data.industryTypeSlug,
+          },
+        },
+      },
+    };
+
+    // For update, we need a simpler object
+    const updateData = {
+      year: data.year,
+      percent: data.percent,
+      ctrPercent: data.ctrPercent,
+      value: data.value,
+    };
+
     return this.prismaService.revenueStream.upsert({
       where: {
-        companyJuristicId_year_industryTypeSlug_categorySlug_sourceSlug_channelSlug_segmentSlug:
+        companyId_year_industryTypeSlug_categorySlug_sourceSlug_channelSlug_segmentSlug:
           {
-            companyJuristicId: data.companyJuristicId,
+            companyId: company.id,
             year: data.year,
             industryTypeSlug: data.industryTypeSlug,
             categorySlug: data.categorySlug,
@@ -281,8 +428,8 @@ export class RevenueStreamService {
             segmentSlug: data.segmentSlug,
           },
       },
-      update: data,
-      create: data,
+      update: updateData,
+      create: createData,
       include: {
         industry: true,
         category: true,
