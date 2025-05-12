@@ -1,5 +1,7 @@
+import { Prisma, PrismaClient } from 'generated/prisma';
 import slugify from 'slugify';
-import { PrismaClient, Prisma } from '@prisma/client';
+
+// import { PrismaClient, Prisma } from 'src/generated/prisma';
 
 async function generateUniqueSlug(
   model: Prisma.ModelName,

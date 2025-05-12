@@ -5,37 +5,36 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
+import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  constructor(private readonly reflector = new Reflector()) {
+  constructor(private reflector: Reflector) {
     super();
   }
 
   canActivate(context: ExecutionContext) {
-    // Call the parent canActivate method directly
-    const canActivate = super.canActivate(context);
+    // Check if the route is marked as public using @Public() decorator
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
 
-    if (canActivate instanceof Promise) {
-      return canActivate.then((result) => {
-        // Log debugging information
-        const request = context.switchToHttp().getRequest();
-        console.log('JWT Auth result:', result);
-        console.log('JWT Auth user:', request.user);
-        return result;
-      });
+    if (isPublic) {
+      return true;
     }
 
-    return canActivate;
+    // For protected routes, process JWT authentication
+    return super.canActivate(context);
   }
 
-  handleRequest(err, user, info) {
-    console.log('JWT handleRequest:', { err, userExists: !!user, info });
-
+  handleRequest(err: any, user: any) {
+    // You can throw an exception based on either "info" or "err" arguments
     if (err || !user) {
-      throw err || new UnauthorizedException('Authentication required');
+      throw (
+        err || new UnauthorizedException('Invalid token or session expired')
+      );
     }
-
     return user;
   }
 }

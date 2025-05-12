@@ -12,6 +12,7 @@ import { IndustryModule } from './industry/industry.module';
 import { FreelanceModule } from './freelance/freelance.module';
 import { AuthModule } from './auth/auth.module';
 import { PingController } from './ping/ping.controller';
+import { UtilsModule } from './utils/utils.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { PingController } from './ping/ping.controller';
     IndustryModule,
     FreelanceModule,
     AuthModule,
+    UtilsModule,
   ],
   controllers: [PingController],
   providers: [PrismaService],

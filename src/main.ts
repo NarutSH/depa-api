@@ -1,8 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { BypassRolesGuard } from './auth/guards/bypass-roles.guard';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
@@ -10,14 +8,16 @@ async function bootstrap() {
 
   app.enableCors();
 
-  app.useGlobalPipes(new ValidationPipe());
-
-  // Set up global bypass guard - TEMPORARY for development
-  console.log(
-    '⚠️  WARNING: Using bypass authentication for all routes - DO NOT USE IN PRODUCTION ⚠️',
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true, // Enable automatic transformation
+      transformOptions: {
+        enableImplicitConversion: true, // Enable implicit conversion of primitive types
+      },
+    }),
   );
-  const reflector = new Reflector();
-  app.useGlobalGuards(new BypassRolesGuard(reflector));
+
+  // Auth guards removed - will be reimplemented
 
   // Swagger documentation setup
   const config = new DocumentBuilder()
@@ -25,9 +25,14 @@ async function bootstrap() {
     .setDescription('The DEPA API documentation')
     .setVersion('1.0')
     .addBearerAuth()
+    .addTag('Auth', 'Authentication endpoints')
+    .addTag('Users', 'User management endpoints')
+    .addTag('Portfolio', 'Portfolio management endpoints')
+    .addTag('Company', 'Company management endpoints')
+    .addTag('Freelance', 'Freelance management endpoints')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api-docs', app, document);
 
   await app.listen(process.env.PORT || 8000);
 }

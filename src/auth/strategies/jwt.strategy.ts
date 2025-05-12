@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UsersService } from '../../users/users.service';
+import { JwtPayload } from '../auth.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -9,51 +10,28 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: process.env.JWT_SECRET || 'your-secret-key',
+      secretOrKey: process.env.JWT_SECRET || 'super-secret-key', // Use environment variable in production
     });
   }
 
-  async validate(payload: any) {
-    // Check for either sub or memberid in the token
-    const userId = payload.sub || payload.memberid;
-    const email = payload.email;
-
-    if (!userId && !email) {
-      throw new UnauthorizedException('Invalid token payload');
+  async validate(payload: JwtPayload): Promise<any> {
+    if (!payload.id) {
+      // If there's no user ID in the token, we can't verify the user
+      // But we may still want to allow the request with limited permissions
+      return payload;
     }
 
-    try {
-      // Try to get user by ID first if available
-      if (userId) {
-        const user = await this.usersService.getUserById(userId);
-        return {
-          ...user,
-          userType: payload.userType, // Make sure userType is included
-        };
-      }
-
-      // Fall back to email if ID is not available
-      if (email) {
-        const user = await this.usersService.getUserByEmail(email);
-        return {
-          ...user,
-          userType: payload.userType, // Make sure userType is included
-        };
-      }
-    } catch (error) {
-      console.log('Error fetching user:', error);
-      // Handle case where user doesn't exist in database yet
-      // But token is valid (e.g., first-time user creating profile)
-      if (email && payload.userType) {
-        return {
-          email: email,
-          userType: payload.userType,
-          // Include other fields from payload as needed
-          id: userId || null,
-        };
-      }
-
-      throw new UnauthorizedException('User not found');
+    // Try to find the user by ID
+    const user = await this.usersService.getUserById(payload.id);
+    if (!user) {
+      throw new UnauthorizedException('User no longer exists');
     }
+
+    // Return the user with the payload information for route handlers
+    return {
+      ...user,
+      sessiontoken: payload.sessiontoken,
+      memberid: payload.memberid,
+    };
   }
 }

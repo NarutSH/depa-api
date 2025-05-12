@@ -5,37 +5,109 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePortfolioDto } from './dto/create-portfolio.dto';
-import { FavoriteAction, PortfolioImageType } from '@prisma/client';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { FavoriteAction, PortfolioImageType } from 'generated/prisma';
+import { QueryMetadataDto, ResponseMetadata } from 'src/utils';
+import { QueryUtilsService } from 'src/utils/services/query-utils.service';
 
 @Injectable()
 export class PortfolioService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly queryUtils: QueryUtilsService,
+  ) {}
 
-  async getPortfolios() {
-    return this.prismaService.portfolio.findMany({
-      include: {
-        standards: {
-          select: {
-            standards: {
-              select: {
-                name: true,
-                description: true,
-                type: true,
-                image: true,
+  async getPortfolios(queryDto: QueryMetadataDto) {
+    // Ensure we have valid pagination values
+    const page = Number(queryDto.page) || 1;
+    const limit = Number(queryDto.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    // Define searchable fields for portfolios
+    const searchableFields = ['title', 'description', 'tags'];
+
+    // Build where clause for filtering and searching
+    const where = this.queryUtils.buildWhereClause(queryDto, searchableFields);
+
+    // Build orderBy clause for sorting
+    const orderBy = this.queryUtils.buildOrderByClause(queryDto, {
+      createdAt: 'desc',
+    });
+
+    // Execute the query with pagination
+    const [portfolios, total] = await Promise.all([
+      this.prismaService.portfolio.findMany({
+        where,
+        orderBy,
+        skip,
+        take: limit,
+        include: {
+          standards: {
+            select: {
+              standards: {
+                select: {
+                  name: true,
+                  description: true,
+                  type: true,
+                  image: true,
+                },
+              },
+            },
+          },
+          Image: {
+            select: {
+              url: true,
+              type: true,
+              description: true,
+            },
+          },
+          company: {
+            select: {
+              juristicId: true,
+              nameTh: true,
+              nameEn: true,
+              user: {
+                select: {
+                  fullnameTh: true,
+                  fullnameEn: true,
+                  email: true,
+                  image: true,
+                },
+              },
+            },
+          },
+          freelance: {
+            select: {
+              id: true,
+              user: {
+                select: {
+                  fullnameTh: true,
+                  fullnameEn: true,
+                  email: true,
+                  image: true,
+                },
               },
             },
           },
         },
-        Image: {
-          select: {
-            url: true,
-            type: true,
-            description: true,
-          },
-        },
-      },
-    });
+      }),
+      this.prismaService.portfolio.count({ where }),
+    ]);
+
+    // Transform the data if needed (like handling nested objects or arrays)
+    const transformedPortfolios = portfolios.map((portfolio) => ({
+      ...portfolio,
+      standards: portfolio.standards.map((s) => s.standards),
+    }));
+
+    // Return paginated response with metadata
+    return ResponseMetadata.paginated(
+      transformedPortfolios,
+      total,
+      page,
+      limit,
+      'Portfolios retrieved successfully',
+    );
   }
 
   async getPortfolioById(id: string) {

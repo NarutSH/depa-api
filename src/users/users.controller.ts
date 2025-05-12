@@ -1,32 +1,32 @@
 import {
   Body,
   Controller,
+  ForbiddenException,
   Get,
   Param,
   Patch,
   Post,
-  UseGuards,
+  Query,
   Req,
-  ForbiddenException,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
 import CreateUserDto from './dtos/create-user.dto';
 import UpdateUserDto from './dtos/update-user.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { Role } from '../auth/roles.enum';
-import { Request } from 'express';
+import { UsersService } from './users.service';
+// Removed imports to deleted files
 import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
   ApiBearerAuth,
-  ApiParam,
   ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
+import { Request } from 'express';
+import { Role } from '../auth/roles.enum';
+import QueryMetadataDto from './dtos/query-metadata.dto';
 
-@ApiTags('users')
+@ApiTags('Users')
 @ApiBearerAuth()
 @Controller('users')
 export class UsersController {
@@ -34,8 +34,7 @@ export class UsersController {
 
   // Only admin can list all users
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({
     summary: 'Get all users',
     description: 'Retrieves all users. Admin only.',
@@ -45,13 +44,63 @@ export class UsersController {
     description: 'List of all users retrieved successfully',
   })
   @ApiResponse({ status: 403, description: 'Forbidden - requires admin role' })
-  async getAllUsers() {
-    return this.usersService.getAllUsers();
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number (1-based)',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Items per page',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String,
+    description: 'Search term for email, fullnameTh, fullnameEn',
+  })
+  @ApiQuery({
+    name: 'sort',
+    required: false,
+    type: String,
+    description: 'Sort field and direction (e.g., email:asc, createdAt:desc)',
+  })
+  async getAllUsers(@Query() query: QueryMetadataDto) {
+    return this.usersService.getAllUsers(query);
+  }
+
+  // Get current user profile
+  @Get('me')
+  // @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Get current user profile',
+    description: 'Retrieves the profile of the currently authenticated user.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Current user profile retrieved successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - requires authentication',
+  })
+  async getMe(@Req() req: Request) {
+    console.log('req==>', req);
+    const user = req.user as any;
+
+    if (!user?.id) {
+      throw new ForbiddenException('User ID not found in request');
+    }
+
+    return this.usersService.getMe(user.id);
   }
 
   // User profile access - restricted by role
   @Get(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({
     summary: 'Get user by ID',
     description:
@@ -82,7 +131,7 @@ export class UsersController {
 
   // Allow email lookup for all authenticated users
   @Get('email/:email')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Get user by email',
     description: 'Retrieves user by email for any authenticated user.',
@@ -100,7 +149,7 @@ export class UsersController {
 
   // Allow users to create their own profile
   @Post()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Create user profile',
     description: 'Creates a new user profile for authenticated users.',
