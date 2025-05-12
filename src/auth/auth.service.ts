@@ -102,6 +102,10 @@ export class AuthService {
         { headers },
       );
 
+      if (response.data.responsecode !== 200) {
+        throw new UnauthorizedException(response.data.reason);
+      }
+
       // Process response data
       let loginData: TechHuntLoginResponse;
 
