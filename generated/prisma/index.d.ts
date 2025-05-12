@@ -14419,6 +14419,7 @@ export namespace Prisma {
     nameTh: string | null
     nameEn: string | null
     description: string | null
+    description_en: string | null
     image: string | null
     cover_image: string | null
     address: string | null
@@ -14443,6 +14444,7 @@ export namespace Prisma {
     nameTh: string | null
     nameEn: string | null
     description: string | null
+    description_en: string | null
     image: string | null
     cover_image: string | null
     address: string | null
@@ -14467,6 +14469,7 @@ export namespace Prisma {
     nameTh: number
     nameEn: number
     description: number
+    description_en: number
     image: number
     cover_image: number
     address: number
@@ -14504,6 +14507,7 @@ export namespace Prisma {
     nameTh?: true
     nameEn?: true
     description?: true
+    description_en?: true
     image?: true
     cover_image?: true
     address?: true
@@ -14528,6 +14532,7 @@ export namespace Prisma {
     nameTh?: true
     nameEn?: true
     description?: true
+    description_en?: true
     image?: true
     cover_image?: true
     address?: true
@@ -14552,6 +14557,7 @@ export namespace Prisma {
     nameTh?: true
     nameEn?: true
     description?: true
+    description_en?: true
     image?: true
     cover_image?: true
     address?: true
@@ -14664,6 +14670,7 @@ export namespace Prisma {
     nameTh: string
     nameEn: string | null
     description: string | null
+    description_en: string | null
     image: string | null
     cover_image: string | null
     address: string | null
@@ -14708,6 +14715,7 @@ export namespace Prisma {
     nameTh?: boolean
     nameEn?: boolean
     description?: boolean
+    description_en?: boolean
     image?: boolean
     cover_image?: boolean
     address?: boolean
@@ -14739,6 +14747,7 @@ export namespace Prisma {
     nameTh?: boolean
     nameEn?: boolean
     description?: boolean
+    description_en?: boolean
     image?: boolean
     cover_image?: boolean
     address?: boolean
@@ -14765,6 +14774,7 @@ export namespace Prisma {
     nameTh?: boolean
     nameEn?: boolean
     description?: boolean
+    description_en?: boolean
     image?: boolean
     cover_image?: boolean
     address?: boolean
@@ -14791,6 +14801,7 @@ export namespace Prisma {
     nameTh?: boolean
     nameEn?: boolean
     description?: boolean
+    description_en?: boolean
     image?: boolean
     cover_image?: boolean
     address?: boolean
@@ -14810,7 +14821,7 @@ export namespace Prisma {
     industries?: boolean
   }
 
-  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "juristicId" | "nameTh" | "nameEn" | "description" | "image" | "cover_image" | "address" | "subDistrict" | "district" | "province" | "postalCode" | "registerdCapital" | "employeeCount" | "phoneNumber" | "email" | "website" | "logo" | "userId" | "createdAt" | "updatedAt" | "industries", ExtArgs["result"]["company"]>
+  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "juristicId" | "nameTh" | "nameEn" | "description" | "description_en" | "image" | "cover_image" | "address" | "subDistrict" | "district" | "province" | "postalCode" | "registerdCapital" | "employeeCount" | "phoneNumber" | "email" | "website" | "logo" | "userId" | "createdAt" | "updatedAt" | "industries", ExtArgs["result"]["company"]>
   export type CompanyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     industriesRelated?: boolean | Company$industriesRelatedArgs<ExtArgs>
@@ -14841,6 +14852,7 @@ export namespace Prisma {
       nameTh: string
       nameEn: string | null
       description: string | null
+      description_en: string | null
       image: string | null
       cover_image: string | null
       address: string | null
@@ -15291,6 +15303,7 @@ export namespace Prisma {
     readonly nameTh: FieldRef<"Company", 'String'>
     readonly nameEn: FieldRef<"Company", 'String'>
     readonly description: FieldRef<"Company", 'String'>
+    readonly description_en: FieldRef<"Company", 'String'>
     readonly image: FieldRef<"Company", 'String'>
     readonly cover_image: FieldRef<"Company", 'String'>
     readonly address: FieldRef<"Company", 'String'>
@@ -37615,6 +37628,7 @@ export namespace Prisma {
     nameTh: 'nameTh',
     nameEn: 'nameEn',
     description: 'description',
+    description_en: 'description_en',
     image: 'image',
     cover_image: 'cover_image',
     address: 'address',
@@ -38714,6 +38728,7 @@ export namespace Prisma {
     nameTh?: StringFilter<"Company"> | string
     nameEn?: StringNullableFilter<"Company"> | string | null
     description?: StringNullableFilter<"Company"> | string | null
+    description_en?: StringNullableFilter<"Company"> | string | null
     image?: StringNullableFilter<"Company"> | string | null
     cover_image?: StringNullableFilter<"Company"> | string | null
     address?: StringNullableFilter<"Company"> | string | null
@@ -38744,6 +38759,7 @@ export namespace Prisma {
     nameTh?: SortOrder
     nameEn?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
+    description_en?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     cover_image?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
@@ -38778,6 +38794,7 @@ export namespace Prisma {
     nameTh?: StringFilter<"Company"> | string
     nameEn?: StringNullableFilter<"Company"> | string | null
     description?: StringNullableFilter<"Company"> | string | null
+    description_en?: StringNullableFilter<"Company"> | string | null
     image?: StringNullableFilter<"Company"> | string | null
     cover_image?: StringNullableFilter<"Company"> | string | null
     address?: StringNullableFilter<"Company"> | string | null
@@ -38807,6 +38824,7 @@ export namespace Prisma {
     nameTh?: SortOrder
     nameEn?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
+    description_en?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     cover_image?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
@@ -38840,6 +38858,7 @@ export namespace Prisma {
     nameTh?: StringWithAggregatesFilter<"Company"> | string
     nameEn?: StringNullableWithAggregatesFilter<"Company"> | string | null
     description?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    description_en?: StringNullableWithAggregatesFilter<"Company"> | string | null
     image?: StringNullableWithAggregatesFilter<"Company"> | string | null
     cover_image?: StringNullableWithAggregatesFilter<"Company"> | string | null
     address?: StringNullableWithAggregatesFilter<"Company"> | string | null
@@ -40902,6 +40921,7 @@ export namespace Prisma {
     nameTh: string
     nameEn?: string | null
     description?: string | null
+    description_en?: string | null
     image?: string | null
     cover_image?: string | null
     address?: string | null
@@ -40931,6 +40951,7 @@ export namespace Prisma {
     nameTh: string
     nameEn?: string | null
     description?: string | null
+    description_en?: string | null
     image?: string | null
     cover_image?: string | null
     address?: string | null
@@ -40960,6 +40981,7 @@ export namespace Prisma {
     nameTh?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40989,6 +41011,7 @@ export namespace Prisma {
     nameTh?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41018,6 +41041,7 @@ export namespace Prisma {
     nameTh: string
     nameEn?: string | null
     description?: string | null
+    description_en?: string | null
     image?: string | null
     cover_image?: string | null
     address?: string | null
@@ -41043,6 +41067,7 @@ export namespace Prisma {
     nameTh?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41067,6 +41092,7 @@ export namespace Prisma {
     nameTh?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43313,6 +43339,7 @@ export namespace Prisma {
     nameTh?: SortOrder
     nameEn?: SortOrder
     description?: SortOrder
+    description_en?: SortOrder
     image?: SortOrder
     cover_image?: SortOrder
     address?: SortOrder
@@ -43343,6 +43370,7 @@ export namespace Prisma {
     nameTh?: SortOrder
     nameEn?: SortOrder
     description?: SortOrder
+    description_en?: SortOrder
     image?: SortOrder
     cover_image?: SortOrder
     address?: SortOrder
@@ -43367,6 +43395,7 @@ export namespace Prisma {
     nameTh?: SortOrder
     nameEn?: SortOrder
     description?: SortOrder
+    description_en?: SortOrder
     image?: SortOrder
     cover_image?: SortOrder
     address?: SortOrder
@@ -47449,6 +47478,7 @@ export namespace Prisma {
     nameTh: string
     nameEn?: string | null
     description?: string | null
+    description_en?: string | null
     image?: string | null
     cover_image?: string | null
     address?: string | null
@@ -47477,6 +47507,7 @@ export namespace Prisma {
     nameTh: string
     nameEn?: string | null
     description?: string | null
+    description_en?: string | null
     image?: string | null
     cover_image?: string | null
     address?: string | null
@@ -47769,6 +47800,7 @@ export namespace Prisma {
     nameTh?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -47797,6 +47829,7 @@ export namespace Prisma {
     nameTh?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48814,6 +48847,7 @@ export namespace Prisma {
     nameTh: string
     nameEn?: string | null
     description?: string | null
+    description_en?: string | null
     image?: string | null
     cover_image?: string | null
     address?: string | null
@@ -48842,6 +48876,7 @@ export namespace Prisma {
     nameTh: string
     nameEn?: string | null
     description?: string | null
+    description_en?: string | null
     image?: string | null
     cover_image?: string | null
     address?: string | null
@@ -48886,6 +48921,7 @@ export namespace Prisma {
     nameTh?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48914,6 +48950,7 @@ export namespace Prisma {
     nameTh?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49195,6 +49232,7 @@ export namespace Prisma {
     nameTh: string
     nameEn?: string | null
     description?: string | null
+    description_en?: string | null
     image?: string | null
     cover_image?: string | null
     address?: string | null
@@ -49223,6 +49261,7 @@ export namespace Prisma {
     nameTh: string
     nameEn?: string | null
     description?: string | null
+    description_en?: string | null
     image?: string | null
     cover_image?: string | null
     address?: string | null
@@ -49434,6 +49473,7 @@ export namespace Prisma {
     nameTh?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49462,6 +49502,7 @@ export namespace Prisma {
     nameTh?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49891,6 +49932,7 @@ export namespace Prisma {
     nameTh: string
     nameEn?: string | null
     description?: string | null
+    description_en?: string | null
     image?: string | null
     cover_image?: string | null
     address?: string | null
@@ -49919,6 +49961,7 @@ export namespace Prisma {
     nameTh: string
     nameEn?: string | null
     description?: string | null
+    description_en?: string | null
     image?: string | null
     cover_image?: string | null
     address?: string | null
@@ -50006,6 +50049,7 @@ export namespace Prisma {
     nameTh?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -50034,6 +50078,7 @@ export namespace Prisma {
     nameTh?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52358,6 +52403,7 @@ export namespace Prisma {
     nameTh: string
     nameEn?: string | null
     description?: string | null
+    description_en?: string | null
     image?: string | null
     cover_image?: string | null
     address?: string | null
@@ -52386,6 +52432,7 @@ export namespace Prisma {
     nameTh: string
     nameEn?: string | null
     description?: string | null
+    description_en?: string | null
     image?: string | null
     cover_image?: string | null
     address?: string | null
@@ -52631,6 +52678,7 @@ export namespace Prisma {
     nameTh?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52659,6 +52707,7 @@ export namespace Prisma {
     nameTh?: StringFieldUpdateOperationsInput | string
     nameEn?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     cover_image?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null

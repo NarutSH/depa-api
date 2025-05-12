@@ -223,7 +223,8 @@ model Company {
   nameTh     String
   nameEn     String?
 
-  description String?
+  description    String?
+  description_en String?
 
   image       String?
   cover_image String?

@@ -219,6 +219,7 @@ exports.Prisma.CompanyScalarFieldEnum = {
   nameTh: 'nameTh',
   nameEn: 'nameEn',
   description: 'description',
+  description_en: 'description_en',
   image: 'image',
   cover_image: 'cover_image',
   address: 'address',
