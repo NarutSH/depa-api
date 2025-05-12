@@ -8,7 +8,7 @@ export class CompanyService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async getCompanies(query: QueryMetadataDto) {
-    const { page = 1, limit = 10, search, sort, filter } = query;
+    const { page = 1, limit = 10, search, filter } = query;
     const skip = query.getSkip();
     const sortObj = query.getSortObject();
 

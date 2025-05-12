@@ -1,13 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsNumber,
-  IsOptional,
-  IsString,
-  Min,
-  IsIn,
-  IsObject,
-} from 'class-validator';
 import { Type } from 'class-transformer';
+import { IsNumber, IsObject, IsOptional, IsString, Min } from 'class-validator';
 
 export class QueryMetadataDto {
   @ApiProperty({
