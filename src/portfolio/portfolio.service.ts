@@ -17,6 +17,87 @@ export class PortfolioService {
     private readonly queryUtils: QueryUtilsService,
   ) {}
 
+  async getAllPortfolios(queryDto?: QueryMetadataDto) {
+    // Define searchable fields for portfolios
+    const searchableFields = ['title', 'description', 'tags'];
+
+    // Build where clause for filtering and searching
+    const where = queryDto
+      ? this.queryUtils.buildWhereClause(queryDto, searchableFields)
+      : {};
+
+    // Build orderBy clause for sorting
+    const orderBy = queryDto
+      ? this.queryUtils.buildOrderByClause(queryDto, { createdAt: 'desc' })
+      : { createdAt: 'desc' };
+
+    // Execute the query without pagination
+    const portfolios = await this.prismaService.portfolio.findMany({
+      where,
+      orderBy,
+      include: {
+        standards: {
+          select: {
+            standards: {
+              select: {
+                name: true,
+                description: true,
+                type: true,
+                image: true,
+              },
+            },
+          },
+        },
+        Image: {
+          select: {
+            url: true,
+            type: true,
+            description: true,
+          },
+        },
+        company: {
+          select: {
+            juristicId: true,
+            nameTh: true,
+            nameEn: true,
+            user: {
+              select: {
+                fullnameTh: true,
+                fullnameEn: true,
+                email: true,
+                image: true,
+              },
+            },
+          },
+        },
+        freelance: {
+          select: {
+            id: true,
+            user: {
+              select: {
+                fullnameTh: true,
+                fullnameEn: true,
+                email: true,
+                image: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    // Transform the data if needed (like handling nested objects or arrays)
+    const transformedPortfolios = portfolios.map((portfolio) => ({
+      ...portfolio,
+      standards: portfolio.standards.map((s) => s.standards),
+    }));
+
+    return {
+      data: transformedPortfolios,
+      message: 'All portfolios retrieved successfully',
+    };
+  }
+
   async getPortfolios(queryDto: QueryMetadataDto) {
     // Ensure we have valid pagination values
     const page = Number(queryDto.page) || 1;

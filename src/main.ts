@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as fs from 'fs';
+import * as path from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,9 +12,9 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: true, // Enable automatic transformation
+      transform: true,
       transformOptions: {
-        enableImplicitConversion: true, // Enable implicit conversion of primitive types
+        enableImplicitConversion: true,
       },
     }),
   );
@@ -32,6 +34,13 @@ async function bootstrap() {
     .addTag('Freelance', 'Freelance management endpoints')
     .build();
   const document = SwaggerModule.createDocument(app, config);
+
+  // บันทึก Swagger JSON ไปยังไฟล์
+  fs.writeFileSync(
+    path.resolve(process.cwd(), 'swagger.json'),
+    JSON.stringify(document, null, 2),
+  );
+
   SwaggerModule.setup('api-docs', app, document);
 
   await app.listen(process.env.PORT || 8000);
