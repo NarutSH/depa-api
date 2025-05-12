@@ -44,6 +44,36 @@ export class PortfolioController {
     private readonly uploadService: UploadService,
   ) {}
 
+  @Get('all')
+  @ApiOperation({
+    summary: 'Get all portfolios without pagination',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved all portfolios',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String,
+    description: 'Search term for title and description',
+  })
+  @ApiQuery({
+    name: 'sort',
+    required: false,
+    type: String,
+    description: 'Sort field and direction (e.g., title:asc, createdAt:desc)',
+  })
+  @ApiQuery({
+    name: 'filter',
+    required: false,
+    type: Object,
+    description: 'Filter criteria (e.g., industryTypeSlug)',
+  })
+  async getAllPortfolios(@Query() query: QueryMetadataDto) {
+    return this.portfolioService.getAllPortfolios(query);
+  }
+
   // Public endpoints accessible by anyone
   @Get()
   @ApiOperation({
