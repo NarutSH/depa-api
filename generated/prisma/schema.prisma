@@ -76,6 +76,10 @@ model User {
   channels    Json[] @default([])
   specialists Json[] @default([])
 
+  tags_json        Json?
+  channels_json    Json?
+  specialists_json Json?
+
   // New relations
   industryTags     UserTags[]
   industryChannels UserChannels[]

@@ -134,6 +134,9 @@ exports.Prisma.UserScalarFieldEnum = {
   tags: 'tags',
   channels: 'channels',
   specialists: 'specialists',
+  tags_json: 'tags_json',
+  channels_json: 'channels_json',
+  specialists_json: 'specialists_json',
   userType: 'userType',
   role: 'role',
   createdAt: 'createdAt',
@@ -433,9 +436,20 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 
 exports.Prisma.NullsOrder = {

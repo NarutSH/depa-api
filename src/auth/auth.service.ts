@@ -55,7 +55,8 @@ export class AuthService {
     'b156c22a196bc731aa9dde9990f347aebf4d088f0d178d9b35bbddd158135ad0';
 
   // Token configuration
-  private ACCESS_TOKEN_EXPIRATION = '15m'; // Short-lived
+  private ACCESS_TOKEN_EXPIRATION = '1d'; // Short-lived
+  // private ACCESS_TOKEN_EXPIRATION = '15m'; // Short-lived
   private REFRESH_TOKEN_EXPIRATION_DAYS = 7; // 7 days
 
   constructor(

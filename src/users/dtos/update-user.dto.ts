@@ -49,6 +49,45 @@ class UpdateUserDto {
     category: string;
     name: string;
   }>;
+
+  @IsArray()
+  @IsOptional()
+  tags_json?: Array<{
+    category: string;
+    name: string;
+  }>;
+
+  @IsArray()
+  @IsOptional()
+  channels_json?: Array<{
+    category: string;
+    name: string;
+  }>;
+
+  @IsArray()
+  @IsOptional()
+  specialists_json?: Array<{
+    category: string;
+    name: string;
+  }>;
+
+  // @IsOptional()
+  // @IsArray()
+  // @ValidateNested({ each: true })
+  // @Type(() => ChannelDto)
+  // tags_json?: ChannelDto[];
+
+  // @IsOptional()
+  // @IsArray()
+  // @ValidateNested({ each: true })
+  // @Type(() => ChannelDto)
+  // channels_json?: ChannelDto[];
+
+  // @IsOptional()
+  // @IsArray()
+  // @ValidateNested({ each: true })
+  // @Type(() => ChannelDto)
+  // specialists_json?: ChannelDto[];
 }
 
 export default UpdateUserDto;

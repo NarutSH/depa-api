@@ -198,20 +198,12 @@ export class UsersController {
     @Body() body: UpdateUserDto,
     // @Req() req: Request,
   ) {
-    return this.usersService.updateUser(id, body);
-    // const user = req.user as any;
-
-    // // Admin can update any profile
-    // if (user.userType === Role.ADMIN) {
-    //   return this.usersService.updateUser(id, body);
-    // }
-
-    // // Users can only update their own profile
-    // if (user.id === id) {
-    //   return this.usersService.updateUser(id, body);
-    // }
-
-    // throw new ForbiddenException('You can only update your own profile');
+    try {
+      return this.usersService.updateUser(id, body);
+    } catch (error) {
+      console.error('Error updating user:', error);
+      throw new ForbiddenException('Failed to update user');
+    }
   }
 
   // Update by email - admin only

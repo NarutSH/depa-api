@@ -107,6 +107,27 @@ class CreateUserDto {
     category: string;
     name: string;
   }>;
+
+  @IsArray()
+  @IsOptional()
+  tags_json?: Array<{
+    category: string;
+    name: string;
+  }>;
+
+  @IsArray()
+  @IsOptional()
+  channels_json?: Array<{
+    category: string;
+    name: string;
+  }>;
+
+  @IsArray()
+  @IsOptional()
+  specialists_json?: Array<{
+    category: string;
+    name: string;
+  }>;
 }
 
 export default CreateUserDto;

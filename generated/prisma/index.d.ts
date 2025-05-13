@@ -4248,6 +4248,9 @@ export namespace Prisma {
     tags: number
     channels: number
     specialists: number
+    tags_json: number
+    channels_json: number
+    specialists_json: number
     userType: number
     role: number
     createdAt: number
@@ -4302,6 +4305,9 @@ export namespace Prisma {
     tags?: true
     channels?: true
     specialists?: true
+    tags_json?: true
+    channels_json?: true
+    specialists_json?: true
     userType?: true
     role?: true
     createdAt?: true
@@ -4395,6 +4401,9 @@ export namespace Prisma {
     tags: JsonValue[]
     channels: JsonValue[]
     specialists: JsonValue[]
+    tags_json: JsonValue | null
+    channels_json: JsonValue | null
+    specialists_json: JsonValue | null
     userType: $Enums.UserType | null
     role: $Enums.UserType | null
     createdAt: Date
@@ -4432,6 +4441,9 @@ export namespace Prisma {
     tags?: boolean
     channels?: boolean
     specialists?: boolean
+    tags_json?: boolean
+    channels_json?: boolean
+    specialists_json?: boolean
     userType?: boolean
     role?: boolean
     createdAt?: boolean
@@ -4462,6 +4474,9 @@ export namespace Prisma {
     tags?: boolean
     channels?: boolean
     specialists?: boolean
+    tags_json?: boolean
+    channels_json?: boolean
+    specialists_json?: boolean
     userType?: boolean
     role?: boolean
     createdAt?: boolean
@@ -4482,6 +4497,9 @@ export namespace Prisma {
     tags?: boolean
     channels?: boolean
     specialists?: boolean
+    tags_json?: boolean
+    channels_json?: boolean
+    specialists_json?: boolean
     userType?: boolean
     role?: boolean
     createdAt?: boolean
@@ -4502,13 +4520,16 @@ export namespace Prisma {
     tags?: boolean
     channels?: boolean
     specialists?: boolean
+    tags_json?: boolean
+    channels_json?: boolean
+    specialists_json?: boolean
     userType?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullnameTh" | "fullnameEn" | "about" | "phoneNumber" | "email" | "website" | "address" | "image" | "industries" | "tags" | "channels" | "specialists" | "userType" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullnameTh" | "fullnameEn" | "about" | "phoneNumber" | "email" | "website" | "address" | "image" | "industries" | "tags" | "channels" | "specialists" | "tags_json" | "channels_json" | "specialists_json" | "userType" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     industriesRelated?: boolean | User$industriesRelatedArgs<ExtArgs>
     industryTags?: boolean | User$industryTagsArgs<ExtArgs>
@@ -4551,6 +4572,9 @@ export namespace Prisma {
       tags: Prisma.JsonValue[]
       channels: Prisma.JsonValue[]
       specialists: Prisma.JsonValue[]
+      tags_json: Prisma.JsonValue | null
+      channels_json: Prisma.JsonValue | null
+      specialists_json: Prisma.JsonValue | null
       userType: $Enums.UserType | null
       role: $Enums.UserType | null
       createdAt: Date
@@ -5000,6 +5024,9 @@ export namespace Prisma {
     readonly tags: FieldRef<"User", 'Json[]'>
     readonly channels: FieldRef<"User", 'Json[]'>
     readonly specialists: FieldRef<"User", 'Json[]'>
+    readonly tags_json: FieldRef<"User", 'Json'>
+    readonly channels_json: FieldRef<"User", 'Json'>
+    readonly specialists_json: FieldRef<"User", 'Json'>
     readonly userType: FieldRef<"User", 'UserType'>
     readonly role: FieldRef<"User", 'UserType'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
@@ -37516,6 +37543,9 @@ export namespace Prisma {
     tags: 'tags',
     channels: 'channels',
     specialists: 'specialists',
+    tags_json: 'tags_json',
+    channels_json: 'channels_json',
+    specialists_json: 'specialists_json',
     userType: 'userType',
     role: 'role',
     createdAt: 'createdAt',
@@ -37905,12 +37935,29 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   export const NullsOrder: {
@@ -37951,6 +37998,13 @@ export namespace Prisma {
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -38072,6 +38126,9 @@ export namespace Prisma {
     tags?: JsonNullableListFilter<"User">
     channels?: JsonNullableListFilter<"User">
     specialists?: JsonNullableListFilter<"User">
+    tags_json?: JsonNullableFilter<"User">
+    channels_json?: JsonNullableFilter<"User">
+    specialists_json?: JsonNullableFilter<"User">
     userType?: EnumUserTypeNullableFilter<"User"> | $Enums.UserType | null
     role?: EnumUserTypeNullableFilter<"User"> | $Enums.UserType | null
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -38101,6 +38158,9 @@ export namespace Prisma {
     tags?: SortOrder
     channels?: SortOrder
     specialists?: SortOrder
+    tags_json?: SortOrderInput | SortOrder
+    channels_json?: SortOrderInput | SortOrder
+    specialists_json?: SortOrderInput | SortOrder
     userType?: SortOrderInput | SortOrder
     role?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -38133,6 +38193,9 @@ export namespace Prisma {
     tags?: JsonNullableListFilter<"User">
     channels?: JsonNullableListFilter<"User">
     specialists?: JsonNullableListFilter<"User">
+    tags_json?: JsonNullableFilter<"User">
+    channels_json?: JsonNullableFilter<"User">
+    specialists_json?: JsonNullableFilter<"User">
     userType?: EnumUserTypeNullableFilter<"User"> | $Enums.UserType | null
     role?: EnumUserTypeNullableFilter<"User"> | $Enums.UserType | null
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -38162,6 +38225,9 @@ export namespace Prisma {
     tags?: SortOrder
     channels?: SortOrder
     specialists?: SortOrder
+    tags_json?: SortOrderInput | SortOrder
+    channels_json?: SortOrderInput | SortOrder
+    specialists_json?: SortOrderInput | SortOrder
     userType?: SortOrderInput | SortOrder
     role?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -38188,6 +38254,9 @@ export namespace Prisma {
     tags?: JsonNullableListFilter<"User">
     channels?: JsonNullableListFilter<"User">
     specialists?: JsonNullableListFilter<"User">
+    tags_json?: JsonNullableWithAggregatesFilter<"User">
+    channels_json?: JsonNullableWithAggregatesFilter<"User">
+    specialists_json?: JsonNullableWithAggregatesFilter<"User">
     userType?: EnumUserTypeNullableWithAggregatesFilter<"User"> | $Enums.UserType | null
     role?: EnumUserTypeNullableWithAggregatesFilter<"User"> | $Enums.UserType | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -40259,6 +40328,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -40288,6 +40360,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -40317,6 +40392,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40346,6 +40424,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40375,6 +40456,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -40395,6 +40479,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40415,6 +40502,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42602,6 +42692,29 @@ export namespace Prisma {
     hasSome?: InputJsonValue[] | ListJsonFieldRefInput<$PrismaModel>
     isEmpty?: boolean
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type EnumUserTypeNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.UserType | EnumUserTypeFieldRefInput<$PrismaModel> | null
@@ -42720,6 +42833,9 @@ export namespace Prisma {
     tags?: SortOrder
     channels?: SortOrder
     specialists?: SortOrder
+    tags_json?: SortOrder
+    channels_json?: SortOrder
+    specialists_json?: SortOrder
     userType?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
@@ -42807,6 +42923,32 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type EnumUserTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -47115,6 +47257,29 @@ export namespace Prisma {
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedEnumUserTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.UserType | EnumUserTypeFieldRefInput<$PrismaModel> | null
@@ -47951,6 +48116,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -47979,6 +48147,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -48048,6 +48219,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48076,6 +48250,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48135,6 +48312,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -48163,6 +48343,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -48232,6 +48415,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48260,6 +48446,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48319,6 +48508,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -48347,6 +48539,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -48418,6 +48613,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48446,6 +48644,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48507,6 +48708,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -48535,6 +48739,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -48622,6 +48829,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48650,6 +48860,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48727,6 +48940,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -48755,6 +48971,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -48799,6 +49018,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48827,6 +49049,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49539,6 +49764,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -49567,6 +49795,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -49757,6 +49988,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49785,6 +50019,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50244,6 +50481,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -50272,6 +50512,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -50456,6 +50699,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50484,6 +50730,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53483,6 +53732,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -53511,6 +53763,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -53612,6 +53867,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53640,6 +53898,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54097,6 +54358,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -54125,6 +54389,9 @@ export namespace Prisma {
     tags?: UserCreatetagsInput | InputJsonValue[]
     channels?: UserCreatechannelsInput | InputJsonValue[]
     specialists?: UserCreatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: $Enums.UserType | null
     role?: $Enums.UserType | null
     createdAt?: Date | string
@@ -54281,6 +54548,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54309,6 +54579,9 @@ export namespace Prisma {
     tags?: UserUpdatetagsInput | InputJsonValue[]
     channels?: UserUpdatechannelsInput | InputJsonValue[]
     specialists?: UserUpdatespecialistsInput | InputJsonValue[]
+    tags_json?: NullableJsonNullValueInput | InputJsonValue
+    channels_json?: NullableJsonNullValueInput | InputJsonValue
+    specialists_json?: NullableJsonNullValueInput | InputJsonValue
     userType?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     role?: NullableEnumUserTypeFieldUpdateOperationsInput | $Enums.UserType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
