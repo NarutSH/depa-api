@@ -65,6 +65,21 @@ export class FreelanceController {
     return this.freelanceService.getByUserId(userId);
   }
 
+  @Get('/:id')
+  @ApiOperation({ summary: 'Get freelance by user ID' })
+  @ApiParam({ name: 'userId', description: 'The user ID of the freelance' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return the freelance with the specified user ID',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Freelance not found',
+  })
+  async getById(@Param('id') id: string) {
+    return this.freelanceService.getById(id);
+  }
+
   @Post()
   @ApiOperation({ summary: 'Create new freelance' })
   @ApiResponse({

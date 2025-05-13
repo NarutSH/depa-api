@@ -89,14 +89,20 @@ export class FreelanceService {
   }
 
   async getAl(industry: string) {
-    const whereClause = industry ? { industryTypes: { has: industry } } : {};
-
-    return this.prismaService.freelance.findMany({
-      where: whereClause,
-      include: {
-        user: true,
-      },
-    });
+    try {
+      return await this.prismaService.freelance.findMany({
+        where: industry ? { industryTypes: { has: industry } } : {},
+        include: {
+          user: true,
+        },
+      });
+    } catch (error) {
+      console.error('Error fetching freelancers:', error);
+      if (error.code === 'P2023') {
+        throw new NotFoundException('Invalid data format in query');
+      }
+      throw error;
+    }
   }
 
   async create(data: CreateFreelanceDto) {
@@ -119,6 +125,18 @@ export class FreelanceService {
     });
     if (!freelance) {
       throw new NotFoundException(`Freelance with userId ${userId} not found`);
+    }
+    return freelance;
+  }
+
+  async getById(id: string) {
+    const freelance = await this.prismaService.freelance.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!freelance) {
+      throw new NotFoundException(`Freelance with ${id} not found`);
     }
     return freelance;
   }

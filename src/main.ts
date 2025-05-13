@@ -5,8 +5,43 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as fs from 'fs';
 import * as path from 'path';
 
+// Error handling for unhandled rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+
+  // In Supabase environment, the platform will auto-restart the service
+  // So we just log the error properly instead of exiting immediately
+  if (process.env.NODE_ENV !== 'production') {
+    setTimeout(() => {
+      process.exit(1);
+    }, 1000);
+  }
+});
+
+// Error handling for uncaught exceptions
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+
+  // In Supabase environment, we let their infrastructure handle the restart
+  if (process.env.NODE_ENV !== 'production') {
+    setTimeout(() => {
+      process.exit(1);
+    }, 1000);
+  }
+});
+
+// Handle termination signals for graceful shutdown
+const signals = ['SIGTERM', 'SIGINT', 'SIGHUP'] as const;
+let app: any;
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  app = await NestFactory.create(AppModule);
+
+  // Add global error handler for NestJS
+  const httpAdapter = app.getHttpAdapter();
+  httpAdapter.getInstance().on('error', (error) => {
+    console.error('HTTP Server error:', error);
+  });
 
   app.enableCors();
 
@@ -19,8 +54,6 @@ async function bootstrap() {
     }),
   );
 
-  // Auth guards removed - will be reimplemented
-
   // Swagger documentation setup
   const config = new DocumentBuilder()
     .setTitle('DEPA API')
@@ -32,10 +65,11 @@ async function bootstrap() {
     .addTag('Portfolio', 'Portfolio management endpoints')
     .addTag('Company', 'Company management endpoints')
     .addTag('Freelance', 'Freelance management endpoints')
+    .addTag('Health', 'Health check endpoints')
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
-  // บันทึก Swagger JSON ไปยังไฟล์
+  // Save Swagger JSON to file
   fs.writeFileSync(
     path.resolve(process.cwd(), 'swagger.json'),
     JSON.stringify(document, null, 2),
@@ -43,6 +77,26 @@ async function bootstrap() {
 
   SwaggerModule.setup('api-docs', app, document);
 
-  await app.listen(process.env.PORT || 8000);
+  const port = process.env.PORT || 8000;
+  await app.listen(port);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
+
+// Set up graceful shutdown
+for (const signal of signals) {
+  process.on(signal, async () => {
+    console.log(`Received ${signal}, closing server gracefully...`);
+    try {
+      if (app) {
+        await app.close();
+        console.log('HTTP server closed');
+      }
+      process.exit(0);
+    } catch (err) {
+      console.error('Error during graceful shutdown:', err);
+      process.exit(1);
+    }
+  });
+}
+
 bootstrap();

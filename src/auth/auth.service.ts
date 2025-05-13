@@ -230,6 +230,10 @@ export class AuthService {
       }
     }
 
+    console.log('tokenString:', tokenString);
+    console.log('expiresAt:', expiresAt);
+    console.log('user:', user);
+
     // At this point, we should have a valid user (either existing or newly created)
     // Save token to database with the user ID
     try {
@@ -295,13 +299,13 @@ export class AuthService {
     });
 
     // Generate new refresh token
-    const newRefreshToken = await this.regenerateRefreshToken(
-      refreshTokenRecord.id,
-    );
+    // const newRefreshToken = await this.regenerateRefreshToken(
+    //   refreshTokenRecord.id,
+    // );
 
     return {
       access_token,
-      refresh_token: newRefreshToken,
+      refresh_token: '',
     };
   }
 

@@ -22,14 +22,14 @@ export class PortfolioService {
     const searchableFields = ['title', 'description', 'tags'];
 
     // Build where clause for filtering and searching
-    const where = queryDto
+    const where = await (queryDto
       ? this.queryUtils.buildWhereClause(queryDto, searchableFields)
-      : {};
+      : {});
 
     // Build orderBy clause for sorting
-    const orderBy = queryDto
+    const orderBy = await (queryDto
       ? this.queryUtils.buildOrderByClause(queryDto, { createdAt: 'desc' })
-      : { createdAt: 'desc' };
+      : { createdAt: 'desc' });
 
     // Execute the query without pagination
     const portfolios = await this.prismaService.portfolio.findMany({
@@ -226,6 +226,7 @@ export class PortfolioService {
   }
 
   async getPortfolioByIndustry(industrySlug: string) {
+    console.log('industrySlug', industrySlug);
     return this.prismaService.portfolio.findMany({
       where: {
         industryTypeSlug: industrySlug,

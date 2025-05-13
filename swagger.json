@@ -3027,6 +3027,45 @@
         ]
       }
     },
+    "/freelance/{id}": {
+      "get": {
+        "operationId": "FreelanceController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "description": "The user ID of the freelance",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the freelance with the specified user ID"
+          },
+          "404": {
+            "description": "Freelance not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get freelance by user ID",
+        "tags": [
+          "Freelance"
+        ]
+      }
+    },
     "/freelance/juristic/{juristicId}": {
       "get": {
         "operationId": "FreelanceController_getByJuristicId",
@@ -3232,6 +3271,10 @@
     {
       "name": "Freelance",
       "description": "Freelance management endpoints"
+    },
+    {
+      "name": "Health",
+      "description": "Health check endpoints"
     }
   ],
   "servers": [],

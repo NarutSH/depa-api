@@ -72,26 +72,41 @@ export class CompanyService {
   }
 
   async getAl(industry: string) {
-    const whereClause = industry ? { industries: { has: industry } } : {};
-    return this.prismaService.company.findMany({
-      where: whereClause,
-      include: {
-        user: true,
-      },
-    });
+    try {
+      const whereClause = industry ? { industries: { has: industry } } : {};
+      return this.prismaService.company.findMany({
+        where: whereClause,
+        include: {
+          user: true,
+        },
+      });
+    } catch (error) {
+      throw new Error(`Failed to get companies: ${error.message}`);
+    }
   }
 
   async getByUserId(userId: string) {
-    return this.prismaService.company.findUnique({
-      where: {
-        userId,
-      },
-    });
+    try {
+      const company = await this.prismaService.company.findUnique({
+        where: {
+          userId,
+        },
+      });
+
+      if (!company) {
+        throw new NotFoundException(`Company for user ID ${userId} not found`);
+      }
+
+      return company;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new Error(`Failed to get company by user ID: ${error.message}`);
+    }
   }
 
   async create(data: CreateCompanyDto) {
-    console.log('data', data);
-
     try {
       const company = await this.prismaService.company.create({ data });
       return company;
