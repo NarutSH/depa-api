@@ -166,10 +166,10 @@ export class AuthService {
       });
 
       // Generate refresh token using memberid instead of user.id
-      let refresh_token = null;
-      if (loginData.memberid) {
-        refresh_token = await this.generateRefreshToken(loginData.memberid);
-      }
+      const refresh_token = null;
+      // if (loginData.memberid) {
+      //   refresh_token = await this.generateRefreshToken(loginData.memberid);
+      // }
 
       // Return formatted response with session data
       return {

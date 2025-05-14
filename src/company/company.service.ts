@@ -145,6 +145,9 @@ export class CompanyService {
   async getById(id: string) {
     const company = await this.prismaService.company.findUnique({
       where: { id },
+      include: {
+        user: true,
+      },
     });
     if (!company) {
       throw new NotFoundException(`Company with ID ${id} not found`);

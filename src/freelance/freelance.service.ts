@@ -134,6 +134,9 @@ export class FreelanceService {
       where: {
         id,
       },
+      include: {
+        user: true,
+      },
     });
     if (!freelance) {
       throw new NotFoundException(`Freelance with ${id} not found`);
