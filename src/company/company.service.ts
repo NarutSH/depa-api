@@ -74,7 +74,7 @@ export class CompanyService {
   async getAl(industry: string) {
     try {
       const whereClause = industry ? { industries: { has: industry } } : {};
-      return this.prismaService.company.findMany({
+      return await this.prismaService.company.findMany({
         where: whereClause,
         include: {
           user: true,
