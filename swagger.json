@@ -2615,24 +2615,6 @@
       }
     },
     "/industry/skills": {
-      "get": {
-        "operationId": "IndustryController_getSkills",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "List of all industries with their associated skills"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Get all industries with their skills",
-        "tags": [
-          "Industry"
-        ]
-      },
       "post": {
         "operationId": "IndustryController_createSkill",
         "parameters": [],
@@ -2680,7 +2662,6 @@
             "description": "Number of items to skip for pagination",
             "schema": {
               "minimum": 0,
-              "example": 0,
               "type": "number"
             }
           },
@@ -2691,7 +2672,6 @@
             "description": "Number of items to take for pagination",
             "schema": {
               "minimum": 1,
-              "example": 10,
               "type": "number"
             }
           },
@@ -2702,16 +2682,6 @@
             "description": "Filter skills by industry slug",
             "schema": {
               "example": "game",
-              "type": "string"
-            }
-          },
-          {
-            "name": "group",
-            "required": false,
-            "in": "query",
-            "description": "Filter skills by group",
-            "schema": {
-              "example": "design",
               "type": "string"
             }
           }
@@ -2863,6 +2833,454 @@
           }
         ],
         "summary": "Delete a skill",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/tags": {
+      "post": {
+        "operationId": "IndustryController_createTag",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTagDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The tag has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new tag",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/tags/all": {
+      "get": {
+        "operationId": "IndustryController_findAllTags",
+        "parameters": [
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "Number of items to skip for pagination",
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "Number of items to take for pagination",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Filter tags by industry slug",
+            "schema": {
+              "example": "game",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tags matching the query criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TagResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all tags with optional filtering",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/tags/{slug}": {
+      "get": {
+        "operationId": "IndustryController_findTagBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Tag slug identifier",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Optional industry slug to filter by",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The tag data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a tag by its slug",
+        "tags": [
+          "Industry"
+        ]
+      },
+      "put": {
+        "operationId": "IndustryController_updateTag",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Tag slug identifier to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTagDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The tag has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an existing tag",
+        "tags": [
+          "Industry"
+        ]
+      },
+      "delete": {
+        "operationId": "IndustryController_deleteTag",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Tag slug identifier to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The tag has been successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a tag",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/channels": {
+      "post": {
+        "operationId": "IndustryController_createChannel",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChannelDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The channel has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChannelResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new channel",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/channels/all": {
+      "get": {
+        "operationId": "IndustryController_findAllChannels",
+        "parameters": [
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "Number of items to skip for pagination",
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "Number of items to take for pagination",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Filter channels by industry slug",
+            "schema": {
+              "example": "game",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of channels matching the query criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChannelResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all channels with optional filtering",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/channels/{slug}": {
+      "get": {
+        "operationId": "IndustryController_findChannelBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Channel slug identifier",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Optional industry slug to filter by",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The channel data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChannelResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a channel by its slug",
+        "tags": [
+          "Industry"
+        ]
+      },
+      "put": {
+        "operationId": "IndustryController_updateChannel",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Channel slug identifier to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChannelDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The channel has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChannelResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an existing channel",
+        "tags": [
+          "Industry"
+        ]
+      },
+      "delete": {
+        "operationId": "IndustryController_deleteChannel",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Channel slug identifier to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The channel has been successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChannelResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a channel",
         "tags": [
           "Industry"
         ]
@@ -3727,6 +4145,182 @@
             "type": "string",
             "description": "New slug for the skill (if you want to change it)",
             "example": "advanced-game-design"
+          }
+        }
+      },
+      "CreateTagDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Tag name",
+            "example": "Mobile Gaming"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Tag slug identifier (URL-friendly)",
+            "example": "mobile-gaming"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug that this tag belongs to",
+            "example": "game"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "industrySlug"
+        ]
+      },
+      "TagResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier"
+          },
+          "name": {
+            "type": "string",
+            "description": "Tag name"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Tag slug identifier"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Associated industry slug"
+          },
+          "industry": {
+            "description": "Associated industry data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IndustryDto"
+              }
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "industrySlug",
+          "industry",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateTagDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Updated tag title",
+            "example": "Advanced Mobile Gaming"
+          },
+          "newSlug": {
+            "type": "string",
+            "description": "New slug for the tag (if you want to change it)",
+            "example": "advanced-mobile-gaming"
+          }
+        }
+      },
+      "CreateChannelDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Channel name",
+            "example": "App Store"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Channel slug identifier (URL-friendly)",
+            "example": "app-store"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug that this channel belongs to",
+            "example": "game"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "industrySlug"
+        ]
+      },
+      "ChannelResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier"
+          },
+          "name": {
+            "type": "string",
+            "description": "Channel name"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Channel slug identifier"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Associated industry slug"
+          },
+          "industry": {
+            "description": "Associated industry data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IndustryDto"
+              }
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "industrySlug",
+          "industry",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateChannelDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Updated channel title",
+            "example": "Apple App Store"
+          },
+          "newSlug": {
+            "type": "string",
+            "description": "New slug for the channel (if you want to change it)",
+            "example": "apple-app-store"
           }
         }
       },

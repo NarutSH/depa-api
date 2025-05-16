@@ -25,6 +25,14 @@ import { SkillResponseDto } from './dto/skill-response.dto';
 import { CreateIndustryDto } from './dto/create-industry.dto';
 import { UpdateIndustryDto } from './dto/update-industry.dto';
 import { IndustryResponseDto } from './dto/industry-response.dto';
+import { CreateTagDto } from './dto/create-tag.dto';
+import { UpdateTagDto } from './dto/update-tag.dto';
+import { FindTagsQueryDto } from './dto/find-tags-query.dto';
+import { TagResponseDto } from './dto/tag-response.dto';
+import { CreateChannelDto } from './dto/create-channel.dto';
+import { UpdateChannelDto } from './dto/update-channel.dto';
+import { FindChannelsQueryDto } from './dto/find-channels-query.dto';
+import { ChannelResponseDto } from './dto/channel-response.dto';
 
 @ApiTags('Industry')
 @ApiBearerAuth()
@@ -129,17 +137,6 @@ export class IndustryController {
     return this.industryService.getAll();
   }
 
-  @ApiOperation({ summary: 'Get all industries with their skills' })
-  @ApiOkResponse({
-    description: 'List of all industries with their associated skills',
-  })
-  @Get('skills')
-  async getSkills() {
-    return this.industryService.getSkills();
-  }
-
-  // Skill CRUD endpoints
-
   @ApiOperation({ summary: 'Create a new skill' })
   @ApiCreatedResponse({
     description: 'The skill has been successfully created',
@@ -202,5 +199,130 @@ export class IndustryController {
   @Delete('skills/:slug')
   deleteSkill(@Param('slug') slug: string) {
     return this.industryService.deleteSkill(slug);
+  }
+
+  @ApiOperation({ summary: 'Create a new tag' })
+  @ApiCreatedResponse({
+    description: 'The tag has been successfully created',
+    type: TagResponseDto,
+  })
+  @Post('tags')
+  createTag(@Body() createTagDto: CreateTagDto) {
+    return this.industryService.createTag(createTagDto);
+  }
+
+  @ApiOperation({ summary: 'Get all tags with optional filtering' })
+  @ApiOkResponse({
+    description: 'List of tags matching the query criteria',
+    type: [TagResponseDto],
+  })
+  @Get('tags/all')
+  findAllTags(@Query() query: FindTagsQueryDto) {
+    return this.industryService.findAllTags(query);
+  }
+
+  @ApiOperation({ summary: 'Get a tag by its slug' })
+  @ApiParam({ name: 'slug', description: 'Tag slug identifier' })
+  @ApiQuery({
+    name: 'industrySlug',
+    required: false,
+    description: 'Optional industry slug to filter by',
+  })
+  @ApiOkResponse({
+    description: 'The tag data',
+    type: TagResponseDto,
+  })
+  @Get('tags/:slug')
+  findTagBySlug(
+    @Param('slug') slug: string,
+    @Query('industrySlug') industrySlug?: string,
+  ) {
+    return this.industryService.findTagBySlug(slug, industrySlug);
+  }
+
+  @ApiOperation({ summary: 'Update an existing tag' })
+  @ApiParam({ name: 'slug', description: 'Tag slug identifier to update' })
+  @ApiOkResponse({
+    description: 'The tag has been successfully updated',
+    type: TagResponseDto,
+  })
+  @Put('tags/:slug')
+  updateTag(@Param('slug') slug: string, @Body() updateTagDto: UpdateTagDto) {
+    return this.industryService.updateTag(slug, updateTagDto);
+  }
+
+  @ApiOperation({ summary: 'Delete a tag' })
+  @ApiParam({ name: 'slug', description: 'Tag slug identifier to delete' })
+  @ApiOkResponse({
+    description: 'The tag has been successfully deleted',
+    type: TagResponseDto,
+  })
+  @Delete('tags/:slug')
+  deleteTag(@Param('slug') slug: string) {
+    return this.industryService.deleteTag(slug);
+  }
+
+  @ApiOperation({ summary: 'Create a new channel' })
+  @ApiCreatedResponse({
+    description: 'The channel has been successfully created',
+    type: ChannelResponseDto,
+  })
+  @Post('channels')
+  createChannel(@Body() createChannelDto: CreateChannelDto) {
+    return this.industryService.createChannel(createChannelDto);
+  }
+
+  @ApiOperation({ summary: 'Get all channels with optional filtering' })
+  @ApiOkResponse({
+    description: 'List of channels matching the query criteria',
+    type: [ChannelResponseDto],
+  })
+  @Get('channels/all')
+  findAllChannels(@Query() query: FindChannelsQueryDto) {
+    return this.industryService.findAllChannels(query);
+  }
+
+  @ApiOperation({ summary: 'Get a channel by its slug' })
+  @ApiParam({ name: 'slug', description: 'Channel slug identifier' })
+  @ApiQuery({
+    name: 'industrySlug',
+    required: false,
+    description: 'Optional industry slug to filter by',
+  })
+  @ApiOkResponse({
+    description: 'The channel data',
+    type: ChannelResponseDto,
+  })
+  @Get('channels/:slug')
+  findChannelBySlug(
+    @Param('slug') slug: string,
+    @Query('industrySlug') industrySlug?: string,
+  ) {
+    return this.industryService.findChannelBySlug(slug, industrySlug);
+  }
+
+  @ApiOperation({ summary: 'Update an existing channel' })
+  @ApiParam({ name: 'slug', description: 'Channel slug identifier to update' })
+  @ApiOkResponse({
+    description: 'The channel has been successfully updated',
+    type: ChannelResponseDto,
+  })
+  @Put('channels/:slug')
+  updateChannel(
+    @Param('slug') slug: string,
+    @Body() updateChannelDto: UpdateChannelDto,
+  ) {
+    return this.industryService.updateChannel(slug, updateChannelDto);
+  }
+
+  @ApiOperation({ summary: 'Delete a channel' })
+  @ApiParam({ name: 'slug', description: 'Channel slug identifier to delete' })
+  @ApiOkResponse({
+    description: 'The channel has been successfully deleted',
+    type: ChannelResponseDto,
+  })
+  @Delete('channels/:slug')
+  deleteChannel(@Param('slug') slug: string) {
+    return this.industryService.deleteChannel(slug);
   }
 }

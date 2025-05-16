@@ -55,6 +55,59 @@ export class UsersService {
               juristicId: true,
             },
           },
+          industryTags: {
+            select: {
+              tag: {
+                select: {
+                  name: true,
+                  slug: true,
+                  industry: {
+                    select: {
+                      name: true,
+                      slug: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          industryChannels: {
+            select: {
+              channel: {
+                select: {
+                  name: true,
+                  slug: true,
+                  industry: {
+                    select: {
+                      name: true,
+                      slug: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          industrySkills: {
+            select: {
+              skill: {
+                select: {
+                  title: true,
+                  slug: true,
+                  industry: {
+                    select: {
+                      name: true,
+                      slug: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          industriesRelated: {
+            select: {
+              industry: true,
+            },
+          },
         },
       }),
       this.prismaService.user.count({ where }),
@@ -75,11 +128,83 @@ export class UsersService {
   }
 
   async updateUser(id: string, data: UpdateUserDto) {
-    console.log('updateUser==>', id, data);
-    return this.prismaService.user.update({ where: { id: id }, data });
+    // Extract relationship arrays from DTO
+    const {
+      tags_array,
+      channels_array,
+      specialists_array,
+      industries,
+      ...userData
+    } = data;
+
+    // Update user base data
+    const updatedUser = await this.prismaService.user.update({
+      where: { id: id },
+      data: userData,
+    });
+
+    console.log('industries===>', industries);
+
+    // Update user industries
+    await this.prismaService.userIndustry.deleteMany({
+      where: { userId: id },
+    });
+    if (industries) {
+      await this.prismaService.userIndustry.createMany({
+        data: industries.map((industry) => ({
+          userId: id,
+          industrySlug: industry,
+        })),
+      });
+    }
+
+    // Update user tags
+    await this.prismaService.userTags.deleteMany({
+      where: { userId: id },
+    });
+
+    if (tags_array) {
+      await this.prismaService.userTags.createMany({
+        data: tags_array.map((tag) => ({
+          userId: id,
+          tagSlug: tag,
+        })),
+      });
+    }
+
+    // Update user channels
+    await this.prismaService.userChannels.deleteMany({
+      where: { userId: id },
+    });
+    if (channels_array) {
+      await this.prismaService.userChannels.createMany({
+        data: channels_array.map((channel) => ({
+          userId: id,
+          channelSlug: channel,
+        })),
+      });
+    }
+
+    // Update user specialists
+    await this.prismaService.userSkills.deleteMany({
+      where: { userId: id },
+    });
+    if (specialists_array) {
+      await this.prismaService.userSkills.createMany({
+        data: specialists_array.map((specialist) => ({
+          userId: id,
+          skillSlug: specialist,
+        })),
+      });
+    }
+
+    return updatedUser;
   }
+
   async updateUserByEmail(email: string, data: UpdateUserDto) {
-    return this.prismaService.user.update({ where: { email }, data });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { tags_array, channels_array, specialists_array, ...userData } = data;
+    return this.prismaService.user.update({ where: { email }, data: userData });
   }
 
   async getUserById(id: string) {
@@ -88,6 +213,26 @@ export class UsersService {
       include: {
         company: true,
         freelance: true,
+        industryTags: {
+          include: {
+            tag: true,
+          },
+        },
+        industryChannels: {
+          include: {
+            channel: true,
+          },
+        },
+        industrySkills: {
+          include: {
+            skill: true,
+          },
+        },
+        industriesRelated: {
+          include: {
+            industry: true,
+          },
+        },
       },
     });
 
@@ -112,6 +257,59 @@ export class UsersService {
             freelanceRevenue: true,
           },
         },
+        industryTags: {
+          select: {
+            tag: {
+              select: {
+                name: true,
+                slug: true,
+                industry: {
+                  select: {
+                    name: true,
+                    slug: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+        industryChannels: {
+          select: {
+            channel: {
+              select: {
+                name: true,
+                slug: true,
+                industry: {
+                  select: {
+                    name: true,
+                    slug: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+        industrySkills: {
+          select: {
+            skill: {
+              select: {
+                title: true,
+                slug: true,
+                industry: {
+                  select: {
+                    name: true,
+                    slug: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+        industriesRelated: {
+          select: {
+            industry: true,
+          },
+        },
       },
     });
 
@@ -119,21 +317,26 @@ export class UsersService {
       throw new NotFoundException(`User not found`);
     }
 
-    return user;
-  }
+    const transformedUser = {
+      ...user,
+      industryTags: user.industryTags.map((item) => ({
+        name: item.tag.name,
+        slug: item.tag.slug,
+        industry: item.tag.industry,
+      })),
+      industryChannels: user.industryChannels.map((item) => ({
+        name: item.channel.name,
+        slug: item.channel.slug,
+        industry: item.channel.industry,
+      })),
+      industrySkills: user.industrySkills.map((item) => ({
+        title: item.skill.title,
+        slug: item.skill.slug,
+        industry: item.skill.industry,
+      })),
+    };
 
-  async findOne(id: string) {
-    try {
-      // Uses the existing getUserById but handles the NotFoundException gracefully
-      // This is what the JWT strategy expects
-      return await this.getUserById(id);
-    } catch (error) {
-      // Return null instead of throwing an exception for the JWT strategy
-      if (error instanceof NotFoundException) {
-        return null;
-      }
-      throw error;
-    }
+    return transformedUser;
   }
 
   async getUserByEmail(email: string) {
@@ -145,7 +348,64 @@ export class UsersService {
             companyRevenue: true,
           },
         },
-        freelance: true,
+        freelance: {
+          include: {
+            freelanceRevenue: true,
+          },
+        },
+        industryTags: {
+          select: {
+            tag: {
+              select: {
+                name: true,
+                slug: true,
+                industry: {
+                  select: {
+                    name: true,
+                    slug: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+        industryChannels: {
+          select: {
+            channel: {
+              select: {
+                name: true,
+                slug: true,
+                industry: {
+                  select: {
+                    name: true,
+                    slug: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+        industrySkills: {
+          select: {
+            skill: {
+              select: {
+                title: true,
+                slug: true,
+                industry: {
+                  select: {
+                    name: true,
+                    slug: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+        industriesRelated: {
+          select: {
+            industry: true,
+          },
+        },
       },
     });
 

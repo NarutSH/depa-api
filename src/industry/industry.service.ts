@@ -17,24 +17,27 @@ export class IndustryService {
       select: {
         name: true,
         slug: true,
-        Category: {
-          select: {
-            slug: true,
-            name: true,
-          },
-        },
-        Source: {
-          select: {
-            slug: true,
-            name: true,
-          },
-        },
-        Channel: {
-          select: {
-            slug: true,
-            name: true,
-          },
-        },
+        color: true,
+        description: true,
+        image: true,
+        // Category: {
+        //   select: {
+        //     slug: true,
+        //     name: true,
+        //   },
+        // },
+        // Source: {
+        //   select: {
+        //     slug: true,
+        //     name: true,
+        //   },
+        // },
+        // Channel: {
+        //   select: {
+        //     slug: true,
+        //     name: true,
+        //   },
+        // },
       },
     });
   }
@@ -276,9 +279,8 @@ export class IndustryService {
     skip?: number;
     take?: number;
     industrySlug?: string;
-    group?: string;
-  }) {
-    const { skip, take, industrySlug, group } = params;
+  }): Promise<SkillResponse[]> {
+    const { skip, take, industrySlug } = params;
 
     const where: Prisma.SkillWhereInput = {};
 
@@ -286,19 +288,18 @@ export class IndustryService {
       where.industrySlug = industrySlug;
     }
 
-    if (group) {
-      where.group = group;
-    }
-
     return this.prismaService.skill.findMany({
       skip,
       take,
       where,
-      include: {
+      select: {
+        title: true,
+        slug: true,
         industry: {
           select: {
             name: true,
             slug: true,
+            color: true,
           },
         },
       },
@@ -370,4 +371,281 @@ export class IndustryService {
       where: { slug },
     });
   }
+
+  // CRUD operations for Tags model
+  async createTag(data: { name: string; slug: string; industrySlug: string }) {
+    // First check if industry exists
+    const industry = await this.prismaService.industry.findUnique({
+      where: { slug: data.industrySlug },
+    });
+
+    if (!industry) {
+      throw new NotFoundException(
+        `Industry with slug ${data.industrySlug} not found`,
+      );
+    }
+
+    // Check if tag with same slug already exists
+    const existingTag = await this.prismaService.tag.findFirst({
+      where: {
+        slug: data.slug,
+        industrySlug: data.industrySlug,
+      },
+    });
+
+    if (existingTag) {
+      throw new Error(
+        `Tag with slug ${data.slug} already exists for industry ${data.industrySlug}`,
+      );
+    }
+
+    return this.prismaService.tag.create({
+      data,
+    });
+  }
+  async findAllTags(params: {
+    skip?: number;
+    take?: number;
+    industrySlug?: string;
+  }): Promise<TagResponse[]> {
+    const { skip, take, industrySlug } = params;
+
+    const where: Prisma.TagWhereInput = {};
+
+    if (industrySlug) {
+      where.industrySlug = industrySlug;
+    }
+
+    return this.prismaService.tag.findMany({
+      skip,
+      take,
+      where,
+      select: {
+        name: true,
+        slug: true,
+        industry: {
+          select: {
+            name: true,
+            slug: true,
+            color: true,
+          },
+        },
+      },
+    });
+  }
+  async findTagBySlug(slug: string, industrySlug?: string) {
+    const where: Prisma.TagWhereInput = { slug };
+
+    if (industrySlug) {
+      where.industrySlug = industrySlug;
+    }
+
+    const tag = await this.prismaService.tag.findFirst({
+      where,
+      include: {
+        industry: {
+          select: {
+            name: true,
+            slug: true,
+            color: true,
+          },
+        },
+      },
+    });
+
+    if (!tag) {
+      throw new NotFoundException(`Tag with slug ${slug} not found`);
+    }
+
+    return tag;
+  }
+  async updateTag(
+    slug: string,
+    data: {
+      title?: string;
+      newSlug?: string;
+    },
+  ) {
+    const tag = await this.prismaService.tag.findUnique({
+      where: { slug },
+    });
+
+    if (!tag) {
+      throw new NotFoundException(`Tag with slug ${slug} not found`);
+    }
+
+    return this.prismaService.tag.update({
+      where: { slug },
+      data: {
+        name: data.title,
+        slug: data.newSlug || tag.slug,
+      },
+    });
+  }
+  async deleteTag(slug: string) {
+    const tag = await this.prismaService.tag.findUnique({
+      where: { slug },
+    });
+
+    if (!tag) {
+      throw new NotFoundException(`Tag with slug ${slug} not found`);
+    }
+
+    return this.prismaService.tag.delete({
+      where: { slug },
+    });
+  }
+
+  // CRUD operations for Channels model
+  async createChannel(data: {
+    name: string;
+    slug: string;
+    industrySlug: string;
+  }) {
+    // First check if industry exists
+    const industry = await this.prismaService.industry.findUnique({
+      where: { slug: data.industrySlug },
+    });
+
+    if (!industry) {
+      throw new NotFoundException(
+        `Industry with slug ${data.industrySlug} not found`,
+      );
+    }
+
+    // Check if channel with same slug already exists
+    const existingChannel = await this.prismaService.channel.findFirst({
+      where: {
+        slug: data.slug,
+        industrySlug: data.industrySlug,
+      },
+    });
+
+    if (existingChannel) {
+      throw new Error(
+        `Channel with slug ${data.slug} already exists for industry ${data.industrySlug}`,
+      );
+    }
+
+    return this.prismaService.channel.create({
+      data,
+    });
+  }
+  async findAllChannels(params: {
+    skip?: number;
+    take?: number;
+    industrySlug?: string;
+  }): Promise<ChannelResponse[]> {
+    const { skip, take, industrySlug } = params;
+
+    const where: Prisma.ChannelWhereInput = {};
+
+    if (industrySlug) {
+      where.industrySlug = industrySlug;
+    }
+
+    return this.prismaService.channel.findMany({
+      skip,
+      take,
+      where,
+      select: {
+        name: true,
+        slug: true,
+        industry: {
+          select: {
+            name: true,
+            slug: true,
+            color: true,
+          },
+        },
+      },
+    });
+  }
+  async findChannelBySlug(slug: string, industrySlug?: string) {
+    const where: Prisma.ChannelWhereInput = { slug };
+
+    if (industrySlug) {
+      where.industrySlug = industrySlug;
+    }
+
+    const channel = await this.prismaService.channel.findFirst({
+      where,
+      include: {
+        industry: {
+          select: {
+            name: true,
+            slug: true,
+            color: true,
+          },
+        },
+      },
+    });
+
+    if (!channel) {
+      throw new NotFoundException(`Channel with slug ${slug} not found`);
+    }
+
+    return channel;
+  }
+  async updateChannel(
+    slug: string,
+    data: {
+      title?: string;
+      newSlug?: string;
+    },
+  ) {
+    const channel = await this.prismaService.channel.findUnique({
+      where: { slug },
+    });
+
+    if (!channel) {
+      throw new NotFoundException(`Channel with slug ${slug} not found`);
+    }
+
+    return this.prismaService.channel.update({
+      where: { slug },
+      data: {
+        name: data.title,
+        slug: data.newSlug || channel.slug,
+      },
+    });
+  }
+  async deleteChannel(slug: string) {
+    const channel = await this.prismaService.channel.findUnique({
+      where: { slug },
+    });
+
+    if (!channel) {
+      throw new NotFoundException(`Channel with slug ${slug} not found`);
+    }
+
+    return this.prismaService.channel.delete({
+      where: { slug },
+    });
+  }
 }
+
+type SkillResponse = {
+  title: string;
+  slug: string;
+  industry: {
+    name: string;
+    slug: string;
+  };
+};
+type TagResponse = {
+  name: string;
+  slug: string;
+  industry: {
+    name: string;
+    slug: string;
+  };
+};
+type ChannelResponse = {
+  name: string;
+  slug: string;
+  industry: {
+    name: string;
+    slug: string;
+  };
+};

@@ -2,11 +2,10 @@ import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class FindSkillsQueryDto {
+export class FindChannelsQueryDto {
   @ApiProperty({
     description: 'Number of items to skip for pagination',
     required: false,
-    // example: 0,
     minimum: 0,
   })
   @IsOptional()
@@ -18,7 +17,6 @@ export class FindSkillsQueryDto {
   @ApiProperty({
     description: 'Number of items to take for pagination',
     required: false,
-    // example: 10,
     minimum: 1,
   })
   @IsOptional()
@@ -28,7 +26,7 @@ export class FindSkillsQueryDto {
   take?: number;
 
   @ApiProperty({
-    description: 'Filter skills by industry slug',
+    description: 'Filter channels by industry slug',
     required: false,
     example: 'game',
   })
