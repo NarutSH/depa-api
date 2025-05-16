@@ -143,6 +143,8 @@ export class UsersService {
       data: userData,
     });
 
+    console.log('industries===>', industries);
+
     // Update user industries
     await this.prismaService.userIndustry.deleteMany({
       where: { userId: id },
