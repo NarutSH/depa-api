@@ -45,8 +45,12 @@ export class IndustryService {
   async getSkills() {
     return this.prismaService.industry.findMany({
       select: {
+        id: true,
         name: true,
         slug: true,
+        color: true,
+        createdAt: true,
+        updatedAt: true,
         Skill: {
           select: {
             title: true,
