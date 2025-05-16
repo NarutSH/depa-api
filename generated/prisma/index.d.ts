@@ -8815,7 +8815,7 @@ export namespace Prisma {
   export type UserIndustryMinAggregateOutputType = {
     id: string | null
     userId: string | null
-    industryId: string | null
+    industrySlug: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -8823,7 +8823,7 @@ export namespace Prisma {
   export type UserIndustryMaxAggregateOutputType = {
     id: string | null
     userId: string | null
-    industryId: string | null
+    industrySlug: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -8831,7 +8831,7 @@ export namespace Prisma {
   export type UserIndustryCountAggregateOutputType = {
     id: number
     userId: number
-    industryId: number
+    industrySlug: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -8841,7 +8841,7 @@ export namespace Prisma {
   export type UserIndustryMinAggregateInputType = {
     id?: true
     userId?: true
-    industryId?: true
+    industrySlug?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -8849,7 +8849,7 @@ export namespace Prisma {
   export type UserIndustryMaxAggregateInputType = {
     id?: true
     userId?: true
-    industryId?: true
+    industrySlug?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -8857,7 +8857,7 @@ export namespace Prisma {
   export type UserIndustryCountAggregateInputType = {
     id?: true
     userId?: true
-    industryId?: true
+    industrySlug?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -8938,7 +8938,7 @@ export namespace Prisma {
   export type UserIndustryGroupByOutputType = {
     id: string
     userId: string
-    industryId: string
+    industrySlug: string
     createdAt: Date
     updatedAt: Date
     _count: UserIndustryCountAggregateOutputType | null
@@ -8963,7 +8963,7 @@ export namespace Prisma {
   export type UserIndustrySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    industryId?: boolean
+    industrySlug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -8973,7 +8973,7 @@ export namespace Prisma {
   export type UserIndustrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    industryId?: boolean
+    industrySlug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -8983,7 +8983,7 @@ export namespace Prisma {
   export type UserIndustrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    industryId?: boolean
+    industrySlug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -8993,12 +8993,12 @@ export namespace Prisma {
   export type UserIndustrySelectScalar = {
     id?: boolean
     userId?: boolean
-    industryId?: boolean
+    industrySlug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserIndustryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "industryId" | "createdAt" | "updatedAt", ExtArgs["result"]["userIndustry"]>
+  export type UserIndustryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "industrySlug" | "createdAt" | "updatedAt", ExtArgs["result"]["userIndustry"]>
   export type UserIndustryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     industry?: boolean | IndustryDefaultArgs<ExtArgs>
@@ -9021,7 +9021,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
-      industryId: string
+      industrySlug: string
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["userIndustry"]>
@@ -9451,7 +9451,7 @@ export namespace Prisma {
   interface UserIndustryFieldRefs {
     readonly id: FieldRef<"UserIndustry", 'String'>
     readonly userId: FieldRef<"UserIndustry", 'String'>
-    readonly industryId: FieldRef<"UserIndustry", 'String'>
+    readonly industrySlug: FieldRef<"UserIndustry", 'String'>
     readonly createdAt: FieldRef<"UserIndustry", 'DateTime'>
     readonly updatedAt: FieldRef<"UserIndustry", 'DateTime'>
   }
@@ -19328,6 +19328,9 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    color: string | null
+    description: string | null
+    image: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -19336,6 +19339,9 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    color: string | null
+    description: string | null
+    image: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -19344,6 +19350,9 @@ export namespace Prisma {
     id: number
     name: number
     slug: number
+    color: number
+    description: number
+    image: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -19354,6 +19363,9 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    color?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19362,6 +19374,9 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    color?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19370,6 +19385,9 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    color?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -19451,6 +19469,9 @@ export namespace Prisma {
     id: string
     name: string
     slug: string
+    color: string | null
+    description: string | null
+    image: string | null
     createdAt: Date
     updatedAt: Date
     _count: IndustryCountAggregateOutputType | null
@@ -19476,6 +19497,9 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    color?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     Skill?: boolean | Industry$SkillArgs<ExtArgs>
@@ -19497,6 +19521,9 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    color?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["industry"]>
@@ -19505,6 +19532,9 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    color?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["industry"]>
@@ -19513,11 +19543,14 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    color?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type IndustryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "createdAt" | "updatedAt", ExtArgs["result"]["industry"]>
+  export type IndustryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "color" | "description" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["industry"]>
   export type IndustryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Skill?: boolean | Industry$SkillArgs<ExtArgs>
     Source?: boolean | Industry$SourceArgs<ExtArgs>
@@ -19556,6 +19589,9 @@ export namespace Prisma {
       id: string
       name: string
       slug: string
+      color: string | null
+      description: string | null
+      image: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["industry"]>
@@ -19996,6 +20032,9 @@ export namespace Prisma {
     readonly id: FieldRef<"Industry", 'String'>
     readonly name: FieldRef<"Industry", 'String'>
     readonly slug: FieldRef<"Industry", 'String'>
+    readonly color: FieldRef<"Industry", 'String'>
+    readonly description: FieldRef<"Industry", 'String'>
+    readonly image: FieldRef<"Industry", 'String'>
     readonly createdAt: FieldRef<"Industry", 'DateTime'>
     readonly updatedAt: FieldRef<"Industry", 'DateTime'>
   }
@@ -22936,6 +22975,8 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    description: string | null
+    image: string | null
     createdAt: Date | null
     updatedAt: Date | null
     industrySlug: string | null
@@ -22945,6 +22986,8 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    description: string | null
+    image: string | null
     createdAt: Date | null
     updatedAt: Date | null
     industrySlug: string | null
@@ -22954,6 +22997,8 @@ export namespace Prisma {
     id: number
     name: number
     slug: number
+    description: number
+    image: number
     createdAt: number
     updatedAt: number
     industrySlug: number
@@ -22965,6 +23010,8 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     industrySlug?: true
@@ -22974,6 +23021,8 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     industrySlug?: true
@@ -22983,6 +23032,8 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     industrySlug?: true
@@ -23065,6 +23116,8 @@ export namespace Prisma {
     id: string
     name: string
     slug: string
+    description: string | null
+    image: string | null
     createdAt: Date
     updatedAt: Date
     industrySlug: string
@@ -23091,6 +23144,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
@@ -23103,6 +23158,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
@@ -23113,6 +23170,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
@@ -23123,12 +23182,14 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
   }
 
-  export type CategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "createdAt" | "updatedAt" | "industrySlug", ExtArgs["result"]["category"]>
+  export type CategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "image" | "createdAt" | "updatedAt" | "industrySlug", ExtArgs["result"]["category"]>
   export type CategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     industry?: boolean | IndustryDefaultArgs<ExtArgs>
     RevenueStream?: boolean | Category$RevenueStreamArgs<ExtArgs>
@@ -23151,6 +23212,8 @@ export namespace Prisma {
       id: string
       name: string
       slug: string
+      description: string | null
+      image: string | null
       createdAt: Date
       updatedAt: Date
       industrySlug: string
@@ -23582,6 +23645,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Category", 'String'>
     readonly name: FieldRef<"Category", 'String'>
     readonly slug: FieldRef<"Category", 'String'>
+    readonly description: FieldRef<"Category", 'String'>
+    readonly image: FieldRef<"Category", 'String'>
     readonly createdAt: FieldRef<"Category", 'DateTime'>
     readonly updatedAt: FieldRef<"Category", 'DateTime'>
     readonly industrySlug: FieldRef<"Category", 'String'>
@@ -24037,6 +24102,8 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    description: string | null
+    image: string | null
     createdAt: Date | null
     updatedAt: Date | null
     industrySlug: string | null
@@ -24046,6 +24113,8 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    description: string | null
+    image: string | null
     createdAt: Date | null
     updatedAt: Date | null
     industrySlug: string | null
@@ -24055,6 +24124,8 @@ export namespace Prisma {
     id: number
     name: number
     slug: number
+    description: number
+    image: number
     createdAt: number
     updatedAt: number
     industrySlug: number
@@ -24066,6 +24137,8 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     industrySlug?: true
@@ -24075,6 +24148,8 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     industrySlug?: true
@@ -24084,6 +24159,8 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     industrySlug?: true
@@ -24166,6 +24243,8 @@ export namespace Prisma {
     id: string
     name: string
     slug: string
+    description: string | null
+    image: string | null
     createdAt: Date
     updatedAt: Date
     industrySlug: string
@@ -24192,6 +24271,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
@@ -24204,6 +24285,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
@@ -24214,6 +24297,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
@@ -24224,12 +24309,14 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
   }
 
-  export type SourceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "createdAt" | "updatedAt" | "industrySlug", ExtArgs["result"]["source"]>
+  export type SourceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "image" | "createdAt" | "updatedAt" | "industrySlug", ExtArgs["result"]["source"]>
   export type SourceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     industry?: boolean | IndustryDefaultArgs<ExtArgs>
     RevenueStream?: boolean | Source$RevenueStreamArgs<ExtArgs>
@@ -24252,6 +24339,8 @@ export namespace Prisma {
       id: string
       name: string
       slug: string
+      description: string | null
+      image: string | null
       createdAt: Date
       updatedAt: Date
       industrySlug: string
@@ -24683,6 +24772,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Source", 'String'>
     readonly name: FieldRef<"Source", 'String'>
     readonly slug: FieldRef<"Source", 'String'>
+    readonly description: FieldRef<"Source", 'String'>
+    readonly image: FieldRef<"Source", 'String'>
     readonly createdAt: FieldRef<"Source", 'DateTime'>
     readonly updatedAt: FieldRef<"Source", 'DateTime'>
     readonly industrySlug: FieldRef<"Source", 'String'>
@@ -25138,6 +25229,8 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    description: string | null
+    image: string | null
     createdAt: Date | null
     updatedAt: Date | null
     industrySlug: string | null
@@ -25147,6 +25240,8 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    description: string | null
+    image: string | null
     createdAt: Date | null
     updatedAt: Date | null
     industrySlug: string | null
@@ -25156,6 +25251,8 @@ export namespace Prisma {
     id: number
     name: number
     slug: number
+    description: number
+    image: number
     createdAt: number
     updatedAt: number
     industrySlug: number
@@ -25167,6 +25264,8 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     industrySlug?: true
@@ -25176,6 +25275,8 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     industrySlug?: true
@@ -25185,6 +25286,8 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     industrySlug?: true
@@ -25267,6 +25370,8 @@ export namespace Prisma {
     id: string
     name: string
     slug: string
+    description: string | null
+    image: string | null
     createdAt: Date
     updatedAt: Date
     industrySlug: string
@@ -25293,6 +25398,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
@@ -25306,6 +25413,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
@@ -25316,6 +25425,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
@@ -25326,12 +25437,14 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
   }
 
-  export type ChannelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "createdAt" | "updatedAt" | "industrySlug", ExtArgs["result"]["channel"]>
+  export type ChannelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "image" | "createdAt" | "updatedAt" | "industrySlug", ExtArgs["result"]["channel"]>
   export type ChannelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     industry?: boolean | IndustryDefaultArgs<ExtArgs>
     RevenueStream?: boolean | Channel$RevenueStreamArgs<ExtArgs>
@@ -25356,6 +25469,8 @@ export namespace Prisma {
       id: string
       name: string
       slug: string
+      description: string | null
+      image: string | null
       createdAt: Date
       updatedAt: Date
       industrySlug: string
@@ -25788,6 +25903,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Channel", 'String'>
     readonly name: FieldRef<"Channel", 'String'>
     readonly slug: FieldRef<"Channel", 'String'>
+    readonly description: FieldRef<"Channel", 'String'>
+    readonly image: FieldRef<"Channel", 'String'>
     readonly createdAt: FieldRef<"Channel", 'DateTime'>
     readonly updatedAt: FieldRef<"Channel", 'DateTime'>
     readonly industrySlug: FieldRef<"Channel", 'String'>
@@ -26267,6 +26384,8 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    description: string | null
+    image: string | null
     createdAt: Date | null
     updatedAt: Date | null
     industrySlug: string | null
@@ -26276,6 +26395,8 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    description: string | null
+    image: string | null
     createdAt: Date | null
     updatedAt: Date | null
     industrySlug: string | null
@@ -26285,6 +26406,8 @@ export namespace Prisma {
     id: number
     name: number
     slug: number
+    description: number
+    image: number
     createdAt: number
     updatedAt: number
     industrySlug: number
@@ -26296,6 +26419,8 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     industrySlug?: true
@@ -26305,6 +26430,8 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     industrySlug?: true
@@ -26314,6 +26441,8 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     industrySlug?: true
@@ -26396,6 +26525,8 @@ export namespace Prisma {
     id: string
     name: string
     slug: string
+    description: string | null
+    image: string | null
     createdAt: Date
     updatedAt: Date
     industrySlug: string
@@ -26422,6 +26553,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
@@ -26434,6 +26567,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
@@ -26444,6 +26579,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
@@ -26454,12 +26591,14 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     industrySlug?: boolean
   }
 
-  export type SegmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "createdAt" | "updatedAt" | "industrySlug", ExtArgs["result"]["segment"]>
+  export type SegmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "image" | "createdAt" | "updatedAt" | "industrySlug", ExtArgs["result"]["segment"]>
   export type SegmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     industry?: boolean | IndustryDefaultArgs<ExtArgs>
     RevenueStream?: boolean | Segment$RevenueStreamArgs<ExtArgs>
@@ -26482,6 +26621,8 @@ export namespace Prisma {
       id: string
       name: string
       slug: string
+      description: string | null
+      image: string | null
       createdAt: Date
       updatedAt: Date
       industrySlug: string
@@ -26913,6 +27054,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Segment", 'String'>
     readonly name: FieldRef<"Segment", 'String'>
     readonly slug: FieldRef<"Segment", 'String'>
+    readonly description: FieldRef<"Segment", 'String'>
+    readonly image: FieldRef<"Segment", 'String'>
     readonly createdAt: FieldRef<"Segment", 'DateTime'>
     readonly updatedAt: FieldRef<"Segment", 'DateTime'>
     readonly industrySlug: FieldRef<"Segment", 'String'>
@@ -37588,7 +37731,7 @@ export namespace Prisma {
   export const UserIndustryScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
-    industryId: 'industryId',
+    industrySlug: 'industrySlug',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -37730,6 +37873,9 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     slug: 'slug',
+    color: 'color',
+    description: 'description',
+    image: 'image',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -37765,6 +37911,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     slug: 'slug',
+    description: 'description',
+    image: 'image',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     industrySlug: 'industrySlug'
@@ -37777,6 +37925,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     slug: 'slug',
+    description: 'description',
+    image: 'image',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     industrySlug: 'industrySlug'
@@ -37789,6 +37939,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     slug: 'slug',
+    description: 'description',
+    image: 'image',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     industrySlug: 'industrySlug'
@@ -37801,6 +37953,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     slug: 'slug',
+    description: 'description',
+    image: 'image',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     industrySlug: 'industrySlug'
@@ -38431,7 +38585,7 @@ export namespace Prisma {
     NOT?: UserIndustryWhereInput | UserIndustryWhereInput[]
     id?: UuidFilter<"UserIndustry"> | string
     userId?: UuidFilter<"UserIndustry"> | string
-    industryId?: UuidFilter<"UserIndustry"> | string
+    industrySlug?: StringFilter<"UserIndustry"> | string
     createdAt?: DateTimeFilter<"UserIndustry"> | Date | string
     updatedAt?: DateTimeFilter<"UserIndustry"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -38441,7 +38595,7 @@ export namespace Prisma {
   export type UserIndustryOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
-    industryId?: SortOrder
+    industrySlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -38450,22 +38604,22 @@ export namespace Prisma {
 
   export type UserIndustryWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    userId_industryId?: UserIndustryUserIdIndustryIdCompoundUniqueInput
+    userId_industrySlug?: UserIndustryUserIdIndustrySlugCompoundUniqueInput
     AND?: UserIndustryWhereInput | UserIndustryWhereInput[]
     OR?: UserIndustryWhereInput[]
     NOT?: UserIndustryWhereInput | UserIndustryWhereInput[]
     userId?: UuidFilter<"UserIndustry"> | string
-    industryId?: UuidFilter<"UserIndustry"> | string
+    industrySlug?: StringFilter<"UserIndustry"> | string
     createdAt?: DateTimeFilter<"UserIndustry"> | Date | string
     updatedAt?: DateTimeFilter<"UserIndustry"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     industry?: XOR<IndustryScalarRelationFilter, IndustryWhereInput>
-  }, "id" | "userId_industryId">
+  }, "id" | "userId_industrySlug">
 
   export type UserIndustryOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
-    industryId?: SortOrder
+    industrySlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserIndustryCountOrderByAggregateInput
@@ -38479,7 +38633,7 @@ export namespace Prisma {
     NOT?: UserIndustryScalarWhereWithAggregatesInput | UserIndustryScalarWhereWithAggregatesInput[]
     id?: UuidWithAggregatesFilter<"UserIndustry"> | string
     userId?: UuidWithAggregatesFilter<"UserIndustry"> | string
-    industryId?: UuidWithAggregatesFilter<"UserIndustry"> | string
+    industrySlug?: StringWithAggregatesFilter<"UserIndustry"> | string
     createdAt?: DateTimeWithAggregatesFilter<"UserIndustry"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"UserIndustry"> | Date | string
   }
@@ -39199,6 +39353,9 @@ export namespace Prisma {
     id?: UuidFilter<"Industry"> | string
     name?: StringFilter<"Industry"> | string
     slug?: StringFilter<"Industry"> | string
+    color?: StringNullableFilter<"Industry"> | string | null
+    description?: StringNullableFilter<"Industry"> | string | null
+    image?: StringNullableFilter<"Industry"> | string | null
     createdAt?: DateTimeFilter<"Industry"> | Date | string
     updatedAt?: DateTimeFilter<"Industry"> | Date | string
     Skill?: SkillListRelationFilter
@@ -39219,6 +39376,9 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    color?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     Skill?: SkillOrderByRelationAggregateInput
@@ -39242,6 +39402,9 @@ export namespace Prisma {
     OR?: IndustryWhereInput[]
     NOT?: IndustryWhereInput | IndustryWhereInput[]
     name?: StringFilter<"Industry"> | string
+    color?: StringNullableFilter<"Industry"> | string | null
+    description?: StringNullableFilter<"Industry"> | string | null
+    image?: StringNullableFilter<"Industry"> | string | null
     createdAt?: DateTimeFilter<"Industry"> | Date | string
     updatedAt?: DateTimeFilter<"Industry"> | Date | string
     Skill?: SkillListRelationFilter
@@ -39262,6 +39425,9 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    color?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: IndustryCountOrderByAggregateInput
@@ -39276,6 +39442,9 @@ export namespace Prisma {
     id?: UuidWithAggregatesFilter<"Industry"> | string
     name?: StringWithAggregatesFilter<"Industry"> | string
     slug?: StringWithAggregatesFilter<"Industry"> | string
+    color?: StringNullableWithAggregatesFilter<"Industry"> | string | null
+    description?: StringNullableWithAggregatesFilter<"Industry"> | string | null
+    image?: StringNullableWithAggregatesFilter<"Industry"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Industry"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Industry"> | Date | string
   }
@@ -39416,6 +39585,8 @@ export namespace Prisma {
     id?: UuidFilter<"Category"> | string
     name?: StringFilter<"Category"> | string
     slug?: StringFilter<"Category"> | string
+    description?: StringNullableFilter<"Category"> | string | null
+    image?: StringNullableFilter<"Category"> | string | null
     createdAt?: DateTimeFilter<"Category"> | Date | string
     updatedAt?: DateTimeFilter<"Category"> | Date | string
     industrySlug?: StringFilter<"Category"> | string
@@ -39427,6 +39598,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -39442,6 +39615,8 @@ export namespace Prisma {
     OR?: CategoryWhereInput[]
     NOT?: CategoryWhereInput | CategoryWhereInput[]
     name?: StringFilter<"Category"> | string
+    description?: StringNullableFilter<"Category"> | string | null
+    image?: StringNullableFilter<"Category"> | string | null
     createdAt?: DateTimeFilter<"Category"> | Date | string
     updatedAt?: DateTimeFilter<"Category"> | Date | string
     industrySlug?: StringFilter<"Category"> | string
@@ -39453,6 +39628,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -39468,6 +39645,8 @@ export namespace Prisma {
     id?: UuidWithAggregatesFilter<"Category"> | string
     name?: StringWithAggregatesFilter<"Category"> | string
     slug?: StringWithAggregatesFilter<"Category"> | string
+    description?: StringNullableWithAggregatesFilter<"Category"> | string | null
+    image?: StringNullableWithAggregatesFilter<"Category"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Category"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Category"> | Date | string
     industrySlug?: StringWithAggregatesFilter<"Category"> | string
@@ -39480,6 +39659,8 @@ export namespace Prisma {
     id?: UuidFilter<"Source"> | string
     name?: StringFilter<"Source"> | string
     slug?: StringFilter<"Source"> | string
+    description?: StringNullableFilter<"Source"> | string | null
+    image?: StringNullableFilter<"Source"> | string | null
     createdAt?: DateTimeFilter<"Source"> | Date | string
     updatedAt?: DateTimeFilter<"Source"> | Date | string
     industrySlug?: StringFilter<"Source"> | string
@@ -39491,6 +39672,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -39506,6 +39689,8 @@ export namespace Prisma {
     OR?: SourceWhereInput[]
     NOT?: SourceWhereInput | SourceWhereInput[]
     name?: StringFilter<"Source"> | string
+    description?: StringNullableFilter<"Source"> | string | null
+    image?: StringNullableFilter<"Source"> | string | null
     createdAt?: DateTimeFilter<"Source"> | Date | string
     updatedAt?: DateTimeFilter<"Source"> | Date | string
     industrySlug?: StringFilter<"Source"> | string
@@ -39517,6 +39702,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -39532,6 +39719,8 @@ export namespace Prisma {
     id?: UuidWithAggregatesFilter<"Source"> | string
     name?: StringWithAggregatesFilter<"Source"> | string
     slug?: StringWithAggregatesFilter<"Source"> | string
+    description?: StringNullableWithAggregatesFilter<"Source"> | string | null
+    image?: StringNullableWithAggregatesFilter<"Source"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Source"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Source"> | Date | string
     industrySlug?: StringWithAggregatesFilter<"Source"> | string
@@ -39544,6 +39733,8 @@ export namespace Prisma {
     id?: UuidFilter<"Channel"> | string
     name?: StringFilter<"Channel"> | string
     slug?: StringFilter<"Channel"> | string
+    description?: StringNullableFilter<"Channel"> | string | null
+    image?: StringNullableFilter<"Channel"> | string | null
     createdAt?: DateTimeFilter<"Channel"> | Date | string
     updatedAt?: DateTimeFilter<"Channel"> | Date | string
     industrySlug?: StringFilter<"Channel"> | string
@@ -39556,6 +39747,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -39572,6 +39765,8 @@ export namespace Prisma {
     OR?: ChannelWhereInput[]
     NOT?: ChannelWhereInput | ChannelWhereInput[]
     name?: StringFilter<"Channel"> | string
+    description?: StringNullableFilter<"Channel"> | string | null
+    image?: StringNullableFilter<"Channel"> | string | null
     createdAt?: DateTimeFilter<"Channel"> | Date | string
     updatedAt?: DateTimeFilter<"Channel"> | Date | string
     industrySlug?: StringFilter<"Channel"> | string
@@ -39584,6 +39779,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -39599,6 +39796,8 @@ export namespace Prisma {
     id?: UuidWithAggregatesFilter<"Channel"> | string
     name?: StringWithAggregatesFilter<"Channel"> | string
     slug?: StringWithAggregatesFilter<"Channel"> | string
+    description?: StringNullableWithAggregatesFilter<"Channel"> | string | null
+    image?: StringNullableWithAggregatesFilter<"Channel"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Channel"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Channel"> | Date | string
     industrySlug?: StringWithAggregatesFilter<"Channel"> | string
@@ -39611,6 +39810,8 @@ export namespace Prisma {
     id?: UuidFilter<"Segment"> | string
     name?: StringFilter<"Segment"> | string
     slug?: StringFilter<"Segment"> | string
+    description?: StringNullableFilter<"Segment"> | string | null
+    image?: StringNullableFilter<"Segment"> | string | null
     createdAt?: DateTimeFilter<"Segment"> | Date | string
     updatedAt?: DateTimeFilter<"Segment"> | Date | string
     industrySlug?: StringFilter<"Segment"> | string
@@ -39622,6 +39823,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -39637,6 +39840,8 @@ export namespace Prisma {
     OR?: SegmentWhereInput[]
     NOT?: SegmentWhereInput | SegmentWhereInput[]
     name?: StringFilter<"Segment"> | string
+    description?: StringNullableFilter<"Segment"> | string | null
+    image?: StringNullableFilter<"Segment"> | string | null
     createdAt?: DateTimeFilter<"Segment"> | Date | string
     updatedAt?: DateTimeFilter<"Segment"> | Date | string
     industrySlug?: StringFilter<"Segment"> | string
@@ -39648,6 +39853,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -39663,6 +39870,8 @@ export namespace Prisma {
     id?: UuidWithAggregatesFilter<"Segment"> | string
     name?: StringWithAggregatesFilter<"Segment"> | string
     slug?: StringWithAggregatesFilter<"Segment"> | string
+    description?: StringNullableWithAggregatesFilter<"Segment"> | string | null
+    image?: StringNullableWithAggregatesFilter<"Segment"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Segment"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Segment"> | Date | string
     industrySlug?: StringWithAggregatesFilter<"Segment"> | string
@@ -40663,7 +40872,7 @@ export namespace Prisma {
   export type UserIndustryUncheckedCreateInput = {
     id?: string
     userId: string
-    industryId: string
+    industrySlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40679,7 +40888,7 @@ export namespace Prisma {
   export type UserIndustryUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    industryId?: StringFieldUpdateOperationsInput | string
+    industrySlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -40687,7 +40896,7 @@ export namespace Prisma {
   export type UserIndustryCreateManyInput = {
     id?: string
     userId: string
-    industryId: string
+    industrySlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40701,7 +40910,7 @@ export namespace Prisma {
   export type UserIndustryUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    industryId?: StringFieldUpdateOperationsInput | string
+    industrySlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41469,6 +41678,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillCreateNestedManyWithoutIndustryInput
@@ -41489,6 +41701,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillUncheckedCreateNestedManyWithoutIndustryInput
@@ -41509,6 +41724,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUpdateManyWithoutIndustryNestedInput
@@ -41529,6 +41747,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUncheckedUpdateManyWithoutIndustryNestedInput
@@ -41549,6 +41770,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -41557,6 +41781,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41565,6 +41792,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41709,6 +41939,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutCategoryInput
@@ -41719,6 +41951,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industrySlug: string
@@ -41729,6 +41963,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutCategoryNestedInput
@@ -41739,6 +41975,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
@@ -41749,6 +41987,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industrySlug: string
@@ -41758,6 +41998,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41766,6 +42008,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
@@ -41775,6 +42019,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutSourceInput
@@ -41785,6 +42031,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industrySlug: string
@@ -41795,6 +42043,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutSourceNestedInput
@@ -41805,6 +42055,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
@@ -41815,6 +42067,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industrySlug: string
@@ -41824,6 +42078,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41832,6 +42088,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
@@ -41841,6 +42099,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutChannelInput
@@ -41852,6 +42112,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industrySlug: string
@@ -41863,6 +42125,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutChannelNestedInput
@@ -41874,6 +42138,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
@@ -41885,6 +42151,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industrySlug: string
@@ -41894,6 +42162,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41902,6 +42172,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
@@ -41911,6 +42183,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutSegmentInput
@@ -41921,6 +42195,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industrySlug: string
@@ -41931,6 +42207,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutSegmentNestedInput
@@ -41941,6 +42219,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
@@ -41951,6 +42231,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industrySlug: string
@@ -41960,6 +42242,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41968,6 +42252,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
@@ -43078,15 +43364,15 @@ export namespace Prisma {
     isNot?: IndustryWhereInput
   }
 
-  export type UserIndustryUserIdIndustryIdCompoundUniqueInput = {
+  export type UserIndustryUserIdIndustrySlugCompoundUniqueInput = {
     userId: string
-    industryId: string
+    industrySlug: string
   }
 
   export type UserIndustryCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    industryId?: SortOrder
+    industrySlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -43094,7 +43380,7 @@ export namespace Prisma {
   export type UserIndustryMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    industryId?: SortOrder
+    industrySlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -43102,7 +43388,7 @@ export namespace Prisma {
   export type UserIndustryMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    industryId?: SortOrder
+    industrySlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -43797,6 +44083,9 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    color?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -43805,6 +44094,9 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    color?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -43813,6 +44105,9 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    color?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -43900,6 +44195,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -43909,6 +44206,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -43918,6 +44217,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -43932,6 +44233,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -43941,6 +44244,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -43950,6 +44255,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -43964,6 +44271,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -43973,6 +44282,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -43982,6 +44293,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -43996,6 +44309,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -44005,6 +44320,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -44014,6 +44331,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industrySlug?: SortOrder
@@ -47501,7 +47820,7 @@ export namespace Prisma {
 
   export type UserIndustryUncheckedCreateWithoutUserInput = {
     id?: string
-    industryId: string
+    industrySlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -47804,7 +48123,7 @@ export namespace Prisma {
     NOT?: UserIndustryScalarWhereInput | UserIndustryScalarWhereInput[]
     id?: UuidFilter<"UserIndustry"> | string
     userId?: UuidFilter<"UserIndustry"> | string
-    industryId?: UuidFilter<"UserIndustry"> | string
+    industrySlug?: StringFilter<"UserIndustry"> | string
     createdAt?: DateTimeFilter<"UserIndustry"> | Date | string
     updatedAt?: DateTimeFilter<"UserIndustry"> | Date | string
   }
@@ -48369,6 +48688,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutChannelInput
@@ -48379,6 +48700,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industrySlug: string
@@ -48478,6 +48801,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutChannelNestedInput
@@ -48488,6 +48813,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
@@ -48765,6 +49092,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillCreateNestedManyWithoutIndustryInput
@@ -48784,6 +49114,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillUncheckedCreateNestedManyWithoutIndustryInput
@@ -48892,6 +49225,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUpdateManyWithoutIndustryNestedInput
@@ -48911,6 +49247,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUncheckedUpdateManyWithoutIndustryNestedInput
@@ -49318,6 +49657,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillCreateNestedManyWithoutIndustryInput
@@ -49337,6 +49679,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillUncheckedCreateNestedManyWithoutIndustryInput
@@ -49361,6 +49706,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutCategoryInput
@@ -49370,6 +49717,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industrySlug: string
@@ -49384,6 +49733,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutSourceInput
@@ -49393,6 +49744,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industrySlug: string
@@ -49407,6 +49760,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutChannelInput
@@ -49417,6 +49772,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industrySlug: string
@@ -49432,6 +49789,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutSegmentInput
@@ -49441,6 +49800,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     industrySlug: string
@@ -49529,6 +49890,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUpdateManyWithoutIndustryNestedInput
@@ -49548,6 +49912,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUncheckedUpdateManyWithoutIndustryNestedInput
@@ -49578,6 +49945,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutCategoryNestedInput
@@ -49587,6 +49956,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
@@ -49607,6 +49978,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutSourceNestedInput
@@ -49616,6 +49989,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
@@ -49636,6 +50011,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutChannelNestedInput
@@ -49646,6 +50023,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
@@ -49667,6 +50046,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutSegmentNestedInput
@@ -49676,6 +50057,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
@@ -50230,6 +50613,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillCreateNestedManyWithoutIndustryInput
@@ -50249,6 +50635,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillUncheckedCreateNestedManyWithoutIndustryInput
@@ -50353,6 +50742,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUpdateManyWithoutIndustryNestedInput
@@ -50372,6 +50764,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUncheckedUpdateManyWithoutIndustryNestedInput
@@ -50822,6 +51217,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillCreateNestedManyWithoutIndustryInput
@@ -50841,6 +51239,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillUncheckedCreateNestedManyWithoutIndustryInput
@@ -50937,6 +51338,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUpdateManyWithoutIndustryNestedInput
@@ -50956,6 +51360,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUncheckedUpdateManyWithoutIndustryNestedInput
@@ -51007,6 +51414,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     RevenueStream?: RevenueStreamCreateNestedManyWithoutSourceInput
@@ -51016,6 +51425,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutSourceInput
@@ -51035,6 +51446,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     RevenueStream?: RevenueStreamCreateNestedManyWithoutChannelInput
@@ -51045,6 +51458,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutChannelInput
@@ -51065,6 +51480,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     RevenueStream?: RevenueStreamCreateNestedManyWithoutSegmentInput
@@ -51074,6 +51491,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutSegmentInput
@@ -51093,6 +51512,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     RevenueStream?: RevenueStreamCreateNestedManyWithoutCategoryInput
@@ -51102,6 +51523,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutCategoryInput
@@ -51356,6 +51779,8 @@ export namespace Prisma {
     id?: UuidFilter<"Source"> | string
     name?: StringFilter<"Source"> | string
     slug?: StringFilter<"Source"> | string
+    description?: StringNullableFilter<"Source"> | string | null
+    image?: StringNullableFilter<"Source"> | string | null
     createdAt?: DateTimeFilter<"Source"> | Date | string
     updatedAt?: DateTimeFilter<"Source"> | Date | string
     industrySlug?: StringFilter<"Source"> | string
@@ -51384,6 +51809,8 @@ export namespace Prisma {
     id?: UuidFilter<"Channel"> | string
     name?: StringFilter<"Channel"> | string
     slug?: StringFilter<"Channel"> | string
+    description?: StringNullableFilter<"Channel"> | string | null
+    image?: StringNullableFilter<"Channel"> | string | null
     createdAt?: DateTimeFilter<"Channel"> | Date | string
     updatedAt?: DateTimeFilter<"Channel"> | Date | string
     industrySlug?: StringFilter<"Channel"> | string
@@ -51412,6 +51839,8 @@ export namespace Prisma {
     id?: UuidFilter<"Segment"> | string
     name?: StringFilter<"Segment"> | string
     slug?: StringFilter<"Segment"> | string
+    description?: StringNullableFilter<"Segment"> | string | null
+    image?: StringNullableFilter<"Segment"> | string | null
     createdAt?: DateTimeFilter<"Segment"> | Date | string
     updatedAt?: DateTimeFilter<"Segment"> | Date | string
     industrySlug?: StringFilter<"Segment"> | string
@@ -51440,6 +51869,8 @@ export namespace Prisma {
     id?: UuidFilter<"Category"> | string
     name?: StringFilter<"Category"> | string
     slug?: StringFilter<"Category"> | string
+    description?: StringNullableFilter<"Category"> | string | null
+    image?: StringNullableFilter<"Category"> | string | null
     createdAt?: DateTimeFilter<"Category"> | Date | string
     updatedAt?: DateTimeFilter<"Category"> | Date | string
     industrySlug?: StringFilter<"Category"> | string
@@ -51599,6 +52030,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillCreateNestedManyWithoutIndustryInput
@@ -51618,6 +52052,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillUncheckedCreateNestedManyWithoutIndustryInput
@@ -51697,6 +52134,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUpdateManyWithoutIndustryNestedInput
@@ -51716,6 +52156,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUncheckedUpdateManyWithoutIndustryNestedInput
@@ -51777,6 +52220,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillCreateNestedManyWithoutIndustryInput
@@ -51796,6 +52242,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillUncheckedCreateNestedManyWithoutIndustryInput
@@ -51853,6 +52302,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUpdateManyWithoutIndustryNestedInput
@@ -51872,6 +52324,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUncheckedUpdateManyWithoutIndustryNestedInput
@@ -51917,6 +52372,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillCreateNestedManyWithoutIndustryInput
@@ -51936,6 +52394,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillUncheckedCreateNestedManyWithoutIndustryInput
@@ -52012,6 +52473,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUpdateManyWithoutIndustryNestedInput
@@ -52031,6 +52495,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUncheckedUpdateManyWithoutIndustryNestedInput
@@ -52066,6 +52533,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillCreateNestedManyWithoutIndustryInput
@@ -52085,6 +52555,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillUncheckedCreateNestedManyWithoutIndustryInput
@@ -52161,6 +52634,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUpdateManyWithoutIndustryNestedInput
@@ -52180,6 +52656,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUncheckedUpdateManyWithoutIndustryNestedInput
@@ -52215,6 +52694,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillCreateNestedManyWithoutIndustryInput
@@ -52234,6 +52716,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillUncheckedCreateNestedManyWithoutIndustryInput
@@ -52332,6 +52817,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUpdateManyWithoutIndustryNestedInput
@@ -52351,6 +52839,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUncheckedUpdateManyWithoutIndustryNestedInput
@@ -52402,6 +52893,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillCreateNestedManyWithoutIndustryInput
@@ -52421,6 +52915,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillUncheckedCreateNestedManyWithoutIndustryInput
@@ -52497,6 +52994,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUpdateManyWithoutIndustryNestedInput
@@ -52516,6 +53016,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUncheckedUpdateManyWithoutIndustryNestedInput
@@ -53919,6 +54422,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillCreateNestedManyWithoutIndustryInput
@@ -53938,6 +54444,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Skill?: SkillUncheckedCreateNestedManyWithoutIndustryInput
@@ -53997,6 +54506,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUpdateManyWithoutIndustryNestedInput
@@ -54016,6 +54528,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Skill?: SkillUncheckedUpdateManyWithoutIndustryNestedInput
@@ -54051,6 +54566,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Source?: SourceCreateNestedManyWithoutIndustryInput
@@ -54070,6 +54588,9 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Source?: SourceUncheckedCreateNestedManyWithoutIndustryInput
@@ -54182,6 +54703,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Source?: SourceUpdateManyWithoutIndustryNestedInput
@@ -54201,6 +54725,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Source?: SourceUncheckedUpdateManyWithoutIndustryNestedInput
@@ -54645,7 +55172,7 @@ export namespace Prisma {
 
   export type UserIndustryCreateManyUserInput = {
     id?: string
-    industryId: string
+    industrySlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -54702,14 +55229,14 @@ export namespace Prisma {
 
   export type UserIndustryUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    industryId?: StringFieldUpdateOperationsInput | string
+    industrySlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserIndustryUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    industryId?: StringFieldUpdateOperationsInput | string
+    industrySlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55237,6 +55764,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -55245,6 +55774,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -55253,6 +55784,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -55261,6 +55794,8 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -55362,6 +55897,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RevenueStream?: RevenueStreamUpdateManyWithoutSourceNestedInput
@@ -55371,6 +55908,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutSourceNestedInput
@@ -55380,6 +55919,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55388,6 +55929,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RevenueStream?: RevenueStreamUpdateManyWithoutChannelNestedInput
@@ -55398,6 +55941,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutChannelNestedInput
@@ -55408,6 +55953,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55416,6 +55963,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RevenueStream?: RevenueStreamUpdateManyWithoutSegmentNestedInput
@@ -55425,6 +55974,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutSegmentNestedInput
@@ -55434,6 +55985,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55442,6 +55995,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RevenueStream?: RevenueStreamUpdateManyWithoutCategoryNestedInput
@@ -55451,6 +56006,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutCategoryNestedInput
@@ -55460,6 +56017,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

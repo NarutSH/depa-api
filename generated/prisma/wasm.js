@@ -167,7 +167,7 @@ exports.Prisma.UserSkillsScalarFieldEnum = {
 exports.Prisma.UserIndustryScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  industryId: 'industryId',
+  industrySlug: 'industrySlug',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -282,6 +282,9 @@ exports.Prisma.IndustryScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
+  color: 'color',
+  description: 'description',
+  image: 'image',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -308,6 +311,8 @@ exports.Prisma.CategoryScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
+  description: 'description',
+  image: 'image',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   industrySlug: 'industrySlug'
@@ -317,6 +322,8 @@ exports.Prisma.SourceScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
+  description: 'description',
+  image: 'image',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   industrySlug: 'industrySlug'
@@ -326,6 +333,8 @@ exports.Prisma.ChannelScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
+  description: 'description',
+  image: 'image',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   industrySlug: 'industrySlug'
@@ -335,6 +344,8 @@ exports.Prisma.SegmentScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
+  description: 'description',
+  image: 'image',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   industrySlug: 'industrySlug'

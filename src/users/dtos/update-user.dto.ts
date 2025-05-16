@@ -52,42 +52,15 @@ class UpdateUserDto {
 
   @IsArray()
   @IsOptional()
-  tags_json?: Array<{
-    category: string;
-    name: string;
-  }>;
+  tags_array?: Array<string>;
 
   @IsArray()
   @IsOptional()
-  channels_json?: Array<{
-    category: string;
-    name: string;
-  }>;
+  channels_array?: Array<string>;
 
   @IsArray()
   @IsOptional()
-  specialists_json?: Array<{
-    category: string;
-    name: string;
-  }>;
-
-  // @IsOptional()
-  // @IsArray()
-  // @ValidateNested({ each: true })
-  // @Type(() => ChannelDto)
-  // tags_json?: ChannelDto[];
-
-  // @IsOptional()
-  // @IsArray()
-  // @ValidateNested({ each: true })
-  // @Type(() => ChannelDto)
-  // channels_json?: ChannelDto[];
-
-  // @IsOptional()
-  // @IsArray()
-  // @ValidateNested({ each: true })
-  // @Type(() => ChannelDto)
-  // specialists_json?: ChannelDto[];
+  specialists_array?: Array<string>;
 }
 
 export default UpdateUserDto;

@@ -137,16 +137,16 @@ model UserSkills {
 }
 
 model UserIndustry {
-  id         String   @id @default(uuid()) @db.Uuid
-  userId     String   @db.Uuid
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  industryId String   @db.Uuid
-  industry   Industry @relation(fields: [industryId], references: [id], onDelete: Cascade)
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @db.Uuid
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  industrySlug String
+  industry     Industry @relation(fields: [industrySlug], references: [slug], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @updatedAt @db.Timestamptz()
 
-  @@unique([userId, industryId])
+  @@unique([userId, industrySlug])
 }
 
 model RefreshToken {
@@ -330,11 +330,14 @@ model FreelanceIndustry {
 }
 
 model Industry {
-  id        String   @id @default(uuid()) @db.Uuid
-  name      String
-  slug      String   @unique
-  createdAt DateTime @default(now()) @db.Timestamptz()
-  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String
+  slug        String   @unique
+  color       String?  @default("#789DBC")
+  description String?
+  image       String?
+  createdAt   DateTime @default(now()) @db.Timestamptz()
+  updatedAt   DateTime @default(now()) @updatedAt @db.Timestamptz()
 
   Skill    Skill[]
   Source   Source[]
@@ -385,6 +388,9 @@ model Category {
   name String
   slug String @unique
 
+  description String?
+  image       String?
+
   createdAt     DateTime        @default(now()) @db.Timestamptz()
   updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz()
   industrySlug  String
@@ -395,9 +401,12 @@ model Category {
 }
 
 model Source {
-  id            String          @id @default(uuid()) @db.Uuid
-  name          String
-  slug          String          @unique
+  id   String @id @default(uuid()) @db.Uuid
+  name String
+  slug String @unique
+
+  description   String?
+  image         String?
   createdAt     DateTime        @default(now()) @db.Timestamptz()
   updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz()
   industrySlug  String
@@ -408,9 +417,12 @@ model Source {
 }
 
 model Channel {
-  id            String          @id @default(uuid()) @db.Uuid
-  name          String
-  slug          String          @unique
+  id   String @id @default(uuid()) @db.Uuid
+  name String
+  slug String @unique
+
+  description   String?
+  image         String?
   createdAt     DateTime        @default(now()) @db.Timestamptz()
   updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz()
   industrySlug  String
@@ -422,9 +434,12 @@ model Channel {
 }
 
 model Segment {
-  id            String          @id @default(uuid()) @db.Uuid
-  name          String
-  slug          String          @unique
+  id   String @id @default(uuid()) @db.Uuid
+  name String
+  slug String @unique
+
+  description   String?
+  image         String?
   createdAt     DateTime        @default(now()) @db.Timestamptz()
   updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz()
   industrySlug  String
