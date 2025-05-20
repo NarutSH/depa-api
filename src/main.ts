@@ -37,6 +37,18 @@ let app: any;
 async function bootstrap() {
   app = await NestFactory.create(AppModule);
 
+  // Ensure uploads directory exists
+  const uploadsDir =
+    process.env.UPLOAD_DIR || path.join(__dirname, '..', 'uploads');
+
+  console.log('uploadsDir', fs.existsSync(uploadsDir));
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  }
+
+  app.useStaticAssets(path.join(__dirname, '..', 'uploads'), {
+    prefix: '/uploads/',
+  });
   // Add global error handler for NestJS
   const httpAdapter = app.getHttpAdapter();
   httpAdapter.getInstance().on('error', (error) => {

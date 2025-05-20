@@ -2345,7 +2345,39 @@
     "/upload": {
       "post": {
         "operationId": "UploadController_uploadFile",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "folder",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Upload"
+        ]
+      }
+    },
+    "/upload/multiple": {
+      "post": {
+        "operationId": "UploadController_uploadMultipleFiles",
+        "parameters": [
+          {
+            "name": "folder",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": ""
