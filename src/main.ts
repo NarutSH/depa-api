@@ -38,8 +38,13 @@ async function bootstrap() {
   app = await NestFactory.create(AppModule);
 
   // Ensure uploads directory exists
+  // const uploadsDir =
+  //   process.env.UPLOAD_DIR || path.join(__dirname, '..', 'uploads');
+
   const uploadsDir =
-    process.env.UPLOAD_DIR || path.join(__dirname, '..', 'uploads');
+    process.env.UPLOAD_DIR && process.env.NODE_ENV === 'production'
+      ? process.env.UPLOAD_DIR
+      : path.join(process.cwd(), 'uploads');
 
   console.log('uploadsDir', fs.existsSync(uploadsDir));
   if (!fs.existsSync(uploadsDir)) {

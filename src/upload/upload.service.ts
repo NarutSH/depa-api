@@ -10,12 +10,12 @@ export class UploadService {
     this.uploadDir =
       process.env.UPLOAD_DIR || path.join(process.cwd(), 'uploads');
 
-    console.log(`Upload service using directory: ${this.uploadDir}`);
+    // console.log(`Upload service using directory: ${this.uploadDir}`);
 
-    // Ensure upload directory exists
-    if (!fs.existsSync(this.uploadDir)) {
-      fs.mkdirSync(this.uploadDir, { recursive: true });
-    }
+    // // Ensure upload directory exists
+    // if (!fs.existsSync(this.uploadDir)) {
+    //   fs.mkdirSync(this.uploadDir, { recursive: true });
+    // }
   }
 
   async uploadFile(file: Express.Multer.File, folderName: string = '') {
