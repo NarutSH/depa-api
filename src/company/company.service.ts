@@ -109,6 +109,11 @@ export class CompanyService {
   async create(data: CreateCompanyDto) {
     try {
       const company = await this.prismaService.company.create({ data });
+
+      if (!company) {
+        throw new NotFoundException('Failed to create company');
+      }
+
       return company;
     } catch (error) {
       if (error.code === 'P2002') {

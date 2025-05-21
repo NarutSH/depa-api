@@ -10,7 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/main",
     "start:supabase": "NODE_ENV=production node dist/main",
-    "dev": "nest start --watch",
+    "dev": "NODE_ENV=development nest start --watch --envFile=.env.dev",
     "start:debug": "nest start --debug --watch",
     "start:prod": "pm2 start dist/main.js --name depa-api",
     "start:prod:watch": "pm2 start dist/main.js --name depa-api --watch",

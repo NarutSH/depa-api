@@ -9,6 +9,12 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { FavoriteAction, PortfolioImageType } from 'generated/prisma';
 import { QueryMetadataDto, ResponseMetadata } from 'src/utils';
 import { QueryUtilsService } from 'src/utils/services/query-utils.service';
+import {
+  CreateCommentResponse,
+  DeleteCommentResponse,
+  GetAllCommentsResponse,
+  UpdateCommentResponse,
+} from './types/comment.types';
 
 @Injectable()
 export class PortfolioService {
@@ -499,7 +505,10 @@ export class PortfolioService {
     return favorites;
   }
 
-  async createComment(userId: string, data: CreateCommentDto) {
+  async createComment(
+    userId: string,
+    data: CreateCommentDto,
+  ): Promise<CreateCommentResponse> {
     const portfolio = await this.prismaService.portfolio.findUnique({
       where: { id: data.portfolioId },
     });
@@ -533,7 +542,7 @@ export class PortfolioService {
       }
     }
 
-    return this.prismaService.portfolioComment.create({
+    const createdComment = await this.prismaService.portfolioComment.create({
       data: {
         content: data.content,
         portfolioId: data.portfolioId,
@@ -553,9 +562,16 @@ export class PortfolioService {
         },
       },
     });
+
+    return {
+      data: createdComment,
+      message: 'Comment created',
+    };
   }
 
-  async getPortfolioComments(portfolioId: string) {
+  async getPortfolioComments(
+    portfolioId: string,
+  ): Promise<GetAllCommentsResponse> {
     const portfolio = await this.prismaService.portfolio.findUnique({
       where: { id: portfolioId },
     });
@@ -603,10 +619,17 @@ export class PortfolioService {
       },
     });
 
-    return comments;
+    return {
+      data: comments,
+      message: 'Comments retrieved successfully',
+    };
   }
 
-  async updateComment(id: string, userId: string, content: string) {
+  async updateComment(
+    id: string,
+    userId: string,
+    content: string,
+  ): Promise<UpdateCommentResponse> {
     const comment = await this.prismaService.portfolioComment.findUnique({
       where: { id },
       include: {
@@ -627,7 +650,7 @@ export class PortfolioService {
       throw new ForbiddenException('You can only edit your own comments');
     }
 
-    return this.prismaService.portfolioComment.update({
+    const updatedComment = await this.prismaService.portfolioComment.update({
       where: { id },
       data: { content },
       include: {
@@ -657,9 +680,18 @@ export class PortfolioService {
         },
       },
     });
+
+    return {
+      data: updatedComment,
+      message: 'Comment updated successfully',
+    };
   }
 
-  async deleteComment(id: string, userId: string, userType: string) {
+  async deleteComment(
+    id: string,
+    userId: string,
+    userType: string,
+  ): Promise<DeleteCommentResponse> {
     const comment = await this.prismaService.portfolioComment.findUnique({
       where: { id },
       include: {
@@ -677,9 +709,13 @@ export class PortfolioService {
     }
 
     if (userType === 'admin') {
-      return this.prismaService.portfolioComment.delete({
+      await this.prismaService.portfolioComment.delete({
         where: { id },
       });
+
+      return {
+        message: 'Comment deleted successfully',
+      };
     }
 
     if (comment.userId !== userId) {
@@ -695,8 +731,12 @@ export class PortfolioService {
       }
     }
 
-    return this.prismaService.portfolioComment.delete({
+    await this.prismaService.portfolioComment.delete({
       where: { id },
     });
+
+    return {
+      message: 'Comment deleted successfully',
+    };
   }
 }
