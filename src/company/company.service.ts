@@ -77,7 +77,14 @@ export class CompanyService {
       return await this.prismaService.company.findMany({
         where: whereClause,
         include: {
-          user: true,
+          user: {
+            include: {
+              industriesRelated: true,
+              industryChannels: true,
+              industrySkills: true,
+              industryTags: true,
+            },
+          },
         },
       });
     } catch (error) {

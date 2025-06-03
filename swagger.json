@@ -3693,6 +3693,188 @@
           "Auth"
         ]
       }
+    },
+    "/channel": {
+      "post": {
+        "operationId": "ChannelController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChannelDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Channel created successfully"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new channel",
+        "tags": [
+          "Channel"
+        ]
+      },
+      "get": {
+        "operationId": "ChannelController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term that will be applied to configured fields",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by, with optional direction (e.g., \"name:asc\", \"createdAt:desc\")",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Filter criteria in JSON format or as query parameters",
+            "schema": {
+              "$ref": "#/components/schemas/Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of channels"
+          }
+        },
+        "summary": "Get all channels",
+        "tags": [
+          "Channel"
+        ]
+      }
+    },
+    "/channel/{id}": {
+      "get": {
+        "operationId": "ChannelController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Channel found"
+          },
+          "404": {
+            "description": "Channel not found"
+          }
+        },
+        "summary": "Get channel by ID",
+        "tags": [
+          "Channel"
+        ]
+      },
+      "put": {
+        "operationId": "ChannelController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChannelDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Channel updated successfully"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update channel by ID",
+        "tags": [
+          "Channel"
+        ]
+      },
+      "delete": {
+        "operationId": "ChannelController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Channel deleted successfully"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete channel by ID",
+        "tags": [
+          "Channel"
+        ]
+      }
     }
   },
   "info": {
@@ -4272,19 +4454,19 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "description": "Channel name",
-            "example": "App Store"
+            "type": "string"
           },
           "slug": {
-            "type": "string",
-            "description": "Channel slug identifier (URL-friendly)",
-            "example": "app-store"
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
           },
           "industrySlug": {
-            "type": "string",
-            "description": "Industry slug that this channel belongs to",
-            "example": "game"
+            "type": "string"
           }
         },
         "required": [
@@ -4344,15 +4526,20 @@
       "UpdateChannelDto": {
         "type": "object",
         "properties": {
-          "title": {
-            "type": "string",
-            "description": "Updated channel title",
-            "example": "Apple App Store"
+          "name": {
+            "type": "string"
           },
-          "newSlug": {
-            "type": "string",
-            "description": "New slug for the channel (if you want to change it)",
-            "example": "apple-app-store"
+          "slug": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "industrySlug": {
+            "type": "string"
           }
         }
       },
