@@ -35,6 +35,19 @@ const signals = ['SIGTERM', 'SIGINT', 'SIGHUP'] as const;
 let app: any;
 
 async function bootstrap() {
+  // Log environment info for debugging (move to top of bootstrap)
+  console.log('NODE_ENV:', process.env.NODE_ENV);
+  console.log('PORT:', process.env.PORT);
+  console.log(
+    'Loaded env file:',
+    process.env.NODE_ENV === 'development' ? '.env.dev' : '.env',
+  );
+
+  console.log(
+    'process.env.DOTENV_CONFIG_PATH :',
+    process.env.DOTENV_CONFIG_PATH,
+  );
+
   app = await NestFactory.create(AppModule);
 
   // Ensure uploads directory exists
