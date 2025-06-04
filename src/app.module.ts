@@ -19,7 +19,7 @@ import { ChannelModule } from './channel/channel.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: process.env.DOTENV_CONFIG_PATH || '.env',
+      envFilePath: '.env',
       // envFilePath: process.env.NODE_ENV === 'development' ? '.env.dev' : '.env',
     }),
     UsersModule,
