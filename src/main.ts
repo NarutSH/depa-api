@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as bodyParser from 'body-parser';
 
 // Error handling for unhandled rejections
 process.on('unhandledRejection', (reason, promise) => {
@@ -35,20 +36,11 @@ const signals = ['SIGTERM', 'SIGINT', 'SIGHUP'] as const;
 let app: any;
 
 async function bootstrap() {
-  // Log environment info for debugging (move to top of bootstrap)
-  console.log('NODE_ENV:', process.env.NODE_ENV);
-  console.log('PORT:', process.env.PORT);
-  console.log(
-    'Loaded env file:',
-    process.env.NODE_ENV === 'development' ? '.env.dev' : '.env',
-  );
-
-  console.log(
-    'process.env.DOTENV_CONFIG_PATH :',
-    process.env.DOTENV_CONFIG_PATH,
-  );
-
   app = await NestFactory.create(AppModule);
+
+  // Increase limit to 50mb (adjust as needed)
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
   // Ensure uploads directory exists
   // const uploadsDir =
