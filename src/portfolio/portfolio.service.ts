@@ -739,4 +739,54 @@ export class PortfolioService {
       message: 'Comment deleted successfully',
     };
   }
+
+  async updatePortfolio(id: string, data: any) {
+    const portfolio = await this.prismaService.portfolio.findUnique({
+      where: { id },
+    });
+    if (!portfolio) {
+      throw new NotFoundException(`Portfolio with id ${id} not found`);
+    }
+    // Prevent updating IDs
+    delete data.id;
+    delete data.companyJuristicId;
+    delete data.freelanceId;
+    // Only update allowed fields
+    return this.prismaService.portfolio.update({
+      where: { id },
+      data: {
+        ...data,
+        tags: Array.isArray(data.tags) ? data.tags : [data.tags],
+        looking_for: Array.isArray(data.looking_for)
+          ? data.looking_for
+          : [data.looking_for],
+      },
+    });
+  }
+
+  async setStandardsForPortfolio(portfolioId: string, standardIds: string[]) {
+    // Remove old standards
+    await this.prismaService.portfolioStandards.deleteMany({
+      where: { portfolioId },
+    });
+    // Add new standards
+    if (standardIds && standardIds.length) {
+      await this.addStandardsToPortfolio(portfolioId, standardIds);
+    }
+  }
+
+  async replaceImagesForPortfolio(
+    portfolioId: string,
+    imagePaths: string[],
+    type: PortfolioImageType,
+  ) {
+    // Remove old images of this type
+    await this.prismaService.portfolioImage.deleteMany({
+      where: { portfolioId, type },
+    });
+    // Add new images
+    if (imagePaths && imagePaths.length) {
+      await this.addImagesToPortfolio(portfolioId, imagePaths, type);
+    }
+  }
 }

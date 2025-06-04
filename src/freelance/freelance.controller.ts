@@ -18,6 +18,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { QueryMetadataDto } from 'src/utils';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('Freelance')
 @ApiBearerAuth()
@@ -36,6 +37,7 @@ export class FreelanceController {
   }
 
   @Get('all')
+  @Public()
   @ApiOperation({ summary: 'Get all freelances with optional industry filter' })
   @ApiQuery({
     name: 'industry',

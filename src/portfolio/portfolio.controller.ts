@@ -31,8 +31,10 @@ import {
   CreatePortfolioWithImagesAndStandardsDto,
 } from './dto/create-portfolio.dto';
 import { FavoritePortfolioDto } from './dto/favorite-portfolio.dto';
+import { UpdatePortfolioDto } from './dto/update-portfolio.dto';
 import { PortfolioService } from './portfolio.service';
 import { PortfolioImageType } from 'generated/prisma';
+import { Public } from 'src/auth/decorators/public.decorator';
 // import { PortfolioImageType } from 'src/generated/prisma';
 
 @ApiTags('Portfolio')
@@ -45,6 +47,7 @@ export class PortfolioController {
   ) {}
 
   @Get('all')
+  @Public()
   @ApiOperation({
     summary: 'Get all portfolios without pagination',
   })
@@ -139,6 +142,7 @@ export class PortfolioController {
   }
 
   @Get('industry/:industrySlug')
+  @Public()
   async getPortfolioByIndustry(@Param('industrySlug') industrySlug: string) {
     return this.portfolioService.getPortfolioByIndustry(industrySlug);
   }
@@ -167,28 +171,6 @@ export class PortfolioController {
     const user = req.user as any;
 
     console.log('createPortfolio user', user);
-
-    // Security check: Ensure user can only create portfolio for themselves
-    // Admins can create for anyone
-    // if (user.userType !== Role.ADMIN) {
-    //   if (
-    //     user.userType === Role.COMPANY &&
-    //     user.company?.juristicId !== data.companyJuristicId
-    //   ) {
-    //     throw new ForbiddenException(
-    //       'You can only create portfolios for your own company',
-    //     );
-    //   }
-
-    //   if (
-    //     user.userType === Role.FREELANCE &&
-    //     user.freelance?.id !== data.freelanceId
-    //   ) {
-    //     throw new ForbiddenException(
-    //       'You can only create portfolios for yourself',
-    //     );
-    //   }
-    // }
 
     const payload: CreatePortfolioDto = {
       title: data.title,
@@ -383,5 +365,79 @@ export class PortfolioController {
       user.id,
       user.userType,
     );
+  }
+
+  @Patch(':id')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'images', maxCount: 6 },
+      { name: 'cover', maxCount: 1 },
+      { name: 'main_image', maxCount: 1 },
+    ]),
+  )
+  async updatePortfolio(
+    @Param('id') id: string,
+    @Body() data: UpdatePortfolioDto,
+    @UploadedFiles()
+    files: {
+      images: Express.Multer.File[];
+      cover: Express.Multer.File[];
+      main_image: Express.Multer.File[];
+    },
+    @Req() req: Request,
+  ) {
+    // Prepare payload for update
+    const payload = {
+      ...data,
+      tags: data.tags ?? [],
+      looking_for: data.looking_for ?? [],
+    };
+    // Update main portfolio fields
+    const updatedPortfolio = await this.portfolioService.updatePortfolio(
+      id,
+      payload,
+    );
+
+    // Update standards if provided
+    if (data.standards) {
+      await this.portfolioService.setStandardsForPortfolio(id, data.standards);
+    }
+
+    // Handle images if provided
+    if (files.images?.length) {
+      const resImages = await this.uploadService.uploadMultiFile(
+        files.images,
+        'portfolio',
+      );
+      await this.portfolioService.replaceImagesForPortfolio(
+        id,
+        resImages.map((img) => img.fullPath),
+        PortfolioImageType.gallery,
+      );
+    }
+    if (files.cover?.length) {
+      const resCover = await this.uploadService.uploadMultiFile(
+        files.cover,
+        'portfolio',
+      );
+      await this.portfolioService.replaceImagesForPortfolio(
+        id,
+        resCover.map((img) => img.fullPath),
+        PortfolioImageType.cover,
+      );
+    }
+    if (files.main_image?.length) {
+      const resMainImage = await this.uploadService.uploadMultiFile(
+        files.main_image,
+        'portfolio',
+      );
+      await this.portfolioService.replaceImagesForPortfolio(
+        id,
+        resMainImage.map((img) => img.fullPath),
+        PortfolioImageType.main,
+      );
+    }
+
+    return updatedPortfolio;
   }
 }

@@ -18,6 +18,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { QueryMetadataDto } from 'src/utils';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('Company')
 @ApiBearerAuth()
@@ -36,6 +37,7 @@ export class CompanyController {
   }
 
   @Get('all')
+  @Public()
   @ApiOperation({ summary: 'Get all companies with optional industry filter' })
   @ApiQuery({
     name: 'industry',

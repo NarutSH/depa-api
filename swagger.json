@@ -1951,6 +1951,42 @@
         "tags": [
           "Portfolio"
         ]
+      },
+      "patch": {
+        "operationId": "PortfolioController_updatePortfolio",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePortfolioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Portfolio"
+        ]
       }
     },
     "/portfolio/company/{companyJuristicId}": {
@@ -4169,6 +4205,10 @@
           "content",
           "portfolioId"
         ]
+      },
+      "UpdatePortfolioDto": {
+        "type": "object",
+        "properties": {}
       },
       "CreateIndustryDto": {
         "type": "object",
