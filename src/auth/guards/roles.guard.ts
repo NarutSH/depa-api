@@ -1,18 +1,10 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  ForbiddenException,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from '../roles.enum';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  private readonly logger = new Logger(RolesGuard.name);
-
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
@@ -21,41 +13,24 @@ export class RolesGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    if (!requiredRoles) {
-      this.logger.debug('No roles required for this route, access granted');
-      return true; // No roles required, access granted
-    }
-
-    const request = context.switchToHttp().getRequest();
-    const { user } = request;
-
-    this.logger.debug(`RolesGuard checking user: ${JSON.stringify(user)}`);
-    this.logger.debug(`Required roles: ${JSON.stringify(requiredRoles)}`);
-
-    if (!user) {
-      this.logger.error('User not authenticated in RolesGuard');
-      throw new ForbiddenException('User not authenticated');
-    }
-
-    // For admin, grant access to everything
-    if (user.userType === Role.ADMIN) {
-      this.logger.debug('Admin user detected, granting access');
+    // If no roles are required, allow access
+    if (!requiredRoles || requiredRoles.length === 0) {
       return true;
     }
 
-    // Check if user has the required role
-    const hasRole = requiredRoles.some((role) => role === user.userType);
+    const { user } = context.switchToHttp().getRequest();
 
-    if (!hasRole) {
-      this.logger.warn(
-        `Access denied: User role ${user.userType} does not have permission for required roles ${requiredRoles.join(', ')}`,
-      );
-      throw new ForbiddenException(
-        `User with role ${user.userType} does not have permission to access this resource`,
-      );
+    // If no user or userType, deny access
+    if (!user || !user.userType) {
+      return false;
     }
 
-    this.logger.debug(`Access granted for user with role ${user.userType}`);
-    return true;
+    // Admin always has access to everything
+    if (user.userType === Role.ADMIN) {
+      return true;
+    }
+
+    // Check if the user has any of the required roles
+    return requiredRoles.some((role) => user.userType === role);
   }
 }

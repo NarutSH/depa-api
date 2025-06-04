@@ -1,0 +1,4661 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/ping": {
+      "get": {
+        "operationId": "PingController_ping",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Ping"
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "description": "Retrieves all users. Admin only.",
+        "operationId": "UsersController_getAllUsers",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term for email, fullnameTh, fullnameEn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Sort field and direction (e.g., email:asc, createdAt:desc)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Filter criteria in JSON format or as query parameters",
+            "schema": {
+              "$ref": "#/components/schemas/Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of all users retrieved successfully"
+          },
+          "403": {
+            "description": "Forbidden - requires admin role"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all users",
+        "tags": [
+          "Users"
+        ]
+      },
+      "post": {
+        "description": "Creates a new user profile for authenticated users.",
+        "operationId": "UsersController_createUser",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User profile created successfully"
+          },
+          "400": {
+            "description": "Bad request - invalid input"
+          },
+          "401": {
+            "description": "Unauthorized - requires authentication"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create user profile",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/me": {
+      "get": {
+        "description": "Retrieves the profile of the currently authenticated user.",
+        "operationId": "UsersController_getMe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Current user profile retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized - requires authentication"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get current user profile",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "description": "Retrieves user by ID. Users can only access their own profile.",
+        "operationId": "UsersController_getUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "User ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User retrieved successfully"
+          },
+          "403": {
+            "description": "Forbidden - cannot access other users' profiles"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get user by ID",
+        "tags": [
+          "Users"
+        ]
+      },
+      "patch": {
+        "description": "Updates a user by ID. Users can only update their own profile.",
+        "operationId": "UsersController_updateUser",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "User ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully"
+          },
+          "403": {
+            "description": "Forbidden - cannot update other users's profiles"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update user",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/email/{email}": {
+      "get": {
+        "description": "Retrieves user by email for any authenticated user.",
+        "operationId": "UsersController_getUserByEmail",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "path",
+            "description": "User email address",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized - requires authentication"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get user by email",
+        "tags": [
+          "Users"
+        ]
+      },
+      "patch": {
+        "description": "Updates a user by email. Admin only.",
+        "operationId": "UsersController_updateUserByEmail",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "path",
+            "description": "User email address",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully"
+          },
+          "403": {
+            "description": "Forbidden - requires admin role"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update user by email",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/company": {
+      "get": {
+        "operationId": "CompanyController_getCompanies",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term that will be applied to configured fields",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by, with optional direction (e.g., \"name:asc\", \"createdAt:desc\")",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Filter criteria in JSON format or as query parameters",
+            "schema": {
+              "$ref": "#/components/schemas/Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a paginated list of companies with their details"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all companies with filtering and pagination",
+        "tags": [
+          "Company"
+        ]
+      },
+      "post": {
+        "operationId": "CompanyController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompanyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The company has been successfully created"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create new company",
+        "tags": [
+          "Company"
+        ]
+      }
+    },
+    "/company/all": {
+      "get": {
+        "operationId": "CompanyController_getAl",
+        "parameters": [
+          {
+            "name": "industry",
+            "required": false,
+            "in": "query",
+            "description": "Filter companies by industry",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all companies matching the optional industry filter"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all companies with optional industry filter",
+        "tags": [
+          "Company"
+        ]
+      }
+    },
+    "/company/user/{userId}": {
+      "get": {
+        "operationId": "CompanyController_getByUserId",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "description": "The user ID of the company",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the company with the specified user ID"
+          },
+          "404": {
+            "description": "Company not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get company by user ID",
+        "tags": [
+          "Company"
+        ]
+      }
+    },
+    "/company/{id}": {
+      "patch": {
+        "operationId": "CompanyController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the company to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompanyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The company has been successfully updated"
+          },
+          "404": {
+            "description": "Company not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update company details",
+        "tags": [
+          "Company"
+        ]
+      },
+      "get": {
+        "operationId": "CompanyController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the company",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the company with the specified ID"
+          },
+          "404": {
+            "description": "Company not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get company by ID",
+        "tags": [
+          "Company"
+        ]
+      }
+    },
+    "/company/juristic/{juristicId}": {
+      "patch": {
+        "operationId": "CompanyController_updateByJuristic",
+        "parameters": [
+          {
+            "name": "juristicId",
+            "required": true,
+            "in": "path",
+            "description": "The juristic ID of the company to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompanyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The company has been successfully updated"
+          },
+          "404": {
+            "description": "Company not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update company by juristic ID",
+        "tags": [
+          "Company"
+        ]
+      },
+      "get": {
+        "operationId": "CompanyController_getByJuristicId",
+        "parameters": [
+          {
+            "name": "juristicId",
+            "required": true,
+            "in": "path",
+            "description": "The juristic ID of the company",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the company with the specified juristic ID"
+          },
+          "404": {
+            "description": "Company not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get company by juristic ID",
+        "tags": [
+          "Company"
+        ]
+      }
+    },
+    "/revenue-stream": {
+      "get": {
+        "operationId": "RevenueStreamController_getAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term for revenue stream fields",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Sort field and direction (e.g., year:asc, value:desc)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Filter criteria (e.g., year, industryTypeSlug)",
+            "schema": {
+              "$ref": "#/components/schemas/Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a paginated list of revenue stream records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "data": [
+                      {
+                        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                        "year": 2025,
+                        "industryTypeSlug": "game",
+                        "categorySlug": "mobile-game",
+                        "sourceSlug": "direct-sale",
+                        "channelSlug": "app-store",
+                        "segmentSlug": "casual",
+                        "percent": 25.5,
+                        "ctrPercent": 15.75,
+                        "value": 1250000,
+                        "companyJuristicId": "1234567890123",
+                        "createdAt": "2025-05-11T08:21:18.000Z",
+                        "updatedAt": "2025-05-11T08:21:18.000Z",
+                        "industry": {
+                          "name": "Game",
+                          "slug": "game"
+                        },
+                        "category": {
+                          "name": "Mobile Game",
+                          "slug": "mobile-game"
+                        },
+                        "source": {
+                          "name": "Direct Sale",
+                          "slug": "direct-sale"
+                        },
+                        "channel": {
+                          "name": "App Store",
+                          "slug": "app-store"
+                        },
+                        "segment": {
+                          "name": "Casual",
+                          "slug": "casual"
+                        },
+                        "company": {
+                          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                          "juristicId": "1234567890123",
+                          "nameTh": "บริษัท ทดสอบ จำกัด",
+                          "nameEn": "Test Company Ltd."
+                        }
+                      }
+                    ],
+                    "meta": {
+                      "total": 25,
+                      "page": 1,
+                      "limit": 10,
+                      "totalPages": 3
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all revenue stream data with filtering and pagination",
+        "tags": [
+          "Revenue Stream"
+        ]
+      },
+      "post": {
+        "operationId": "RevenueStreamController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRevenueStreamDto"
+              },
+              "examples": {
+                "example1": {
+                  "summary": "Basic revenue stream creation",
+                  "description": "Example payload for creating a new revenue stream",
+                  "value": {
+                    "year": 2025,
+                    "industryTypeSlug": "game",
+                    "categorySlug": "mobile-game",
+                    "sourceSlug": "direct-sale",
+                    "channelSlug": "app-store",
+                    "segmentSlug": "casual",
+                    "percent": 25.5,
+                    "ctrPercent": 15.75,
+                    "value": 1250000,
+                    "companyJuristicId": "1234567890123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The revenue stream record has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                    "year": 2025,
+                    "industryTypeSlug": "game",
+                    "categorySlug": "mobile-game",
+                    "sourceSlug": "direct-sale",
+                    "channelSlug": "app-store",
+                    "segmentSlug": "casual",
+                    "percent": 25.5,
+                    "ctrPercent": 15.75,
+                    "value": 1250000,
+                    "companyJuristicId": "1234567890123",
+                    "createdAt": "2025-05-11T08:21:18.000Z",
+                    "updatedAt": "2025-05-11T08:21:18.000Z",
+                    "industry": {
+                      "name": "Game",
+                      "slug": "game"
+                    },
+                    "category": {
+                      "name": "Mobile Game",
+                      "slug": "mobile-game"
+                    },
+                    "source": {
+                      "name": "Direct Sale",
+                      "slug": "direct-sale"
+                    },
+                    "channel": {
+                      "name": "App Store",
+                      "slug": "app-store"
+                    },
+                    "segment": {
+                      "name": "Casual",
+                      "slug": "casual"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new revenue stream record",
+        "tags": [
+          "Revenue Stream"
+        ]
+      }
+    },
+    "/revenue-stream/company/{companyJuristicId}": {
+      "get": {
+        "operationId": "RevenueStreamController_getByCompanyId",
+        "parameters": [
+          {
+            "name": "companyJuristicId",
+            "required": true,
+            "in": "path",
+            "description": "The juristic ID of the company",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term for revenue stream fields",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Sort field and direction (e.g., year:asc, value:desc)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Filter criteria (e.g., year, industryTypeSlug)",
+            "schema": {
+              "$ref": "#/components/schemas/Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return revenue stream data for the specified company",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "data": [
+                      {
+                        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                        "year": 2025,
+                        "industryTypeSlug": "game",
+                        "categorySlug": "mobile-game",
+                        "sourceSlug": "direct-sale",
+                        "channelSlug": "app-store",
+                        "segmentSlug": "casual",
+                        "percent": 25.5,
+                        "ctrPercent": 15.75,
+                        "value": 1250000,
+                        "companyJuristicId": "1234567890123",
+                        "createdAt": "2025-05-11T08:21:18.000Z",
+                        "updatedAt": "2025-05-11T08:21:18.000Z",
+                        "industry": {
+                          "name": "Game",
+                          "slug": "game"
+                        },
+                        "category": {
+                          "name": "Mobile Game",
+                          "slug": "mobile-game"
+                        },
+                        "source": {
+                          "name": "Direct Sale",
+                          "slug": "direct-sale"
+                        },
+                        "channel": {
+                          "name": "App Store",
+                          "slug": "app-store"
+                        },
+                        "segment": {
+                          "name": "Casual",
+                          "slug": "casual"
+                        }
+                      }
+                    ],
+                    "meta": {
+                      "total": 5,
+                      "page": 1,
+                      "limit": 10,
+                      "totalPages": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get revenue stream data for a specific company",
+        "tags": [
+          "Revenue Stream"
+        ]
+      }
+    },
+    "/revenue-stream/{id}": {
+      "get": {
+        "operationId": "RevenueStreamController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the revenue stream record",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the specified revenue stream record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                    "year": 2025,
+                    "industryTypeSlug": "game",
+                    "categorySlug": "mobile-game",
+                    "sourceSlug": "direct-sale",
+                    "channelSlug": "app-store",
+                    "segmentSlug": "casual",
+                    "percent": 25.5,
+                    "ctrPercent": 15.75,
+                    "value": 1250000,
+                    "companyJuristicId": "1234567890123",
+                    "createdAt": "2025-05-11T08:21:18.000Z",
+                    "updatedAt": "2025-05-11T08:21:18.000Z",
+                    "industry": {
+                      "id": "b1c2d3e4-f5a6-7890-abcd-ef1234567890",
+                      "name": "Game",
+                      "slug": "game",
+                      "createdAt": "2025-05-07T08:11:04.000Z",
+                      "updatedAt": "2025-05-07T08:11:04.000Z"
+                    },
+                    "category": {
+                      "id": "c1d2e3f4-a5b6-7890-abcd-ef1234567890",
+                      "name": "Mobile Game",
+                      "slug": "mobile-game",
+                      "createdAt": "2025-05-07T08:11:04.000Z",
+                      "updatedAt": "2025-05-07T08:11:04.000Z",
+                      "industrySlug": "game"
+                    },
+                    "source": {
+                      "id": "d1e2f3a4-b5c6-7890-abcd-ef1234567890",
+                      "name": "Direct Sale",
+                      "slug": "direct-sale",
+                      "createdAt": "2025-05-07T08:11:04.000Z",
+                      "updatedAt": "2025-05-07T08:11:04.000Z",
+                      "industrySlug": "game"
+                    },
+                    "channel": {
+                      "id": "e1f2a3b4-c5d6-7890-abcd-ef1234567890",
+                      "name": "App Store",
+                      "slug": "app-store",
+                      "createdAt": "2025-05-07T08:11:04.000Z",
+                      "updatedAt": "2025-05-07T08:11:04.000Z",
+                      "industrySlug": "game"
+                    },
+                    "segment": {
+                      "id": "f1a2b3c4-d5e6-7890-abcd-ef1234567890",
+                      "name": "Casual",
+                      "slug": "casual",
+                      "createdAt": "2025-05-07T08:11:04.000Z",
+                      "updatedAt": "2025-05-07T08:11:04.000Z",
+                      "industrySlug": "game"
+                    },
+                    "company": {
+                      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                      "juristicId": "1234567890123",
+                      "nameTh": "บริษัท ทดสอบ จำกัด",
+                      "nameEn": "Test Company Ltd."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Revenue stream record not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Revenue stream with ID a1b2c3d4-e5f6-7890-abcd-ef1234567890 not found",
+                    "error": "Not Found"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a specific revenue stream record by ID",
+        "tags": [
+          "Revenue Stream"
+        ]
+      },
+      "put": {
+        "operationId": "RevenueStreamController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the revenue stream record to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRevenueStreamDto"
+              },
+              "examples": {
+                "example1": {
+                  "summary": "Update revenue stream",
+                  "description": "Example payload for updating a revenue stream record",
+                  "value": {
+                    "value": 1500000,
+                    "percent": 30,
+                    "ctrPercent": 18.5
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The revenue stream record has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                    "year": 2025,
+                    "industryTypeSlug": "game",
+                    "categorySlug": "mobile-game",
+                    "sourceSlug": "direct-sale",
+                    "channelSlug": "app-store",
+                    "segmentSlug": "casual",
+                    "percent": 30,
+                    "ctrPercent": 18.5,
+                    "value": 1500000,
+                    "companyJuristicId": "1234567890123",
+                    "createdAt": "2025-05-11T08:21:18.000Z",
+                    "updatedAt": "2025-05-12T10:15:22.000Z",
+                    "industry": {
+                      "name": "Game",
+                      "slug": "game"
+                    },
+                    "category": {
+                      "name": "Mobile Game",
+                      "slug": "mobile-game"
+                    },
+                    "source": {
+                      "name": "Direct Sale",
+                      "slug": "direct-sale"
+                    },
+                    "channel": {
+                      "name": "App Store",
+                      "slug": "app-store"
+                    },
+                    "segment": {
+                      "name": "Casual",
+                      "slug": "casual"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Revenue stream record not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Revenue stream with ID a1b2c3d4-e5f6-7890-abcd-ef1234567890 not found",
+                    "error": "Not Found"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update a revenue stream record",
+        "tags": [
+          "Revenue Stream"
+        ]
+      },
+      "delete": {
+        "operationId": "RevenueStreamController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the revenue stream record to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The revenue stream record has been successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                    "year": 2025,
+                    "industryTypeSlug": "game",
+                    "categorySlug": "mobile-game",
+                    "sourceSlug": "direct-sale",
+                    "channelSlug": "app-store",
+                    "segmentSlug": "casual",
+                    "percent": 25.5,
+                    "ctrPercent": 15.75,
+                    "value": 1250000,
+                    "companyJuristicId": "1234567890123",
+                    "createdAt": "2025-05-11T08:21:18.000Z",
+                    "updatedAt": "2025-05-11T08:21:18.000Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Revenue stream record not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Revenue stream with ID a1b2c3d4-e5f6-7890-abcd-ef1234567890 not found",
+                    "error": "Not Found"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a revenue stream record",
+        "tags": [
+          "Revenue Stream"
+        ]
+      }
+    },
+    "/revenue-stream/bulk": {
+      "post": {
+        "operationId": "RevenueStreamController_createMany",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CreateRevenueStreamDto"
+                }
+              },
+              "examples": {
+                "example1": {
+                  "summary": "Bulk revenue stream creation",
+                  "description": "Example payload for creating multiple revenue streams",
+                  "value": [
+                    {
+                      "year": 2025,
+                      "industryTypeSlug": "game",
+                      "categorySlug": "mobile-game",
+                      "sourceSlug": "direct-sale",
+                      "channelSlug": "app-store",
+                      "segmentSlug": "casual",
+                      "percent": 25.5,
+                      "ctrPercent": 15.75,
+                      "value": 1250000,
+                      "companyJuristicId": "1234567890123"
+                    },
+                    {
+                      "year": 2025,
+                      "industryTypeSlug": "game",
+                      "categorySlug": "console-game",
+                      "sourceSlug": "direct-sale",
+                      "channelSlug": "playstation-store",
+                      "segmentSlug": "action",
+                      "percent": 35,
+                      "ctrPercent": 22.5,
+                      "value": 1750000,
+                      "companyJuristicId": "1234567890123"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The revenue stream records have been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": [
+                    {
+                      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                      "year": 2025,
+                      "industryTypeSlug": "game",
+                      "categorySlug": "mobile-game",
+                      "sourceSlug": "direct-sale",
+                      "channelSlug": "app-store",
+                      "segmentSlug": "casual",
+                      "percent": 25.5,
+                      "ctrPercent": 15.75,
+                      "value": 1250000,
+                      "companyJuristicId": "1234567890123",
+                      "createdAt": "2025-05-11T08:21:18.000Z",
+                      "updatedAt": "2025-05-11T08:21:18.000Z",
+                      "industry": {
+                        "name": "Game",
+                        "slug": "game"
+                      },
+                      "category": {
+                        "name": "Mobile Game",
+                        "slug": "mobile-game"
+                      },
+                      "source": {
+                        "name": "Direct Sale",
+                        "slug": "direct-sale"
+                      },
+                      "channel": {
+                        "name": "App Store",
+                        "slug": "app-store"
+                      },
+                      "segment": {
+                        "name": "Casual",
+                        "slug": "casual"
+                      }
+                    },
+                    {
+                      "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+                      "year": 2025,
+                      "industryTypeSlug": "game",
+                      "categorySlug": "console-game",
+                      "sourceSlug": "direct-sale",
+                      "channelSlug": "playstation-store",
+                      "segmentSlug": "action",
+                      "percent": 35,
+                      "ctrPercent": 22.5,
+                      "value": 1750000,
+                      "companyJuristicId": "1234567890123",
+                      "createdAt": "2025-05-11T08:21:18.000Z",
+                      "updatedAt": "2025-05-11T08:21:18.000Z",
+                      "industry": {
+                        "name": "Game",
+                        "slug": "game"
+                      },
+                      "category": {
+                        "name": "Console Game",
+                        "slug": "console-game"
+                      },
+                      "source": {
+                        "name": "Direct Sale",
+                        "slug": "direct-sale"
+                      },
+                      "channel": {
+                        "name": "PlayStation Store",
+                        "slug": "playstation-store"
+                      },
+                      "segment": {
+                        "name": "Action",
+                        "slug": "action"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create multiple revenue stream records",
+        "tags": [
+          "Revenue Stream"
+        ]
+      }
+    },
+    "/revenue-stream/{id}/value": {
+      "patch": {
+        "operationId": "RevenueStreamController_updateValue",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the revenue stream record",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRevenueValueDto"
+              },
+              "examples": {
+                "example1": {
+                  "summary": "Update revenue value",
+                  "description": "Example payload for updating just the value field",
+                  "value": {
+                    "value": 1500000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The value has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                    "year": 2025,
+                    "industryTypeSlug": "game",
+                    "categorySlug": "mobile-game",
+                    "sourceSlug": "direct-sale",
+                    "channelSlug": "app-store",
+                    "segmentSlug": "casual",
+                    "percent": 25.5,
+                    "ctrPercent": 15.75,
+                    "value": 1500000,
+                    "companyJuristicId": "1234567890123",
+                    "createdAt": "2025-05-11T08:21:18.000Z",
+                    "updatedAt": "2025-05-12T10:15:22.000Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Revenue stream record not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Revenue stream with ID a1b2c3d4-e5f6-7890-abcd-ef1234567890 not found",
+                    "error": "Not Found"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update just the value of a revenue stream record",
+        "tags": [
+          "Revenue Stream"
+        ]
+      }
+    },
+    "/revenue-stream/bulk-values": {
+      "post": {
+        "operationId": "RevenueStreamController_bulkUpsertValues",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UpdateRevenueValueDto"
+                }
+              },
+              "examples": {
+                "example1": {
+                  "summary": "Bulk update revenue values",
+                  "description": "Example payload for updating multiple revenue values",
+                  "value": [
+                    {
+                      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                      "value": 1500000
+                    },
+                    {
+                      "companyJuristicId": "1234567890123",
+                      "year": 2025,
+                      "industryTypeSlug": "game",
+                      "categorySlug": "pc-game",
+                      "sourceSlug": "direct-sale",
+                      "channelSlug": "steam",
+                      "segmentSlug": "rpg",
+                      "percent": 40,
+                      "ctrPercent": 25,
+                      "value": 2000000
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The values have been successfully updated or created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": [
+                    {
+                      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                      "year": 2025,
+                      "industryTypeSlug": "game",
+                      "categorySlug": "mobile-game",
+                      "sourceSlug": "direct-sale",
+                      "channelSlug": "app-store",
+                      "segmentSlug": "casual",
+                      "percent": 25.5,
+                      "ctrPercent": 15.75,
+                      "value": 1500000,
+                      "companyJuristicId": "1234567890123",
+                      "createdAt": "2025-05-11T08:21:18.000Z",
+                      "updatedAt": "2025-05-12T10:15:22.000Z"
+                    },
+                    {
+                      "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+                      "year": 2025,
+                      "industryTypeSlug": "game",
+                      "categorySlug": "pc-game",
+                      "sourceSlug": "direct-sale",
+                      "channelSlug": "steam",
+                      "segmentSlug": "rpg",
+                      "percent": 40,
+                      "ctrPercent": 25,
+                      "value": 2000000,
+                      "companyJuristicId": "1234567890123",
+                      "createdAt": "2025-05-12T10:15:22.000Z",
+                      "updatedAt": "2025-05-12T10:15:22.000Z"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Bulk update or create revenue stream values",
+        "tags": [
+          "Revenue Stream"
+        ]
+      }
+    },
+    "/company-revenue": {
+      "get": {
+        "operationId": "CompanyRevenueController_getAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term for numeric fields",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Sort field and direction (e.g., year:asc, total:desc)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Filter criteria (e.g., year)",
+            "schema": {
+              "$ref": "#/components/schemas/Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a paginated list of company revenue records"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all company revenue data with filtering and pagination",
+        "tags": [
+          "Company Revenue"
+        ]
+      },
+      "post": {
+        "operationId": "CompanyRevenueController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompanyRevenueDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The company revenue record has been successfully created or updated"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create or update company revenue data",
+        "tags": [
+          "Company Revenue"
+        ]
+      }
+    },
+    "/company-revenue/company/{companyId}": {
+      "get": {
+        "operationId": "CompanyRevenueController_getByCompanyId",
+        "parameters": [
+          {
+            "name": "companyId",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the company",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term for numeric fields",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Sort field and direction (e.g., year:asc, total:desc)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Filter criteria in JSON format or as query parameters",
+            "schema": {
+              "$ref": "#/components/schemas/Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return revenue data for the specified company"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get revenue data for a specific company with filtering and pagination",
+        "tags": [
+          "Company Revenue"
+        ]
+      }
+    },
+    "/portfolio/all": {
+      "get": {
+        "operationId": "PortfolioController_getAllPortfolios",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term for title and description",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Sort field and direction (e.g., title:asc, createdAt:desc)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Filter criteria (e.g., industryTypeSlug)",
+            "schema": {
+              "$ref": "#/components/schemas/Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all portfolios"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all portfolios without pagination",
+        "tags": [
+          "Portfolio"
+        ]
+      }
+    },
+    "/portfolio": {
+      "get": {
+        "operationId": "PortfolioController_getPortfolios",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term for title and description",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Sort field and direction (e.g., title:asc, createdAt:desc)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Filter criteria (e.g., industryTypeSlug)",
+            "schema": {
+              "$ref": "#/components/schemas/Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved portfolios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseMetadata"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all portfolios with pagination, filtering, sorting, and search capabilities",
+        "tags": [
+          "Portfolio"
+        ]
+      },
+      "post": {
+        "operationId": "PortfolioController_createPortfolio",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePortfolioWithImagesAndStandardsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Portfolio"
+        ]
+      }
+    },
+    "/portfolio/{id}": {
+      "get": {
+        "operationId": "PortfolioController_getPortfolio",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Portfolio"
+        ]
+      },
+      "delete": {
+        "operationId": "PortfolioController_deletePortfolio",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Portfolio"
+        ]
+      }
+    },
+    "/portfolio/company/{companyJuristicId}": {
+      "get": {
+        "operationId": "PortfolioController_getPortfolioByCompanyJuristicId",
+        "parameters": [
+          {
+            "name": "companyJuristicId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Portfolio"
+        ]
+      }
+    },
+    "/portfolio/freelance/{freelanceId}": {
+      "get": {
+        "operationId": "PortfolioController_getPortfolioByFreelanceId",
+        "parameters": [
+          {
+            "name": "freelanceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Portfolio"
+        ]
+      }
+    },
+    "/portfolio/industry/{industrySlug}": {
+      "get": {
+        "operationId": "PortfolioController_getPortfolioByIndustry",
+        "parameters": [
+          {
+            "name": "industrySlug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Portfolio"
+        ]
+      }
+    },
+    "/portfolio/favorite": {
+      "post": {
+        "operationId": "PortfolioController_toggleFavorite",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FavoritePortfolioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Portfolio"
+        ]
+      }
+    },
+    "/portfolio/favorite/{portfolioId}": {
+      "get": {
+        "operationId": "PortfolioController_getFavoriteStatus",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Portfolio"
+        ]
+      }
+    },
+    "/portfolio/favorites/user": {
+      "get": {
+        "operationId": "PortfolioController_getUserFavorites",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Portfolio"
+        ]
+      }
+    },
+    "/portfolio/{portfolioId}/comments": {
+      "get": {
+        "operationId": "PortfolioController_getPortfolioComments",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "required": true,
+            "in": "path",
+            "description": "Portfolio ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns list of comments for the portfolio"
+          },
+          "404": {
+            "description": "Portfolio not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get comments for a portfolio",
+        "tags": [
+          "Portfolio"
+        ]
+      }
+    },
+    "/portfolio/comments": {
+      "post": {
+        "operationId": "PortfolioController_createComment",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Comment created successfully"
+          },
+          "401": {
+            "description": "Unauthorized - must be logged in"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new comment on a portfolio",
+        "tags": [
+          "Portfolio"
+        ]
+      }
+    },
+    "/portfolio/comments/{commentId}": {
+      "patch": {
+        "operationId": "PortfolioController_updateComment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "required": true,
+            "in": "path",
+            "description": "Comment ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Comment updated successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - not your comment"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an existing comment",
+        "tags": [
+          "Portfolio"
+        ]
+      },
+      "delete": {
+        "operationId": "PortfolioController_deleteComment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "required": true,
+            "in": "path",
+            "description": "Comment ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comment deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - not allowed to delete this comment"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a comment",
+        "tags": [
+          "Portfolio"
+        ]
+      }
+    },
+    "/standards": {
+      "get": {
+        "description": "Retrieves all standards with pagination, filtering and sorting",
+        "operationId": "StandardsController_getStandards",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term for name and description",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Sort field and direction (e.g., name:asc, createdAt:desc)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Filter criteria (e.g., type, industrySlug)",
+            "schema": {
+              "$ref": "#/components/schemas/Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of all standards retrieved successfully"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all standards",
+        "tags": [
+          "Standards"
+        ]
+      }
+    },
+    "/upload": {
+      "post": {
+        "operationId": "UploadController_uploadFile",
+        "parameters": [
+          {
+            "name": "folder",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Upload"
+        ]
+      }
+    },
+    "/upload/multiple": {
+      "post": {
+        "operationId": "UploadController_uploadMultipleFiles",
+        "parameters": [
+          {
+            "name": "folder",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Upload"
+        ]
+      }
+    },
+    "/industry": {
+      "post": {
+        "operationId": "IndustryController_createIndustry",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIndustryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Industry has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndustryResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new industry",
+        "tags": [
+          "Industry"
+        ]
+      },
+      "get": {
+        "operationId": "IndustryController_getIndustries",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all industries with categories, sources, and channels"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all industries with their associated data",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/all": {
+      "get": {
+        "operationId": "IndustryController_findAllIndustries",
+        "parameters": [
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "Number of records to skip",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "Number of records to take",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of all industries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IndustryResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all industries",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/{id}": {
+      "get": {
+        "operationId": "IndustryController_findIndustryById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Industry ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Industry details including related entities",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndustryResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get an industry by ID",
+        "tags": [
+          "Industry"
+        ]
+      },
+      "put": {
+        "operationId": "IndustryController_updateIndustry",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Industry ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIndustryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Industry has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndustryResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an industry",
+        "tags": [
+          "Industry"
+        ]
+      },
+      "delete": {
+        "operationId": "IndustryController_deleteIndustry",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Industry ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Industry has been successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndustryResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete an industry",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/slug/{slug}": {
+      "get": {
+        "operationId": "IndustryController_findIndustryBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Industry slug",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Industry details including related entities",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndustryResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get an industry by slug",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/skills": {
+      "post": {
+        "operationId": "IndustryController_createSkill",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSkillDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The skill has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SkillResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new skill",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/skills/all": {
+      "get": {
+        "operationId": "IndustryController_findAllSkills",
+        "parameters": [
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "Number of items to skip for pagination",
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "Number of items to take for pagination",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Filter skills by industry slug",
+            "schema": {
+              "example": "game",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of skills matching the query criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SkillResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all skills with optional filtering",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/skills/{slug}": {
+      "get": {
+        "operationId": "IndustryController_findSkillBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Skill slug identifier",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Optional industry slug to filter by",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The skill data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SkillResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a skill by its slug",
+        "tags": [
+          "Industry"
+        ]
+      },
+      "put": {
+        "operationId": "IndustryController_updateSkill",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Skill slug identifier to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSkillDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The skill has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SkillResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an existing skill",
+        "tags": [
+          "Industry"
+        ]
+      },
+      "delete": {
+        "operationId": "IndustryController_deleteSkill",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Skill slug identifier to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The skill has been successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SkillResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a skill",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/tags": {
+      "post": {
+        "operationId": "IndustryController_createTag",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTagDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The tag has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new tag",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/tags/all": {
+      "get": {
+        "operationId": "IndustryController_findAllTags",
+        "parameters": [
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "Number of items to skip for pagination",
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "Number of items to take for pagination",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Filter tags by industry slug",
+            "schema": {
+              "example": "game",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tags matching the query criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TagResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all tags with optional filtering",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/tags/{slug}": {
+      "get": {
+        "operationId": "IndustryController_findTagBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Tag slug identifier",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Optional industry slug to filter by",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The tag data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a tag by its slug",
+        "tags": [
+          "Industry"
+        ]
+      },
+      "put": {
+        "operationId": "IndustryController_updateTag",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Tag slug identifier to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTagDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The tag has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an existing tag",
+        "tags": [
+          "Industry"
+        ]
+      },
+      "delete": {
+        "operationId": "IndustryController_deleteTag",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Tag slug identifier to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The tag has been successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a tag",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/channels": {
+      "post": {
+        "operationId": "IndustryController_createChannel",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChannelDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The channel has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChannelResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new channel",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/channels/all": {
+      "get": {
+        "operationId": "IndustryController_findAllChannels",
+        "parameters": [
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "Number of items to skip for pagination",
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "Number of items to take for pagination",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Filter channels by industry slug",
+            "schema": {
+              "example": "game",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of channels matching the query criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChannelResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all channels with optional filtering",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/industry/channels/{slug}": {
+      "get": {
+        "operationId": "IndustryController_findChannelBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Channel slug identifier",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Optional industry slug to filter by",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The channel data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChannelResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a channel by its slug",
+        "tags": [
+          "Industry"
+        ]
+      },
+      "put": {
+        "operationId": "IndustryController_updateChannel",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Channel slug identifier to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChannelDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The channel has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChannelResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an existing channel",
+        "tags": [
+          "Industry"
+        ]
+      },
+      "delete": {
+        "operationId": "IndustryController_deleteChannel",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Channel slug identifier to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The channel has been successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChannelResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a channel",
+        "tags": [
+          "Industry"
+        ]
+      }
+    },
+    "/freelance": {
+      "get": {
+        "operationId": "FreelanceController_getFreelances",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term that will be applied to configured fields",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by, with optional direction (e.g., \"name:asc\", \"createdAt:desc\")",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Filter criteria in JSON format or as query parameters",
+            "schema": {
+              "$ref": "#/components/schemas/Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a paginated list of freelances with their details"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all freelances with filtering and pagination",
+        "tags": [
+          "Freelance"
+        ]
+      },
+      "post": {
+        "operationId": "FreelanceController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFreelanceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The freelance has been successfully created"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create new freelance",
+        "tags": [
+          "Freelance"
+        ]
+      }
+    },
+    "/freelance/all": {
+      "get": {
+        "operationId": "FreelanceController_getAl",
+        "parameters": [
+          {
+            "name": "industry",
+            "required": false,
+            "in": "query",
+            "description": "Filter freelances by industry",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all freelances matching the optional industry filter"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all freelances with optional industry filter",
+        "tags": [
+          "Freelance"
+        ]
+      }
+    },
+    "/freelance/user/{userId}": {
+      "get": {
+        "operationId": "FreelanceController_getByUserId",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "description": "The user ID of the freelance",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the freelance with the specified user ID"
+          },
+          "404": {
+            "description": "Freelance not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get freelance by user ID",
+        "tags": [
+          "Freelance"
+        ]
+      }
+    },
+    "/freelance/{id}": {
+      "get": {
+        "operationId": "FreelanceController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "description": "The user ID of the freelance",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the freelance with the specified user ID"
+          },
+          "404": {
+            "description": "Freelance not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get freelance by user ID",
+        "tags": [
+          "Freelance"
+        ]
+      }
+    },
+    "/freelance/juristic/{juristicId}": {
+      "get": {
+        "operationId": "FreelanceController_getByJuristicId",
+        "parameters": [
+          {
+            "name": "juristicId",
+            "required": true,
+            "in": "path",
+            "description": "The juristic ID of the freelance",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the freelance with the specified juristic ID"
+          },
+          "404": {
+            "description": "Freelance not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get freelance by juristic ID",
+        "tags": [
+          "Freelance"
+        ]
+      }
+    },
+    "/freelance/{freelanceId}": {
+      "patch": {
+        "operationId": "FreelanceController_update",
+        "parameters": [
+          {
+            "name": "freelanceId",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the freelance to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The freelance has been successfully updated"
+          },
+          "404": {
+            "description": "Freelance not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update freelance details",
+        "tags": [
+          "Freelance"
+        ]
+      }
+    },
+    "/auth/techhunt-login": {
+      "post": {
+        "operationId": "AuthController_techhuntLogin",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechhuntLoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "TechHunt login successful"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        },
+        "summary": "Login through TechHunt API",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "operationId": "AuthController_refreshTokens",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token refreshed successfully"
+          },
+          "401": {
+            "description": "Invalid or expired refresh token"
+          }
+        },
+        "summary": "Refresh access token using refresh token",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logged out successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Log out and revoke refresh token",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/logout-all": {
+      "post": {
+        "operationId": "AuthController_logoutAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "All sessions logged out successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Log out from all devices by revoking all refresh tokens",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/channel": {
+      "post": {
+        "operationId": "ChannelController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChannelDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Channel created successfully"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new channel",
+        "tags": [
+          "Channel"
+        ]
+      },
+      "get": {
+        "operationId": "ChannelController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term that will be applied to configured fields",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by, with optional direction (e.g., \"name:asc\", \"createdAt:desc\")",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Filter criteria in JSON format or as query parameters",
+            "schema": {
+              "$ref": "#/components/schemas/Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of channels"
+          }
+        },
+        "summary": "Get all channels",
+        "tags": [
+          "Channel"
+        ]
+      }
+    },
+    "/channel/{id}": {
+      "get": {
+        "operationId": "ChannelController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Channel found"
+          },
+          "404": {
+            "description": "Channel not found"
+          }
+        },
+        "summary": "Get channel by ID",
+        "tags": [
+          "Channel"
+        ]
+      },
+      "put": {
+        "operationId": "ChannelController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChannelDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Channel updated successfully"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update channel by ID",
+        "tags": [
+          "Channel"
+        ]
+      },
+      "delete": {
+        "operationId": "ChannelController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Channel deleted successfully"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete channel by ID",
+        "tags": [
+          "Channel"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "DEPA API",
+    "description": "The DEPA API documentation",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authentication endpoints"
+    },
+    {
+      "name": "Users",
+      "description": "User management endpoints"
+    },
+    {
+      "name": "Portfolio",
+      "description": "Portfolio management endpoints"
+    },
+    {
+      "name": "Company",
+      "description": "Company management endpoints"
+    },
+    {
+      "name": "Freelance",
+      "description": "Freelance management endpoints"
+    },
+    {
+      "name": "Health",
+      "description": "Health check endpoints"
+    }
+  ],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "Object": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "fullnameTh": {
+            "type": "string",
+            "description": "User full name in Thai"
+          },
+          "fullnameEn": {
+            "type": "string",
+            "description": "User full name in English"
+          },
+          "about": {
+            "type": "string",
+            "description": "About the user"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "User phone number"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email address"
+          },
+          "website": {
+            "type": "string",
+            "description": "User website"
+          },
+          "location": {
+            "type": "string",
+            "description": "User location"
+          },
+          "industries": {
+            "description": "Industries associated with the user",
+            "example": [
+              "Technology",
+              "Healthcare"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "description": "User tags",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": [
+              {
+                "category": "skill",
+                "name": "JavaScript"
+              },
+              {
+                "category": "interest",
+                "name": "AI"
+              }
+            ]
+          },
+          "channels": {
+            "type": "array",
+            "description": "User communication channels",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": [
+              {
+                "category": "email",
+                "name": "support@example.com"
+              },
+              {
+                "category": "LINE",
+                "name": "@username"
+              }
+            ]
+          },
+          "specialists": {
+            "type": "array",
+            "description": "User specializations",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": [
+              {
+                "category": "programming",
+                "name": "Backend Development"
+              },
+              {
+                "category": "design",
+                "name": "UX/UI"
+              }
+            ]
+          }
+        },
+        "required": [
+          "fullnameTh",
+          "email",
+          "industries",
+          "channels",
+          "specialists"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateCompanyDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateRevenueStreamDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateRevenueStreamDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateRevenueValueDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateCompanyRevenueDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "PaginationMetadata": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "number",
+            "description": "Current page number (1-based)"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Number of items per page"
+          },
+          "total": {
+            "type": "number",
+            "description": "Total number of items available"
+          },
+          "pageCount": {
+            "type": "number",
+            "description": "Total number of pages"
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Has next page"
+          },
+          "hasPreviousPage": {
+            "type": "boolean",
+            "description": "Has previous page"
+          }
+        },
+        "required": [
+          "page",
+          "limit",
+          "total",
+          "pageCount",
+          "hasNextPage",
+          "hasPreviousPage"
+        ]
+      },
+      "ResponseMetadata": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "Data returned from the request"
+          },
+          "meta": {
+            "description": "Pagination information",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationMetadata"
+              }
+            ]
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Request success status",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Optional message"
+          }
+        },
+        "required": [
+          "data",
+          "meta",
+          "success"
+        ]
+      },
+      "CreatePortfolioWithImagesAndStandardsDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "FavoritePortfolioDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateCommentDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "The content of the comment"
+          },
+          "portfolioId": {
+            "type": "string",
+            "description": "The ID of the portfolio being commented on"
+          },
+          "parentId": {
+            "type": "string",
+            "description": "The ID of the parent comment (for replies)"
+          }
+        },
+        "required": [
+          "content",
+          "portfolioId"
+        ]
+      },
+      "CreateIndustryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Industry name",
+            "example": "Game Development"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Industry slug (URL friendly identifier)",
+            "example": "game-development"
+          }
+        },
+        "required": [
+          "name",
+          "slug"
+        ]
+      },
+      "IndustryResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Industry unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Industry name",
+            "example": "Game Development"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Industry slug (URL friendly identifier)",
+            "example": "game-development"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp",
+            "example": "2025-05-11T10:30:00Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp",
+            "example": "2025-05-11T10:30:00Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateIndustryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Updated industry name",
+            "example": "Game Development & Design"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Updated industry slug",
+            "example": "game-dev-design"
+          }
+        }
+      },
+      "CreateSkillDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Skill title",
+            "example": "Game Design"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Skill slug identifier (URL-friendly)",
+            "example": "game-design"
+          },
+          "group": {
+            "type": "string",
+            "description": "Optional skill group for categorization",
+            "example": "Design"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug that this skill belongs to",
+            "example": "game"
+          }
+        },
+        "required": [
+          "title",
+          "slug",
+          "industrySlug"
+        ]
+      },
+      "IndustryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Industry name"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Industry slug identifier"
+          }
+        },
+        "required": [
+          "name",
+          "slug"
+        ]
+      },
+      "SkillResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier"
+          },
+          "title": {
+            "type": "string",
+            "description": "Skill title"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Skill slug identifier"
+          },
+          "group": {
+            "type": "string",
+            "description": "Optional skill group"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Associated industry slug"
+          },
+          "industry": {
+            "description": "Associated industry data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IndustryDto"
+              }
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "slug",
+          "industrySlug",
+          "industry",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateSkillDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Updated skill title",
+            "example": "Advanced Game Design"
+          },
+          "group": {
+            "type": "string",
+            "description": "Updated skill group",
+            "example": "Design"
+          },
+          "newSlug": {
+            "type": "string",
+            "description": "New slug for the skill (if you want to change it)",
+            "example": "advanced-game-design"
+          }
+        }
+      },
+      "CreateTagDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Tag name",
+            "example": "Mobile Gaming"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Tag slug identifier (URL-friendly)",
+            "example": "mobile-gaming"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug that this tag belongs to",
+            "example": "game"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "industrySlug"
+        ]
+      },
+      "TagResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier"
+          },
+          "name": {
+            "type": "string",
+            "description": "Tag name"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Tag slug identifier"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Associated industry slug"
+          },
+          "industry": {
+            "description": "Associated industry data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IndustryDto"
+              }
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "industrySlug",
+          "industry",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateTagDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Updated tag title",
+            "example": "Advanced Mobile Gaming"
+          },
+          "newSlug": {
+            "type": "string",
+            "description": "New slug for the tag (if you want to change it)",
+            "example": "advanced-mobile-gaming"
+          }
+        }
+      },
+      "CreateChannelDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "industrySlug": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "industrySlug"
+        ]
+      },
+      "ChannelResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier"
+          },
+          "name": {
+            "type": "string",
+            "description": "Channel name"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Channel slug identifier"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Associated industry slug"
+          },
+          "industry": {
+            "description": "Associated industry data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IndustryDto"
+              }
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "industrySlug",
+          "industry",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateChannelDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "industrySlug": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateFreelanceDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User ID associated with this freelance"
+          },
+          "firstNameTh": {
+            "type": "string",
+            "description": "First name in Thai"
+          },
+          "lastNameTh": {
+            "type": "string",
+            "description": "Last name in Thai"
+          },
+          "firstNameEn": {
+            "type": "string",
+            "description": "First name in English"
+          },
+          "lastNameEn": {
+            "type": "string",
+            "description": "Last name in English"
+          },
+          "address": {
+            "type": "string",
+            "description": "Address"
+          },
+          "subDistrict": {
+            "type": "string",
+            "description": "Sub-district/Tambon"
+          },
+          "district": {
+            "type": "string",
+            "description": "District/Amphoe"
+          },
+          "province": {
+            "type": "string",
+            "description": "Province/Changwat"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Postal code"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Contact phone number"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address"
+          },
+          "juristicId": {
+            "type": "string",
+            "description": "Juristic ID (if applicable)"
+          },
+          "industryTypes": {
+            "description": "Types of industries the freelancer works in",
+            "example": [
+              "game",
+              "animation"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "image": {
+            "type": "string",
+            "description": "Profile image URL"
+          },
+          "cover_image": {
+            "type": "string",
+            "description": "Cover image URL"
+          }
+        },
+        "required": [
+          "userId",
+          "firstNameTh",
+          "lastNameTh",
+          "email"
+        ]
+      },
+      "TechhuntLoginDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Username or email address",
+            "example": "mathuros@playpark.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User password",
+            "example": "TH@digital"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "RefreshTokenDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "description": "The refresh token"
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      }
+    }
+  }
+}

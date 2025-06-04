@@ -12,11 +12,15 @@ import { IndustryModule } from './industry/industry.module';
 import { FreelanceModule } from './freelance/freelance.module';
 import { AuthModule } from './auth/auth.module';
 import { PingController } from './ping/ping.controller';
+import { UtilsModule } from './utils/utils.module';
+import { ChannelModule } from './channel/channel.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: process.env.DOTENV_CONFIG_PATH || '.env',
+      // envFilePath: process.env.NODE_ENV === 'development' ? '.env.dev' : '.env',
     }),
     UsersModule,
     CompanyModule,
@@ -28,6 +32,8 @@ import { PingController } from './ping/ping.controller';
     IndustryModule,
     FreelanceModule,
     AuthModule,
+    UtilsModule,
+    ChannelModule,
   ],
   controllers: [PingController],
   providers: [PrismaService],

@@ -1,34 +1,126 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import CreateCompanyDto from './dto/create-company.dto';
+import { QueryMetadataDto } from 'src/utils';
 
 @Injectable()
 export class CompanyService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getAl(industry: string) {
-    const whereClause = industry ? { industries: { has: industry } } : {};
-    return this.prismaService.company.findMany({
-      where: whereClause,
+  async getCompanies(query: QueryMetadataDto) {
+    const { page = 1, limit = 10, search, filter } = query;
+    const skip = query.getSkip();
+    const sortObj = query.getSortObject();
+
+    // Base query conditions
+    const whereConditions: any = {};
+
+    // Apply search if provided
+    if (search) {
+      whereConditions.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        { nameEn: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    // Apply additional filters if provided
+    if (filter) {
+      if (filter.industry) {
+        whereConditions.industries = { has: filter.industry };
+      }
+      // Add more filters as needed
+    }
+
+    // Get total count
+    const total = await this.prismaService.company.count({
+      where: whereConditions,
+    });
+
+    // Get paginated data
+    const data = await this.prismaService.company.findMany({
+      where: whereConditions,
+      skip,
+      take: limit,
+      orderBy: sortObj || { createdAt: 'desc' },
       include: {
         user: true,
+        companyRevenue: {
+          orderBy: {
+            year: 'desc',
+          },
+        },
       },
     });
+
+    // Calculate pagination metadata
+    const totalPages = Math.ceil(total / limit);
+    const hasNext = page < totalPages;
+    const hasPrevious = page > 1;
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages,
+        hasNext,
+        hasPrevious,
+      },
+    };
+  }
+
+  async getAl(industry: string) {
+    try {
+      const whereClause = industry ? { industries: { has: industry } } : {};
+      return await this.prismaService.company.findMany({
+        where: whereClause,
+        include: {
+          user: {
+            include: {
+              industriesRelated: true,
+              industryChannels: true,
+              industrySkills: true,
+              industryTags: true,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      throw new Error(`Failed to get companies: ${error.message}`);
+    }
   }
 
   async getByUserId(userId: string) {
-    return this.prismaService.company.findUnique({
-      where: {
-        userId,
-      },
-    });
+    try {
+      const company = await this.prismaService.company.findUnique({
+        where: {
+          userId,
+        },
+      });
+
+      if (!company) {
+        throw new NotFoundException(`Company for user ID ${userId} not found`);
+      }
+
+      return company;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new Error(`Failed to get company by user ID: ${error.message}`);
+    }
   }
 
   async create(data: CreateCompanyDto) {
-    console.log('data', data);
-
     try {
       const company = await this.prismaService.company.create({ data });
+
+      if (!company) {
+        throw new NotFoundException('Failed to create company');
+      }
+
       return company;
     } catch (error) {
       if (error.code === 'P2002') {
@@ -65,6 +157,9 @@ export class CompanyService {
   async getById(id: string) {
     const company = await this.prismaService.company.findUnique({
       where: { id },
+      include: {
+        user: true,
+      },
     });
     if (!company) {
       throw new NotFoundException(`Company with ID ${id} not found`);

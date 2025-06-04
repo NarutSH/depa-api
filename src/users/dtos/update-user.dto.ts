@@ -49,6 +49,18 @@ class UpdateUserDto {
     category: string;
     name: string;
   }>;
+
+  @IsArray()
+  @IsOptional()
+  tags_array?: Array<string>;
+
+  @IsArray()
+  @IsOptional()
+  channels_array?: Array<string>;
+
+  @IsArray()
+  @IsOptional()
+  specialists_array?: Array<string>;
 }
 
 export default UpdateUserDto;

@@ -5,15 +5,42 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePortfolioDto } from './dto/create-portfolio.dto';
-import { FavoriteAction, PortfolioImageType } from '@prisma/client';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { FavoriteAction, PortfolioImageType } from 'generated/prisma';
+import { QueryMetadataDto, ResponseMetadata } from 'src/utils';
+import { QueryUtilsService } from 'src/utils/services/query-utils.service';
+import {
+  CreateCommentResponse,
+  DeleteCommentResponse,
+  GetAllCommentsResponse,
+  UpdateCommentResponse,
+} from './types/comment.types';
 
 @Injectable()
 export class PortfolioService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly queryUtils: QueryUtilsService,
+  ) {}
 
-  async getPortfolios() {
-    return this.prismaService.portfolio.findMany({
+  async getAllPortfolios(queryDto?: QueryMetadataDto) {
+    // Define searchable fields for portfolios
+    const searchableFields = ['title', 'description', 'tags'];
+
+    // Build where clause for filtering and searching
+    const where = await (queryDto
+      ? this.queryUtils.buildWhereClause(queryDto, searchableFields)
+      : {});
+
+    // Build orderBy clause for sorting
+    const orderBy = await (queryDto
+      ? this.queryUtils.buildOrderByClause(queryDto, { createdAt: 'desc' })
+      : { createdAt: 'desc' });
+
+    // Execute the query without pagination
+    const portfolios = await this.prismaService.portfolio.findMany({
+      where,
+      orderBy,
       include: {
         standards: {
           select: {
@@ -34,8 +61,140 @@ export class PortfolioService {
             description: true,
           },
         },
+        company: {
+          select: {
+            juristicId: true,
+            nameTh: true,
+            nameEn: true,
+            user: {
+              select: {
+                fullnameTh: true,
+                fullnameEn: true,
+                email: true,
+                image: true,
+              },
+            },
+          },
+        },
+        freelance: {
+          select: {
+            id: true,
+            user: {
+              select: {
+                fullnameTh: true,
+                fullnameEn: true,
+                email: true,
+                image: true,
+              },
+            },
+          },
+        },
       },
     });
+
+    // Transform the data if needed (like handling nested objects or arrays)
+    const transformedPortfolios = portfolios.map((portfolio) => ({
+      ...portfolio,
+      standards: portfolio.standards.map((s) => s.standards),
+    }));
+
+    return {
+      data: transformedPortfolios,
+      message: 'All portfolios retrieved successfully',
+    };
+  }
+
+  async getPortfolios(queryDto: QueryMetadataDto) {
+    // Ensure we have valid pagination values
+    const page = Number(queryDto.page) || 1;
+    const limit = Number(queryDto.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    // Define searchable fields for portfolios
+    const searchableFields = ['title', 'description', 'tags'];
+
+    // Build where clause for filtering and searching
+    const where = this.queryUtils.buildWhereClause(queryDto, searchableFields);
+
+    // Build orderBy clause for sorting
+    const orderBy = this.queryUtils.buildOrderByClause(queryDto, {
+      createdAt: 'desc',
+    });
+
+    // Execute the query with pagination
+    const [portfolios, total] = await Promise.all([
+      this.prismaService.portfolio.findMany({
+        where,
+        orderBy,
+        skip,
+        take: limit,
+        include: {
+          standards: {
+            select: {
+              standards: {
+                select: {
+                  name: true,
+                  description: true,
+                  type: true,
+                  image: true,
+                },
+              },
+            },
+          },
+          Image: {
+            select: {
+              url: true,
+              type: true,
+              description: true,
+            },
+          },
+          company: {
+            select: {
+              juristicId: true,
+              nameTh: true,
+              nameEn: true,
+              user: {
+                select: {
+                  fullnameTh: true,
+                  fullnameEn: true,
+                  email: true,
+                  image: true,
+                },
+              },
+            },
+          },
+          freelance: {
+            select: {
+              id: true,
+              user: {
+                select: {
+                  fullnameTh: true,
+                  fullnameEn: true,
+                  email: true,
+                  image: true,
+                },
+              },
+            },
+          },
+        },
+      }),
+      this.prismaService.portfolio.count({ where }),
+    ]);
+
+    // Transform the data if needed (like handling nested objects or arrays)
+    const transformedPortfolios = portfolios.map((portfolio) => ({
+      ...portfolio,
+      standards: portfolio.standards.map((s) => s.standards),
+    }));
+
+    // Return paginated response with metadata
+    return ResponseMetadata.paginated(
+      transformedPortfolios,
+      total,
+      page,
+      limit,
+      'Portfolios retrieved successfully',
+    );
   }
 
   async getPortfolioById(id: string) {
@@ -73,6 +232,7 @@ export class PortfolioService {
   }
 
   async getPortfolioByIndustry(industrySlug: string) {
+    console.log('industrySlug', industrySlug);
     return this.prismaService.portfolio.findMany({
       where: {
         industryTypeSlug: industrySlug,
@@ -345,7 +505,10 @@ export class PortfolioService {
     return favorites;
   }
 
-  async createComment(userId: string, data: CreateCommentDto) {
+  async createComment(
+    userId: string,
+    data: CreateCommentDto,
+  ): Promise<CreateCommentResponse> {
     const portfolio = await this.prismaService.portfolio.findUnique({
       where: { id: data.portfolioId },
     });
@@ -379,7 +542,7 @@ export class PortfolioService {
       }
     }
 
-    return this.prismaService.portfolioComment.create({
+    const createdComment = await this.prismaService.portfolioComment.create({
       data: {
         content: data.content,
         portfolioId: data.portfolioId,
@@ -399,9 +562,16 @@ export class PortfolioService {
         },
       },
     });
+
+    return {
+      data: createdComment,
+      message: 'Comment created',
+    };
   }
 
-  async getPortfolioComments(portfolioId: string) {
+  async getPortfolioComments(
+    portfolioId: string,
+  ): Promise<GetAllCommentsResponse> {
     const portfolio = await this.prismaService.portfolio.findUnique({
       where: { id: portfolioId },
     });
@@ -449,10 +619,17 @@ export class PortfolioService {
       },
     });
 
-    return comments;
+    return {
+      data: comments,
+      message: 'Comments retrieved successfully',
+    };
   }
 
-  async updateComment(id: string, userId: string, content: string) {
+  async updateComment(
+    id: string,
+    userId: string,
+    content: string,
+  ): Promise<UpdateCommentResponse> {
     const comment = await this.prismaService.portfolioComment.findUnique({
       where: { id },
       include: {
@@ -473,7 +650,7 @@ export class PortfolioService {
       throw new ForbiddenException('You can only edit your own comments');
     }
 
-    return this.prismaService.portfolioComment.update({
+    const updatedComment = await this.prismaService.portfolioComment.update({
       where: { id },
       data: { content },
       include: {
@@ -503,9 +680,18 @@ export class PortfolioService {
         },
       },
     });
+
+    return {
+      data: updatedComment,
+      message: 'Comment updated successfully',
+    };
   }
 
-  async deleteComment(id: string, userId: string, userType: string) {
+  async deleteComment(
+    id: string,
+    userId: string,
+    userType: string,
+  ): Promise<DeleteCommentResponse> {
     const comment = await this.prismaService.portfolioComment.findUnique({
       where: { id },
       include: {
@@ -523,9 +709,13 @@ export class PortfolioService {
     }
 
     if (userType === 'admin') {
-      return this.prismaService.portfolioComment.delete({
+      await this.prismaService.portfolioComment.delete({
         where: { id },
       });
+
+      return {
+        message: 'Comment deleted successfully',
+      };
     }
 
     if (comment.userId !== userId) {
@@ -541,8 +731,12 @@ export class PortfolioService {
       }
     }
 
-    return this.prismaService.portfolioComment.delete({
+    await this.prismaService.portfolioComment.delete({
       where: { id },
     });
+
+    return {
+      message: 'Comment deleted successfully',
+    };
   }
 }

@@ -1,5 +1,5 @@
-import { FavoriteAction } from '@prisma/client';
 import { IsEnum, IsUUID } from 'class-validator';
+import { FavoriteAction } from 'generated/prisma';
 
 export class FavoritePortfolioDto {
   @IsUUID('4')

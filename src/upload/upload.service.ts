@@ -1,47 +1,70 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { SupabaseClient } from '@supabase/supabase-js';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class UploadService {
-  constructor(
-    @Inject('SUPABASE_CLIENT') private readonly supabase: SupabaseClient,
-  ) {}
+  private readonly uploadDir: string;
 
-  async uploadFile(file: Express.Multer.File, bucketName: string) {
-    const [fileName, fileType] = file.originalname.split('.');
+  constructor() {
+    this.uploadDir =
+      process.env.UPLOAD_DIR || path.join(process.cwd(), 'uploads');
 
-    const sanitizedName = fileName.replace(/[^a-zA-Z0-9.]/g, '');
-    const uniqueFilename = `${sanitizedName}-${Date.now()}.${fileType}`;
+    // console.log(`Upload service using directory: ${this.uploadDir}`);
 
-    const { data, error } = await this.supabase.storage
-      .from(bucketName)
-      .upload(uniqueFilename, file.buffer);
-
-    if (error) {
-      throw new BadRequestException(`File upload failed: ${error.message}`);
-    }
-
-    return data;
+    // // Ensure upload directory exists
+    // if (!fs.existsSync(this.uploadDir)) {
+    //   fs.mkdirSync(this.uploadDir, { recursive: true });
+    // }
   }
 
-  async uploadMultiFile(files: Express.Multer.File[], bucketName: string) {
-    const uploadResults = [];
-
-    for (const file of files) {
+  async uploadFile(file: Express.Multer.File, folderName: string = '') {
+    try {
       const [fileName, fileType] = file.originalname.split('.');
 
       const sanitizedName = fileName.replace(/[^a-zA-Z0-9.]/g, '');
       const uniqueFilename = `${sanitizedName}-${Date.now()}.${fileType}`;
 
-      const { data, error } = await this.supabase.storage
-        .from(bucketName)
-        .upload(uniqueFilename, file.buffer);
+      // Create folder if specified and doesn't exist
+      const uploadPath = folderName
+        ? path.join(this.uploadDir, folderName)
+        : this.uploadDir;
 
-      if (error) {
-        throw new BadRequestException(`File upload failed: ${error.message}`);
+      if (folderName && !fs.existsSync(uploadPath)) {
+        fs.mkdirSync(uploadPath, { recursive: true });
       }
 
-      uploadResults.push(data);
+      const filePath = path.join(uploadPath, uniqueFilename);
+
+      // Write file to disk
+      fs.writeFileSync(filePath, file.buffer);
+
+      // Calculate relative path for URL
+      const relativePath = folderName
+        ? `${folderName}/${uniqueFilename}`
+        : uniqueFilename;
+
+      const baseUrl = process.env.BASE_URL || 'http://localhost:8000';
+      const publicUrl = `${baseUrl}/uploads/${relativePath}`;
+
+      return {
+        path: relativePath,
+        fullPath: filePath,
+        publicUrl: publicUrl,
+        size: file.size,
+        mimetype: file.mimetype,
+      };
+    } catch (error) {
+      throw new BadRequestException(`File upload failed: ${error.message}`);
+    }
+  }
+
+  async uploadMultiFile(files: Express.Multer.File[], folderName: string = '') {
+    const uploadResults = [];
+
+    for (const file of files) {
+      const result = await this.uploadFile(file, folderName);
+      uploadResults.push(result);
     }
 
     return uploadResults;
