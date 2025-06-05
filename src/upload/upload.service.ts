@@ -47,18 +47,10 @@ export class UploadService {
       const baseUrl = process.env.BASE_URL || 'http://localhost:8000';
       const publicUrl = `${baseUrl}/uploads/${relativePath}`;
 
-      console.log(`File uploaded:`, {
+      return {
         path: relativePath,
         fullPath: relativePath,
         // fullPath: filePath,
-        publicUrl: publicUrl,
-        size: file.size,
-        mimetype: file.mimetype,
-      });
-
-      return {
-        path: relativePath,
-        fullPath: filePath,
         publicUrl: publicUrl,
         size: file.size,
         mimetype: file.mimetype,
