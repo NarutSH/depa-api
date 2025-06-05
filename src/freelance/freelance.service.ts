@@ -93,7 +93,14 @@ export class FreelanceService {
       return await this.prismaService.freelance.findMany({
         where: industry ? { industryTypes: { has: industry } } : {},
         include: {
-          user: true,
+          user: {
+            include: {
+              industrySkills: true,
+              industriesRelated: true,
+              industryChannels: true,
+              industryTags: true,
+            },
+          },
         },
       });
     } catch (error) {
