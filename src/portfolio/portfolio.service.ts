@@ -259,12 +259,26 @@ export class PortfolioService {
         },
         company: {
           include: {
-            user: true,
+            user: {
+              include: {
+                industriesRelated: true,
+                industryChannels: true,
+                industrySkills: true,
+                industryTags: true,
+              },
+            },
           },
         },
         freelance: {
           include: {
-            user: true,
+            user: {
+              include: {
+                industriesRelated: true,
+                industryChannels: true,
+                industrySkills: true,
+                industryTags: true,
+              },
+            },
           },
         },
       },
@@ -385,11 +399,14 @@ export class PortfolioService {
   }
 
   async addStandardsToPortfolio(portfolioId: string, standardIds: string[]) {
+    // Remove duplicate standardIds to avoid unique constraint error
+    const uniqueStandardIds = Array.from(new Set(standardIds));
     const result = await this.prismaService.portfolioStandards.createMany({
-      data: standardIds.map((id) => ({
+      data: uniqueStandardIds.map((id) => ({
         portfolioId,
         standardsId: id,
       })),
+      skipDuplicates: true,
     });
 
     return result;
@@ -774,6 +791,7 @@ export class PortfolioService {
     data: any & {
       industryTags?: string[];
       industryLookingFor?: string[];
+      standards?: string[];
     },
   ) {
     const portfolio = await this.prismaService.portfolio.findUnique({
@@ -783,10 +801,11 @@ export class PortfolioService {
       throw new NotFoundException(`Portfolio with id ${id} not found`);
     }
     // Destructure to remove join-table fields
-    const { industryTags, industryLookingFor, ...rest } = data;
+    const { industryTags, industryLookingFor, standards, ...rest } = data;
     delete rest.id;
     delete rest.companyJuristicId;
     delete rest.freelanceId;
+    delete rest.standards; // Ensure standards is not sent to Prisma
     const updated = await this.prismaService.portfolio.update({
       where: { id },
       data: {
@@ -827,6 +846,16 @@ export class PortfolioService {
           })),
           skipDuplicates: true,
         });
+      }
+    }
+
+    // Update standards (PortfolioStandards)
+    if (standards) {
+      await this.prismaService.portfolioStandards.deleteMany({
+        where: { portfolioId: id },
+      });
+      if (standards.length) {
+        await this.addStandardsToPortfolio(id, standards);
       }
     }
 
