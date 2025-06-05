@@ -400,7 +400,7 @@ export class PortfolioController {
 
     // Update standards if provided
     if (data.standards) {
-      await this.portfolioService.setStandardsForPortfolio(id, data.standards);
+      await this.portfolioService.addStandardsToPortfolio(id, data.standards);
     }
 
     // Handle images if provided
@@ -439,5 +439,19 @@ export class PortfolioController {
     }
 
     return updatedPortfolio;
+  }
+
+  @Get('random')
+  @Public()
+  @ApiOperation({ summary: 'Get random portfolios' })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Number of random portfolios to return (default 10)',
+  })
+  async getPortfolioRandom(@Query('limit') limit?: number) {
+    console.log('getPortfolioRandom limit', limit);
+    return this.portfolioService.getPortfolioRandom(limit ?? 10);
   }
 }

@@ -1,4 +1,16 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { StandardsService } from './standards.service';
 import {
   ApiOperation,
@@ -8,14 +20,21 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { QueryMetadataDto } from 'src/utils';
+import { CreateStandardDto, UpdateStandardDto } from './dto/standard.dto';
+import { UploadService } from 'src/upload/upload.service';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('Standards')
 @ApiBearerAuth()
 @Controller('standards')
 export class StandardsController {
-  constructor(private readonly standardsService: StandardsService) {}
+  constructor(
+    private readonly standardsService: StandardsService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   @Get()
+  @Public()
   @ApiOperation({
     summary: 'Get all standards',
     description:
@@ -57,5 +76,67 @@ export class StandardsController {
   })
   async getStandards(@Query() query: QueryMetadataDto) {
     return this.standardsService.getStandards(query);
+  }
+
+  @Get('all')
+  @Public()
+  @ApiOperation({ summary: 'Get all standards (no pagination)' })
+  @ApiResponse({
+    status: 200,
+    description: 'All standards retrieved successfully',
+  })
+  async getAllStandards() {
+    return this.standardsService.getAllStandards();
+  }
+
+  @Post()
+  @UseInterceptors(FileInterceptor('image'))
+  async createStandard(
+    @Body() createStandardDto: CreateStandardDto,
+    @UploadedFile() image?: Express.Multer.File,
+  ) {
+    let imagePath: string | undefined = undefined;
+    if (image) {
+      const uploadResult = await this.uploadService.uploadFile(
+        image,
+        'portfolio/standards',
+      );
+      imagePath = uploadResult.path;
+    }
+    return this.standardsService.createStandard({
+      ...createStandardDto,
+      image: imagePath,
+    });
+  }
+
+  @Patch(':id')
+  @UseInterceptors(FileInterceptor('image'))
+  async updateStandard(
+    @Param('id') id: string,
+    @Body() updateStandardDto: UpdateStandardDto,
+    @UploadedFile() image?: Express.Multer.File,
+  ) {
+    let imagePath: string | undefined = undefined;
+    if (image) {
+      const uploadResult = await this.uploadService.uploadFile(
+        image,
+        'standards',
+      );
+      imagePath = uploadResult.path;
+    }
+    return this.standardsService.updateStandard(id, {
+      ...updateStandardDto,
+      image: imagePath,
+    });
+  }
+
+  @Delete(':id')
+  async deleteStandard(@Param('id') id: string) {
+    return this.standardsService.deleteStandard(id);
+  }
+
+  @Get(':id')
+  async getStandard(@Param('id') id: string) {
+    return this.standardsService.getStandard(id);
   }
 }

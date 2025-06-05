@@ -2309,6 +2309,36 @@
         ]
       }
     },
+    "/portfolio/random": {
+      "get": {
+        "operationId": "PortfolioController_getPortfolioRandom",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of random portfolios to return (default 10)",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get random portfolios",
+        "tags": [
+          "Portfolio"
+        ]
+      }
+    },
     "/standards": {
       "get": {
         "description": "Retrieves all standards with pagination, filtering and sorting",
@@ -2373,6 +2403,143 @@
           }
         ],
         "summary": "Get all standards",
+        "tags": [
+          "Standards"
+        ]
+      },
+      "post": {
+        "operationId": "StandardsController_createStandard",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStandardDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Standards"
+        ]
+      }
+    },
+    "/standards/all": {
+      "get": {
+        "operationId": "StandardsController_getAllStandards",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "All standards retrieved successfully"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all standards (no pagination)",
+        "tags": [
+          "Standards"
+        ]
+      }
+    },
+    "/standards/{id}": {
+      "patch": {
+        "operationId": "StandardsController_updateStandard",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStandardDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Standards"
+        ]
+      },
+      "delete": {
+        "operationId": "StandardsController_deleteStandard",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Standards"
+        ]
+      },
+      "get": {
+        "operationId": "StandardsController_getStandard",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Standards"
         ]
@@ -3911,6 +4078,164 @@
           "Channel"
         ]
       }
+    },
+    "/looking-for": {
+      "post": {
+        "operationId": "LookingForController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLookingForDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "LookingFor"
+        ]
+      },
+      "get": {
+        "operationId": "LookingForController_findAll",
+        "parameters": [
+          {
+            "name": "skip",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "industrySlug",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "LookingFor"
+        ]
+      }
+    },
+    "/looking-for/all": {
+      "get": {
+        "operationId": "LookingForController_findAllNoPaginate",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "LookingFor"
+        ]
+      }
+    },
+    "/looking-for/{id}": {
+      "get": {
+        "operationId": "LookingForController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "LookingFor"
+        ]
+      },
+      "patch": {
+        "operationId": "LookingForController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLookingForDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "LookingFor"
+        ]
+      },
+      "delete": {
+        "operationId": "LookingForController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "LookingFor"
+        ]
+      }
     }
   },
   "info": {
@@ -4207,6 +4532,14 @@
         ]
       },
       "UpdatePortfolioDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateStandardDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateStandardDto": {
         "type": "object",
         "properties": {}
       },
@@ -4695,6 +5028,14 @@
         "required": [
           "refreshToken"
         ]
+      },
+      "CreateLookingForDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateLookingForDto": {
+        "type": "object",
+        "properties": {}
       }
     }
   }

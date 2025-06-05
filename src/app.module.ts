@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
 import { PingController } from './ping/ping.controller';
 import { UtilsModule } from './utils/utils.module';
 import { ChannelModule } from './channel/channel.module';
+import { LookingForModule } from './looking-for/looking-for.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ChannelModule } from './channel/channel.module';
     AuthModule,
     UtilsModule,
     ChannelModule,
+    LookingForModule,
   ],
   controllers: [PingController],
   providers: [PrismaService],
