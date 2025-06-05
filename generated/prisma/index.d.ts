@@ -89,6 +89,11 @@ export type Industry = $Result.DefaultSelection<Prisma.$IndustryPayload>
  */
 export type Tag = $Result.DefaultSelection<Prisma.$TagPayload>
 /**
+ * Model ProjectTag
+ * 
+ */
+export type ProjectTag = $Result.DefaultSelection<Prisma.$ProjectTagPayload>
+/**
  * Model LookingFor
  * 
  */
@@ -505,6 +510,16 @@ export class PrismaClient<
     * ```
     */
   get tag(): Prisma.TagDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.projectTag`: Exposes CRUD operations for the **ProjectTag** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProjectTags
+    * const projectTags = await prisma.projectTag.findMany()
+    * ```
+    */
+  get projectTag(): Prisma.ProjectTagDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.lookingFor`: Exposes CRUD operations for the **LookingFor** model.
@@ -1100,6 +1115,7 @@ export namespace Prisma {
     FreelanceIndustry: 'FreelanceIndustry',
     Industry: 'Industry',
     Tag: 'Tag',
+    ProjectTag: 'ProjectTag',
     LookingFor: 'LookingFor',
     Category: 'Category',
     Source: 'Source',
@@ -1132,7 +1148,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "userTags" | "userChannels" | "userSkills" | "userIndustry" | "refreshToken" | "companyRevenue" | "freelanceRevenue" | "revenueStream" | "company" | "companyIndustry" | "freelance" | "freelanceIndustry" | "industry" | "tag" | "lookingFor" | "category" | "source" | "channel" | "segment" | "portfolio" | "portfolioTag" | "portfolioLookingFor" | "portfolioStandards" | "portfolioImage" | "favorite" | "standards" | "skill" | "portfolioComment"
+      modelProps: "user" | "userTags" | "userChannels" | "userSkills" | "userIndustry" | "refreshToken" | "companyRevenue" | "freelanceRevenue" | "revenueStream" | "company" | "companyIndustry" | "freelance" | "freelanceIndustry" | "industry" | "tag" | "projectTag" | "lookingFor" | "category" | "source" | "channel" | "segment" | "portfolio" | "portfolioTag" | "portfolioLookingFor" | "portfolioStandards" | "portfolioImage" | "favorite" | "standards" | "skill" | "portfolioComment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2243,6 +2259,80 @@ export namespace Prisma {
           count: {
             args: Prisma.TagCountArgs<ExtArgs>
             result: $Utils.Optional<TagCountAggregateOutputType> | number
+          }
+        }
+      }
+      ProjectTag: {
+        payload: Prisma.$ProjectTagPayload<ExtArgs>
+        fields: Prisma.ProjectTagFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProjectTagFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectTagPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProjectTagFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectTagPayload>
+          }
+          findFirst: {
+            args: Prisma.ProjectTagFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectTagPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProjectTagFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectTagPayload>
+          }
+          findMany: {
+            args: Prisma.ProjectTagFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectTagPayload>[]
+          }
+          create: {
+            args: Prisma.ProjectTagCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectTagPayload>
+          }
+          createMany: {
+            args: Prisma.ProjectTagCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProjectTagCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectTagPayload>[]
+          }
+          delete: {
+            args: Prisma.ProjectTagDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectTagPayload>
+          }
+          update: {
+            args: Prisma.ProjectTagUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectTagPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProjectTagDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProjectTagUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProjectTagUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectTagPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProjectTagUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectTagPayload>
+          }
+          aggregate: {
+            args: Prisma.ProjectTagAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProjectTag>
+          }
+          groupBy: {
+            args: Prisma.ProjectTagGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProjectTagGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProjectTagCountArgs<ExtArgs>
+            result: $Utils.Optional<ProjectTagCountAggregateOutputType> | number
           }
         }
       }
@@ -3381,6 +3471,7 @@ export namespace Prisma {
     freelanceIndustry?: FreelanceIndustryOmit
     industry?: IndustryOmit
     tag?: TagOmit
+    projectTag?: ProjectTagOmit
     lookingFor?: LookingForOmit
     category?: CategoryOmit
     source?: SourceOmit
@@ -3702,6 +3793,7 @@ export namespace Prisma {
     RevenueStream: number
     Tag: number
     LookingFor: number
+    ProjectTag: number
   }
 
   export type IndustryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3717,6 +3809,7 @@ export namespace Prisma {
     RevenueStream?: boolean | IndustryCountOutputTypeCountRevenueStreamArgs
     Tag?: boolean | IndustryCountOutputTypeCountTagArgs
     LookingFor?: boolean | IndustryCountOutputTypeCountLookingForArgs
+    ProjectTag?: boolean | IndustryCountOutputTypeCountProjectTagArgs
   }
 
   // Custom InputTypes
@@ -3814,18 +3907,23 @@ export namespace Prisma {
     where?: LookingForWhereInput
   }
 
+  /**
+   * IndustryCountOutputType without action
+   */
+  export type IndustryCountOutputTypeCountProjectTagArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProjectTagWhereInput
+  }
+
 
   /**
    * Count Type TagCountOutputType
    */
 
   export type TagCountOutputType = {
-    PortfolioTag: number
     UserTags: number
   }
 
   export type TagCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    PortfolioTag?: boolean | TagCountOutputTypeCountPortfolioTagArgs
     UserTags?: boolean | TagCountOutputTypeCountUserTagsArgs
   }
 
@@ -3843,14 +3941,47 @@ export namespace Prisma {
   /**
    * TagCountOutputType without action
    */
-  export type TagCountOutputTypeCountPortfolioTagArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TagCountOutputTypeCountUserTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserTagsWhereInput
+  }
+
+
+  /**
+   * Count Type ProjectTagCountOutputType
+   */
+
+  export type ProjectTagCountOutputType = {
+    PortfolioTag: number
+    UserTags: number
+  }
+
+  export type ProjectTagCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    PortfolioTag?: boolean | ProjectTagCountOutputTypeCountPortfolioTagArgs
+    UserTags?: boolean | ProjectTagCountOutputTypeCountUserTagsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ProjectTagCountOutputType without action
+   */
+  export type ProjectTagCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTagCountOutputType
+     */
+    select?: ProjectTagCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProjectTagCountOutputType without action
+   */
+  export type ProjectTagCountOutputTypeCountPortfolioTagArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PortfolioTagWhereInput
   }
 
   /**
-   * TagCountOutputType without action
+   * ProjectTagCountOutputType without action
    */
-  export type TagCountOutputTypeCountUserTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectTagCountOutputTypeCountUserTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserTagsWhereInput
   }
 
@@ -5658,6 +5789,7 @@ export namespace Prisma {
     tagSlug: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    projectTagId: string | null
   }
 
   export type UserTagsMaxAggregateOutputType = {
@@ -5665,6 +5797,7 @@ export namespace Prisma {
     tagSlug: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    projectTagId: string | null
   }
 
   export type UserTagsCountAggregateOutputType = {
@@ -5672,6 +5805,7 @@ export namespace Prisma {
     tagSlug: number
     createdAt: number
     updatedAt: number
+    projectTagId: number
     _all: number
   }
 
@@ -5681,6 +5815,7 @@ export namespace Prisma {
     tagSlug?: true
     createdAt?: true
     updatedAt?: true
+    projectTagId?: true
   }
 
   export type UserTagsMaxAggregateInputType = {
@@ -5688,6 +5823,7 @@ export namespace Prisma {
     tagSlug?: true
     createdAt?: true
     updatedAt?: true
+    projectTagId?: true
   }
 
   export type UserTagsCountAggregateInputType = {
@@ -5695,6 +5831,7 @@ export namespace Prisma {
     tagSlug?: true
     createdAt?: true
     updatedAt?: true
+    projectTagId?: true
     _all?: true
   }
 
@@ -5775,6 +5912,7 @@ export namespace Prisma {
     tagSlug: string
     createdAt: Date
     updatedAt: Date
+    projectTagId: string | null
     _count: UserTagsCountAggregateOutputType | null
     _min: UserTagsMinAggregateOutputType | null
     _max: UserTagsMaxAggregateOutputType | null
@@ -5799,8 +5937,10 @@ export namespace Prisma {
     tagSlug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    projectTagId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     tag?: boolean | TagDefaultArgs<ExtArgs>
+    ProjectTag?: boolean | UserTags$ProjectTagArgs<ExtArgs>
   }, ExtArgs["result"]["userTags"]>
 
   export type UserTagsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5808,8 +5948,10 @@ export namespace Prisma {
     tagSlug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    projectTagId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     tag?: boolean | TagDefaultArgs<ExtArgs>
+    ProjectTag?: boolean | UserTags$ProjectTagArgs<ExtArgs>
   }, ExtArgs["result"]["userTags"]>
 
   export type UserTagsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5817,8 +5959,10 @@ export namespace Prisma {
     tagSlug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    projectTagId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     tag?: boolean | TagDefaultArgs<ExtArgs>
+    ProjectTag?: boolean | UserTags$ProjectTagArgs<ExtArgs>
   }, ExtArgs["result"]["userTags"]>
 
   export type UserTagsSelectScalar = {
@@ -5826,20 +5970,24 @@ export namespace Prisma {
     tagSlug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    projectTagId?: boolean
   }
 
-  export type UserTagsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "tagSlug" | "createdAt" | "updatedAt", ExtArgs["result"]["userTags"]>
+  export type UserTagsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "tagSlug" | "createdAt" | "updatedAt" | "projectTagId", ExtArgs["result"]["userTags"]>
   export type UserTagsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     tag?: boolean | TagDefaultArgs<ExtArgs>
+    ProjectTag?: boolean | UserTags$ProjectTagArgs<ExtArgs>
   }
   export type UserTagsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     tag?: boolean | TagDefaultArgs<ExtArgs>
+    ProjectTag?: boolean | UserTags$ProjectTagArgs<ExtArgs>
   }
   export type UserTagsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     tag?: boolean | TagDefaultArgs<ExtArgs>
+    ProjectTag?: boolean | UserTags$ProjectTagArgs<ExtArgs>
   }
 
   export type $UserTagsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5847,12 +5995,14 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       tag: Prisma.$TagPayload<ExtArgs>
+      ProjectTag: Prisma.$ProjectTagPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       userId: string
       tagSlug: string
       createdAt: Date
       updatedAt: Date
+      projectTagId: string | null
     }, ExtArgs["result"]["userTags"]>
     composites: {}
   }
@@ -6249,6 +6399,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     tag<T extends TagDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TagDefaultArgs<ExtArgs>>): Prisma__TagClient<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    ProjectTag<T extends UserTags$ProjectTagArgs<ExtArgs> = {}>(args?: Subset<T, UserTags$ProjectTagArgs<ExtArgs>>): Prisma__ProjectTagClient<$Result.GetResult<Prisma.$ProjectTagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6282,6 +6433,7 @@ export namespace Prisma {
     readonly tagSlug: FieldRef<"UserTags", 'String'>
     readonly createdAt: FieldRef<"UserTags", 'DateTime'>
     readonly updatedAt: FieldRef<"UserTags", 'DateTime'>
+    readonly projectTagId: FieldRef<"UserTags", 'String'>
   }
     
 
@@ -6675,6 +6827,25 @@ export namespace Prisma {
      * Limit how many UserTags to delete.
      */
     limit?: number
+  }
+
+  /**
+   * UserTags.ProjectTag
+   */
+  export type UserTags$ProjectTagArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTag
+     */
+    select?: ProjectTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectTag
+     */
+    omit?: ProjectTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectTagInclude<ExtArgs> | null
+    where?: ProjectTagWhereInput
   }
 
   /**
@@ -19514,6 +19685,7 @@ export namespace Prisma {
     RevenueStream?: boolean | Industry$RevenueStreamArgs<ExtArgs>
     Tag?: boolean | Industry$TagArgs<ExtArgs>
     LookingFor?: boolean | Industry$LookingForArgs<ExtArgs>
+    ProjectTag?: boolean | Industry$ProjectTagArgs<ExtArgs>
     _count?: boolean | IndustryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["industry"]>
 
@@ -19564,6 +19736,7 @@ export namespace Prisma {
     RevenueStream?: boolean | Industry$RevenueStreamArgs<ExtArgs>
     Tag?: boolean | Industry$TagArgs<ExtArgs>
     LookingFor?: boolean | Industry$LookingForArgs<ExtArgs>
+    ProjectTag?: boolean | Industry$ProjectTagArgs<ExtArgs>
     _count?: boolean | IndustryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type IndustryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -19584,6 +19757,7 @@ export namespace Prisma {
       RevenueStream: Prisma.$RevenueStreamPayload<ExtArgs>[]
       Tag: Prisma.$TagPayload<ExtArgs>[]
       LookingFor: Prisma.$LookingForPayload<ExtArgs>[]
+      ProjectTag: Prisma.$ProjectTagPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -20000,6 +20174,7 @@ export namespace Prisma {
     RevenueStream<T extends Industry$RevenueStreamArgs<ExtArgs> = {}>(args?: Subset<T, Industry$RevenueStreamArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueStreamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Tag<T extends Industry$TagArgs<ExtArgs> = {}>(args?: Subset<T, Industry$TagArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     LookingFor<T extends Industry$LookingForArgs<ExtArgs> = {}>(args?: Subset<T, Industry$LookingForArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LookingForPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ProjectTag<T extends Industry$ProjectTagArgs<ExtArgs> = {}>(args?: Subset<T, Industry$ProjectTagArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20713,6 +20888,30 @@ export namespace Prisma {
   }
 
   /**
+   * Industry.ProjectTag
+   */
+  export type Industry$ProjectTagArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTag
+     */
+    select?: ProjectTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectTag
+     */
+    omit?: ProjectTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectTagInclude<ExtArgs> | null
+    where?: ProjectTagWhereInput
+    orderBy?: ProjectTagOrderByWithRelationInput | ProjectTagOrderByWithRelationInput[]
+    cursor?: ProjectTagWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProjectTagScalarFieldEnum | ProjectTagScalarFieldEnum[]
+  }
+
+  /**
    * Industry without action
    */
   export type IndustryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20904,7 +21103,6 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     industry?: boolean | IndustryDefaultArgs<ExtArgs>
-    PortfolioTag?: boolean | Tag$PortfolioTagArgs<ExtArgs>
     UserTags?: boolean | Tag$UserTagsArgs<ExtArgs>
     _count?: boolean | TagCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tag"]>
@@ -20941,7 +21139,6 @@ export namespace Prisma {
   export type TagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "industrySlug" | "createdAt" | "updatedAt", ExtArgs["result"]["tag"]>
   export type TagInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     industry?: boolean | IndustryDefaultArgs<ExtArgs>
-    PortfolioTag?: boolean | Tag$PortfolioTagArgs<ExtArgs>
     UserTags?: boolean | Tag$UserTagsArgs<ExtArgs>
     _count?: boolean | TagCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -20956,7 +21153,6 @@ export namespace Prisma {
     name: "Tag"
     objects: {
       industry: Prisma.$IndustryPayload<ExtArgs>
-      PortfolioTag: Prisma.$PortfolioTagPayload<ExtArgs>[]
       UserTags: Prisma.$UserTagsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -21361,7 +21557,6 @@ export namespace Prisma {
   export interface Prisma__TagClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     industry<T extends IndustryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IndustryDefaultArgs<ExtArgs>>): Prisma__IndustryClient<$Result.GetResult<Prisma.$IndustryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    PortfolioTag<T extends Tag$PortfolioTagArgs<ExtArgs> = {}>(args?: Subset<T, Tag$PortfolioTagArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PortfolioTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     UserTags<T extends Tag$UserTagsArgs<ExtArgs> = {}>(args?: Subset<T, Tag$UserTagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserTagsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -21794,30 +21989,6 @@ export namespace Prisma {
   }
 
   /**
-   * Tag.PortfolioTag
-   */
-  export type Tag$PortfolioTagArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PortfolioTag
-     */
-    select?: PortfolioTagSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PortfolioTag
-     */
-    omit?: PortfolioTagOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PortfolioTagInclude<ExtArgs> | null
-    where?: PortfolioTagWhereInput
-    orderBy?: PortfolioTagOrderByWithRelationInput | PortfolioTagOrderByWithRelationInput[]
-    cursor?: PortfolioTagWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: PortfolioTagScalarFieldEnum | PortfolioTagScalarFieldEnum[]
-  }
-
-  /**
    * Tag.UserTags
    */
   export type Tag$UserTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -21857,6 +22028,1135 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: TagInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ProjectTag
+   */
+
+  export type AggregateProjectTag = {
+    _count: ProjectTagCountAggregateOutputType | null
+    _min: ProjectTagMinAggregateOutputType | null
+    _max: ProjectTagMaxAggregateOutputType | null
+  }
+
+  export type ProjectTagMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    slug: string | null
+    industrySlug: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProjectTagMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    slug: string | null
+    industrySlug: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProjectTagCountAggregateOutputType = {
+    id: number
+    name: number
+    slug: number
+    industrySlug: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ProjectTagMinAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    industrySlug?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProjectTagMaxAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    industrySlug?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProjectTagCountAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    industrySlug?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ProjectTagAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProjectTag to aggregate.
+     */
+    where?: ProjectTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProjectTags to fetch.
+     */
+    orderBy?: ProjectTagOrderByWithRelationInput | ProjectTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProjectTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProjectTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProjectTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProjectTags
+    **/
+    _count?: true | ProjectTagCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProjectTagMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProjectTagMaxAggregateInputType
+  }
+
+  export type GetProjectTagAggregateType<T extends ProjectTagAggregateArgs> = {
+        [P in keyof T & keyof AggregateProjectTag]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProjectTag[P]>
+      : GetScalarType<T[P], AggregateProjectTag[P]>
+  }
+
+
+
+
+  export type ProjectTagGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProjectTagWhereInput
+    orderBy?: ProjectTagOrderByWithAggregationInput | ProjectTagOrderByWithAggregationInput[]
+    by: ProjectTagScalarFieldEnum[] | ProjectTagScalarFieldEnum
+    having?: ProjectTagScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProjectTagCountAggregateInputType | true
+    _min?: ProjectTagMinAggregateInputType
+    _max?: ProjectTagMaxAggregateInputType
+  }
+
+  export type ProjectTagGroupByOutputType = {
+    id: string
+    name: string
+    slug: string
+    industrySlug: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ProjectTagCountAggregateOutputType | null
+    _min: ProjectTagMinAggregateOutputType | null
+    _max: ProjectTagMaxAggregateOutputType | null
+  }
+
+  type GetProjectTagGroupByPayload<T extends ProjectTagGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProjectTagGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProjectTagGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProjectTagGroupByOutputType[P]>
+            : GetScalarType<T[P], ProjectTagGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProjectTagSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    industrySlug?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    industry?: boolean | IndustryDefaultArgs<ExtArgs>
+    PortfolioTag?: boolean | ProjectTag$PortfolioTagArgs<ExtArgs>
+    UserTags?: boolean | ProjectTag$UserTagsArgs<ExtArgs>
+    _count?: boolean | ProjectTagCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["projectTag"]>
+
+  export type ProjectTagSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    industrySlug?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    industry?: boolean | IndustryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["projectTag"]>
+
+  export type ProjectTagSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    industrySlug?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    industry?: boolean | IndustryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["projectTag"]>
+
+  export type ProjectTagSelectScalar = {
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    industrySlug?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ProjectTagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "industrySlug" | "createdAt" | "updatedAt", ExtArgs["result"]["projectTag"]>
+  export type ProjectTagInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    industry?: boolean | IndustryDefaultArgs<ExtArgs>
+    PortfolioTag?: boolean | ProjectTag$PortfolioTagArgs<ExtArgs>
+    UserTags?: boolean | ProjectTag$UserTagsArgs<ExtArgs>
+    _count?: boolean | ProjectTagCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ProjectTagIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    industry?: boolean | IndustryDefaultArgs<ExtArgs>
+  }
+  export type ProjectTagIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    industry?: boolean | IndustryDefaultArgs<ExtArgs>
+  }
+
+  export type $ProjectTagPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProjectTag"
+    objects: {
+      industry: Prisma.$IndustryPayload<ExtArgs>
+      PortfolioTag: Prisma.$PortfolioTagPayload<ExtArgs>[]
+      UserTags: Prisma.$UserTagsPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      slug: string
+      industrySlug: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["projectTag"]>
+    composites: {}
+  }
+
+  type ProjectTagGetPayload<S extends boolean | null | undefined | ProjectTagDefaultArgs> = $Result.GetResult<Prisma.$ProjectTagPayload, S>
+
+  type ProjectTagCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProjectTagFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProjectTagCountAggregateInputType | true
+    }
+
+  export interface ProjectTagDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProjectTag'], meta: { name: 'ProjectTag' } }
+    /**
+     * Find zero or one ProjectTag that matches the filter.
+     * @param {ProjectTagFindUniqueArgs} args - Arguments to find a ProjectTag
+     * @example
+     * // Get one ProjectTag
+     * const projectTag = await prisma.projectTag.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProjectTagFindUniqueArgs>(args: SelectSubset<T, ProjectTagFindUniqueArgs<ExtArgs>>): Prisma__ProjectTagClient<$Result.GetResult<Prisma.$ProjectTagPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProjectTag that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProjectTagFindUniqueOrThrowArgs} args - Arguments to find a ProjectTag
+     * @example
+     * // Get one ProjectTag
+     * const projectTag = await prisma.projectTag.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProjectTagFindUniqueOrThrowArgs>(args: SelectSubset<T, ProjectTagFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProjectTagClient<$Result.GetResult<Prisma.$ProjectTagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProjectTag that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectTagFindFirstArgs} args - Arguments to find a ProjectTag
+     * @example
+     * // Get one ProjectTag
+     * const projectTag = await prisma.projectTag.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProjectTagFindFirstArgs>(args?: SelectSubset<T, ProjectTagFindFirstArgs<ExtArgs>>): Prisma__ProjectTagClient<$Result.GetResult<Prisma.$ProjectTagPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProjectTag that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectTagFindFirstOrThrowArgs} args - Arguments to find a ProjectTag
+     * @example
+     * // Get one ProjectTag
+     * const projectTag = await prisma.projectTag.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProjectTagFindFirstOrThrowArgs>(args?: SelectSubset<T, ProjectTagFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProjectTagClient<$Result.GetResult<Prisma.$ProjectTagPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProjectTags that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectTagFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProjectTags
+     * const projectTags = await prisma.projectTag.findMany()
+     * 
+     * // Get first 10 ProjectTags
+     * const projectTags = await prisma.projectTag.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const projectTagWithIdOnly = await prisma.projectTag.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProjectTagFindManyArgs>(args?: SelectSubset<T, ProjectTagFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProjectTag.
+     * @param {ProjectTagCreateArgs} args - Arguments to create a ProjectTag.
+     * @example
+     * // Create one ProjectTag
+     * const ProjectTag = await prisma.projectTag.create({
+     *   data: {
+     *     // ... data to create a ProjectTag
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProjectTagCreateArgs>(args: SelectSubset<T, ProjectTagCreateArgs<ExtArgs>>): Prisma__ProjectTagClient<$Result.GetResult<Prisma.$ProjectTagPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProjectTags.
+     * @param {ProjectTagCreateManyArgs} args - Arguments to create many ProjectTags.
+     * @example
+     * // Create many ProjectTags
+     * const projectTag = await prisma.projectTag.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProjectTagCreateManyArgs>(args?: SelectSubset<T, ProjectTagCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProjectTags and returns the data saved in the database.
+     * @param {ProjectTagCreateManyAndReturnArgs} args - Arguments to create many ProjectTags.
+     * @example
+     * // Create many ProjectTags
+     * const projectTag = await prisma.projectTag.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProjectTags and only return the `id`
+     * const projectTagWithIdOnly = await prisma.projectTag.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProjectTagCreateManyAndReturnArgs>(args?: SelectSubset<T, ProjectTagCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectTagPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProjectTag.
+     * @param {ProjectTagDeleteArgs} args - Arguments to delete one ProjectTag.
+     * @example
+     * // Delete one ProjectTag
+     * const ProjectTag = await prisma.projectTag.delete({
+     *   where: {
+     *     // ... filter to delete one ProjectTag
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProjectTagDeleteArgs>(args: SelectSubset<T, ProjectTagDeleteArgs<ExtArgs>>): Prisma__ProjectTagClient<$Result.GetResult<Prisma.$ProjectTagPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProjectTag.
+     * @param {ProjectTagUpdateArgs} args - Arguments to update one ProjectTag.
+     * @example
+     * // Update one ProjectTag
+     * const projectTag = await prisma.projectTag.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProjectTagUpdateArgs>(args: SelectSubset<T, ProjectTagUpdateArgs<ExtArgs>>): Prisma__ProjectTagClient<$Result.GetResult<Prisma.$ProjectTagPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProjectTags.
+     * @param {ProjectTagDeleteManyArgs} args - Arguments to filter ProjectTags to delete.
+     * @example
+     * // Delete a few ProjectTags
+     * const { count } = await prisma.projectTag.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProjectTagDeleteManyArgs>(args?: SelectSubset<T, ProjectTagDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProjectTags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectTagUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProjectTags
+     * const projectTag = await prisma.projectTag.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProjectTagUpdateManyArgs>(args: SelectSubset<T, ProjectTagUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProjectTags and returns the data updated in the database.
+     * @param {ProjectTagUpdateManyAndReturnArgs} args - Arguments to update many ProjectTags.
+     * @example
+     * // Update many ProjectTags
+     * const projectTag = await prisma.projectTag.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProjectTags and only return the `id`
+     * const projectTagWithIdOnly = await prisma.projectTag.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProjectTagUpdateManyAndReturnArgs>(args: SelectSubset<T, ProjectTagUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectTagPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProjectTag.
+     * @param {ProjectTagUpsertArgs} args - Arguments to update or create a ProjectTag.
+     * @example
+     * // Update or create a ProjectTag
+     * const projectTag = await prisma.projectTag.upsert({
+     *   create: {
+     *     // ... data to create a ProjectTag
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProjectTag we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProjectTagUpsertArgs>(args: SelectSubset<T, ProjectTagUpsertArgs<ExtArgs>>): Prisma__ProjectTagClient<$Result.GetResult<Prisma.$ProjectTagPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProjectTags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectTagCountArgs} args - Arguments to filter ProjectTags to count.
+     * @example
+     * // Count the number of ProjectTags
+     * const count = await prisma.projectTag.count({
+     *   where: {
+     *     // ... the filter for the ProjectTags we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProjectTagCountArgs>(
+      args?: Subset<T, ProjectTagCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProjectTagCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProjectTag.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectTagAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProjectTagAggregateArgs>(args: Subset<T, ProjectTagAggregateArgs>): Prisma.PrismaPromise<GetProjectTagAggregateType<T>>
+
+    /**
+     * Group by ProjectTag.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectTagGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProjectTagGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProjectTagGroupByArgs['orderBy'] }
+        : { orderBy?: ProjectTagGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProjectTagGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProjectTagGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProjectTag model
+   */
+  readonly fields: ProjectTagFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProjectTag.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProjectTagClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    industry<T extends IndustryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IndustryDefaultArgs<ExtArgs>>): Prisma__IndustryClient<$Result.GetResult<Prisma.$IndustryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    PortfolioTag<T extends ProjectTag$PortfolioTagArgs<ExtArgs> = {}>(args?: Subset<T, ProjectTag$PortfolioTagArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PortfolioTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    UserTags<T extends ProjectTag$UserTagsArgs<ExtArgs> = {}>(args?: Subset<T, ProjectTag$UserTagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserTagsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProjectTag model
+   */
+  interface ProjectTagFieldRefs {
+    readonly id: FieldRef<"ProjectTag", 'String'>
+    readonly name: FieldRef<"ProjectTag", 'String'>
+    readonly slug: FieldRef<"ProjectTag", 'String'>
+    readonly industrySlug: FieldRef<"ProjectTag", 'String'>
+    readonly createdAt: FieldRef<"ProjectTag", 'DateTime'>
+    readonly updatedAt: FieldRef<"ProjectTag", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProjectTag findUnique
+   */
+  export type ProjectTagFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTag
+     */
+    select?: ProjectTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectTag
+     */
+    omit?: ProjectTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectTag to fetch.
+     */
+    where: ProjectTagWhereUniqueInput
+  }
+
+  /**
+   * ProjectTag findUniqueOrThrow
+   */
+  export type ProjectTagFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTag
+     */
+    select?: ProjectTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectTag
+     */
+    omit?: ProjectTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectTag to fetch.
+     */
+    where: ProjectTagWhereUniqueInput
+  }
+
+  /**
+   * ProjectTag findFirst
+   */
+  export type ProjectTagFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTag
+     */
+    select?: ProjectTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectTag
+     */
+    omit?: ProjectTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectTag to fetch.
+     */
+    where?: ProjectTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProjectTags to fetch.
+     */
+    orderBy?: ProjectTagOrderByWithRelationInput | ProjectTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProjectTags.
+     */
+    cursor?: ProjectTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProjectTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProjectTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProjectTags.
+     */
+    distinct?: ProjectTagScalarFieldEnum | ProjectTagScalarFieldEnum[]
+  }
+
+  /**
+   * ProjectTag findFirstOrThrow
+   */
+  export type ProjectTagFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTag
+     */
+    select?: ProjectTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectTag
+     */
+    omit?: ProjectTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectTag to fetch.
+     */
+    where?: ProjectTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProjectTags to fetch.
+     */
+    orderBy?: ProjectTagOrderByWithRelationInput | ProjectTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProjectTags.
+     */
+    cursor?: ProjectTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProjectTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProjectTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProjectTags.
+     */
+    distinct?: ProjectTagScalarFieldEnum | ProjectTagScalarFieldEnum[]
+  }
+
+  /**
+   * ProjectTag findMany
+   */
+  export type ProjectTagFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTag
+     */
+    select?: ProjectTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectTag
+     */
+    omit?: ProjectTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectTags to fetch.
+     */
+    where?: ProjectTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProjectTags to fetch.
+     */
+    orderBy?: ProjectTagOrderByWithRelationInput | ProjectTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProjectTags.
+     */
+    cursor?: ProjectTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProjectTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProjectTags.
+     */
+    skip?: number
+    distinct?: ProjectTagScalarFieldEnum | ProjectTagScalarFieldEnum[]
+  }
+
+  /**
+   * ProjectTag create
+   */
+  export type ProjectTagCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTag
+     */
+    select?: ProjectTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectTag
+     */
+    omit?: ProjectTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectTagInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProjectTag.
+     */
+    data: XOR<ProjectTagCreateInput, ProjectTagUncheckedCreateInput>
+  }
+
+  /**
+   * ProjectTag createMany
+   */
+  export type ProjectTagCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProjectTags.
+     */
+    data: ProjectTagCreateManyInput | ProjectTagCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProjectTag createManyAndReturn
+   */
+  export type ProjectTagCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTag
+     */
+    select?: ProjectTagSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectTag
+     */
+    omit?: ProjectTagOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProjectTags.
+     */
+    data: ProjectTagCreateManyInput | ProjectTagCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectTagIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProjectTag update
+   */
+  export type ProjectTagUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTag
+     */
+    select?: ProjectTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectTag
+     */
+    omit?: ProjectTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectTagInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProjectTag.
+     */
+    data: XOR<ProjectTagUpdateInput, ProjectTagUncheckedUpdateInput>
+    /**
+     * Choose, which ProjectTag to update.
+     */
+    where: ProjectTagWhereUniqueInput
+  }
+
+  /**
+   * ProjectTag updateMany
+   */
+  export type ProjectTagUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProjectTags.
+     */
+    data: XOR<ProjectTagUpdateManyMutationInput, ProjectTagUncheckedUpdateManyInput>
+    /**
+     * Filter which ProjectTags to update
+     */
+    where?: ProjectTagWhereInput
+    /**
+     * Limit how many ProjectTags to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProjectTag updateManyAndReturn
+   */
+  export type ProjectTagUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTag
+     */
+    select?: ProjectTagSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectTag
+     */
+    omit?: ProjectTagOmit<ExtArgs> | null
+    /**
+     * The data used to update ProjectTags.
+     */
+    data: XOR<ProjectTagUpdateManyMutationInput, ProjectTagUncheckedUpdateManyInput>
+    /**
+     * Filter which ProjectTags to update
+     */
+    where?: ProjectTagWhereInput
+    /**
+     * Limit how many ProjectTags to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectTagIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProjectTag upsert
+   */
+  export type ProjectTagUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTag
+     */
+    select?: ProjectTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectTag
+     */
+    omit?: ProjectTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectTagInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProjectTag to update in case it exists.
+     */
+    where: ProjectTagWhereUniqueInput
+    /**
+     * In case the ProjectTag found by the `where` argument doesn't exist, create a new ProjectTag with this data.
+     */
+    create: XOR<ProjectTagCreateInput, ProjectTagUncheckedCreateInput>
+    /**
+     * In case the ProjectTag was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProjectTagUpdateInput, ProjectTagUncheckedUpdateInput>
+  }
+
+  /**
+   * ProjectTag delete
+   */
+  export type ProjectTagDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTag
+     */
+    select?: ProjectTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectTag
+     */
+    omit?: ProjectTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectTagInclude<ExtArgs> | null
+    /**
+     * Filter which ProjectTag to delete.
+     */
+    where: ProjectTagWhereUniqueInput
+  }
+
+  /**
+   * ProjectTag deleteMany
+   */
+  export type ProjectTagDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProjectTags to delete
+     */
+    where?: ProjectTagWhereInput
+    /**
+     * Limit how many ProjectTags to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProjectTag.PortfolioTag
+   */
+  export type ProjectTag$PortfolioTagArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PortfolioTag
+     */
+    select?: PortfolioTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PortfolioTag
+     */
+    omit?: PortfolioTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PortfolioTagInclude<ExtArgs> | null
+    where?: PortfolioTagWhereInput
+    orderBy?: PortfolioTagOrderByWithRelationInput | PortfolioTagOrderByWithRelationInput[]
+    cursor?: PortfolioTagWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PortfolioTagScalarFieldEnum | PortfolioTagScalarFieldEnum[]
+  }
+
+  /**
+   * ProjectTag.UserTags
+   */
+  export type ProjectTag$UserTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserTags
+     */
+    select?: UserTagsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserTags
+     */
+    omit?: UserTagsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserTagsInclude<ExtArgs> | null
+    where?: UserTagsWhereInput
+    orderBy?: UserTagsOrderByWithRelationInput | UserTagsOrderByWithRelationInput[]
+    cursor?: UserTagsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserTagsScalarFieldEnum | UserTagsScalarFieldEnum[]
+  }
+
+  /**
+   * ProjectTag without action
+   */
+  export type ProjectTagDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectTag
+     */
+    select?: ProjectTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectTag
+     */
+    omit?: ProjectTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectTagInclude<ExtArgs> | null
   }
 
 
@@ -28905,46 +30205,46 @@ export namespace Prisma {
 
   export type PortfolioTagMinAggregateOutputType = {
     portfolioId: string | null
-    tagSlug: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    projectTagSlug: string | null
   }
 
   export type PortfolioTagMaxAggregateOutputType = {
     portfolioId: string | null
-    tagSlug: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    projectTagSlug: string | null
   }
 
   export type PortfolioTagCountAggregateOutputType = {
     portfolioId: number
-    tagSlug: number
     createdAt: number
     updatedAt: number
+    projectTagSlug: number
     _all: number
   }
 
 
   export type PortfolioTagMinAggregateInputType = {
     portfolioId?: true
-    tagSlug?: true
     createdAt?: true
     updatedAt?: true
+    projectTagSlug?: true
   }
 
   export type PortfolioTagMaxAggregateInputType = {
     portfolioId?: true
-    tagSlug?: true
     createdAt?: true
     updatedAt?: true
+    projectTagSlug?: true
   }
 
   export type PortfolioTagCountAggregateInputType = {
     portfolioId?: true
-    tagSlug?: true
     createdAt?: true
     updatedAt?: true
+    projectTagSlug?: true
     _all?: true
   }
 
@@ -29022,9 +30322,9 @@ export namespace Prisma {
 
   export type PortfolioTagGroupByOutputType = {
     portfolioId: string
-    tagSlug: string
     createdAt: Date
     updatedAt: Date
+    projectTagSlug: string
     _count: PortfolioTagCountAggregateOutputType | null
     _min: PortfolioTagMinAggregateOutputType | null
     _max: PortfolioTagMaxAggregateOutputType | null
@@ -29046,63 +30346,63 @@ export namespace Prisma {
 
   export type PortfolioTagSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     portfolioId?: boolean
-    tagSlug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    projectTagSlug?: boolean
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
-    tag?: boolean | TagDefaultArgs<ExtArgs>
+    projectTag?: boolean | ProjectTagDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["portfolioTag"]>
 
   export type PortfolioTagSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     portfolioId?: boolean
-    tagSlug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    projectTagSlug?: boolean
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
-    tag?: boolean | TagDefaultArgs<ExtArgs>
+    projectTag?: boolean | ProjectTagDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["portfolioTag"]>
 
   export type PortfolioTagSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     portfolioId?: boolean
-    tagSlug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    projectTagSlug?: boolean
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
-    tag?: boolean | TagDefaultArgs<ExtArgs>
+    projectTag?: boolean | ProjectTagDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["portfolioTag"]>
 
   export type PortfolioTagSelectScalar = {
     portfolioId?: boolean
-    tagSlug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    projectTagSlug?: boolean
   }
 
-  export type PortfolioTagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"portfolioId" | "tagSlug" | "createdAt" | "updatedAt", ExtArgs["result"]["portfolioTag"]>
+  export type PortfolioTagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"portfolioId" | "createdAt" | "updatedAt" | "projectTagSlug", ExtArgs["result"]["portfolioTag"]>
   export type PortfolioTagInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
-    tag?: boolean | TagDefaultArgs<ExtArgs>
+    projectTag?: boolean | ProjectTagDefaultArgs<ExtArgs>
   }
   export type PortfolioTagIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
-    tag?: boolean | TagDefaultArgs<ExtArgs>
+    projectTag?: boolean | ProjectTagDefaultArgs<ExtArgs>
   }
   export type PortfolioTagIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
-    tag?: boolean | TagDefaultArgs<ExtArgs>
+    projectTag?: boolean | ProjectTagDefaultArgs<ExtArgs>
   }
 
   export type $PortfolioTagPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PortfolioTag"
     objects: {
       portfolio: Prisma.$PortfolioPayload<ExtArgs>
-      tag: Prisma.$TagPayload<ExtArgs>
+      projectTag: Prisma.$ProjectTagPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       portfolioId: string
-      tagSlug: string
       createdAt: Date
       updatedAt: Date
+      projectTagSlug: string
     }, ExtArgs["result"]["portfolioTag"]>
     composites: {}
   }
@@ -29498,7 +30798,7 @@ export namespace Prisma {
   export interface Prisma__PortfolioTagClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     portfolio<T extends PortfolioDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PortfolioDefaultArgs<ExtArgs>>): Prisma__PortfolioClient<$Result.GetResult<Prisma.$PortfolioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    tag<T extends TagDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TagDefaultArgs<ExtArgs>>): Prisma__TagClient<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    projectTag<T extends ProjectTagDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectTagDefaultArgs<ExtArgs>>): Prisma__ProjectTagClient<$Result.GetResult<Prisma.$ProjectTagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -29529,9 +30829,9 @@ export namespace Prisma {
    */
   interface PortfolioTagFieldRefs {
     readonly portfolioId: FieldRef<"PortfolioTag", 'String'>
-    readonly tagSlug: FieldRef<"PortfolioTag", 'String'>
     readonly createdAt: FieldRef<"PortfolioTag", 'DateTime'>
     readonly updatedAt: FieldRef<"PortfolioTag", 'DateTime'>
+    readonly projectTagSlug: FieldRef<"PortfolioTag", 'String'>
   }
     
 
@@ -37702,7 +39002,8 @@ export namespace Prisma {
     userId: 'userId',
     tagSlug: 'tagSlug',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    projectTagId: 'projectTagId'
   };
 
   export type UserTagsScalarFieldEnum = (typeof UserTagsScalarFieldEnum)[keyof typeof UserTagsScalarFieldEnum]
@@ -37895,6 +39196,18 @@ export namespace Prisma {
   export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
 
 
+  export const ProjectTagScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    slug: 'slug',
+    industrySlug: 'industrySlug',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ProjectTagScalarFieldEnum = (typeof ProjectTagScalarFieldEnum)[keyof typeof ProjectTagScalarFieldEnum]
+
+
   export const LookingForScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -37986,9 +39299,9 @@ export namespace Prisma {
 
   export const PortfolioTagScalarFieldEnum: {
     portfolioId: 'portfolioId',
-    tagSlug: 'tagSlug',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    projectTagSlug: 'projectTagSlug'
   };
 
   export type PortfolioTagScalarFieldEnum = (typeof PortfolioTagScalarFieldEnum)[keyof typeof PortfolioTagScalarFieldEnum]
@@ -38425,8 +39738,10 @@ export namespace Prisma {
     tagSlug?: StringFilter<"UserTags"> | string
     createdAt?: DateTimeFilter<"UserTags"> | Date | string
     updatedAt?: DateTimeFilter<"UserTags"> | Date | string
+    projectTagId?: UuidNullableFilter<"UserTags"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     tag?: XOR<TagScalarRelationFilter, TagWhereInput>
+    ProjectTag?: XOR<ProjectTagNullableScalarRelationFilter, ProjectTagWhereInput> | null
   }
 
   export type UserTagsOrderByWithRelationInput = {
@@ -38434,8 +39749,10 @@ export namespace Prisma {
     tagSlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    projectTagId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     tag?: TagOrderByWithRelationInput
+    ProjectTag?: ProjectTagOrderByWithRelationInput
   }
 
   export type UserTagsWhereUniqueInput = Prisma.AtLeast<{
@@ -38447,8 +39764,10 @@ export namespace Prisma {
     tagSlug?: StringFilter<"UserTags"> | string
     createdAt?: DateTimeFilter<"UserTags"> | Date | string
     updatedAt?: DateTimeFilter<"UserTags"> | Date | string
+    projectTagId?: UuidNullableFilter<"UserTags"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     tag?: XOR<TagScalarRelationFilter, TagWhereInput>
+    ProjectTag?: XOR<ProjectTagNullableScalarRelationFilter, ProjectTagWhereInput> | null
   }, "userId_tagSlug">
 
   export type UserTagsOrderByWithAggregationInput = {
@@ -38456,6 +39775,7 @@ export namespace Prisma {
     tagSlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    projectTagId?: SortOrderInput | SortOrder
     _count?: UserTagsCountOrderByAggregateInput
     _max?: UserTagsMaxOrderByAggregateInput
     _min?: UserTagsMinOrderByAggregateInput
@@ -38469,6 +39789,7 @@ export namespace Prisma {
     tagSlug?: StringWithAggregatesFilter<"UserTags"> | string
     createdAt?: DateTimeWithAggregatesFilter<"UserTags"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"UserTags"> | Date | string
+    projectTagId?: UuidNullableWithAggregatesFilter<"UserTags"> | string | null
   }
 
   export type UserChannelsWhereInput = {
@@ -39370,6 +40691,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamListRelationFilter
     Tag?: TagListRelationFilter
     LookingFor?: LookingForListRelationFilter
+    ProjectTag?: ProjectTagListRelationFilter
   }
 
   export type IndustryOrderByWithRelationInput = {
@@ -39393,6 +40715,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamOrderByRelationAggregateInput
     Tag?: TagOrderByRelationAggregateInput
     LookingFor?: LookingForOrderByRelationAggregateInput
+    ProjectTag?: ProjectTagOrderByRelationAggregateInput
   }
 
   export type IndustryWhereUniqueInput = Prisma.AtLeast<{
@@ -39419,6 +40742,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamListRelationFilter
     Tag?: TagListRelationFilter
     LookingFor?: LookingForListRelationFilter
+    ProjectTag?: ProjectTagListRelationFilter
   }, "id" | "slug">
 
   export type IndustryOrderByWithAggregationInput = {
@@ -39460,7 +40784,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Tag"> | Date | string
     updatedAt?: DateTimeFilter<"Tag"> | Date | string
     industry?: XOR<IndustryScalarRelationFilter, IndustryWhereInput>
-    PortfolioTag?: PortfolioTagListRelationFilter
     UserTags?: UserTagsListRelationFilter
   }
 
@@ -39472,7 +40795,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     industry?: IndustryOrderByWithRelationInput
-    PortfolioTag?: PortfolioTagOrderByRelationAggregateInput
     UserTags?: UserTagsOrderByRelationAggregateInput
   }
 
@@ -39487,7 +40809,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Tag"> | Date | string
     updatedAt?: DateTimeFilter<"Tag"> | Date | string
     industry?: XOR<IndustryScalarRelationFilter, IndustryWhereInput>
-    PortfolioTag?: PortfolioTagListRelationFilter
     UserTags?: UserTagsListRelationFilter
   }, "id" | "slug">
 
@@ -39513,6 +40834,72 @@ export namespace Prisma {
     industrySlug?: StringWithAggregatesFilter<"Tag"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Tag"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Tag"> | Date | string
+  }
+
+  export type ProjectTagWhereInput = {
+    AND?: ProjectTagWhereInput | ProjectTagWhereInput[]
+    OR?: ProjectTagWhereInput[]
+    NOT?: ProjectTagWhereInput | ProjectTagWhereInput[]
+    id?: UuidFilter<"ProjectTag"> | string
+    name?: StringFilter<"ProjectTag"> | string
+    slug?: StringFilter<"ProjectTag"> | string
+    industrySlug?: StringFilter<"ProjectTag"> | string
+    createdAt?: DateTimeFilter<"ProjectTag"> | Date | string
+    updatedAt?: DateTimeFilter<"ProjectTag"> | Date | string
+    industry?: XOR<IndustryScalarRelationFilter, IndustryWhereInput>
+    PortfolioTag?: PortfolioTagListRelationFilter
+    UserTags?: UserTagsListRelationFilter
+  }
+
+  export type ProjectTagOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    industrySlug?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    industry?: IndustryOrderByWithRelationInput
+    PortfolioTag?: PortfolioTagOrderByRelationAggregateInput
+    UserTags?: UserTagsOrderByRelationAggregateInput
+  }
+
+  export type ProjectTagWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    slug?: string
+    AND?: ProjectTagWhereInput | ProjectTagWhereInput[]
+    OR?: ProjectTagWhereInput[]
+    NOT?: ProjectTagWhereInput | ProjectTagWhereInput[]
+    name?: StringFilter<"ProjectTag"> | string
+    industrySlug?: StringFilter<"ProjectTag"> | string
+    createdAt?: DateTimeFilter<"ProjectTag"> | Date | string
+    updatedAt?: DateTimeFilter<"ProjectTag"> | Date | string
+    industry?: XOR<IndustryScalarRelationFilter, IndustryWhereInput>
+    PortfolioTag?: PortfolioTagListRelationFilter
+    UserTags?: UserTagsListRelationFilter
+  }, "id" | "slug">
+
+  export type ProjectTagOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    industrySlug?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ProjectTagCountOrderByAggregateInput
+    _max?: ProjectTagMaxOrderByAggregateInput
+    _min?: ProjectTagMinOrderByAggregateInput
+  }
+
+  export type ProjectTagScalarWhereWithAggregatesInput = {
+    AND?: ProjectTagScalarWhereWithAggregatesInput | ProjectTagScalarWhereWithAggregatesInput[]
+    OR?: ProjectTagScalarWhereWithAggregatesInput[]
+    NOT?: ProjectTagScalarWhereWithAggregatesInput | ProjectTagScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"ProjectTag"> | string
+    name?: StringWithAggregatesFilter<"ProjectTag"> | string
+    slug?: StringWithAggregatesFilter<"ProjectTag"> | string
+    industrySlug?: StringWithAggregatesFilter<"ProjectTag"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ProjectTag"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ProjectTag"> | Date | string
   }
 
   export type LookingForWhereInput = {
@@ -40008,40 +41395,40 @@ export namespace Prisma {
     OR?: PortfolioTagWhereInput[]
     NOT?: PortfolioTagWhereInput | PortfolioTagWhereInput[]
     portfolioId?: UuidFilter<"PortfolioTag"> | string
-    tagSlug?: StringFilter<"PortfolioTag"> | string
     createdAt?: DateTimeFilter<"PortfolioTag"> | Date | string
     updatedAt?: DateTimeFilter<"PortfolioTag"> | Date | string
+    projectTagSlug?: StringFilter<"PortfolioTag"> | string
     portfolio?: XOR<PortfolioScalarRelationFilter, PortfolioWhereInput>
-    tag?: XOR<TagScalarRelationFilter, TagWhereInput>
+    projectTag?: XOR<ProjectTagScalarRelationFilter, ProjectTagWhereInput>
   }
 
   export type PortfolioTagOrderByWithRelationInput = {
     portfolioId?: SortOrder
-    tagSlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    projectTagSlug?: SortOrder
     portfolio?: PortfolioOrderByWithRelationInput
-    tag?: TagOrderByWithRelationInput
+    projectTag?: ProjectTagOrderByWithRelationInput
   }
 
   export type PortfolioTagWhereUniqueInput = Prisma.AtLeast<{
-    portfolioId_tagSlug?: PortfolioTagPortfolioIdTagSlugCompoundUniqueInput
+    portfolioId_projectTagSlug?: PortfolioTagPortfolioIdProjectTagSlugCompoundUniqueInput
     AND?: PortfolioTagWhereInput | PortfolioTagWhereInput[]
     OR?: PortfolioTagWhereInput[]
     NOT?: PortfolioTagWhereInput | PortfolioTagWhereInput[]
     portfolioId?: UuidFilter<"PortfolioTag"> | string
-    tagSlug?: StringFilter<"PortfolioTag"> | string
     createdAt?: DateTimeFilter<"PortfolioTag"> | Date | string
     updatedAt?: DateTimeFilter<"PortfolioTag"> | Date | string
+    projectTagSlug?: StringFilter<"PortfolioTag"> | string
     portfolio?: XOR<PortfolioScalarRelationFilter, PortfolioWhereInput>
-    tag?: XOR<TagScalarRelationFilter, TagWhereInput>
-  }, "portfolioId_tagSlug">
+    projectTag?: XOR<ProjectTagScalarRelationFilter, ProjectTagWhereInput>
+  }, "portfolioId_projectTagSlug">
 
   export type PortfolioTagOrderByWithAggregationInput = {
     portfolioId?: SortOrder
-    tagSlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    projectTagSlug?: SortOrder
     _count?: PortfolioTagCountOrderByAggregateInput
     _max?: PortfolioTagMaxOrderByAggregateInput
     _min?: PortfolioTagMinOrderByAggregateInput
@@ -40052,9 +41439,9 @@ export namespace Prisma {
     OR?: PortfolioTagScalarWhereWithAggregatesInput[]
     NOT?: PortfolioTagScalarWhereWithAggregatesInput | PortfolioTagScalarWhereWithAggregatesInput[]
     portfolioId?: UuidWithAggregatesFilter<"PortfolioTag"> | string
-    tagSlug?: StringWithAggregatesFilter<"PortfolioTag"> | string
     createdAt?: DateTimeWithAggregatesFilter<"PortfolioTag"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PortfolioTag"> | Date | string
+    projectTagSlug?: StringWithAggregatesFilter<"PortfolioTag"> | string
   }
 
   export type PortfolioLookingForWhereInput = {
@@ -40725,6 +42112,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutIndustryTagsInput
     tag: TagCreateNestedOneWithoutUserTagsInput
+    ProjectTag?: ProjectTagCreateNestedOneWithoutUserTagsInput
   }
 
   export type UserTagsUncheckedCreateInput = {
@@ -40732,6 +42120,7 @@ export namespace Prisma {
     tagSlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    projectTagId?: string | null
   }
 
   export type UserTagsUpdateInput = {
@@ -40739,6 +42128,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutIndustryTagsNestedInput
     tag?: TagUpdateOneRequiredWithoutUserTagsNestedInput
+    ProjectTag?: ProjectTagUpdateOneWithoutUserTagsNestedInput
   }
 
   export type UserTagsUncheckedUpdateInput = {
@@ -40746,6 +42136,7 @@ export namespace Prisma {
     tagSlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectTagId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserTagsCreateManyInput = {
@@ -40753,6 +42144,7 @@ export namespace Prisma {
     tagSlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    projectTagId?: string | null
   }
 
   export type UserTagsUpdateManyMutationInput = {
@@ -40765,6 +42157,7 @@ export namespace Prisma {
     tagSlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectTagId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserChannelsCreateInput = {
@@ -41695,6 +43088,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamCreateNestedManyWithoutIndustryInput
     Tag?: TagCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryUncheckedCreateInput = {
@@ -41718,6 +43112,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutIndustryInput
     Tag?: TagUncheckedCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForUncheckedCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagUncheckedCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryUpdateInput = {
@@ -41741,6 +43136,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUpdateManyWithoutIndustryNestedInput
     Tag?: TagUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUpdateManyWithoutIndustryNestedInput
   }
 
   export type IndustryUncheckedUpdateInput = {
@@ -41764,6 +43160,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutIndustryNestedInput
     Tag?: TagUncheckedUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUncheckedUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUncheckedUpdateManyWithoutIndustryNestedInput
   }
 
   export type IndustryCreateManyInput = {
@@ -41806,7 +43203,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutTagInput
-    PortfolioTag?: PortfolioTagCreateNestedManyWithoutTagInput
     UserTags?: UserTagsCreateNestedManyWithoutTagInput
   }
 
@@ -41817,7 +43213,6 @@ export namespace Prisma {
     industrySlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    PortfolioTag?: PortfolioTagUncheckedCreateNestedManyWithoutTagInput
     UserTags?: UserTagsUncheckedCreateNestedManyWithoutTagInput
   }
 
@@ -41828,7 +43223,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutTagNestedInput
-    PortfolioTag?: PortfolioTagUpdateManyWithoutTagNestedInput
     UserTags?: UserTagsUpdateManyWithoutTagNestedInput
   }
 
@@ -41839,7 +43233,6 @@ export namespace Prisma {
     industrySlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    PortfolioTag?: PortfolioTagUncheckedUpdateManyWithoutTagNestedInput
     UserTags?: UserTagsUncheckedUpdateManyWithoutTagNestedInput
   }
 
@@ -41861,6 +43254,76 @@ export namespace Prisma {
   }
 
   export type TagUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    industrySlug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectTagCreateInput = {
+    id?: string
+    name: string
+    slug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    industry: IndustryCreateNestedOneWithoutProjectTagInput
+    PortfolioTag?: PortfolioTagCreateNestedManyWithoutProjectTagInput
+    UserTags?: UserTagsCreateNestedManyWithoutProjectTagInput
+  }
+
+  export type ProjectTagUncheckedCreateInput = {
+    id?: string
+    name: string
+    slug: string
+    industrySlug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    PortfolioTag?: PortfolioTagUncheckedCreateNestedManyWithoutProjectTagInput
+    UserTags?: UserTagsUncheckedCreateNestedManyWithoutProjectTagInput
+  }
+
+  export type ProjectTagUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    industry?: IndustryUpdateOneRequiredWithoutProjectTagNestedInput
+    PortfolioTag?: PortfolioTagUpdateManyWithoutProjectTagNestedInput
+    UserTags?: UserTagsUpdateManyWithoutProjectTagNestedInput
+  }
+
+  export type ProjectTagUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    industrySlug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    PortfolioTag?: PortfolioTagUncheckedUpdateManyWithoutProjectTagNestedInput
+    UserTags?: UserTagsUncheckedUpdateManyWithoutProjectTagNestedInput
+  }
+
+  export type ProjectTagCreateManyInput = {
+    id?: string
+    name: string
+    slug: string
+    industrySlug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProjectTagUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectTagUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
@@ -42411,35 +43874,35 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     portfolio: PortfolioCreateNestedOneWithoutIndustryTagsInput
-    tag: TagCreateNestedOneWithoutPortfolioTagInput
+    projectTag: ProjectTagCreateNestedOneWithoutPortfolioTagInput
   }
 
   export type PortfolioTagUncheckedCreateInput = {
     portfolioId: string
-    tagSlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    projectTagSlug: string
   }
 
   export type PortfolioTagUpdateInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     portfolio?: PortfolioUpdateOneRequiredWithoutIndustryTagsNestedInput
-    tag?: TagUpdateOneRequiredWithoutPortfolioTagNestedInput
+    projectTag?: ProjectTagUpdateOneRequiredWithoutPortfolioTagNestedInput
   }
 
   export type PortfolioTagUncheckedUpdateInput = {
     portfolioId?: StringFieldUpdateOperationsInput | string
-    tagSlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectTagSlug?: StringFieldUpdateOperationsInput | string
   }
 
   export type PortfolioTagCreateManyInput = {
     portfolioId: string
-    tagSlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    projectTagSlug: string
   }
 
   export type PortfolioTagUpdateManyMutationInput = {
@@ -42449,9 +43912,9 @@ export namespace Prisma {
 
   export type PortfolioTagUncheckedUpdateManyInput = {
     portfolioId?: StringFieldUpdateOperationsInput | string
-    tagSlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectTagSlug?: StringFieldUpdateOperationsInput | string
   }
 
   export type PortfolioLookingForCreateInput = {
@@ -43261,6 +44724,18 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type UuidNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedUuidNullableFilter<$PrismaModel> | string | null
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
@@ -43269,6 +44744,11 @@ export namespace Prisma {
   export type TagScalarRelationFilter = {
     is?: TagWhereInput
     isNot?: TagWhereInput
+  }
+
+  export type ProjectTagNullableScalarRelationFilter = {
+    is?: ProjectTagWhereInput | null
+    isNot?: ProjectTagWhereInput | null
   }
 
   export type UserTagsUserIdTagSlugCompoundUniqueInput = {
@@ -43281,6 +44761,7 @@ export namespace Prisma {
     tagSlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    projectTagId?: SortOrder
   }
 
   export type UserTagsMaxOrderByAggregateInput = {
@@ -43288,6 +44769,7 @@ export namespace Prisma {
     tagSlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    projectTagId?: SortOrder
   }
 
   export type UserTagsMinOrderByAggregateInput = {
@@ -43295,6 +44777,22 @@ export namespace Prisma {
     tagSlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    projectTagId?: SortOrder
+  }
+
+  export type UuidNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type ChannelScalarRelationFilter = {
@@ -44051,6 +45549,12 @@ export namespace Prisma {
     none?: LookingForWhereInput
   }
 
+  export type ProjectTagListRelationFilter = {
+    every?: ProjectTagWhereInput
+    some?: ProjectTagWhereInput
+    none?: ProjectTagWhereInput
+  }
+
   export type SourceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -44076,6 +45580,10 @@ export namespace Prisma {
   }
 
   export type LookingForOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProjectTagOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -44112,16 +45620,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type PortfolioTagListRelationFilter = {
-    every?: PortfolioTagWhereInput
-    some?: PortfolioTagWhereInput
-    none?: PortfolioTagWhereInput
-  }
-
-  export type PortfolioTagOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type TagCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -44141,6 +45639,43 @@ export namespace Prisma {
   }
 
   export type TagMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    industrySlug?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PortfolioTagListRelationFilter = {
+    every?: PortfolioTagWhereInput
+    some?: PortfolioTagWhereInput
+    none?: PortfolioTagWhereInput
+  }
+
+  export type PortfolioTagOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProjectTagCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    industrySlug?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProjectTagMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    industrySlug?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProjectTagMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
@@ -44338,18 +45873,6 @@ export namespace Prisma {
     industrySlug?: SortOrder
   }
 
-  export type UuidNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedUuidNullableFilter<$PrismaModel> | string | null
-  }
-
   export type PortfolioImageListRelationFilter = {
     every?: PortfolioImageWhereInput
     some?: PortfolioImageWhereInput
@@ -44420,50 +45943,40 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type UuidNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
   export type PortfolioScalarRelationFilter = {
     is?: PortfolioWhereInput
     isNot?: PortfolioWhereInput
   }
 
-  export type PortfolioTagPortfolioIdTagSlugCompoundUniqueInput = {
+  export type ProjectTagScalarRelationFilter = {
+    is?: ProjectTagWhereInput
+    isNot?: ProjectTagWhereInput
+  }
+
+  export type PortfolioTagPortfolioIdProjectTagSlugCompoundUniqueInput = {
     portfolioId: string
-    tagSlug: string
+    projectTagSlug: string
   }
 
   export type PortfolioTagCountOrderByAggregateInput = {
     portfolioId?: SortOrder
-    tagSlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    projectTagSlug?: SortOrder
   }
 
   export type PortfolioTagMaxOrderByAggregateInput = {
     portfolioId?: SortOrder
-    tagSlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    projectTagSlug?: SortOrder
   }
 
   export type PortfolioTagMinOrderByAggregateInput = {
     portfolioId?: SortOrder
-    tagSlug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    projectTagSlug?: SortOrder
   }
 
   export type LookingForScalarRelationFilter = {
@@ -45172,6 +46685,12 @@ export namespace Prisma {
     connect?: TagWhereUniqueInput
   }
 
+  export type ProjectTagCreateNestedOneWithoutUserTagsInput = {
+    create?: XOR<ProjectTagCreateWithoutUserTagsInput, ProjectTagUncheckedCreateWithoutUserTagsInput>
+    connectOrCreate?: ProjectTagCreateOrConnectWithoutUserTagsInput
+    connect?: ProjectTagWhereUniqueInput
+  }
+
   export type UserUpdateOneRequiredWithoutIndustryTagsNestedInput = {
     create?: XOR<UserCreateWithoutIndustryTagsInput, UserUncheckedCreateWithoutIndustryTagsInput>
     connectOrCreate?: UserCreateOrConnectWithoutIndustryTagsInput
@@ -45186,6 +46705,16 @@ export namespace Prisma {
     upsert?: TagUpsertWithoutUserTagsInput
     connect?: TagWhereUniqueInput
     update?: XOR<XOR<TagUpdateToOneWithWhereWithoutUserTagsInput, TagUpdateWithoutUserTagsInput>, TagUncheckedUpdateWithoutUserTagsInput>
+  }
+
+  export type ProjectTagUpdateOneWithoutUserTagsNestedInput = {
+    create?: XOR<ProjectTagCreateWithoutUserTagsInput, ProjectTagUncheckedCreateWithoutUserTagsInput>
+    connectOrCreate?: ProjectTagCreateOrConnectWithoutUserTagsInput
+    upsert?: ProjectTagUpsertWithoutUserTagsInput
+    disconnect?: ProjectTagWhereInput | boolean
+    delete?: ProjectTagWhereInput | boolean
+    connect?: ProjectTagWhereUniqueInput
+    update?: XOR<XOR<ProjectTagUpdateToOneWithWhereWithoutUserTagsInput, ProjectTagUpdateWithoutUserTagsInput>, ProjectTagUncheckedUpdateWithoutUserTagsInput>
   }
 
   export type UserCreateNestedOneWithoutIndustryChannelsInput = {
@@ -45956,6 +47485,13 @@ export namespace Prisma {
     connect?: LookingForWhereUniqueInput | LookingForWhereUniqueInput[]
   }
 
+  export type ProjectTagCreateNestedManyWithoutIndustryInput = {
+    create?: XOR<ProjectTagCreateWithoutIndustryInput, ProjectTagUncheckedCreateWithoutIndustryInput> | ProjectTagCreateWithoutIndustryInput[] | ProjectTagUncheckedCreateWithoutIndustryInput[]
+    connectOrCreate?: ProjectTagCreateOrConnectWithoutIndustryInput | ProjectTagCreateOrConnectWithoutIndustryInput[]
+    createMany?: ProjectTagCreateManyIndustryInputEnvelope
+    connect?: ProjectTagWhereUniqueInput | ProjectTagWhereUniqueInput[]
+  }
+
   export type SkillUncheckedCreateNestedManyWithoutIndustryInput = {
     create?: XOR<SkillCreateWithoutIndustryInput, SkillUncheckedCreateWithoutIndustryInput> | SkillCreateWithoutIndustryInput[] | SkillUncheckedCreateWithoutIndustryInput[]
     connectOrCreate?: SkillCreateOrConnectWithoutIndustryInput | SkillCreateOrConnectWithoutIndustryInput[]
@@ -46038,6 +47574,13 @@ export namespace Prisma {
     connectOrCreate?: LookingForCreateOrConnectWithoutIndustryInput | LookingForCreateOrConnectWithoutIndustryInput[]
     createMany?: LookingForCreateManyIndustryInputEnvelope
     connect?: LookingForWhereUniqueInput | LookingForWhereUniqueInput[]
+  }
+
+  export type ProjectTagUncheckedCreateNestedManyWithoutIndustryInput = {
+    create?: XOR<ProjectTagCreateWithoutIndustryInput, ProjectTagUncheckedCreateWithoutIndustryInput> | ProjectTagCreateWithoutIndustryInput[] | ProjectTagUncheckedCreateWithoutIndustryInput[]
+    connectOrCreate?: ProjectTagCreateOrConnectWithoutIndustryInput | ProjectTagCreateOrConnectWithoutIndustryInput[]
+    createMany?: ProjectTagCreateManyIndustryInputEnvelope
+    connect?: ProjectTagWhereUniqueInput | ProjectTagWhereUniqueInput[]
   }
 
   export type SkillUpdateManyWithoutIndustryNestedInput = {
@@ -46208,6 +47751,20 @@ export namespace Prisma {
     deleteMany?: LookingForScalarWhereInput | LookingForScalarWhereInput[]
   }
 
+  export type ProjectTagUpdateManyWithoutIndustryNestedInput = {
+    create?: XOR<ProjectTagCreateWithoutIndustryInput, ProjectTagUncheckedCreateWithoutIndustryInput> | ProjectTagCreateWithoutIndustryInput[] | ProjectTagUncheckedCreateWithoutIndustryInput[]
+    connectOrCreate?: ProjectTagCreateOrConnectWithoutIndustryInput | ProjectTagCreateOrConnectWithoutIndustryInput[]
+    upsert?: ProjectTagUpsertWithWhereUniqueWithoutIndustryInput | ProjectTagUpsertWithWhereUniqueWithoutIndustryInput[]
+    createMany?: ProjectTagCreateManyIndustryInputEnvelope
+    set?: ProjectTagWhereUniqueInput | ProjectTagWhereUniqueInput[]
+    disconnect?: ProjectTagWhereUniqueInput | ProjectTagWhereUniqueInput[]
+    delete?: ProjectTagWhereUniqueInput | ProjectTagWhereUniqueInput[]
+    connect?: ProjectTagWhereUniqueInput | ProjectTagWhereUniqueInput[]
+    update?: ProjectTagUpdateWithWhereUniqueWithoutIndustryInput | ProjectTagUpdateWithWhereUniqueWithoutIndustryInput[]
+    updateMany?: ProjectTagUpdateManyWithWhereWithoutIndustryInput | ProjectTagUpdateManyWithWhereWithoutIndustryInput[]
+    deleteMany?: ProjectTagScalarWhereInput | ProjectTagScalarWhereInput[]
+  }
+
   export type SkillUncheckedUpdateManyWithoutIndustryNestedInput = {
     create?: XOR<SkillCreateWithoutIndustryInput, SkillUncheckedCreateWithoutIndustryInput> | SkillCreateWithoutIndustryInput[] | SkillUncheckedCreateWithoutIndustryInput[]
     connectOrCreate?: SkillCreateOrConnectWithoutIndustryInput | SkillCreateOrConnectWithoutIndustryInput[]
@@ -46376,17 +47933,24 @@ export namespace Prisma {
     deleteMany?: LookingForScalarWhereInput | LookingForScalarWhereInput[]
   }
 
+  export type ProjectTagUncheckedUpdateManyWithoutIndustryNestedInput = {
+    create?: XOR<ProjectTagCreateWithoutIndustryInput, ProjectTagUncheckedCreateWithoutIndustryInput> | ProjectTagCreateWithoutIndustryInput[] | ProjectTagUncheckedCreateWithoutIndustryInput[]
+    connectOrCreate?: ProjectTagCreateOrConnectWithoutIndustryInput | ProjectTagCreateOrConnectWithoutIndustryInput[]
+    upsert?: ProjectTagUpsertWithWhereUniqueWithoutIndustryInput | ProjectTagUpsertWithWhereUniqueWithoutIndustryInput[]
+    createMany?: ProjectTagCreateManyIndustryInputEnvelope
+    set?: ProjectTagWhereUniqueInput | ProjectTagWhereUniqueInput[]
+    disconnect?: ProjectTagWhereUniqueInput | ProjectTagWhereUniqueInput[]
+    delete?: ProjectTagWhereUniqueInput | ProjectTagWhereUniqueInput[]
+    connect?: ProjectTagWhereUniqueInput | ProjectTagWhereUniqueInput[]
+    update?: ProjectTagUpdateWithWhereUniqueWithoutIndustryInput | ProjectTagUpdateWithWhereUniqueWithoutIndustryInput[]
+    updateMany?: ProjectTagUpdateManyWithWhereWithoutIndustryInput | ProjectTagUpdateManyWithWhereWithoutIndustryInput[]
+    deleteMany?: ProjectTagScalarWhereInput | ProjectTagScalarWhereInput[]
+  }
+
   export type IndustryCreateNestedOneWithoutTagInput = {
     create?: XOR<IndustryCreateWithoutTagInput, IndustryUncheckedCreateWithoutTagInput>
     connectOrCreate?: IndustryCreateOrConnectWithoutTagInput
     connect?: IndustryWhereUniqueInput
-  }
-
-  export type PortfolioTagCreateNestedManyWithoutTagInput = {
-    create?: XOR<PortfolioTagCreateWithoutTagInput, PortfolioTagUncheckedCreateWithoutTagInput> | PortfolioTagCreateWithoutTagInput[] | PortfolioTagUncheckedCreateWithoutTagInput[]
-    connectOrCreate?: PortfolioTagCreateOrConnectWithoutTagInput | PortfolioTagCreateOrConnectWithoutTagInput[]
-    createMany?: PortfolioTagCreateManyTagInputEnvelope
-    connect?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
   }
 
   export type UserTagsCreateNestedManyWithoutTagInput = {
@@ -46394,13 +47958,6 @@ export namespace Prisma {
     connectOrCreate?: UserTagsCreateOrConnectWithoutTagInput | UserTagsCreateOrConnectWithoutTagInput[]
     createMany?: UserTagsCreateManyTagInputEnvelope
     connect?: UserTagsWhereUniqueInput | UserTagsWhereUniqueInput[]
-  }
-
-  export type PortfolioTagUncheckedCreateNestedManyWithoutTagInput = {
-    create?: XOR<PortfolioTagCreateWithoutTagInput, PortfolioTagUncheckedCreateWithoutTagInput> | PortfolioTagCreateWithoutTagInput[] | PortfolioTagUncheckedCreateWithoutTagInput[]
-    connectOrCreate?: PortfolioTagCreateOrConnectWithoutTagInput | PortfolioTagCreateOrConnectWithoutTagInput[]
-    createMany?: PortfolioTagCreateManyTagInputEnvelope
-    connect?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
   }
 
   export type UserTagsUncheckedCreateNestedManyWithoutTagInput = {
@@ -46418,20 +47975,6 @@ export namespace Prisma {
     update?: XOR<XOR<IndustryUpdateToOneWithWhereWithoutTagInput, IndustryUpdateWithoutTagInput>, IndustryUncheckedUpdateWithoutTagInput>
   }
 
-  export type PortfolioTagUpdateManyWithoutTagNestedInput = {
-    create?: XOR<PortfolioTagCreateWithoutTagInput, PortfolioTagUncheckedCreateWithoutTagInput> | PortfolioTagCreateWithoutTagInput[] | PortfolioTagUncheckedCreateWithoutTagInput[]
-    connectOrCreate?: PortfolioTagCreateOrConnectWithoutTagInput | PortfolioTagCreateOrConnectWithoutTagInput[]
-    upsert?: PortfolioTagUpsertWithWhereUniqueWithoutTagInput | PortfolioTagUpsertWithWhereUniqueWithoutTagInput[]
-    createMany?: PortfolioTagCreateManyTagInputEnvelope
-    set?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
-    disconnect?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
-    delete?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
-    connect?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
-    update?: PortfolioTagUpdateWithWhereUniqueWithoutTagInput | PortfolioTagUpdateWithWhereUniqueWithoutTagInput[]
-    updateMany?: PortfolioTagUpdateManyWithWhereWithoutTagInput | PortfolioTagUpdateManyWithWhereWithoutTagInput[]
-    deleteMany?: PortfolioTagScalarWhereInput | PortfolioTagScalarWhereInput[]
-  }
-
   export type UserTagsUpdateManyWithoutTagNestedInput = {
     create?: XOR<UserTagsCreateWithoutTagInput, UserTagsUncheckedCreateWithoutTagInput> | UserTagsCreateWithoutTagInput[] | UserTagsUncheckedCreateWithoutTagInput[]
     connectOrCreate?: UserTagsCreateOrConnectWithoutTagInput | UserTagsCreateOrConnectWithoutTagInput[]
@@ -46446,20 +47989,6 @@ export namespace Prisma {
     deleteMany?: UserTagsScalarWhereInput | UserTagsScalarWhereInput[]
   }
 
-  export type PortfolioTagUncheckedUpdateManyWithoutTagNestedInput = {
-    create?: XOR<PortfolioTagCreateWithoutTagInput, PortfolioTagUncheckedCreateWithoutTagInput> | PortfolioTagCreateWithoutTagInput[] | PortfolioTagUncheckedCreateWithoutTagInput[]
-    connectOrCreate?: PortfolioTagCreateOrConnectWithoutTagInput | PortfolioTagCreateOrConnectWithoutTagInput[]
-    upsert?: PortfolioTagUpsertWithWhereUniqueWithoutTagInput | PortfolioTagUpsertWithWhereUniqueWithoutTagInput[]
-    createMany?: PortfolioTagCreateManyTagInputEnvelope
-    set?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
-    disconnect?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
-    delete?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
-    connect?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
-    update?: PortfolioTagUpdateWithWhereUniqueWithoutTagInput | PortfolioTagUpdateWithWhereUniqueWithoutTagInput[]
-    updateMany?: PortfolioTagUpdateManyWithWhereWithoutTagInput | PortfolioTagUpdateManyWithWhereWithoutTagInput[]
-    deleteMany?: PortfolioTagScalarWhereInput | PortfolioTagScalarWhereInput[]
-  }
-
   export type UserTagsUncheckedUpdateManyWithoutTagNestedInput = {
     create?: XOR<UserTagsCreateWithoutTagInput, UserTagsUncheckedCreateWithoutTagInput> | UserTagsCreateWithoutTagInput[] | UserTagsUncheckedCreateWithoutTagInput[]
     connectOrCreate?: UserTagsCreateOrConnectWithoutTagInput | UserTagsCreateOrConnectWithoutTagInput[]
@@ -46471,6 +48000,104 @@ export namespace Prisma {
     connect?: UserTagsWhereUniqueInput | UserTagsWhereUniqueInput[]
     update?: UserTagsUpdateWithWhereUniqueWithoutTagInput | UserTagsUpdateWithWhereUniqueWithoutTagInput[]
     updateMany?: UserTagsUpdateManyWithWhereWithoutTagInput | UserTagsUpdateManyWithWhereWithoutTagInput[]
+    deleteMany?: UserTagsScalarWhereInput | UserTagsScalarWhereInput[]
+  }
+
+  export type IndustryCreateNestedOneWithoutProjectTagInput = {
+    create?: XOR<IndustryCreateWithoutProjectTagInput, IndustryUncheckedCreateWithoutProjectTagInput>
+    connectOrCreate?: IndustryCreateOrConnectWithoutProjectTagInput
+    connect?: IndustryWhereUniqueInput
+  }
+
+  export type PortfolioTagCreateNestedManyWithoutProjectTagInput = {
+    create?: XOR<PortfolioTagCreateWithoutProjectTagInput, PortfolioTagUncheckedCreateWithoutProjectTagInput> | PortfolioTagCreateWithoutProjectTagInput[] | PortfolioTagUncheckedCreateWithoutProjectTagInput[]
+    connectOrCreate?: PortfolioTagCreateOrConnectWithoutProjectTagInput | PortfolioTagCreateOrConnectWithoutProjectTagInput[]
+    createMany?: PortfolioTagCreateManyProjectTagInputEnvelope
+    connect?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
+  }
+
+  export type UserTagsCreateNestedManyWithoutProjectTagInput = {
+    create?: XOR<UserTagsCreateWithoutProjectTagInput, UserTagsUncheckedCreateWithoutProjectTagInput> | UserTagsCreateWithoutProjectTagInput[] | UserTagsUncheckedCreateWithoutProjectTagInput[]
+    connectOrCreate?: UserTagsCreateOrConnectWithoutProjectTagInput | UserTagsCreateOrConnectWithoutProjectTagInput[]
+    createMany?: UserTagsCreateManyProjectTagInputEnvelope
+    connect?: UserTagsWhereUniqueInput | UserTagsWhereUniqueInput[]
+  }
+
+  export type PortfolioTagUncheckedCreateNestedManyWithoutProjectTagInput = {
+    create?: XOR<PortfolioTagCreateWithoutProjectTagInput, PortfolioTagUncheckedCreateWithoutProjectTagInput> | PortfolioTagCreateWithoutProjectTagInput[] | PortfolioTagUncheckedCreateWithoutProjectTagInput[]
+    connectOrCreate?: PortfolioTagCreateOrConnectWithoutProjectTagInput | PortfolioTagCreateOrConnectWithoutProjectTagInput[]
+    createMany?: PortfolioTagCreateManyProjectTagInputEnvelope
+    connect?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
+  }
+
+  export type UserTagsUncheckedCreateNestedManyWithoutProjectTagInput = {
+    create?: XOR<UserTagsCreateWithoutProjectTagInput, UserTagsUncheckedCreateWithoutProjectTagInput> | UserTagsCreateWithoutProjectTagInput[] | UserTagsUncheckedCreateWithoutProjectTagInput[]
+    connectOrCreate?: UserTagsCreateOrConnectWithoutProjectTagInput | UserTagsCreateOrConnectWithoutProjectTagInput[]
+    createMany?: UserTagsCreateManyProjectTagInputEnvelope
+    connect?: UserTagsWhereUniqueInput | UserTagsWhereUniqueInput[]
+  }
+
+  export type IndustryUpdateOneRequiredWithoutProjectTagNestedInput = {
+    create?: XOR<IndustryCreateWithoutProjectTagInput, IndustryUncheckedCreateWithoutProjectTagInput>
+    connectOrCreate?: IndustryCreateOrConnectWithoutProjectTagInput
+    upsert?: IndustryUpsertWithoutProjectTagInput
+    connect?: IndustryWhereUniqueInput
+    update?: XOR<XOR<IndustryUpdateToOneWithWhereWithoutProjectTagInput, IndustryUpdateWithoutProjectTagInput>, IndustryUncheckedUpdateWithoutProjectTagInput>
+  }
+
+  export type PortfolioTagUpdateManyWithoutProjectTagNestedInput = {
+    create?: XOR<PortfolioTagCreateWithoutProjectTagInput, PortfolioTagUncheckedCreateWithoutProjectTagInput> | PortfolioTagCreateWithoutProjectTagInput[] | PortfolioTagUncheckedCreateWithoutProjectTagInput[]
+    connectOrCreate?: PortfolioTagCreateOrConnectWithoutProjectTagInput | PortfolioTagCreateOrConnectWithoutProjectTagInput[]
+    upsert?: PortfolioTagUpsertWithWhereUniqueWithoutProjectTagInput | PortfolioTagUpsertWithWhereUniqueWithoutProjectTagInput[]
+    createMany?: PortfolioTagCreateManyProjectTagInputEnvelope
+    set?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
+    disconnect?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
+    delete?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
+    connect?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
+    update?: PortfolioTagUpdateWithWhereUniqueWithoutProjectTagInput | PortfolioTagUpdateWithWhereUniqueWithoutProjectTagInput[]
+    updateMany?: PortfolioTagUpdateManyWithWhereWithoutProjectTagInput | PortfolioTagUpdateManyWithWhereWithoutProjectTagInput[]
+    deleteMany?: PortfolioTagScalarWhereInput | PortfolioTagScalarWhereInput[]
+  }
+
+  export type UserTagsUpdateManyWithoutProjectTagNestedInput = {
+    create?: XOR<UserTagsCreateWithoutProjectTagInput, UserTagsUncheckedCreateWithoutProjectTagInput> | UserTagsCreateWithoutProjectTagInput[] | UserTagsUncheckedCreateWithoutProjectTagInput[]
+    connectOrCreate?: UserTagsCreateOrConnectWithoutProjectTagInput | UserTagsCreateOrConnectWithoutProjectTagInput[]
+    upsert?: UserTagsUpsertWithWhereUniqueWithoutProjectTagInput | UserTagsUpsertWithWhereUniqueWithoutProjectTagInput[]
+    createMany?: UserTagsCreateManyProjectTagInputEnvelope
+    set?: UserTagsWhereUniqueInput | UserTagsWhereUniqueInput[]
+    disconnect?: UserTagsWhereUniqueInput | UserTagsWhereUniqueInput[]
+    delete?: UserTagsWhereUniqueInput | UserTagsWhereUniqueInput[]
+    connect?: UserTagsWhereUniqueInput | UserTagsWhereUniqueInput[]
+    update?: UserTagsUpdateWithWhereUniqueWithoutProjectTagInput | UserTagsUpdateWithWhereUniqueWithoutProjectTagInput[]
+    updateMany?: UserTagsUpdateManyWithWhereWithoutProjectTagInput | UserTagsUpdateManyWithWhereWithoutProjectTagInput[]
+    deleteMany?: UserTagsScalarWhereInput | UserTagsScalarWhereInput[]
+  }
+
+  export type PortfolioTagUncheckedUpdateManyWithoutProjectTagNestedInput = {
+    create?: XOR<PortfolioTagCreateWithoutProjectTagInput, PortfolioTagUncheckedCreateWithoutProjectTagInput> | PortfolioTagCreateWithoutProjectTagInput[] | PortfolioTagUncheckedCreateWithoutProjectTagInput[]
+    connectOrCreate?: PortfolioTagCreateOrConnectWithoutProjectTagInput | PortfolioTagCreateOrConnectWithoutProjectTagInput[]
+    upsert?: PortfolioTagUpsertWithWhereUniqueWithoutProjectTagInput | PortfolioTagUpsertWithWhereUniqueWithoutProjectTagInput[]
+    createMany?: PortfolioTagCreateManyProjectTagInputEnvelope
+    set?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
+    disconnect?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
+    delete?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
+    connect?: PortfolioTagWhereUniqueInput | PortfolioTagWhereUniqueInput[]
+    update?: PortfolioTagUpdateWithWhereUniqueWithoutProjectTagInput | PortfolioTagUpdateWithWhereUniqueWithoutProjectTagInput[]
+    updateMany?: PortfolioTagUpdateManyWithWhereWithoutProjectTagInput | PortfolioTagUpdateManyWithWhereWithoutProjectTagInput[]
+    deleteMany?: PortfolioTagScalarWhereInput | PortfolioTagScalarWhereInput[]
+  }
+
+  export type UserTagsUncheckedUpdateManyWithoutProjectTagNestedInput = {
+    create?: XOR<UserTagsCreateWithoutProjectTagInput, UserTagsUncheckedCreateWithoutProjectTagInput> | UserTagsCreateWithoutProjectTagInput[] | UserTagsUncheckedCreateWithoutProjectTagInput[]
+    connectOrCreate?: UserTagsCreateOrConnectWithoutProjectTagInput | UserTagsCreateOrConnectWithoutProjectTagInput[]
+    upsert?: UserTagsUpsertWithWhereUniqueWithoutProjectTagInput | UserTagsUpsertWithWhereUniqueWithoutProjectTagInput[]
+    createMany?: UserTagsCreateManyProjectTagInputEnvelope
+    set?: UserTagsWhereUniqueInput | UserTagsWhereUniqueInput[]
+    disconnect?: UserTagsWhereUniqueInput | UserTagsWhereUniqueInput[]
+    delete?: UserTagsWhereUniqueInput | UserTagsWhereUniqueInput[]
+    connect?: UserTagsWhereUniqueInput | UserTagsWhereUniqueInput[]
+    update?: UserTagsUpdateWithWhereUniqueWithoutProjectTagInput | UserTagsUpdateWithWhereUniqueWithoutProjectTagInput[]
+    updateMany?: UserTagsUpdateManyWithWhereWithoutProjectTagInput | UserTagsUpdateManyWithWhereWithoutProjectTagInput[]
     deleteMany?: UserTagsScalarWhereInput | UserTagsScalarWhereInput[]
   }
 
@@ -47104,10 +48731,10 @@ export namespace Prisma {
     connect?: PortfolioWhereUniqueInput
   }
 
-  export type TagCreateNestedOneWithoutPortfolioTagInput = {
-    create?: XOR<TagCreateWithoutPortfolioTagInput, TagUncheckedCreateWithoutPortfolioTagInput>
-    connectOrCreate?: TagCreateOrConnectWithoutPortfolioTagInput
-    connect?: TagWhereUniqueInput
+  export type ProjectTagCreateNestedOneWithoutPortfolioTagInput = {
+    create?: XOR<ProjectTagCreateWithoutPortfolioTagInput, ProjectTagUncheckedCreateWithoutPortfolioTagInput>
+    connectOrCreate?: ProjectTagCreateOrConnectWithoutPortfolioTagInput
+    connect?: ProjectTagWhereUniqueInput
   }
 
   export type PortfolioUpdateOneRequiredWithoutIndustryTagsNestedInput = {
@@ -47118,12 +48745,12 @@ export namespace Prisma {
     update?: XOR<XOR<PortfolioUpdateToOneWithWhereWithoutIndustryTagsInput, PortfolioUpdateWithoutIndustryTagsInput>, PortfolioUncheckedUpdateWithoutIndustryTagsInput>
   }
 
-  export type TagUpdateOneRequiredWithoutPortfolioTagNestedInput = {
-    create?: XOR<TagCreateWithoutPortfolioTagInput, TagUncheckedCreateWithoutPortfolioTagInput>
-    connectOrCreate?: TagCreateOrConnectWithoutPortfolioTagInput
-    upsert?: TagUpsertWithoutPortfolioTagInput
-    connect?: TagWhereUniqueInput
-    update?: XOR<XOR<TagUpdateToOneWithWhereWithoutPortfolioTagInput, TagUpdateWithoutPortfolioTagInput>, TagUncheckedUpdateWithoutPortfolioTagInput>
+  export type ProjectTagUpdateOneRequiredWithoutPortfolioTagNestedInput = {
+    create?: XOR<ProjectTagCreateWithoutPortfolioTagInput, ProjectTagUncheckedCreateWithoutPortfolioTagInput>
+    connectOrCreate?: ProjectTagCreateOrConnectWithoutPortfolioTagInput
+    upsert?: ProjectTagUpsertWithoutPortfolioTagInput
+    connect?: ProjectTagWhereUniqueInput
+    update?: XOR<XOR<ProjectTagUpdateToOneWithWhereWithoutPortfolioTagInput, ProjectTagUpdateWithoutPortfolioTagInput>, ProjectTagUncheckedUpdateWithoutPortfolioTagInput>
   }
 
   export type PortfolioCreateNestedOneWithoutIndustryLookingForInput = {
@@ -47624,6 +49251,31 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedUuidNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedUuidNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedUuidNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -47735,31 +49387,6 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type NestedUuidNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedUuidNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedUuidNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
   export type NestedEnumPortfolioImageTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.PortfolioImageType | EnumPortfolioImageTypeFieldRefInput<$PrismaModel>
     in?: $Enums.PortfolioImageType[] | ListEnumPortfolioImageTypeFieldRefInput<$PrismaModel>
@@ -47839,12 +49466,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tag: TagCreateNestedOneWithoutUserTagsInput
+    ProjectTag?: ProjectTagCreateNestedOneWithoutUserTagsInput
   }
 
   export type UserTagsUncheckedCreateWithoutUserInput = {
     tagSlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    projectTagId?: string | null
   }
 
   export type UserTagsCreateOrConnectWithoutUserInput = {
@@ -48152,6 +49781,7 @@ export namespace Prisma {
     tagSlug?: StringFilter<"UserTags"> | string
     createdAt?: DateTimeFilter<"UserTags"> | Date | string
     updatedAt?: DateTimeFilter<"UserTags"> | Date | string
+    projectTagId?: UuidNullableFilter<"UserTags"> | string | null
   }
 
   export type UserChannelsUpsertWithWhereUniqueWithoutUserInput = {
@@ -48495,7 +50125,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutTagInput
-    PortfolioTag?: PortfolioTagCreateNestedManyWithoutTagInput
   }
 
   export type TagUncheckedCreateWithoutUserTagsInput = {
@@ -48505,12 +50134,36 @@ export namespace Prisma {
     industrySlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    PortfolioTag?: PortfolioTagUncheckedCreateNestedManyWithoutTagInput
   }
 
   export type TagCreateOrConnectWithoutUserTagsInput = {
     where: TagWhereUniqueInput
     create: XOR<TagCreateWithoutUserTagsInput, TagUncheckedCreateWithoutUserTagsInput>
+  }
+
+  export type ProjectTagCreateWithoutUserTagsInput = {
+    id?: string
+    name: string
+    slug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    industry: IndustryCreateNestedOneWithoutProjectTagInput
+    PortfolioTag?: PortfolioTagCreateNestedManyWithoutProjectTagInput
+  }
+
+  export type ProjectTagUncheckedCreateWithoutUserTagsInput = {
+    id?: string
+    name: string
+    slug: string
+    industrySlug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    PortfolioTag?: PortfolioTagUncheckedCreateNestedManyWithoutProjectTagInput
+  }
+
+  export type ProjectTagCreateOrConnectWithoutUserTagsInput = {
+    where: ProjectTagWhereUniqueInput
+    create: XOR<ProjectTagCreateWithoutUserTagsInput, ProjectTagUncheckedCreateWithoutUserTagsInput>
   }
 
   export type UserUpsertWithoutIndustryTagsInput = {
@@ -48604,7 +50257,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutTagNestedInput
-    PortfolioTag?: PortfolioTagUpdateManyWithoutTagNestedInput
   }
 
   export type TagUncheckedUpdateWithoutUserTagsInput = {
@@ -48614,7 +50266,37 @@ export namespace Prisma {
     industrySlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    PortfolioTag?: PortfolioTagUncheckedUpdateManyWithoutTagNestedInput
+  }
+
+  export type ProjectTagUpsertWithoutUserTagsInput = {
+    update: XOR<ProjectTagUpdateWithoutUserTagsInput, ProjectTagUncheckedUpdateWithoutUserTagsInput>
+    create: XOR<ProjectTagCreateWithoutUserTagsInput, ProjectTagUncheckedCreateWithoutUserTagsInput>
+    where?: ProjectTagWhereInput
+  }
+
+  export type ProjectTagUpdateToOneWithWhereWithoutUserTagsInput = {
+    where?: ProjectTagWhereInput
+    data: XOR<ProjectTagUpdateWithoutUserTagsInput, ProjectTagUncheckedUpdateWithoutUserTagsInput>
+  }
+
+  export type ProjectTagUpdateWithoutUserTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    industry?: IndustryUpdateOneRequiredWithoutProjectTagNestedInput
+    PortfolioTag?: PortfolioTagUpdateManyWithoutProjectTagNestedInput
+  }
+
+  export type ProjectTagUncheckedUpdateWithoutUserTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    industrySlug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    PortfolioTag?: PortfolioTagUncheckedUpdateManyWithoutProjectTagNestedInput
   }
 
   export type UserCreateWithoutIndustryChannelsInput = {
@@ -49108,6 +50790,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamCreateNestedManyWithoutIndustryInput
     Tag?: TagCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryUncheckedCreateWithoutUsersInput = {
@@ -49130,6 +50813,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutIndustryInput
     Tag?: TagUncheckedCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForUncheckedCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagUncheckedCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryCreateOrConnectWithoutUsersInput = {
@@ -49241,6 +50925,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUpdateManyWithoutIndustryNestedInput
     Tag?: TagUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUpdateManyWithoutIndustryNestedInput
   }
 
   export type IndustryUncheckedUpdateWithoutUsersInput = {
@@ -49263,6 +50948,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutIndustryNestedInput
     Tag?: TagUncheckedUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUncheckedUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUncheckedUpdateManyWithoutIndustryNestedInput
   }
 
   export type UserCreateWithoutRefreshTokensInput = {
@@ -49673,6 +51359,7 @@ export namespace Prisma {
     Standards?: StandardsCreateNestedManyWithoutIndustryInput
     Tag?: TagCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryUncheckedCreateWithoutRevenueStreamInput = {
@@ -49695,6 +51382,7 @@ export namespace Prisma {
     Standards?: StandardsUncheckedCreateNestedManyWithoutIndustryInput
     Tag?: TagUncheckedCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForUncheckedCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagUncheckedCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryCreateOrConnectWithoutRevenueStreamInput = {
@@ -49906,6 +51594,7 @@ export namespace Prisma {
     Standards?: StandardsUpdateManyWithoutIndustryNestedInput
     Tag?: TagUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUpdateManyWithoutIndustryNestedInput
   }
 
   export type IndustryUncheckedUpdateWithoutRevenueStreamInput = {
@@ -49928,6 +51617,7 @@ export namespace Prisma {
     Standards?: StandardsUncheckedUpdateManyWithoutIndustryNestedInput
     Tag?: TagUncheckedUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUncheckedUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUncheckedUpdateManyWithoutIndustryNestedInput
   }
 
   export type CategoryUpsertWithoutRevenueStreamInput = {
@@ -50629,6 +52319,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamCreateNestedManyWithoutIndustryInput
     Tag?: TagCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryUncheckedCreateWithoutCompaniesInput = {
@@ -50651,6 +52342,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutIndustryInput
     Tag?: TagUncheckedCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForUncheckedCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagUncheckedCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryCreateOrConnectWithoutCompaniesInput = {
@@ -50758,6 +52450,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUpdateManyWithoutIndustryNestedInput
     Tag?: TagUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUpdateManyWithoutIndustryNestedInput
   }
 
   export type IndustryUncheckedUpdateWithoutCompaniesInput = {
@@ -50780,6 +52473,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutIndustryNestedInput
     Tag?: TagUncheckedUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUncheckedUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUncheckedUpdateManyWithoutIndustryNestedInput
   }
 
   export type FreelanceIndustryCreateWithoutFreelanceInput = {
@@ -51233,6 +52927,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamCreateNestedManyWithoutIndustryInput
     Tag?: TagCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryUncheckedCreateWithoutFreelancersInput = {
@@ -51255,6 +52950,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutIndustryInput
     Tag?: TagUncheckedCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForUncheckedCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagUncheckedCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryCreateOrConnectWithoutFreelancersInput = {
@@ -51354,6 +53050,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUpdateManyWithoutIndustryNestedInput
     Tag?: TagUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUpdateManyWithoutIndustryNestedInput
   }
 
   export type IndustryUncheckedUpdateWithoutFreelancersInput = {
@@ -51376,6 +53073,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutIndustryNestedInput
     Tag?: TagUncheckedUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUncheckedUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUncheckedUpdateManyWithoutIndustryNestedInput
   }
 
   export type SkillCreateWithoutIndustryInput = {
@@ -51688,7 +53386,6 @@ export namespace Prisma {
     slug: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    PortfolioTag?: PortfolioTagCreateNestedManyWithoutTagInput
     UserTags?: UserTagsCreateNestedManyWithoutTagInput
   }
 
@@ -51698,7 +53395,6 @@ export namespace Prisma {
     slug: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    PortfolioTag?: PortfolioTagUncheckedCreateNestedManyWithoutTagInput
     UserTags?: UserTagsUncheckedCreateNestedManyWithoutTagInput
   }
 
@@ -51737,6 +53433,36 @@ export namespace Prisma {
 
   export type LookingForCreateManyIndustryInputEnvelope = {
     data: LookingForCreateManyIndustryInput | LookingForCreateManyIndustryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProjectTagCreateWithoutIndustryInput = {
+    id?: string
+    name: string
+    slug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    PortfolioTag?: PortfolioTagCreateNestedManyWithoutProjectTagInput
+    UserTags?: UserTagsCreateNestedManyWithoutProjectTagInput
+  }
+
+  export type ProjectTagUncheckedCreateWithoutIndustryInput = {
+    id?: string
+    name: string
+    slug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    PortfolioTag?: PortfolioTagUncheckedCreateNestedManyWithoutProjectTagInput
+    UserTags?: UserTagsUncheckedCreateNestedManyWithoutProjectTagInput
+  }
+
+  export type ProjectTagCreateOrConnectWithoutIndustryInput = {
+    where: ProjectTagWhereUniqueInput
+    create: XOR<ProjectTagCreateWithoutIndustryInput, ProjectTagUncheckedCreateWithoutIndustryInput>
+  }
+
+  export type ProjectTagCreateManyIndustryInputEnvelope = {
+    data: ProjectTagCreateManyIndustryInput | ProjectTagCreateManyIndustryInput[]
     skipDuplicates?: boolean
   }
 
@@ -52026,6 +53752,34 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"LookingFor"> | Date | string
   }
 
+  export type ProjectTagUpsertWithWhereUniqueWithoutIndustryInput = {
+    where: ProjectTagWhereUniqueInput
+    update: XOR<ProjectTagUpdateWithoutIndustryInput, ProjectTagUncheckedUpdateWithoutIndustryInput>
+    create: XOR<ProjectTagCreateWithoutIndustryInput, ProjectTagUncheckedCreateWithoutIndustryInput>
+  }
+
+  export type ProjectTagUpdateWithWhereUniqueWithoutIndustryInput = {
+    where: ProjectTagWhereUniqueInput
+    data: XOR<ProjectTagUpdateWithoutIndustryInput, ProjectTagUncheckedUpdateWithoutIndustryInput>
+  }
+
+  export type ProjectTagUpdateManyWithWhereWithoutIndustryInput = {
+    where: ProjectTagScalarWhereInput
+    data: XOR<ProjectTagUpdateManyMutationInput, ProjectTagUncheckedUpdateManyWithoutIndustryInput>
+  }
+
+  export type ProjectTagScalarWhereInput = {
+    AND?: ProjectTagScalarWhereInput | ProjectTagScalarWhereInput[]
+    OR?: ProjectTagScalarWhereInput[]
+    NOT?: ProjectTagScalarWhereInput | ProjectTagScalarWhereInput[]
+    id?: UuidFilter<"ProjectTag"> | string
+    name?: StringFilter<"ProjectTag"> | string
+    slug?: StringFilter<"ProjectTag"> | string
+    industrySlug?: StringFilter<"ProjectTag"> | string
+    createdAt?: DateTimeFilter<"ProjectTag"> | Date | string
+    updatedAt?: DateTimeFilter<"ProjectTag"> | Date | string
+  }
+
   export type IndustryCreateWithoutTagInput = {
     id?: string
     name: string
@@ -52046,6 +53800,7 @@ export namespace Prisma {
     Standards?: StandardsCreateNestedManyWithoutIndustryInput
     RevenueStream?: RevenueStreamCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryUncheckedCreateWithoutTagInput = {
@@ -52068,6 +53823,7 @@ export namespace Prisma {
     Standards?: StandardsUncheckedCreateNestedManyWithoutIndustryInput
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForUncheckedCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagUncheckedCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryCreateOrConnectWithoutTagInput = {
@@ -52075,38 +53831,18 @@ export namespace Prisma {
     create: XOR<IndustryCreateWithoutTagInput, IndustryUncheckedCreateWithoutTagInput>
   }
 
-  export type PortfolioTagCreateWithoutTagInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    portfolio: PortfolioCreateNestedOneWithoutIndustryTagsInput
-  }
-
-  export type PortfolioTagUncheckedCreateWithoutTagInput = {
-    portfolioId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type PortfolioTagCreateOrConnectWithoutTagInput = {
-    where: PortfolioTagWhereUniqueInput
-    create: XOR<PortfolioTagCreateWithoutTagInput, PortfolioTagUncheckedCreateWithoutTagInput>
-  }
-
-  export type PortfolioTagCreateManyTagInputEnvelope = {
-    data: PortfolioTagCreateManyTagInput | PortfolioTagCreateManyTagInput[]
-    skipDuplicates?: boolean
-  }
-
   export type UserTagsCreateWithoutTagInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutIndustryTagsInput
+    ProjectTag?: ProjectTagCreateNestedOneWithoutUserTagsInput
   }
 
   export type UserTagsUncheckedCreateWithoutTagInput = {
     userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    projectTagId?: string | null
   }
 
   export type UserTagsCreateOrConnectWithoutTagInput = {
@@ -52150,6 +53886,7 @@ export namespace Prisma {
     Standards?: StandardsUpdateManyWithoutIndustryNestedInput
     RevenueStream?: RevenueStreamUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUpdateManyWithoutIndustryNestedInput
   }
 
   export type IndustryUncheckedUpdateWithoutTagInput = {
@@ -52172,32 +53909,7 @@ export namespace Prisma {
     Standards?: StandardsUncheckedUpdateManyWithoutIndustryNestedInput
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUncheckedUpdateManyWithoutIndustryNestedInput
-  }
-
-  export type PortfolioTagUpsertWithWhereUniqueWithoutTagInput = {
-    where: PortfolioTagWhereUniqueInput
-    update: XOR<PortfolioTagUpdateWithoutTagInput, PortfolioTagUncheckedUpdateWithoutTagInput>
-    create: XOR<PortfolioTagCreateWithoutTagInput, PortfolioTagUncheckedCreateWithoutTagInput>
-  }
-
-  export type PortfolioTagUpdateWithWhereUniqueWithoutTagInput = {
-    where: PortfolioTagWhereUniqueInput
-    data: XOR<PortfolioTagUpdateWithoutTagInput, PortfolioTagUncheckedUpdateWithoutTagInput>
-  }
-
-  export type PortfolioTagUpdateManyWithWhereWithoutTagInput = {
-    where: PortfolioTagScalarWhereInput
-    data: XOR<PortfolioTagUpdateManyMutationInput, PortfolioTagUncheckedUpdateManyWithoutTagInput>
-  }
-
-  export type PortfolioTagScalarWhereInput = {
-    AND?: PortfolioTagScalarWhereInput | PortfolioTagScalarWhereInput[]
-    OR?: PortfolioTagScalarWhereInput[]
-    NOT?: PortfolioTagScalarWhereInput | PortfolioTagScalarWhereInput[]
-    portfolioId?: UuidFilter<"PortfolioTag"> | string
-    tagSlug?: StringFilter<"PortfolioTag"> | string
-    createdAt?: DateTimeFilter<"PortfolioTag"> | Date | string
-    updatedAt?: DateTimeFilter<"PortfolioTag"> | Date | string
+    ProjectTag?: ProjectTagUncheckedUpdateManyWithoutIndustryNestedInput
   }
 
   export type UserTagsUpsertWithWhereUniqueWithoutTagInput = {
@@ -52214,6 +53926,202 @@ export namespace Prisma {
   export type UserTagsUpdateManyWithWhereWithoutTagInput = {
     where: UserTagsScalarWhereInput
     data: XOR<UserTagsUpdateManyMutationInput, UserTagsUncheckedUpdateManyWithoutTagInput>
+  }
+
+  export type IndustryCreateWithoutProjectTagInput = {
+    id?: string
+    name: string
+    slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Skill?: SkillCreateNestedManyWithoutIndustryInput
+    Source?: SourceCreateNestedManyWithoutIndustryInput
+    Channel?: ChannelCreateNestedManyWithoutIndustryInput
+    Segment?: SegmentCreateNestedManyWithoutIndustryInput
+    Category?: CategoryCreateNestedManyWithoutIndustryInput
+    companies?: CompanyIndustryCreateNestedManyWithoutIndustryInput
+    freelancers?: FreelanceIndustryCreateNestedManyWithoutIndustryInput
+    users?: UserIndustryCreateNestedManyWithoutIndustryInput
+    Standards?: StandardsCreateNestedManyWithoutIndustryInput
+    RevenueStream?: RevenueStreamCreateNestedManyWithoutIndustryInput
+    Tag?: TagCreateNestedManyWithoutIndustryInput
+    LookingFor?: LookingForCreateNestedManyWithoutIndustryInput
+  }
+
+  export type IndustryUncheckedCreateWithoutProjectTagInput = {
+    id?: string
+    name: string
+    slug: string
+    color?: string | null
+    description?: string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Skill?: SkillUncheckedCreateNestedManyWithoutIndustryInput
+    Source?: SourceUncheckedCreateNestedManyWithoutIndustryInput
+    Channel?: ChannelUncheckedCreateNestedManyWithoutIndustryInput
+    Segment?: SegmentUncheckedCreateNestedManyWithoutIndustryInput
+    Category?: CategoryUncheckedCreateNestedManyWithoutIndustryInput
+    companies?: CompanyIndustryUncheckedCreateNestedManyWithoutIndustryInput
+    freelancers?: FreelanceIndustryUncheckedCreateNestedManyWithoutIndustryInput
+    users?: UserIndustryUncheckedCreateNestedManyWithoutIndustryInput
+    Standards?: StandardsUncheckedCreateNestedManyWithoutIndustryInput
+    RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutIndustryInput
+    Tag?: TagUncheckedCreateNestedManyWithoutIndustryInput
+    LookingFor?: LookingForUncheckedCreateNestedManyWithoutIndustryInput
+  }
+
+  export type IndustryCreateOrConnectWithoutProjectTagInput = {
+    where: IndustryWhereUniqueInput
+    create: XOR<IndustryCreateWithoutProjectTagInput, IndustryUncheckedCreateWithoutProjectTagInput>
+  }
+
+  export type PortfolioTagCreateWithoutProjectTagInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    portfolio: PortfolioCreateNestedOneWithoutIndustryTagsInput
+  }
+
+  export type PortfolioTagUncheckedCreateWithoutProjectTagInput = {
+    portfolioId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PortfolioTagCreateOrConnectWithoutProjectTagInput = {
+    where: PortfolioTagWhereUniqueInput
+    create: XOR<PortfolioTagCreateWithoutProjectTagInput, PortfolioTagUncheckedCreateWithoutProjectTagInput>
+  }
+
+  export type PortfolioTagCreateManyProjectTagInputEnvelope = {
+    data: PortfolioTagCreateManyProjectTagInput | PortfolioTagCreateManyProjectTagInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserTagsCreateWithoutProjectTagInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutIndustryTagsInput
+    tag: TagCreateNestedOneWithoutUserTagsInput
+  }
+
+  export type UserTagsUncheckedCreateWithoutProjectTagInput = {
+    userId: string
+    tagSlug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserTagsCreateOrConnectWithoutProjectTagInput = {
+    where: UserTagsWhereUniqueInput
+    create: XOR<UserTagsCreateWithoutProjectTagInput, UserTagsUncheckedCreateWithoutProjectTagInput>
+  }
+
+  export type UserTagsCreateManyProjectTagInputEnvelope = {
+    data: UserTagsCreateManyProjectTagInput | UserTagsCreateManyProjectTagInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type IndustryUpsertWithoutProjectTagInput = {
+    update: XOR<IndustryUpdateWithoutProjectTagInput, IndustryUncheckedUpdateWithoutProjectTagInput>
+    create: XOR<IndustryCreateWithoutProjectTagInput, IndustryUncheckedCreateWithoutProjectTagInput>
+    where?: IndustryWhereInput
+  }
+
+  export type IndustryUpdateToOneWithWhereWithoutProjectTagInput = {
+    where?: IndustryWhereInput
+    data: XOR<IndustryUpdateWithoutProjectTagInput, IndustryUncheckedUpdateWithoutProjectTagInput>
+  }
+
+  export type IndustryUpdateWithoutProjectTagInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Skill?: SkillUpdateManyWithoutIndustryNestedInput
+    Source?: SourceUpdateManyWithoutIndustryNestedInput
+    Channel?: ChannelUpdateManyWithoutIndustryNestedInput
+    Segment?: SegmentUpdateManyWithoutIndustryNestedInput
+    Category?: CategoryUpdateManyWithoutIndustryNestedInput
+    companies?: CompanyIndustryUpdateManyWithoutIndustryNestedInput
+    freelancers?: FreelanceIndustryUpdateManyWithoutIndustryNestedInput
+    users?: UserIndustryUpdateManyWithoutIndustryNestedInput
+    Standards?: StandardsUpdateManyWithoutIndustryNestedInput
+    RevenueStream?: RevenueStreamUpdateManyWithoutIndustryNestedInput
+    Tag?: TagUpdateManyWithoutIndustryNestedInput
+    LookingFor?: LookingForUpdateManyWithoutIndustryNestedInput
+  }
+
+  export type IndustryUncheckedUpdateWithoutProjectTagInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Skill?: SkillUncheckedUpdateManyWithoutIndustryNestedInput
+    Source?: SourceUncheckedUpdateManyWithoutIndustryNestedInput
+    Channel?: ChannelUncheckedUpdateManyWithoutIndustryNestedInput
+    Segment?: SegmentUncheckedUpdateManyWithoutIndustryNestedInput
+    Category?: CategoryUncheckedUpdateManyWithoutIndustryNestedInput
+    companies?: CompanyIndustryUncheckedUpdateManyWithoutIndustryNestedInput
+    freelancers?: FreelanceIndustryUncheckedUpdateManyWithoutIndustryNestedInput
+    users?: UserIndustryUncheckedUpdateManyWithoutIndustryNestedInput
+    Standards?: StandardsUncheckedUpdateManyWithoutIndustryNestedInput
+    RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutIndustryNestedInput
+    Tag?: TagUncheckedUpdateManyWithoutIndustryNestedInput
+    LookingFor?: LookingForUncheckedUpdateManyWithoutIndustryNestedInput
+  }
+
+  export type PortfolioTagUpsertWithWhereUniqueWithoutProjectTagInput = {
+    where: PortfolioTagWhereUniqueInput
+    update: XOR<PortfolioTagUpdateWithoutProjectTagInput, PortfolioTagUncheckedUpdateWithoutProjectTagInput>
+    create: XOR<PortfolioTagCreateWithoutProjectTagInput, PortfolioTagUncheckedCreateWithoutProjectTagInput>
+  }
+
+  export type PortfolioTagUpdateWithWhereUniqueWithoutProjectTagInput = {
+    where: PortfolioTagWhereUniqueInput
+    data: XOR<PortfolioTagUpdateWithoutProjectTagInput, PortfolioTagUncheckedUpdateWithoutProjectTagInput>
+  }
+
+  export type PortfolioTagUpdateManyWithWhereWithoutProjectTagInput = {
+    where: PortfolioTagScalarWhereInput
+    data: XOR<PortfolioTagUpdateManyMutationInput, PortfolioTagUncheckedUpdateManyWithoutProjectTagInput>
+  }
+
+  export type PortfolioTagScalarWhereInput = {
+    AND?: PortfolioTagScalarWhereInput | PortfolioTagScalarWhereInput[]
+    OR?: PortfolioTagScalarWhereInput[]
+    NOT?: PortfolioTagScalarWhereInput | PortfolioTagScalarWhereInput[]
+    portfolioId?: UuidFilter<"PortfolioTag"> | string
+    createdAt?: DateTimeFilter<"PortfolioTag"> | Date | string
+    updatedAt?: DateTimeFilter<"PortfolioTag"> | Date | string
+    projectTagSlug?: StringFilter<"PortfolioTag"> | string
+  }
+
+  export type UserTagsUpsertWithWhereUniqueWithoutProjectTagInput = {
+    where: UserTagsWhereUniqueInput
+    update: XOR<UserTagsUpdateWithoutProjectTagInput, UserTagsUncheckedUpdateWithoutProjectTagInput>
+    create: XOR<UserTagsCreateWithoutProjectTagInput, UserTagsUncheckedCreateWithoutProjectTagInput>
+  }
+
+  export type UserTagsUpdateWithWhereUniqueWithoutProjectTagInput = {
+    where: UserTagsWhereUniqueInput
+    data: XOR<UserTagsUpdateWithoutProjectTagInput, UserTagsUncheckedUpdateWithoutProjectTagInput>
+  }
+
+  export type UserTagsUpdateManyWithWhereWithoutProjectTagInput = {
+    where: UserTagsScalarWhereInput
+    data: XOR<UserTagsUpdateManyMutationInput, UserTagsUncheckedUpdateManyWithoutProjectTagInput>
   }
 
   export type IndustryCreateWithoutLookingForInput = {
@@ -52236,6 +54144,7 @@ export namespace Prisma {
     Standards?: StandardsCreateNestedManyWithoutIndustryInput
     RevenueStream?: RevenueStreamCreateNestedManyWithoutIndustryInput
     Tag?: TagCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryUncheckedCreateWithoutLookingForInput = {
@@ -52258,6 +54167,7 @@ export namespace Prisma {
     Standards?: StandardsUncheckedCreateNestedManyWithoutIndustryInput
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutIndustryInput
     Tag?: TagUncheckedCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagUncheckedCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryCreateOrConnectWithoutLookingForInput = {
@@ -52318,6 +54228,7 @@ export namespace Prisma {
     Standards?: StandardsUpdateManyWithoutIndustryNestedInput
     RevenueStream?: RevenueStreamUpdateManyWithoutIndustryNestedInput
     Tag?: TagUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUpdateManyWithoutIndustryNestedInput
   }
 
   export type IndustryUncheckedUpdateWithoutLookingForInput = {
@@ -52340,6 +54251,7 @@ export namespace Prisma {
     Standards?: StandardsUncheckedUpdateManyWithoutIndustryNestedInput
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutIndustryNestedInput
     Tag?: TagUncheckedUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUncheckedUpdateManyWithoutIndustryNestedInput
   }
 
   export type PortfolioLookingForUpsertWithWhereUniqueWithoutLookingForInput = {
@@ -52388,6 +54300,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamCreateNestedManyWithoutIndustryInput
     Tag?: TagCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryUncheckedCreateWithoutCategoryInput = {
@@ -52410,6 +54323,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutIndustryInput
     Tag?: TagUncheckedCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForUncheckedCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagUncheckedCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryCreateOrConnectWithoutCategoryInput = {
@@ -52489,6 +54403,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUpdateManyWithoutIndustryNestedInput
     Tag?: TagUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUpdateManyWithoutIndustryNestedInput
   }
 
   export type IndustryUncheckedUpdateWithoutCategoryInput = {
@@ -52511,6 +54426,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutIndustryNestedInput
     Tag?: TagUncheckedUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUncheckedUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUncheckedUpdateManyWithoutIndustryNestedInput
   }
 
   export type RevenueStreamUpsertWithWhereUniqueWithoutCategoryInput = {
@@ -52549,6 +54465,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamCreateNestedManyWithoutIndustryInput
     Tag?: TagCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryUncheckedCreateWithoutSourceInput = {
@@ -52571,6 +54488,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutIndustryInput
     Tag?: TagUncheckedCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForUncheckedCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagUncheckedCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryCreateOrConnectWithoutSourceInput = {
@@ -52650,6 +54568,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUpdateManyWithoutIndustryNestedInput
     Tag?: TagUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUpdateManyWithoutIndustryNestedInput
   }
 
   export type IndustryUncheckedUpdateWithoutSourceInput = {
@@ -52672,6 +54591,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutIndustryNestedInput
     Tag?: TagUncheckedUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUncheckedUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUncheckedUpdateManyWithoutIndustryNestedInput
   }
 
   export type RevenueStreamUpsertWithWhereUniqueWithoutSourceInput = {
@@ -52710,6 +54630,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamCreateNestedManyWithoutIndustryInput
     Tag?: TagCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryUncheckedCreateWithoutChannelInput = {
@@ -52732,6 +54653,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutIndustryInput
     Tag?: TagUncheckedCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForUncheckedCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagUncheckedCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryCreateOrConnectWithoutChannelInput = {
@@ -52833,6 +54755,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUpdateManyWithoutIndustryNestedInput
     Tag?: TagUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUpdateManyWithoutIndustryNestedInput
   }
 
   export type IndustryUncheckedUpdateWithoutChannelInput = {
@@ -52855,6 +54778,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutIndustryNestedInput
     Tag?: TagUncheckedUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUncheckedUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUncheckedUpdateManyWithoutIndustryNestedInput
   }
 
   export type RevenueStreamUpsertWithWhereUniqueWithoutChannelInput = {
@@ -52909,6 +54833,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamCreateNestedManyWithoutIndustryInput
     Tag?: TagCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryUncheckedCreateWithoutSegmentInput = {
@@ -52931,6 +54856,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutIndustryInput
     Tag?: TagUncheckedCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForUncheckedCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagUncheckedCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryCreateOrConnectWithoutSegmentInput = {
@@ -53010,6 +54936,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUpdateManyWithoutIndustryNestedInput
     Tag?: TagUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUpdateManyWithoutIndustryNestedInput
   }
 
   export type IndustryUncheckedUpdateWithoutSegmentInput = {
@@ -53032,6 +54959,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutIndustryNestedInput
     Tag?: TagUncheckedUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUncheckedUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUncheckedUpdateManyWithoutIndustryNestedInput
   }
 
   export type RevenueStreamUpsertWithWhereUniqueWithoutSegmentInput = {
@@ -53053,13 +54981,13 @@ export namespace Prisma {
   export type PortfolioTagCreateWithoutPortfolioInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    tag: TagCreateNestedOneWithoutPortfolioTagInput
+    projectTag: ProjectTagCreateNestedOneWithoutPortfolioTagInput
   }
 
   export type PortfolioTagUncheckedCreateWithoutPortfolioInput = {
-    tagSlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    projectTagSlug: string
   }
 
   export type PortfolioTagCreateOrConnectWithoutPortfolioInput = {
@@ -53621,29 +55549,29 @@ export namespace Prisma {
     create: XOR<PortfolioCreateWithoutIndustryTagsInput, PortfolioUncheckedCreateWithoutIndustryTagsInput>
   }
 
-  export type TagCreateWithoutPortfolioTagInput = {
+  export type ProjectTagCreateWithoutPortfolioTagInput = {
     id?: string
     name: string
     slug: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    industry: IndustryCreateNestedOneWithoutTagInput
-    UserTags?: UserTagsCreateNestedManyWithoutTagInput
+    industry: IndustryCreateNestedOneWithoutProjectTagInput
+    UserTags?: UserTagsCreateNestedManyWithoutProjectTagInput
   }
 
-  export type TagUncheckedCreateWithoutPortfolioTagInput = {
+  export type ProjectTagUncheckedCreateWithoutPortfolioTagInput = {
     id?: string
     name: string
     slug: string
     industrySlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    UserTags?: UserTagsUncheckedCreateNestedManyWithoutTagInput
+    UserTags?: UserTagsUncheckedCreateNestedManyWithoutProjectTagInput
   }
 
-  export type TagCreateOrConnectWithoutPortfolioTagInput = {
-    where: TagWhereUniqueInput
-    create: XOR<TagCreateWithoutPortfolioTagInput, TagUncheckedCreateWithoutPortfolioTagInput>
+  export type ProjectTagCreateOrConnectWithoutPortfolioTagInput = {
+    where: ProjectTagWhereUniqueInput
+    create: XOR<ProjectTagCreateWithoutPortfolioTagInput, ProjectTagUncheckedCreateWithoutPortfolioTagInput>
   }
 
   export type PortfolioUpsertWithoutIndustryTagsInput = {
@@ -53703,35 +55631,35 @@ export namespace Prisma {
     comments?: PortfolioCommentUncheckedUpdateManyWithoutPortfolioNestedInput
   }
 
-  export type TagUpsertWithoutPortfolioTagInput = {
-    update: XOR<TagUpdateWithoutPortfolioTagInput, TagUncheckedUpdateWithoutPortfolioTagInput>
-    create: XOR<TagCreateWithoutPortfolioTagInput, TagUncheckedCreateWithoutPortfolioTagInput>
-    where?: TagWhereInput
+  export type ProjectTagUpsertWithoutPortfolioTagInput = {
+    update: XOR<ProjectTagUpdateWithoutPortfolioTagInput, ProjectTagUncheckedUpdateWithoutPortfolioTagInput>
+    create: XOR<ProjectTagCreateWithoutPortfolioTagInput, ProjectTagUncheckedCreateWithoutPortfolioTagInput>
+    where?: ProjectTagWhereInput
   }
 
-  export type TagUpdateToOneWithWhereWithoutPortfolioTagInput = {
-    where?: TagWhereInput
-    data: XOR<TagUpdateWithoutPortfolioTagInput, TagUncheckedUpdateWithoutPortfolioTagInput>
+  export type ProjectTagUpdateToOneWithWhereWithoutPortfolioTagInput = {
+    where?: ProjectTagWhereInput
+    data: XOR<ProjectTagUpdateWithoutPortfolioTagInput, ProjectTagUncheckedUpdateWithoutPortfolioTagInput>
   }
 
-  export type TagUpdateWithoutPortfolioTagInput = {
+  export type ProjectTagUpdateWithoutPortfolioTagInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    industry?: IndustryUpdateOneRequiredWithoutTagNestedInput
-    UserTags?: UserTagsUpdateManyWithoutTagNestedInput
+    industry?: IndustryUpdateOneRequiredWithoutProjectTagNestedInput
+    UserTags?: UserTagsUpdateManyWithoutProjectTagNestedInput
   }
 
-  export type TagUncheckedUpdateWithoutPortfolioTagInput = {
+  export type ProjectTagUncheckedUpdateWithoutPortfolioTagInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     industrySlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    UserTags?: UserTagsUncheckedUpdateManyWithoutTagNestedInput
+    UserTags?: UserTagsUncheckedUpdateManyWithoutProjectTagNestedInput
   }
 
   export type PortfolioCreateWithoutIndustryLookingForInput = {
@@ -54438,6 +56366,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamCreateNestedManyWithoutIndustryInput
     Tag?: TagCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryUncheckedCreateWithoutStandardsInput = {
@@ -54460,6 +56389,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutIndustryInput
     Tag?: TagUncheckedCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForUncheckedCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagUncheckedCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryCreateOrConnectWithoutStandardsInput = {
@@ -54522,6 +56452,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUpdateManyWithoutIndustryNestedInput
     Tag?: TagUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUpdateManyWithoutIndustryNestedInput
   }
 
   export type IndustryUncheckedUpdateWithoutStandardsInput = {
@@ -54544,6 +56475,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutIndustryNestedInput
     Tag?: TagUncheckedUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUncheckedUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUncheckedUpdateManyWithoutIndustryNestedInput
   }
 
   export type PortfolioStandardsUpsertWithWhereUniqueWithoutStandardsInput = {
@@ -54582,6 +56514,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamCreateNestedManyWithoutIndustryInput
     Tag?: TagCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryUncheckedCreateWithoutSkillInput = {
@@ -54604,6 +56537,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutIndustryInput
     Tag?: TagUncheckedCreateNestedManyWithoutIndustryInput
     LookingFor?: LookingForUncheckedCreateNestedManyWithoutIndustryInput
+    ProjectTag?: ProjectTagUncheckedCreateNestedManyWithoutIndustryInput
   }
 
   export type IndustryCreateOrConnectWithoutSkillInput = {
@@ -54719,6 +56653,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUpdateManyWithoutIndustryNestedInput
     Tag?: TagUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUpdateManyWithoutIndustryNestedInput
   }
 
   export type IndustryUncheckedUpdateWithoutSkillInput = {
@@ -54741,6 +56676,7 @@ export namespace Prisma {
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutIndustryNestedInput
     Tag?: TagUncheckedUpdateManyWithoutIndustryNestedInput
     LookingFor?: LookingForUncheckedUpdateManyWithoutIndustryNestedInput
+    ProjectTag?: ProjectTagUncheckedUpdateManyWithoutIndustryNestedInput
   }
 
   export type FreelanceUpsertWithoutSkillsInput = {
@@ -55181,6 +57117,7 @@ export namespace Prisma {
     tagSlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    projectTagId?: string | null
   }
 
   export type UserChannelsCreateManyUserInput = {
@@ -55245,18 +57182,21 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tag?: TagUpdateOneRequiredWithoutUserTagsNestedInput
+    ProjectTag?: ProjectTagUpdateOneWithoutUserTagsNestedInput
   }
 
   export type UserTagsUncheckedUpdateWithoutUserInput = {
     tagSlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectTagId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserTagsUncheckedUpdateManyWithoutUserInput = {
     tagSlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectTagId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserChannelsUpdateWithoutUserInput = {
@@ -55861,6 +57801,14 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type ProjectTagCreateManyIndustryInput = {
+    id?: string
+    name: string
+    slug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type SkillUpdateWithoutIndustryInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -56166,7 +58114,6 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    PortfolioTag?: PortfolioTagUpdateManyWithoutTagNestedInput
     UserTags?: UserTagsUpdateManyWithoutTagNestedInput
   }
 
@@ -56176,7 +58123,6 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    PortfolioTag?: PortfolioTagUncheckedUpdateManyWithoutTagNestedInput
     UserTags?: UserTagsUncheckedUpdateManyWithoutTagNestedInput
   }
 
@@ -56214,50 +58160,110 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PortfolioTagCreateManyTagInput = {
-    portfolioId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type ProjectTagUpdateWithoutIndustryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    PortfolioTag?: PortfolioTagUpdateManyWithoutProjectTagNestedInput
+    UserTags?: UserTagsUpdateManyWithoutProjectTagNestedInput
+  }
+
+  export type ProjectTagUncheckedUpdateWithoutIndustryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    PortfolioTag?: PortfolioTagUncheckedUpdateManyWithoutProjectTagNestedInput
+    UserTags?: UserTagsUncheckedUpdateManyWithoutProjectTagNestedInput
+  }
+
+  export type ProjectTagUncheckedUpdateManyWithoutIndustryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserTagsCreateManyTagInput = {
     userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-  }
-
-  export type PortfolioTagUpdateWithoutTagInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    portfolio?: PortfolioUpdateOneRequiredWithoutIndustryTagsNestedInput
-  }
-
-  export type PortfolioTagUncheckedUpdateWithoutTagInput = {
-    portfolioId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PortfolioTagUncheckedUpdateManyWithoutTagInput = {
-    portfolioId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectTagId?: string | null
   }
 
   export type UserTagsUpdateWithoutTagInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutIndustryTagsNestedInput
+    ProjectTag?: ProjectTagUpdateOneWithoutUserTagsNestedInput
   }
 
   export type UserTagsUncheckedUpdateWithoutTagInput = {
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectTagId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserTagsUncheckedUpdateManyWithoutTagInput = {
     userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectTagId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PortfolioTagCreateManyProjectTagInput = {
+    portfolioId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserTagsCreateManyProjectTagInput = {
+    userId: string
+    tagSlug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PortfolioTagUpdateWithoutProjectTagInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    portfolio?: PortfolioUpdateOneRequiredWithoutIndustryTagsNestedInput
+  }
+
+  export type PortfolioTagUncheckedUpdateWithoutProjectTagInput = {
+    portfolioId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PortfolioTagUncheckedUpdateManyWithoutProjectTagInput = {
+    portfolioId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserTagsUpdateWithoutProjectTagInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutIndustryTagsNestedInput
+    tag?: TagUpdateOneRequiredWithoutUserTagsNestedInput
+  }
+
+  export type UserTagsUncheckedUpdateWithoutProjectTagInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    tagSlug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserTagsUncheckedUpdateManyWithoutProjectTagInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    tagSlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -56555,9 +58561,9 @@ export namespace Prisma {
   }
 
   export type PortfolioTagCreateManyPortfolioInput = {
-    tagSlug: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    projectTagSlug: string
   }
 
   export type PortfolioLookingForCreateManyPortfolioInput = {
@@ -56602,19 +58608,19 @@ export namespace Prisma {
   export type PortfolioTagUpdateWithoutPortfolioInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tag?: TagUpdateOneRequiredWithoutPortfolioTagNestedInput
+    projectTag?: ProjectTagUpdateOneRequiredWithoutPortfolioTagNestedInput
   }
 
   export type PortfolioTagUncheckedUpdateWithoutPortfolioInput = {
-    tagSlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectTagSlug?: StringFieldUpdateOperationsInput | string
   }
 
   export type PortfolioTagUncheckedUpdateManyWithoutPortfolioInput = {
-    tagSlug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectTagSlug?: StringFieldUpdateOperationsInput | string
   }
 
   export type PortfolioLookingForUpdateWithoutPortfolioInput = {

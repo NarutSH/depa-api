@@ -147,7 +147,8 @@ exports.Prisma.UserTagsScalarFieldEnum = {
   userId: 'userId',
   tagSlug: 'tagSlug',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  projectTagId: 'projectTagId'
 };
 
 exports.Prisma.UserChannelsScalarFieldEnum = {
@@ -298,6 +299,15 @@ exports.Prisma.TagScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ProjectTagScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  industrySlug: 'industrySlug',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.LookingForScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -371,9 +381,9 @@ exports.Prisma.PortfolioScalarFieldEnum = {
 
 exports.Prisma.PortfolioTagScalarFieldEnum = {
   portfolioId: 'portfolioId',
-  tagSlug: 'tagSlug',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  projectTagSlug: 'projectTagSlug'
 };
 
 exports.Prisma.PortfolioLookingForScalarFieldEnum = {
@@ -522,6 +532,7 @@ exports.Prisma.ModelName = {
   FreelanceIndustry: 'FreelanceIndustry',
   Industry: 'Industry',
   Tag: 'Tag',
+  ProjectTag: 'ProjectTag',
   LookingFor: 'LookingFor',
   Category: 'Category',
   Source: 'Source',

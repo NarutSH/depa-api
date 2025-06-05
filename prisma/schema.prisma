@@ -98,8 +98,10 @@ model UserTags {
   tagSlug String
   tag     Tag    @relation(fields: [tagSlug], references: [slug], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @db.Timestamptz()
-  updatedAt DateTime @updatedAt @db.Timestamptz()
+  createdAt    DateTime    @default(now()) @db.Timestamptz()
+  updatedAt    DateTime    @updatedAt @db.Timestamptz()
+  ProjectTag   ProjectTag? @relation(fields: [projectTagId], references: [id])
+  projectTagId String?     @db.Uuid
 
   @@id([userId, tagSlug])
 }
@@ -348,9 +350,24 @@ model Industry {
 
   Tag        Tag[]
   LookingFor LookingFor[]
+  ProjectTag ProjectTag[]
 }
 
 model Tag {
+  id   String @id @default(uuid()) @db.Uuid
+  name String
+  slug String @unique
+
+  industrySlug String
+  industry     Industry @relation(fields: [industrySlug], references: [slug])
+
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
+
+  UserTags UserTags[]
+}
+
+model ProjectTag {
   id   String @id @default(uuid()) @db.Uuid
   name String
   slug String @unique
@@ -484,13 +501,15 @@ model PortfolioTag {
   portfolioId String    @db.Uuid
   portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
 
-  tagSlug String
-  tag     Tag    @relation(fields: [tagSlug], references: [slug], onDelete: Cascade)
+  // tagSlug String
+  // tag     Tag    @relation(fields: [tagSlug], references: [slug], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @db.Timestamptz()
-  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz()
+  createdAt      DateTime   @default(now()) @db.Timestamptz()
+  updatedAt      DateTime   @default(now()) @updatedAt @db.Timestamptz()
+  projectTag     ProjectTag @relation(fields: [projectTagSlug], references: [slug])
+  projectTagSlug String
 
-  @@id([portfolioId, tagSlug])
+  @@id([portfolioId, projectTagSlug])
 }
 
 // New join table for Portfolio-LookingFor relationship

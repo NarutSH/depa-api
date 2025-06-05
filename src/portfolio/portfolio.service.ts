@@ -328,7 +328,12 @@ export class PortfolioService {
     });
   }
 
-  async createPortfolio(data: CreatePortfolioDto) {
+  async createPortfolio(
+    data: CreatePortfolioDto & {
+      industryTags?: string[];
+      industryLookingFor?: string[];
+    },
+  ) {
     if (!data.freelanceId && !data.companyJuristicId) {
       throw new NotFoundException(
         'Freelance ID or Company Juristic ID is required',
@@ -339,20 +344,44 @@ export class PortfolioService {
       );
     }
 
-    console.log('createPortfolio', data);
-
+    // Destructure to remove join-table fields
+    const { industryTags, industryLookingFor, ...rest } = data;
     const makeData = {
-      ...data,
-      tags: Array.isArray(data.tags) ? data.tags : [data.tags],
-      looking_for: Array.isArray(data.looking_for)
-        ? data.looking_for
-        : [data.looking_for],
-      // standards: Array.isArray(data.standards)
-      //   ? data.standards
-      //   : [data.standards],
+      ...rest,
+      tags: Array.isArray(rest.tags) ? rest.tags : [rest.tags],
+      looking_for: Array.isArray(rest.looking_for)
+        ? rest.looking_for
+        : [rest.looking_for],
     };
 
-    return this.prismaService.portfolio.create({ data: makeData });
+    // Create portfolio first
+    const portfolio = await this.prismaService.portfolio.create({
+      data: makeData,
+    });
+
+    // Handle industryTags (projectTagSlug)
+    if (industryTags && industryTags.length) {
+      await this.prismaService.portfolioTag.createMany({
+        data: industryTags.map((projectTagSlug) => ({
+          portfolioId: portfolio.id,
+          projectTagSlug,
+        })),
+        skipDuplicates: true,
+      });
+    }
+
+    // Handle industryLookingFor (lookingForSlug)
+    if (industryLookingFor && industryLookingFor.length) {
+      await this.prismaService.portfolioLookingFor.createMany({
+        data: industryLookingFor.map((lookingForSlug) => ({
+          portfolioId: portfolio.id,
+          lookingForSlug,
+        })),
+        skipDuplicates: true,
+      });
+    }
+
+    return portfolio;
   }
 
   async addStandardsToPortfolio(portfolioId: string, standardIds: string[]) {
@@ -740,39 +769,68 @@ export class PortfolioService {
     };
   }
 
-  async updatePortfolio(id: string, data: any) {
+  async updatePortfolio(
+    id: string,
+    data: any & {
+      industryTags?: string[];
+      industryLookingFor?: string[];
+    },
+  ) {
     const portfolio = await this.prismaService.portfolio.findUnique({
       where: { id },
     });
     if (!portfolio) {
       throw new NotFoundException(`Portfolio with id ${id} not found`);
     }
-    // Prevent updating IDs
-    delete data.id;
-    delete data.companyJuristicId;
-    delete data.freelanceId;
-    // Only update allowed fields
-    return this.prismaService.portfolio.update({
+    // Destructure to remove join-table fields
+    const { industryTags, industryLookingFor, ...rest } = data;
+    delete rest.id;
+    delete rest.companyJuristicId;
+    delete rest.freelanceId;
+    const updated = await this.prismaService.portfolio.update({
       where: { id },
       data: {
-        ...data,
-        tags: Array.isArray(data.tags) ? data.tags : [data.tags],
-        looking_for: Array.isArray(data.looking_for)
-          ? data.looking_for
-          : [data.looking_for],
+        ...rest,
+        tags: Array.isArray(rest.tags) ? rest.tags : [rest.tags],
+        looking_for: Array.isArray(rest.looking_for)
+          ? rest.looking_for
+          : [rest.looking_for],
       },
     });
-  }
 
-  async setStandardsForPortfolio(portfolioId: string, standardIds: string[]) {
-    // Remove old standards
-    await this.prismaService.portfolioStandards.deleteMany({
-      where: { portfolioId },
-    });
-    // Add new standards
-    if (standardIds && standardIds.length) {
-      await this.addStandardsToPortfolio(portfolioId, standardIds);
+    // Update industryTags (PortfolioTag)
+    if (industryTags) {
+      await this.prismaService.portfolioTag.deleteMany({
+        where: { portfolioId: id },
+      });
+      if (industryTags.length) {
+        await this.prismaService.portfolioTag.createMany({
+          data: industryTags.map((projectTagSlug) => ({
+            portfolioId: id,
+            projectTagSlug,
+          })),
+          skipDuplicates: true,
+        });
+      }
     }
+
+    // Update industryLookingFor (PortfolioLookingFor)
+    if (industryLookingFor) {
+      await this.prismaService.portfolioLookingFor.deleteMany({
+        where: { portfolioId: id },
+      });
+      if (industryLookingFor.length) {
+        await this.prismaService.portfolioLookingFor.createMany({
+          data: industryLookingFor.map((lookingForSlug) => ({
+            portfolioId: id,
+            lookingForSlug,
+          })),
+          skipDuplicates: true,
+        });
+      }
+    }
+
+    return updated;
   }
 
   async replaceImagesForPortfolio(
@@ -780,13 +838,95 @@ export class PortfolioService {
     imagePaths: string[],
     type: PortfolioImageType,
   ) {
-    // Remove old images of this type
+    // Delete existing images of this type for the portfolio
     await this.prismaService.portfolioImage.deleteMany({
       where: { portfolioId, type },
     });
     // Add new images
-    if (imagePaths && imagePaths.length) {
-      await this.addImagesToPortfolio(portfolioId, imagePaths, type);
+    if (imagePaths.length) {
+      await this.prismaService.portfolioImage.createMany({
+        data: imagePaths.map((path) => ({
+          portfolioId,
+          url: path,
+          type,
+        })),
+      });
+    }
+  }
+
+  async getPortfolioRandom(limit: number) {
+    try {
+      console.log('Getting random portfolios with limit:', limit);
+      // Get total count
+      const total = await this.prismaService.portfolio.count();
+      if (total === 0) return [];
+      // If less than limit, just return all
+      if (total <= limit) {
+        return this.prismaService.portfolio.findMany({
+          take: limit,
+        });
+      }
+      // Get random skip positions
+      const maxSkip = Math.max(0, total - limit);
+      const skip = Math.floor(Math.random() * (maxSkip + 1));
+
+      console.log('Random skip:', skip, 'Limit:', limit);
+      return this.prismaService.portfolio.findMany({
+        skip,
+        take: limit,
+        include: {
+          standards: {
+            select: {
+              standards: {
+                select: {
+                  name: true,
+                  description: true,
+                  type: true,
+                  image: true,
+                },
+              },
+            },
+          },
+          Image: {
+            select: {
+              url: true,
+              type: true,
+              description: true,
+            },
+          },
+          company: {
+            select: {
+              juristicId: true,
+              nameTh: true,
+              nameEn: true,
+              user: {
+                select: {
+                  fullnameTh: true,
+                  fullnameEn: true,
+                  email: true,
+                  image: true,
+                },
+              },
+            },
+          },
+          freelance: {
+            select: {
+              id: true,
+              user: {
+                select: {
+                  fullnameTh: true,
+                  fullnameEn: true,
+                  email: true,
+                  image: true,
+                },
+              },
+            },
+          },
+        },
+      });
+    } catch (error) {
+      console.log('===>', error);
+      throw error;
     }
   }
 }
