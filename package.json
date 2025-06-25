@@ -12,6 +12,7 @@
     "start:supabase": "NODE_ENV=production node dist/main",
     "dev": "NODE_ENV=development nest start --watch --envFile=.env.dev",
     "start:debug": "nest start --debug --watch",
+    "start:dev": "nest start --watch",
     "start:prod": "pm2 start dist/main.js --name depa-api",
     "start:prod:watch": "pm2 start dist/main.js --name depa-api --watch",
     "stop:prod": "pm2 stop depa-api",

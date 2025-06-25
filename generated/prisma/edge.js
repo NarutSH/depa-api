@@ -531,7 +531,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/narutsh/Documents/Coding/depa/depa-api/generated/prisma",
+      "value": "C:\\Users\\narut\\Documents\\Coding\\depa-api\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -540,12 +540,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/narutsh/Documents/Coding/depa/depa-api/prisma/schema.prisma",
+    "sourceFilePath": "C:\\Users\\narut\\Documents\\Coding\\depa-api\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

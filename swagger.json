@@ -618,129 +618,6 @@
       }
     },
     "/revenue-stream": {
-      "get": {
-        "operationId": "RevenueStreamController_getAll",
-        "parameters": [
-          {
-            "name": "page",
-            "required": false,
-            "in": "query",
-            "description": "Page number (1-based)",
-            "schema": {
-              "default": 1,
-              "type": "number"
-            }
-          },
-          {
-            "name": "limit",
-            "required": false,
-            "in": "query",
-            "description": "Items per page",
-            "schema": {
-              "default": 10,
-              "type": "number"
-            }
-          },
-          {
-            "name": "search",
-            "required": false,
-            "in": "query",
-            "description": "Search term for revenue stream fields",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "sort",
-            "required": false,
-            "in": "query",
-            "description": "Sort field and direction (e.g., year:asc, value:desc)",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter",
-            "required": false,
-            "in": "query",
-            "description": "Filter criteria (e.g., year, industryTypeSlug)",
-            "schema": {
-              "$ref": "#/components/schemas/Object"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Return a paginated list of revenue stream records",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "example": {
-                    "data": [
-                      {
-                        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                        "year": 2025,
-                        "industryTypeSlug": "game",
-                        "categorySlug": "mobile-game",
-                        "sourceSlug": "direct-sale",
-                        "channelSlug": "app-store",
-                        "segmentSlug": "casual",
-                        "percent": 25.5,
-                        "ctrPercent": 15.75,
-                        "value": 1250000,
-                        "companyJuristicId": "1234567890123",
-                        "createdAt": "2025-05-11T08:21:18.000Z",
-                        "updatedAt": "2025-05-11T08:21:18.000Z",
-                        "industry": {
-                          "name": "Game",
-                          "slug": "game"
-                        },
-                        "category": {
-                          "name": "Mobile Game",
-                          "slug": "mobile-game"
-                        },
-                        "source": {
-                          "name": "Direct Sale",
-                          "slug": "direct-sale"
-                        },
-                        "channel": {
-                          "name": "App Store",
-                          "slug": "app-store"
-                        },
-                        "segment": {
-                          "name": "Casual",
-                          "slug": "casual"
-                        },
-                        "company": {
-                          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                          "juristicId": "1234567890123",
-                          "nameTh": "บริษัท ทดสอบ จำกัด",
-                          "nameEn": "Test Company Ltd."
-                        }
-                      }
-                    ],
-                    "meta": {
-                      "total": 25,
-                      "page": 1,
-                      "limit": 10,
-                      "totalPages": 3
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Get all revenue stream data with filtering and pagination",
-        "tags": [
-          "Revenue Stream"
-        ]
-      },
       "post": {
         "operationId": "RevenueStreamController_create",
         "parameters": [],
@@ -750,72 +627,19 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateRevenueStreamDto"
-              },
-              "examples": {
-                "example1": {
-                  "summary": "Basic revenue stream creation",
-                  "description": "Example payload for creating a new revenue stream",
-                  "value": {
-                    "year": 2025,
-                    "industryTypeSlug": "game",
-                    "categorySlug": "mobile-game",
-                    "sourceSlug": "direct-sale",
-                    "channelSlug": "app-store",
-                    "segmentSlug": "casual",
-                    "percent": 25.5,
-                    "ctrPercent": 15.75,
-                    "value": 1250000,
-                    "companyJuristicId": "1234567890123"
-                  }
-                }
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "The revenue stream record has been successfully created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "example": {
-                    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                    "year": 2025,
-                    "industryTypeSlug": "game",
-                    "categorySlug": "mobile-game",
-                    "sourceSlug": "direct-sale",
-                    "channelSlug": "app-store",
-                    "segmentSlug": "casual",
-                    "percent": 25.5,
-                    "ctrPercent": 15.75,
-                    "value": 1250000,
-                    "companyJuristicId": "1234567890123",
-                    "createdAt": "2025-05-11T08:21:18.000Z",
-                    "updatedAt": "2025-05-11T08:21:18.000Z",
-                    "industry": {
-                      "name": "Game",
-                      "slug": "game"
-                    },
-                    "category": {
-                      "name": "Mobile Game",
-                      "slug": "mobile-game"
-                    },
-                    "source": {
-                      "name": "Direct Sale",
-                      "slug": "direct-sale"
-                    },
-                    "channel": {
-                      "name": "App Store",
-                      "slug": "app-store"
-                    },
-                    "segment": {
-                      "name": "Casual",
-                      "slug": "casual"
-                    }
-                  }
-                }
-              }
-            }
+            "description": "สร้างสำเร็จ"
+          },
+          "400": {
+            "description": "ข้อมูลไม่ถูกต้อง"
+          },
+          "404": {
+            "description": "ไม่พบ Company หรือ Relations"
           }
         },
         "security": [
@@ -823,124 +647,62 @@
             "bearer": []
           }
         ],
-        "summary": "Create a new revenue stream record",
+        "summary": "สร้าง Revenue Stream รายการเดียว",
         "tags": [
           "Revenue Stream"
         ]
-      }
-    },
-    "/revenue-stream/company/{companyJuristicId}": {
+      },
       "get": {
-        "operationId": "RevenueStreamController_getByCompanyId",
+        "operationId": "RevenueStreamController_findAll",
         "parameters": [
           {
-            "name": "companyJuristicId",
+            "name": "year",
             "required": true,
-            "in": "path",
-            "description": "The juristic ID of the company",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "page",
-            "required": false,
             "in": "query",
-            "description": "Page number (1-based)",
+            "description": "ปีของรายได้",
             "schema": {
-              "default": 1,
+              "example": 2024,
               "type": "number"
             }
           },
           {
-            "name": "limit",
-            "required": false,
+            "name": "companyId",
+            "required": true,
             "in": "query",
-            "description": "Items per page",
+            "description": "Company ID",
             "schema": {
-              "default": 10,
-              "type": "number"
-            }
-          },
-          {
-            "name": "search",
-            "required": false,
-            "in": "query",
-            "description": "Search term for revenue stream fields",
-            "schema": {
+              "example": "uuid-string",
               "type": "string"
             }
           },
           {
-            "name": "sort",
+            "name": "industryTypeSlug",
             "required": false,
             "in": "query",
-            "description": "Sort field and direction (e.g., year:asc, value:desc)",
+            "description": "Industry Type Slug (optional)",
             "schema": {
+              "example": "game",
               "type": "string"
             }
           },
           {
-            "name": "filter",
+            "name": "sourceSlug",
             "required": false,
             "in": "query",
-            "description": "Filter criteria (e.g., year, industryTypeSlug)",
+            "description": "Source Slug (optional)",
             "schema": {
-              "$ref": "#/components/schemas/Object"
+              "example": "ip-owner",
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Return revenue stream data for the specified company",
+            "description": "ค้นหาสำเร็จ",
             "content": {
               "application/json": {
                 "schema": {
-                  "example": {
-                    "data": [
-                      {
-                        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                        "year": 2025,
-                        "industryTypeSlug": "game",
-                        "categorySlug": "mobile-game",
-                        "sourceSlug": "direct-sale",
-                        "channelSlug": "app-store",
-                        "segmentSlug": "casual",
-                        "percent": 25.5,
-                        "ctrPercent": 15.75,
-                        "value": 1250000,
-                        "companyJuristicId": "1234567890123",
-                        "createdAt": "2025-05-11T08:21:18.000Z",
-                        "updatedAt": "2025-05-11T08:21:18.000Z",
-                        "industry": {
-                          "name": "Game",
-                          "slug": "game"
-                        },
-                        "category": {
-                          "name": "Mobile Game",
-                          "slug": "mobile-game"
-                        },
-                        "source": {
-                          "name": "Direct Sale",
-                          "slug": "direct-sale"
-                        },
-                        "channel": {
-                          "name": "App Store",
-                          "slug": "app-store"
-                        },
-                        "segment": {
-                          "name": "Casual",
-                          "slug": "casual"
-                        }
-                      }
-                    ],
-                    "meta": {
-                      "total": 5,
-                      "page": 1,
-                      "limit": 10,
-                      "totalPages": 1
-                    }
-                  }
+                  "$ref": "#/components/schemas/RevenueTableResponseDto"
                 }
               }
             }
@@ -951,7 +713,94 @@
             "bearer": []
           }
         ],
-        "summary": "Get revenue stream data for a specific company",
+        "summary": "ค้นหา Revenue Stream ตามเงื่อนไข",
+        "tags": [
+          "Revenue Stream"
+        ]
+      }
+    },
+    "/revenue-stream/sources/{companyId}/{year}": {
+      "get": {
+        "operationId": "RevenueStreamController_getAvailableSources",
+        "parameters": [
+          {
+            "name": "companyId",
+            "required": true,
+            "in": "path",
+            "description": "Company ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "required": true,
+            "in": "path",
+            "description": "ปี",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "industryTypeSlug",
+            "required": false,
+            "in": "query",
+            "description": "Industry Type Slug",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ดึงข้อมูลสำเร็จ"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "ดึงรายการ Sources ที่มีข้อมูล",
+        "tags": [
+          "Revenue Stream"
+        ]
+      }
+    },
+    "/revenue-stream/stats/{companyId}/{year}": {
+      "get": {
+        "operationId": "RevenueStreamController_getYearlyStats",
+        "parameters": [
+          {
+            "name": "companyId",
+            "required": true,
+            "in": "path",
+            "description": "Company ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "required": true,
+            "in": "path",
+            "description": "ปี",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ดึงสถิติสำเร็จ"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "ดึงสถิติรายได้ตามปี",
         "tags": [
           "Revenue Stream"
         ]
@@ -959,13 +808,13 @@
     },
     "/revenue-stream/{id}": {
       "get": {
-        "operationId": "RevenueStreamController_getById",
+        "operationId": "RevenueStreamController_findOne",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
-            "description": "The ID of the revenue stream record",
+            "description": "Revenue Stream ID",
             "schema": {
               "type": "string"
             }
@@ -973,87 +822,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Return the specified revenue stream record",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "example": {
-                    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                    "year": 2025,
-                    "industryTypeSlug": "game",
-                    "categorySlug": "mobile-game",
-                    "sourceSlug": "direct-sale",
-                    "channelSlug": "app-store",
-                    "segmentSlug": "casual",
-                    "percent": 25.5,
-                    "ctrPercent": 15.75,
-                    "value": 1250000,
-                    "companyJuristicId": "1234567890123",
-                    "createdAt": "2025-05-11T08:21:18.000Z",
-                    "updatedAt": "2025-05-11T08:21:18.000Z",
-                    "industry": {
-                      "id": "b1c2d3e4-f5a6-7890-abcd-ef1234567890",
-                      "name": "Game",
-                      "slug": "game",
-                      "createdAt": "2025-05-07T08:11:04.000Z",
-                      "updatedAt": "2025-05-07T08:11:04.000Z"
-                    },
-                    "category": {
-                      "id": "c1d2e3f4-a5b6-7890-abcd-ef1234567890",
-                      "name": "Mobile Game",
-                      "slug": "mobile-game",
-                      "createdAt": "2025-05-07T08:11:04.000Z",
-                      "updatedAt": "2025-05-07T08:11:04.000Z",
-                      "industrySlug": "game"
-                    },
-                    "source": {
-                      "id": "d1e2f3a4-b5c6-7890-abcd-ef1234567890",
-                      "name": "Direct Sale",
-                      "slug": "direct-sale",
-                      "createdAt": "2025-05-07T08:11:04.000Z",
-                      "updatedAt": "2025-05-07T08:11:04.000Z",
-                      "industrySlug": "game"
-                    },
-                    "channel": {
-                      "id": "e1f2a3b4-c5d6-7890-abcd-ef1234567890",
-                      "name": "App Store",
-                      "slug": "app-store",
-                      "createdAt": "2025-05-07T08:11:04.000Z",
-                      "updatedAt": "2025-05-07T08:11:04.000Z",
-                      "industrySlug": "game"
-                    },
-                    "segment": {
-                      "id": "f1a2b3c4-d5e6-7890-abcd-ef1234567890",
-                      "name": "Casual",
-                      "slug": "casual",
-                      "createdAt": "2025-05-07T08:11:04.000Z",
-                      "updatedAt": "2025-05-07T08:11:04.000Z",
-                      "industrySlug": "game"
-                    },
-                    "company": {
-                      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                      "juristicId": "1234567890123",
-                      "nameTh": "บริษัท ทดสอบ จำกัด",
-                      "nameEn": "Test Company Ltd."
-                    }
-                  }
-                }
-              }
-            }
+            "description": "ค้นหาสำเร็จ"
           },
           "404": {
-            "description": "Revenue stream record not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "example": {
-                    "statusCode": 404,
-                    "message": "Revenue stream with ID a1b2c3d4-e5f6-7890-abcd-ef1234567890 not found",
-                    "error": "Not Found"
-                  }
-                }
-              }
-            }
+            "description": "ไม่พบข้อมูล"
           }
         },
         "security": [
@@ -1061,19 +833,19 @@
             "bearer": []
           }
         ],
-        "summary": "Get a specific revenue stream record by ID",
+        "summary": "ค้นหา Revenue Stream รายการเดียว",
         "tags": [
           "Revenue Stream"
         ]
       },
-      "put": {
+      "patch": {
         "operationId": "RevenueStreamController_update",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
-            "description": "The ID of the revenue stream record to update",
+            "description": "Revenue Stream ID",
             "schema": {
               "type": "string"
             }
@@ -1085,79 +857,19 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UpdateRevenueStreamDto"
-              },
-              "examples": {
-                "example1": {
-                  "summary": "Update revenue stream",
-                  "description": "Example payload for updating a revenue stream record",
-                  "value": {
-                    "value": 1500000,
-                    "percent": 30,
-                    "ctrPercent": 18.5
-                  }
-                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "The revenue stream record has been successfully updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "example": {
-                    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                    "year": 2025,
-                    "industryTypeSlug": "game",
-                    "categorySlug": "mobile-game",
-                    "sourceSlug": "direct-sale",
-                    "channelSlug": "app-store",
-                    "segmentSlug": "casual",
-                    "percent": 30,
-                    "ctrPercent": 18.5,
-                    "value": 1500000,
-                    "companyJuristicId": "1234567890123",
-                    "createdAt": "2025-05-11T08:21:18.000Z",
-                    "updatedAt": "2025-05-12T10:15:22.000Z",
-                    "industry": {
-                      "name": "Game",
-                      "slug": "game"
-                    },
-                    "category": {
-                      "name": "Mobile Game",
-                      "slug": "mobile-game"
-                    },
-                    "source": {
-                      "name": "Direct Sale",
-                      "slug": "direct-sale"
-                    },
-                    "channel": {
-                      "name": "App Store",
-                      "slug": "app-store"
-                    },
-                    "segment": {
-                      "name": "Casual",
-                      "slug": "casual"
-                    }
-                  }
-                }
-              }
-            }
+            "description": "อัพเดตสำเร็จ"
+          },
+          "400": {
+            "description": "ข้อมูลไม่ถูกต้อง"
           },
           "404": {
-            "description": "Revenue stream record not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "example": {
-                    "statusCode": 404,
-                    "message": "Revenue stream with ID a1b2c3d4-e5f6-7890-abcd-ef1234567890 not found",
-                    "error": "Not Found"
-                  }
-                }
-              }
-            }
+            "description": "ไม่พบข้อมูล"
           }
         },
         "security": [
@@ -1165,19 +877,19 @@
             "bearer": []
           }
         ],
-        "summary": "Update a revenue stream record",
+        "summary": "อัพเดต Revenue Stream รายการเดียว",
         "tags": [
           "Revenue Stream"
         ]
       },
       "delete": {
-        "operationId": "RevenueStreamController_delete",
+        "operationId": "RevenueStreamController_remove",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
-            "description": "The ID of the revenue stream record to delete",
+            "description": "Revenue Stream ID",
             "schema": {
               "type": "string"
             }
@@ -1185,42 +897,10 @@
         ],
         "responses": {
           "200": {
-            "description": "The revenue stream record has been successfully deleted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "example": {
-                    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                    "year": 2025,
-                    "industryTypeSlug": "game",
-                    "categorySlug": "mobile-game",
-                    "sourceSlug": "direct-sale",
-                    "channelSlug": "app-store",
-                    "segmentSlug": "casual",
-                    "percent": 25.5,
-                    "ctrPercent": 15.75,
-                    "value": 1250000,
-                    "companyJuristicId": "1234567890123",
-                    "createdAt": "2025-05-11T08:21:18.000Z",
-                    "updatedAt": "2025-05-11T08:21:18.000Z"
-                  }
-                }
-              }
-            }
+            "description": "ลบสำเร็จ"
           },
           "404": {
-            "description": "Revenue stream record not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "example": {
-                    "statusCode": 404,
-                    "message": "Revenue stream with ID a1b2c3d4-e5f6-7890-abcd-ef1234567890 not found",
-                    "error": "Not Found"
-                  }
-                }
-              }
-            }
+            "description": "ไม่พบข้อมูล"
           }
         },
         "security": [
@@ -1228,226 +908,54 @@
             "bearer": []
           }
         ],
-        "summary": "Delete a revenue stream record",
+        "summary": "ลบ Revenue Stream รายการเดียว",
         "tags": [
           "Revenue Stream"
         ]
       }
     },
-    "/revenue-stream/bulk": {
+    "/revenue-stream/upsert-table": {
       "post": {
-        "operationId": "RevenueStreamController_createMany",
+        "description": "อัพเดทตารางรายได้ทั้งหมดสำหรับ Source และ Year ที่กำหนด จะลบข้อมูลเก่าและสร้างใหม่ทั้งหมด",
+        "operationId": "RevenueStreamController_upsertRevenueTable",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/CreateRevenueStreamDto"
-                }
-              },
-              "examples": {
-                "example1": {
-                  "summary": "Bulk revenue stream creation",
-                  "description": "Example payload for creating multiple revenue streams",
-                  "value": [
-                    {
-                      "year": 2025,
-                      "industryTypeSlug": "game",
-                      "categorySlug": "mobile-game",
-                      "sourceSlug": "direct-sale",
-                      "channelSlug": "app-store",
-                      "segmentSlug": "casual",
-                      "percent": 25.5,
-                      "ctrPercent": 15.75,
-                      "value": 1250000,
-                      "companyJuristicId": "1234567890123"
-                    },
-                    {
-                      "year": 2025,
-                      "industryTypeSlug": "game",
-                      "categorySlug": "console-game",
-                      "sourceSlug": "direct-sale",
-                      "channelSlug": "playstation-store",
-                      "segmentSlug": "action",
-                      "percent": 35,
-                      "ctrPercent": 22.5,
-                      "value": 1750000,
-                      "companyJuristicId": "1234567890123"
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "The revenue stream records have been successfully created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "example": [
-                    {
-                      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                      "year": 2025,
-                      "industryTypeSlug": "game",
-                      "categorySlug": "mobile-game",
-                      "sourceSlug": "direct-sale",
-                      "channelSlug": "app-store",
-                      "segmentSlug": "casual",
-                      "percent": 25.5,
-                      "ctrPercent": 15.75,
-                      "value": 1250000,
-                      "companyJuristicId": "1234567890123",
-                      "createdAt": "2025-05-11T08:21:18.000Z",
-                      "updatedAt": "2025-05-11T08:21:18.000Z",
-                      "industry": {
-                        "name": "Game",
-                        "slug": "game"
-                      },
-                      "category": {
-                        "name": "Mobile Game",
-                        "slug": "mobile-game"
-                      },
-                      "source": {
-                        "name": "Direct Sale",
-                        "slug": "direct-sale"
-                      },
-                      "channel": {
-                        "name": "App Store",
-                        "slug": "app-store"
-                      },
-                      "segment": {
-                        "name": "Casual",
-                        "slug": "casual"
-                      }
-                    },
-                    {
-                      "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
-                      "year": 2025,
-                      "industryTypeSlug": "game",
-                      "categorySlug": "console-game",
-                      "sourceSlug": "direct-sale",
-                      "channelSlug": "playstation-store",
-                      "segmentSlug": "action",
-                      "percent": 35,
-                      "ctrPercent": 22.5,
-                      "value": 1750000,
-                      "companyJuristicId": "1234567890123",
-                      "createdAt": "2025-05-11T08:21:18.000Z",
-                      "updatedAt": "2025-05-11T08:21:18.000Z",
-                      "industry": {
-                        "name": "Game",
-                        "slug": "game"
-                      },
-                      "category": {
-                        "name": "Console Game",
-                        "slug": "console-game"
-                      },
-                      "source": {
-                        "name": "Direct Sale",
-                        "slug": "direct-sale"
-                      },
-                      "channel": {
-                        "name": "PlayStation Store",
-                        "slug": "playstation-store"
-                      },
-                      "segment": {
-                        "name": "Action",
-                        "slug": "action"
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Create multiple revenue stream records",
-        "tags": [
-          "Revenue Stream"
-        ]
-      }
-    },
-    "/revenue-stream/{id}/value": {
-      "patch": {
-        "operationId": "RevenueStreamController_updateValue",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "description": "The ID of the revenue stream record",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateRevenueValueDto"
-              },
-              "examples": {
-                "example1": {
-                  "summary": "Update revenue value",
-                  "description": "Example payload for updating just the value field",
-                  "value": {
-                    "value": 1500000
-                  }
-                }
+                "$ref": "#/components/schemas/UpsertRevenueTableDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "The value has been successfully updated",
+            "description": "อัพเดตตารางสำเร็จ",
             "content": {
               "application/json": {
                 "schema": {
-                  "example": {
-                    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                    "year": 2025,
-                    "industryTypeSlug": "game",
-                    "categorySlug": "mobile-game",
-                    "sourceSlug": "direct-sale",
-                    "channelSlug": "app-store",
-                    "segmentSlug": "casual",
-                    "percent": 25.5,
-                    "ctrPercent": 15.75,
-                    "value": 1500000,
-                    "companyJuristicId": "1234567890123",
-                    "createdAt": "2025-05-11T08:21:18.000Z",
-                    "updatedAt": "2025-05-12T10:15:22.000Z"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/RevenueTableResponseDto"
+                    },
+                    "recordsProcessed": {
+                      "type": "number"
+                    }
                   }
                 }
               }
             }
           },
+          "400": {
+            "description": "ข้อมูลไม่ถูกต้อง"
+          },
           "404": {
-            "description": "Revenue stream record not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "example": {
-                    "statusCode": 404,
-                    "message": "Revenue stream with ID a1b2c3d4-e5f6-7890-abcd-ef1234567890 not found",
-                    "error": "Not Found"
-                  }
-                }
-              }
-            }
+            "description": "ไม่พบ Company"
           }
         },
         "security": [
@@ -1455,94 +963,48 @@
             "bearer": []
           }
         ],
-        "summary": "Update just the value of a revenue stream record",
+        "summary": "Upsert ตารางรายได้ทั้งหมด",
         "tags": [
           "Revenue Stream"
         ]
       }
     },
-    "/revenue-stream/bulk-values": {
+    "/revenue-stream/clear-table": {
       "post": {
-        "operationId": "RevenueStreamController_bulkUpsertValues",
+        "description": "ลบข้อมูลรายได้ทั้งหมดที่ตรงกับ Company, Year และ Source ที่กำหนด",
+        "operationId": "RevenueStreamController_clearRevenueTable",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/UpdateRevenueValueDto"
-                }
-              },
-              "examples": {
-                "example1": {
-                  "summary": "Bulk update revenue values",
-                  "description": "Example payload for updating multiple revenue values",
-                  "value": [
-                    {
-                      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                      "value": 1500000
-                    },
-                    {
-                      "companyJuristicId": "1234567890123",
-                      "year": 2025,
-                      "industryTypeSlug": "game",
-                      "categorySlug": "pc-game",
-                      "sourceSlug": "direct-sale",
-                      "channelSlug": "steam",
-                      "segmentSlug": "rpg",
-                      "percent": 40,
-                      "ctrPercent": 25,
-                      "value": 2000000
-                    }
-                  ]
-                }
+                "$ref": "#/components/schemas/ClearRevenueTableDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "The values have been successfully updated or created",
+            "description": "ลบข้อมูลสำเร็จ",
             "content": {
               "application/json": {
                 "schema": {
-                  "example": [
-                    {
-                      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                      "year": 2025,
-                      "industryTypeSlug": "game",
-                      "categorySlug": "mobile-game",
-                      "sourceSlug": "direct-sale",
-                      "channelSlug": "app-store",
-                      "segmentSlug": "casual",
-                      "percent": 25.5,
-                      "ctrPercent": 15.75,
-                      "value": 1500000,
-                      "companyJuristicId": "1234567890123",
-                      "createdAt": "2025-05-11T08:21:18.000Z",
-                      "updatedAt": "2025-05-12T10:15:22.000Z"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
                     },
-                    {
-                      "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
-                      "year": 2025,
-                      "industryTypeSlug": "game",
-                      "categorySlug": "pc-game",
-                      "sourceSlug": "direct-sale",
-                      "channelSlug": "steam",
-                      "segmentSlug": "rpg",
-                      "percent": 40,
-                      "ctrPercent": 25,
-                      "value": 2000000,
-                      "companyJuristicId": "1234567890123",
-                      "createdAt": "2025-05-12T10:15:22.000Z",
-                      "updatedAt": "2025-05-12T10:15:22.000Z"
+                    "deletedCount": {
+                      "type": "number"
                     }
-                  ]
+                  }
                 }
               }
             }
+          },
+          "404": {
+            "description": "ไม่พบข้อมูลที่ตรงกับเงื่อนไข"
           }
         },
         "security": [
@@ -1550,7 +1012,7 @@
             "bearer": []
           }
         ],
-        "summary": "Bulk update or create revenue stream values",
+        "summary": "ลบข้อมูลตารางตาม Source และ Year",
         "tags": [
           "Revenue Stream"
         ]
@@ -4420,15 +3882,365 @@
       },
       "CreateRevenueStreamDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "year": {
+            "type": "number",
+            "description": "ปีของรายได้",
+            "example": 2024
+          },
+          "industryTypeSlug": {
+            "type": "string",
+            "description": "Industry Type Slug",
+            "example": "game"
+          },
+          "categorySlug": {
+            "type": "string",
+            "description": "Category Slug",
+            "example": "console-handheld"
+          },
+          "sourceSlug": {
+            "type": "string",
+            "description": "Source Slug",
+            "example": "ip-owner"
+          },
+          "channelSlug": {
+            "type": "string",
+            "description": "Channel Slug",
+            "example": "local"
+          },
+          "segmentSlug": {
+            "type": "string",
+            "description": "Segment Slug",
+            "example": "download-and-retail"
+          },
+          "percent": {
+            "type": "number",
+            "description": "เปอร์เซ็นต์ของ cell นี้",
+            "example": 25.5
+          },
+          "ctrPercent": {
+            "type": "number",
+            "description": "เปอร์เซ็นต์รวมของ row",
+            "example": 100
+          },
+          "value": {
+            "type": "number",
+            "description": "มูลค่าเงิน (optional)",
+            "example": 1000000
+          },
+          "companyId": {
+            "type": "string",
+            "description": "Company ID",
+            "example": "uuid-string"
+          },
+          "companyJuristicId": {
+            "type": "string",
+            "description": "Company Juristic ID",
+            "example": "1234567890123"
+          }
+        },
+        "required": [
+          "year",
+          "industryTypeSlug",
+          "categorySlug",
+          "sourceSlug",
+          "channelSlug",
+          "segmentSlug",
+          "percent",
+          "ctrPercent",
+          "companyId",
+          "companyJuristicId"
+        ]
+      },
+      "RevenueStreamItemDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "industryTypeSlug": {
+            "type": "string"
+          },
+          "categorySlug": {
+            "type": "string"
+          },
+          "sourceSlug": {
+            "type": "string"
+          },
+          "channelSlug": {
+            "type": "string"
+          },
+          "segmentSlug": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "number"
+          },
+          "ctrPercent": {
+            "type": "number"
+          },
+          "value": {
+            "type": "number"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "companyJuristicId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "industry": {
+            "type": "object"
+          },
+          "category": {
+            "type": "object"
+          },
+          "source": {
+            "type": "object"
+          },
+          "channel": {
+            "type": "object"
+          },
+          "segment": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "year",
+          "industryTypeSlug",
+          "categorySlug",
+          "sourceSlug",
+          "channelSlug",
+          "segmentSlug",
+          "percent",
+          "ctrPercent",
+          "companyId",
+          "companyJuristicId",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "RevenueTableResponseDto": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "number"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "revenueStreams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RevenueStreamItemDto"
+            }
+          },
+          "totalItems": {
+            "type": "number"
+          },
+          "sourceCount": {
+            "type": "number",
+            "description": "จำนวน Source ที่มี"
+          },
+          "sources": {
+            "description": "รายชื่อ Sources",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "year",
+          "companyId",
+          "revenueStreams",
+          "totalItems",
+          "sourceCount",
+          "sources"
+        ]
       },
       "UpdateRevenueStreamDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "year": {
+            "type": "number",
+            "description": "ปีของรายได้",
+            "example": 2024
+          },
+          "industryTypeSlug": {
+            "type": "string",
+            "description": "Industry Type Slug",
+            "example": "game"
+          },
+          "categorySlug": {
+            "type": "string",
+            "description": "Category Slug",
+            "example": "console-handheld"
+          },
+          "sourceSlug": {
+            "type": "string",
+            "description": "Source Slug",
+            "example": "ip-owner"
+          },
+          "channelSlug": {
+            "type": "string",
+            "description": "Channel Slug",
+            "example": "local"
+          },
+          "segmentSlug": {
+            "type": "string",
+            "description": "Segment Slug",
+            "example": "download-and-retail"
+          },
+          "percent": {
+            "type": "number",
+            "description": "เปอร์เซ็นต์ของ cell นี้",
+            "example": 25.5
+          },
+          "ctrPercent": {
+            "type": "number",
+            "description": "เปอร์เซ็นต์รวมของ row",
+            "example": 100
+          },
+          "value": {
+            "type": "number",
+            "description": "มูลค่าเงิน (optional)",
+            "example": 1000000
+          },
+          "companyId": {
+            "type": "string",
+            "description": "Company ID",
+            "example": "uuid-string"
+          },
+          "companyJuristicId": {
+            "type": "string",
+            "description": "Company Juristic ID",
+            "example": "1234567890123"
+          }
+        }
       },
-      "UpdateRevenueValueDto": {
+      "RevenueStreamCellDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "categorySlug": {
+            "type": "string",
+            "description": "Category Slug",
+            "example": "console-handheld"
+          },
+          "segmentSlug": {
+            "type": "string",
+            "description": "Segment Slug",
+            "example": "download-and-retail"
+          },
+          "channelSlug": {
+            "type": "string",
+            "description": "Channel Slug",
+            "example": "local"
+          },
+          "percent": {
+            "type": "number",
+            "description": "เปอร์เซ็นต์ของ cell นี้",
+            "example": 25.5
+          },
+          "ctrPercent": {
+            "type": "number",
+            "description": "เปอร์เซ็นต์รวมของ row",
+            "example": 100
+          },
+          "value": {
+            "type": "number",
+            "description": "มูลค่าเงิน (optional)",
+            "example": 1000000
+          }
+        },
+        "required": [
+          "categorySlug",
+          "segmentSlug",
+          "channelSlug",
+          "percent",
+          "ctrPercent"
+        ]
+      },
+      "UpsertRevenueTableDto": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "number",
+            "description": "ปีของรายได้",
+            "example": 2024
+          },
+          "industryTypeSlug": {
+            "type": "string",
+            "description": "Industry Type Slug",
+            "example": "game"
+          },
+          "sourceSlug": {
+            "type": "string",
+            "description": "Source Slug",
+            "example": "ip-owner"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "Company ID",
+            "example": "uuid-string"
+          },
+          "companyJuristicId": {
+            "type": "string",
+            "description": "Company Juristic ID",
+            "example": "1234567890123"
+          },
+          "tableData": {
+            "description": "ข้อมูลตารางทั้งหมด",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RevenueStreamCellDto"
+            }
+          }
+        },
+        "required": [
+          "year",
+          "industryTypeSlug",
+          "sourceSlug",
+          "companyId",
+          "companyJuristicId",
+          "tableData"
+        ]
+      },
+      "ClearRevenueTableDto": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "number",
+            "description": "ปีของรายได้",
+            "example": 2024
+          },
+          "sourceSlug": {
+            "type": "string",
+            "description": "Source Slug",
+            "example": "ip-owner"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "Company ID",
+            "example": "uuid-string"
+          }
+        },
+        "required": [
+          "year",
+          "sourceSlug",
+          "companyId"
+        ]
       },
       "CreateCompanyRevenueDto": {
         "type": "object",
