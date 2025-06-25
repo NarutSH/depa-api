@@ -1,11 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { QueryMetadataDto } from 'src/utils/dtos/query-metadata.dto';
 import { QueryUtilsService } from 'src/utils/services/query-utils.service';
 import { CreateRevenueStreamDto } from './dto/create-revenue-stream.dto';
 import { UpdateRevenueStreamDto } from './dto/update-revenue-stream.dto';
-import { UpdateRevenueValueDto } from './dto/update-revenue-value.dto';
+import { UpsertRevenueTableDto } from './dto/upsert-revenue-table.dto';
+import { ClearRevenueTableDto } from './dto/clear-revenue-table.dto';
+import { GetRevenueTableDto } from './dto/get-revenue-table.dto';
+import { RevenueTableResponseDto } from './dto/revenue-table-response.dto';
 
 @Injectable()
 export class RevenueStreamService {
@@ -15,503 +16,475 @@ export class RevenueStreamService {
   ) {}
 
   /**
-   * Get all revenue streams with optional filtering, pagination, and sorting
+   * สร้าง RevenueStream รายการเดียว
    */
-  async getAll(query?: QueryMetadataDto) {
-    // Define searchable fields
-    const searchFields = [
-      'industryTypeSlug',
-      'categorySlug',
-      'sourceSlug',
-      'channelSlug',
-      'segmentSlug',
-    ];
-
-    // Build query parameters
-    const where = query
-      ? this.queryUtilsService.buildWhereClause(query, searchFields)
-      : {};
-    const orderBy = query
-      ? this.queryUtilsService.buildOrderByClause(query)
-      : { createdAt: 'desc' };
-    const skip = query?.getSkip() || 0;
-    const take = query?.limit || 10;
-
-    // Get total count for pagination
-    const totalCount = await this.prismaService.revenueStream.count({ where });
-
-    // Get data with pagination
-    const data = await this.prismaService.revenueStream.findMany({
-      where,
-      orderBy,
-      skip,
-      take,
-      include: {
-        industry: true,
-        category: true,
-        source: true,
-        channel: true,
-        segment: true,
-        company: {
-          select: {
-            id: true,
-            juristicId: true,
-            nameTh: true,
-            nameEn: true,
-          },
-        },
-      },
-    });
-
-    // Return paginated result
-    return {
-      data,
-      meta: {
-        total: totalCount,
-        page: query?.page || 1,
-        limit: query?.limit || 10,
-        totalPages: Math.ceil(totalCount / (query?.limit || 10)),
-      },
-    };
-  }
-
-  /**
-   * Get revenue streams by company ID with optional filtering, pagination, and sorting
-   */
-  async getByCompanyId(companyJuristicId: string, query?: QueryMetadataDto) {
-    // Find company ID first
-    const company = await this.prismaService.company.findUnique({
-      where: { juristicId: companyJuristicId },
-      select: { id: true },
-    });
-
-    if (!company) {
-      throw new NotFoundException(
-        `Company with juristic ID ${companyJuristicId} not found`,
-      );
-    }
-
-    // Define searchable fields
-    const searchFields = [
-      'industryTypeSlug',
-      'categorySlug',
-      'sourceSlug',
-      'channelSlug',
-      'segmentSlug',
-    ];
-
-    // Build base query with company filter
-    const baseFilter = { companyId: company.id };
-
-    // Merge with additional filters from query
-    const where = query
-      ? {
-          ...this.queryUtilsService.buildWhereClause(query, searchFields),
-          ...baseFilter,
-        }
-      : baseFilter;
-
-    const orderBy = query
-      ? this.queryUtilsService.buildOrderByClause(query)
-      : { createdAt: 'desc' };
-    const skip = query?.getSkip() || 0;
-    const take = query?.limit || 10;
-
-    // Get total count for pagination
-    const totalCount = await this.prismaService.revenueStream.count({ where });
-
-    // Get data with pagination
-    const data = await this.prismaService.revenueStream.findMany({
-      where,
-      orderBy,
-      skip,
-      take,
-      include: {
-        industry: true,
-        category: true,
-        source: true,
-        channel: true,
-        segment: true,
-        company: {
-          select: {
-            id: true,
-            juristicId: true,
-            nameTh: true,
-            nameEn: true,
-          },
-        },
-      },
-    });
-
-    // Return paginated result
-    return {
-      data,
-      meta: {
-        total: totalCount,
-        page: query?.page || 1,
-        limit: query?.limit || 10,
-        totalPages: Math.ceil(totalCount / (query?.limit || 10)),
-      },
-    };
-  }
-
-  /**
-   * Get revenue stream by ID
-   */
-  async getById(id: string) {
-    const revenueStream = await this.prismaService.revenueStream.findUnique({
-      where: { id },
-      include: {
-        industry: true,
-        category: true,
-        source: true,
-        channel: true,
-        segment: true,
-        company: {
-          select: {
-            id: true,
-            juristicId: true,
-            nameTh: true,
-            nameEn: true,
-          },
-        },
-      },
-    });
-
-    if (!revenueStream) {
-      throw new NotFoundException(`Revenue stream with ID ${id} not found`);
-    }
-
-    return revenueStream;
-  }
-
-  /**
-   * Create a new revenue stream record
-   */
-  async create(data: CreateRevenueStreamDto) {
+  async create(createRevenueStreamDto: CreateRevenueStreamDto) {
     try {
-      // First get the company ID based on juristic ID
+      // ตรวจสอบว่า Company มีอยู่หรือไม่
       const company = await this.prismaService.company.findUnique({
-        where: { juristicId: data.companyJuristicId },
-        select: { id: true },
+        where: { id: createRevenueStreamDto.companyId }
       });
 
       if (!company) {
-        throw new NotFoundException(
-          `Company with juristic ID ${data.companyJuristicId} not found`,
-        );
+        throw new NotFoundException('Company not found');
       }
 
-      // Transform the DTO into the format Prisma expects
-      const createData = {
-        year: data.year,
-        percent: data.percent,
-        ctrPercent: data.ctrPercent,
-        value: data.value,
-        companyJuristicId: data.companyJuristicId,
-        company: {
-          connect: { id: company.id },
-        },
-        industry: {
-          connect: { slug: data.industryTypeSlug },
-        },
-        category: {
-          connect: {
-            slug_industrySlug: {
-              slug: data.categorySlug,
-              industrySlug: data.industryTypeSlug,
-            },
-          },
-        },
-        source: {
-          connect: {
-            slug_industrySlug: {
-              slug: data.sourceSlug,
-              industrySlug: data.industryTypeSlug,
-            },
-          },
-        },
-        channel: {
-          connect: {
-            slug_industrySlug: {
-              slug: data.channelSlug,
-              industrySlug: data.industryTypeSlug,
-            },
-          },
-        },
-        segment: {
-          connect: {
-            slug_industrySlug: {
-              slug: data.segmentSlug,
-              industrySlug: data.industryTypeSlug,
-            },
-          },
-        },
-      };
+      // ตรวจสอบว่า relations มีอยู่หรือไม่
+      await this.validateRelations(createRevenueStreamDto);
 
-      return this.prismaService.revenueStream.create({
-        data: createData,
+      const revenueStream = await this.prismaService.revenueStream.create({
+        data: createRevenueStreamDto,
         include: {
           industry: true,
           category: true,
           source: true,
           channel: true,
           segment: true,
-        },
-      });
-    } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError) {
-        // Handle known Prisma errors
-        if (error.code === 'P2002') {
-          // Unique constraint violation, try upsert instead
-          return this.upsertRevenueStream(data);
+          company: {
+            select: {
+              id: true,
+              nameTh: true,
+              nameEn: true,
+              juristicId: true
+            }
+          }
         }
+      });
+
+      return revenueStream;
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new BadRequestException('Revenue stream with these parameters already exists');
       }
       throw error;
     }
   }
 
   /**
-   * Create multiple revenue stream records
+   * ค้นหา RevenueStream ทั้งหมดตามเงื่อนไข
    */
-  async createMany(data: CreateRevenueStreamDto[]) {
-    const results = [];
-    for (const item of data) {
-      results.push(await this.upsertRevenueStream(item));
+  async findAll(query: GetRevenueTableDto): Promise<RevenueTableResponseDto> {
+    const where: any = {
+      companyId: query.companyId,
+      year: query.year,
+    };
+
+    if (query.industryTypeSlug) {
+      where.industryTypeSlug = query.industryTypeSlug;
     }
-    return results;
+
+    if (query.sourceSlug) {
+      where.sourceSlug = query.sourceSlug;
+    }
+
+    const [revenueStreams, totalCount] = await Promise.all([
+      this.prismaService.revenueStream.findMany({
+        where,
+        include: {
+          industry: {
+            select: { name: true, slug: true }
+          },
+          category: {
+            select: { name: true, slug: true }
+          },
+          source: {
+            select: { name: true, slug: true }
+          },
+          channel: {
+            select: { name: true, slug: true }
+          },
+          segment: {
+            select: { name: true, slug: true }
+          }
+        },
+        orderBy: [
+          { sourceSlug: 'asc' },
+          { categorySlug: 'asc' },
+          { segmentSlug: 'asc' },
+          { channelSlug: 'asc' }
+        ]
+      }),
+      this.prismaService.revenueStream.count({ where })
+    ]);
+
+    // สรุป Sources
+    const sourcesMap = new Map();
+    revenueStreams.forEach(item => {
+      const sourceKey = item.sourceSlug;
+      if (!sourcesMap.has(sourceKey)) {
+        sourcesMap.set(sourceKey, {
+          slug: item.sourceSlug,
+          name: item.source?.name || item.sourceSlug,
+          itemCount: 0
+        });
+      }
+      sourcesMap.get(sourceKey).itemCount++;
+    });
+
+    return {
+      year: query.year,
+      companyId: query.companyId,
+      revenueStreams,
+      totalItems: totalCount,
+      sourceCount: sourcesMap.size,
+      sources: Array.from(sourcesMap.values())
+    };
   }
 
   /**
-   * Update a revenue stream record
+   * ค้นหา RevenueStream รายการเดียว
    */
-  async update(id: string, data: UpdateRevenueStreamDto) {
+  async findOne(id: string) {
     const revenueStream = await this.prismaService.revenueStream.findUnique({
       where: { id },
-    });
-
-    if (!revenueStream) {
-      throw new NotFoundException(`Revenue stream with ID ${id} not found`);
-    }
-
-    return this.prismaService.revenueStream.update({
-      where: { id },
-      data,
       include: {
         industry: true,
         category: true,
         source: true,
         channel: true,
         segment: true,
+        company: {
+          select: {
+            id: true,
+            nameTh: true,
+            nameEn: true,
+            juristicId: true
+          }
+        }
+      }
+    });
+
+    if (!revenueStream) {
+      throw new NotFoundException('Revenue stream not found');
+    }
+
+    return revenueStream;
+  }
+
+  /**
+   * อัพเดต RevenueStream รายการเดียว
+   */
+  async update(id: string, updateRevenueStreamDto: UpdateRevenueStreamDto) {
+    try {
+      // ตรวจสอบว่า record มีอยู่หรือไม่
+      await this.findOne(id);
+
+      // ตรวจสอบ relations ถ้ามีการเปลี่ยนแปลง
+      if (Object.keys(updateRevenueStreamDto).some(key => 
+        ['industryTypeSlug', 'categorySlug', 'sourceSlug', 'channelSlug', 'segmentSlug'].includes(key)
+      )) {
+        await this.validateRelations(updateRevenueStreamDto as any);
+      }
+
+      const revenueStream = await this.prismaService.revenueStream.update({
+        where: { id },
+        data: updateRevenueStreamDto,
+        include: {
+          industry: true,
+          category: true,
+          source: true,
+          channel: true,
+          segment: true,
+          company: {
+            select: {
+              id: true,
+              nameTh: true,
+              nameEn: true,
+              juristicId: true
+            }
+          }
+        }
+      });
+
+      return revenueStream;
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new BadRequestException('Revenue stream with these parameters already exists');
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * ลบ RevenueStream รายการเดียว
+   */
+  async remove(id: string) {
+    await this.findOne(id); // ตรวจสอบว่ามีอยู่หรือไม่
+
+    await this.prismaService.revenueStream.delete({
+      where: { id }
+    });
+
+    return { message: 'Revenue stream deleted successfully' };
+  }
+
+  /**
+   * Upsert ตารางทั้งหมด - ฟีเจอร์หลักสำหรับอัพเดทตาราง
+   */
+  async upsertRevenueTable(upsertDto: UpsertRevenueTableDto) {
+    const { year, industryTypeSlug, sourceSlug, companyId, companyJuristicId, tableData } = upsertDto;
+
+    try {
+      // ตรวจสอบ Company
+      const company = await this.prismaService.company.findUnique({
+        where: { id: companyId }
+      });
+
+      if (!company) {
+        throw new NotFoundException('Company not found');
+      }
+
+      // ใช้ transaction เพื่อความปลอดภัย
+      const result = await this.prismaService.$transaction(async (tx) => {
+        // ลบข้อมูลเก่าที่ตรงกับเงื่อนไข
+        await tx.revenueStream.deleteMany({
+          where: {
+            companyId,
+            year,
+            industryTypeSlug,
+            sourceSlug
+          }
+        });
+
+        // สร้างข้อมูลใหม่
+        const createPromises = tableData.map(cellData => 
+          tx.revenueStream.create({
+            data: {
+              year,
+              industryTypeSlug,
+              sourceSlug,
+              companyId,
+              companyJuristicId,
+              categorySlug: cellData.categorySlug,
+              segmentSlug: cellData.segmentSlug,
+              channelSlug: cellData.channelSlug,
+              percent: cellData.percent,
+              ctrPercent: cellData.ctrPercent,
+              value: cellData.value
+            }
+          })
+        );
+
+        const createdRecords = await Promise.all(createPromises);
+        return createdRecords;
+      });
+
+      // ดึงข้อมูลที่สร้างใหม่พร้อม relations
+      const updatedData = await this.findAll({
+        year,
+        companyId,
+        industryTypeSlug,
+        sourceSlug
+      });
+
+      return {
+        message: 'Revenue table updated successfully',
+        data: updatedData,
+        recordsProcessed: result.length
+      };
+
+    } catch (error) {
+      if (error.code === 'P2003') {
+        throw new BadRequestException('Invalid foreign key reference. Please check your data.');
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * ลบข้อมูลตารางตาม Source และ Year
+   */
+  async clearRevenueTable(clearDto: ClearRevenueTableDto) {
+    const { year, sourceSlug, companyId } = clearDto;
+
+    // ตรวจสอบว่ามีข้อมูลหรือไม่
+    const existingCount = await this.prismaService.revenueStream.count({
+      where: {
+        companyId,
+        year,
+        sourceSlug
+      }
+    });
+
+    if (existingCount === 0) {
+      throw new NotFoundException('No revenue stream data found for the specified criteria');
+    }
+
+    // ลบข้อมูล
+    const deleteResult = await this.prismaService.revenueStream.deleteMany({
+      where: {
+        companyId,
+        year,
+        sourceSlug
+      }
+    });
+
+    return {
+      message: 'Revenue table cleared successfully',
+      deletedCount: deleteResult.count
+    };
+  }
+
+  /**
+   * ดึงรายการ Sources ที่มีข้อมูลในปีและบริษัทที่กำหนด
+   */
+  async getAvailableSources(companyId: string, year: number, industryTypeSlug?: string) {
+    const where: any = {
+      companyId,
+      year
+    };
+
+    if (industryTypeSlug) {
+      where.industryTypeSlug = industryTypeSlug;
+    }
+
+    const sources = await this.prismaService.revenueStream.groupBy({
+      by: ['sourceSlug'],
+      where,
+      _count: {
+        id: true
+      }
+    });
+
+    // ดึงข้อมูล Source names
+    const sourceDetails = await Promise.all(
+      sources.map(async (item) => {
+        const source = await this.prismaService.source.findFirst({
+          where: { 
+            slug: item.sourceSlug,
+            industrySlug: industryTypeSlug || undefined
+          },
+          select: { name: true, slug: true }
+        });
+
+        return {
+          slug: item.sourceSlug,
+          name: source?.name || item.sourceSlug,
+          recordCount: item._count.id
+        };
+      })
+    );
+
+    return sourceDetails;
+  }
+
+  /**
+   * ดึงสถิติรายได้ตามปี
+   */
+  async getYearlyStats(companyId: string, year: number) {
+    const stats = await this.prismaService.revenueStream.aggregate({
+      where: {
+        companyId,
+        year
       },
+      _sum: {
+        percent: true,
+        value: true
+      },
+      _avg: {
+        percent: true,
+        value: true
+      },
+      _count: {
+        id: true
+      }
     });
+
+    const sourceBreakdown = await this.prismaService.revenueStream.groupBy({
+      by: ['sourceSlug'],
+      where: {
+        companyId,
+        year
+      },
+      _sum: {
+        percent: true,
+        value: true
+      },
+      _count: {
+        id: true
+      }
+    });
+
+    return {
+      year,
+      companyId,
+      totalRecords: stats._count.id,
+      totalPercent: stats._sum.percent || 0,
+      totalValue: stats._sum.value || 0,
+      averagePercent: stats._avg.percent || 0,
+      averageValue: stats._avg.value || 0,
+      sourceBreakdown
+    };
   }
 
   /**
-   * Update the value of a revenue stream record
-   * This is specialized for updating just the value field in a table cell
+   * ตรวจสอบ Relations ว่ามีอยู่จริงหรือไม่
    */
-  async updateValue(id: string, data: UpdateRevenueValueDto) {
-    const revenueStream = await this.prismaService.revenueStream.findUnique({
-      where: { id },
-    });
+  private async validateRelations(data: Partial<CreateRevenueStreamDto>) {
+    const validationPromises = [];
 
-    if (!revenueStream) {
-      throw new NotFoundException(`Revenue stream with ID ${id} not found`);
-    }
-
-    return this.prismaService.revenueStream.update({
-      where: { id },
-      data: { value: data.value },
-    });
-  }
-
-  /**
-   * Delete a revenue stream record
-   */
-  async delete(id: string) {
-    const revenueStream = await this.prismaService.revenueStream.findUnique({
-      where: { id },
-    });
-
-    if (!revenueStream) {
-      throw new NotFoundException(`Revenue stream with ID ${id} not found`);
-    }
-
-    return this.prismaService.revenueStream.delete({
-      where: { id },
-    });
-  }
-
-  /**
-   * Upsert a revenue stream record (create if not exists, update if exists)
-   */
-  async upsertRevenueStream(data: CreateRevenueStreamDto) {
-    // First get the company ID based on juristic ID
-    const company = await this.prismaService.company.findUnique({
-      where: { juristicId: data.companyJuristicId },
-      select: { id: true },
-    });
-
-    if (!company) {
-      throw new NotFoundException(
-        `Company with juristic ID ${data.companyJuristicId} not found`,
+    if (data.industryTypeSlug) {
+      validationPromises.push(
+        this.prismaService.industry.findUnique({
+          where: { slug: data.industryTypeSlug }
+        }).then(result => {
+          if (!result) throw new BadRequestException(`Industry '${data.industryTypeSlug}' not found`);
+        })
       );
     }
 
-    // Create data for Prisma - only include what's needed
-    const createData = {
-      year: data.year,
-      percent: data.percent,
-      ctrPercent: data.ctrPercent,
-      value: data.value,
-      companyJuristicId: data.companyJuristicId,
-      // Don't include direct assignments for fields that will be set by relations
-      company: {
-        connect: { id: company.id },
-      },
-      industry: {
-        connect: { slug: data.industryTypeSlug },
-      },
-      category: {
-        connect: {
-          slug_industrySlug: {
+    if (data.categorySlug && data.industryTypeSlug) {
+      validationPromises.push(
+        this.prismaService.category.findFirst({
+          where: { 
             slug: data.categorySlug,
-            industrySlug: data.industryTypeSlug,
-          },
-        },
-      },
-      source: {
-        connect: {
-          slug_industrySlug: {
-            slug: data.sourceSlug,
-            industrySlug: data.industryTypeSlug,
-          },
-        },
-      },
-      channel: {
-        connect: {
-          slug_industrySlug: {
-            slug: data.channelSlug,
-            industrySlug: data.industryTypeSlug,
-          },
-        },
-      },
-      segment: {
-        connect: {
-          slug_industrySlug: {
-            slug: data.segmentSlug,
-            industrySlug: data.industryTypeSlug,
-          },
-        },
-      },
-    };
-
-    // For update, we need a simpler object
-    const updateData = {
-      year: data.year,
-      percent: data.percent,
-      ctrPercent: data.ctrPercent,
-      value: data.value,
-    };
-
-    return this.prismaService.revenueStream.upsert({
-      where: {
-        companyId_year_industryTypeSlug_categorySlug_sourceSlug_channelSlug_segmentSlug:
-          {
-            companyId: company.id,
-            year: data.year,
-            industryTypeSlug: data.industryTypeSlug,
-            categorySlug: data.categorySlug,
-            sourceSlug: data.sourceSlug,
-            channelSlug: data.channelSlug,
-            segmentSlug: data.segmentSlug,
-          },
-      },
-      update: updateData,
-      create: createData,
-      include: {
-        industry: true,
-        category: true,
-        source: true,
-        channel: true,
-        segment: true,
-      },
-    });
-  }
-
-  /**
-   * Bulk update or create revenue stream records by value
-   * This is specialized for updating values in a table interface
-   */
-  async bulkUpsertValues(items: UpdateRevenueValueDto[]) {
-    const results = [];
-
-    for (const item of items) {
-      if (item.id) {
-        // If ID exists, try to update existing record
-        try {
-          const result = await this.updateValue(item.id, { value: item.value });
-          results.push(result);
-        } catch (error) {
-          if (error instanceof NotFoundException) {
-            // If record not found but we have all required fields, create it
-            if (this.hasRequiredFields(item)) {
-              const newItem = this.mapValueDtoToCreateDto(item);
-              const result = await this.create(newItem);
-              results.push(result);
-            } else {
-              // Can't create without required fields
-              throw error;
-            }
-          } else {
-            throw error;
+            industrySlug: data.industryTypeSlug
           }
-        }
-      } else if (this.hasRequiredFields(item)) {
-        // No ID provided but we have all required fields, try to upsert
-        const newItem = this.mapValueDtoToCreateDto(item);
-        const result = await this.upsertRevenueStream(newItem);
-        results.push(result);
-      }
+        }).then(result => {
+          if (!result) throw new BadRequestException(`Category '${data.categorySlug}' not found for industry '${data.industryTypeSlug}'`);
+        })
+      );
     }
 
-    return results;
-  }
+    if (data.sourceSlug && data.industryTypeSlug) {
+      validationPromises.push(
+        this.prismaService.source.findFirst({
+          where: { 
+            slug: data.sourceSlug,
+            industrySlug: data.industryTypeSlug
+          }
+        }).then(result => {
+          if (!result) throw new BadRequestException(`Source '${data.sourceSlug}' not found for industry '${data.industryTypeSlug}'`);
+        })
+      );
+    }
 
-  /**
-   * Check if an update DTO has all required fields to create a new record
-   */
-  private hasRequiredFields(item: UpdateRevenueValueDto): boolean {
-    return !!(
-      item.companyJuristicId &&
-      item.year !== undefined &&
-      item.industryTypeSlug &&
-      item.categorySlug &&
-      item.sourceSlug &&
-      item.channelSlug &&
-      item.segmentSlug &&
-      item.value !== undefined
-    );
-  }
+    if (data.channelSlug && data.industryTypeSlug) {
+      validationPromises.push(
+        this.prismaService.channel.findFirst({
+          where: { 
+            slug: data.channelSlug,
+            industrySlug: data.industryTypeSlug
+          }
+        }).then(result => {
+          if (!result) throw new BadRequestException(`Channel '${data.channelSlug}' not found for industry '${data.industryTypeSlug}'`);
+        })
+      );
+    }
 
-  /**
-   * Map from UpdateRevenueValueDto to CreateRevenueStreamDto
-   */
-  private mapValueDtoToCreateDto(
-    item: UpdateRevenueValueDto,
-  ): CreateRevenueStreamDto {
-    return {
-      companyJuristicId: item.companyJuristicId,
-      year: item.year,
-      industryTypeSlug: item.industryTypeSlug,
-      categorySlug: item.categorySlug,
-      sourceSlug: item.sourceSlug,
-      channelSlug: item.channelSlug,
-      segmentSlug: item.segmentSlug,
-      percent: item.percent || 0, // Default to 0 if not provided
-      ctrPercent: item.ctrPercent || 0, // Default to 0 if not provided
-      value: item.value,
-    };
+    if (data.segmentSlug && data.industryTypeSlug) {
+      validationPromises.push(
+        this.prismaService.segment.findFirst({
+          where: { 
+            slug: data.segmentSlug,
+            industrySlug: data.industryTypeSlug
+          }
+        }).then(result => {
+          if (!result) throw new BadRequestException(`Segment '${data.segmentSlug}' not found for industry '${data.industryTypeSlug}'`);
+        })
+      );
+    }
+
+    await Promise.all(validationPromises);
   }
 }
