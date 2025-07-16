@@ -68,6 +68,7 @@ export class FreelanceController {
   }
 
   @Get('/:id')
+  @Public()
   @ApiOperation({ summary: 'Get freelance by user ID' })
   @ApiParam({ name: 'userId', description: 'The user ID of the freelance' })
   @ApiResponse({

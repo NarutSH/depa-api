@@ -117,6 +117,7 @@ export class CompanyController {
   }
 
   @Get(':id')
+  @Public()
   @ApiOperation({ summary: 'Get company by ID' })
   @ApiParam({ name: 'id', description: 'The ID of the company' })
   @ApiResponse({
@@ -132,6 +133,7 @@ export class CompanyController {
   }
 
   @Get('juristic/:juristicId')
+  @Public()
   @ApiOperation({ summary: 'Get company by juristic ID' })
   @ApiParam({
     name: 'juristicId',
