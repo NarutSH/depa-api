@@ -79,6 +79,7 @@ export class PortfolioController {
 
   // Public endpoints accessible by anyone
   @Get()
+  @Public()
   @ApiOperation({
     summary:
       'Get all portfolios with pagination, filtering, sorting, and search capabilities',
@@ -123,11 +124,13 @@ export class PortfolioController {
   }
 
   @Get(':id')
+  @Public()
   async getPortfolio(@Param('id') id: string) {
     return this.portfolioService.getPortfolioById(id);
   }
 
   @Get('company/:companyJuristicId')
+  @Public()
   async getPortfolioByCompanyJuristicId(
     @Param('companyJuristicId') companyJuristicId: string,
   ) {
@@ -137,6 +140,7 @@ export class PortfolioController {
   }
 
   @Get('freelance/:freelanceId')
+  @Public()
   async getPortfolioByFreelanceId(@Param('freelanceId') freelanceId: string) {
     return this.portfolioService.getPortfolioByFreelanceId(freelanceId);
   }
@@ -252,6 +256,7 @@ export class PortfolioController {
   }
 
   @Get('favorite/:portfolioId')
+  @Public()
   // @UseGuards(JwtAuthGuard)
   async getFavoriteStatus(
     @Param('portfolioId') portfolioId: string,
@@ -262,6 +267,7 @@ export class PortfolioController {
   }
 
   @Get('favorites/user')
+  @Public()
   // @UseGuards(JwtAuthGuard)
   async getUserFavorites(@Req() req: Request) {
     const user = req.user as any;
@@ -305,6 +311,7 @@ export class PortfolioController {
   })
   @ApiResponse({ status: 404, description: 'Portfolio not found' })
   @Get(':portfolioId/comments')
+  @Public()
   async getPortfolioComments(@Param('portfolioId') portfolioId: string) {
     return this.portfolioService.getPortfolioComments(portfolioId);
   }
