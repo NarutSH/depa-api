@@ -7,8 +7,6 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CompanyService } from './company.service';
-import CreateCompanyDto from './dto/create-company.dto';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -17,8 +15,10 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { QueryMetadataDto } from 'src/utils';
 import { Public } from 'src/auth/decorators/public.decorator';
+import { QueryMetadataDto } from 'src/utils';
+import { CompanyService } from './company.service';
+import CreateCompanyDto from './dto/create-company.dto';
 
 @ApiTags('Company')
 @ApiBearerAuth()
