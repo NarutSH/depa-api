@@ -27,6 +27,7 @@ export class FreelanceController {
   constructor(private readonly freelanceService: FreelanceService) {}
 
   @Get()
+  @Public()
   @ApiOperation({ summary: 'Get all freelances with filtering and pagination' })
   @ApiResponse({
     status: 200,
