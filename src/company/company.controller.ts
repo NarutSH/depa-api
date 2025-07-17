@@ -27,6 +27,7 @@ export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
   @Get()
+  @Public()
   @ApiOperation({ summary: 'Get all companies with filtering and pagination' })
   @ApiResponse({
     status: 200,
