@@ -2,6 +2,8 @@ import {
   Injectable,
   UnauthorizedException,
   NotFoundException,
+  ConflictException,
+  BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import axios from 'axios';
@@ -10,6 +12,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 import { addDays } from 'date-fns';
 import { UserType } from 'generated/prisma';
+import * as bcrypt from 'bcrypt';
 
 // Define interface for TechHunt login response and export it
 export interface TechHuntLoginResponse {
@@ -37,6 +40,17 @@ export interface RefreshTokenResponse {
   refresh_token: string;
 }
 
+// Define admin signup/signin response
+export interface AdminAuthResult {
+  admin: {
+    id: string;
+    username: string;
+    email: string;
+  };
+  access_token: string;
+  refresh_token: string;
+}
+
 // Define JWT token payload
 export interface JwtPayload {
   id: string | null;
@@ -45,6 +59,7 @@ export interface JwtPayload {
   memberid: string | null;
   userType: string | null;
   role: string | null;
+  isAdmin?: boolean; // เพิ่มสำหรับแยก admin
 }
 
 @Injectable()
@@ -258,11 +273,60 @@ export class AuthService {
    * @returns New access and refresh tokens
    */
   async refreshTokens(token: string): Promise<RefreshTokenResponse> {
-    // Find the refresh token in the database
+    // Try to find the token in admin refresh tokens first
+    const adminRefreshTokenRecord =
+      await this.prismaService.adminRefreshToken.findUnique({
+        where: { token },
+        include: { admin: true },
+      });
+
+    if (adminRefreshTokenRecord) {
+      const now = new Date();
+
+      // Check if token has expired
+      if (adminRefreshTokenRecord.expiresAt < now) {
+        throw new UnauthorizedException('Refresh token expired');
+      }
+
+      // Check if token has been revoked
+      if (adminRefreshTokenRecord.revokedAt) {
+        throw new UnauthorizedException('Refresh token has been revoked');
+      }
+
+      // This is an admin refresh token
+      const jwtPayload: JwtPayload = {
+        id: adminRefreshTokenRecord.admin.id,
+        email: adminRefreshTokenRecord.admin.email,
+        sessiontoken: null,
+        memberid: null,
+        userType: 'admin',
+        role: 'admin',
+        isAdmin: true,
+      };
+
+      // Generate new access token
+      const access_token = this.jwtService.sign(jwtPayload, {
+        expiresIn: this.ACCESS_TOKEN_EXPIRATION,
+      });
+
+      // Generate new refresh token for admin
+      const refresh_token = await this.generateAdminRefreshToken(
+        adminRefreshTokenRecord.admin.id,
+      );
+
+      // Optionally revoke the old token
+      await this.revokeAdminRefreshToken(token);
+
+      return {
+        access_token,
+        refresh_token,
+      };
+    }
+
+    // If not admin token, try regular user refresh token
     const refreshTokenRecord = await this.prismaService.refreshToken.findUnique(
       {
         where: { token },
-        include: { user: true },
       },
     );
 
@@ -283,14 +347,23 @@ export class AuthService {
       throw new UnauthorizedException('Refresh token has been revoked');
     }
 
-    // Create a new JWT payload
+    // Find regular user
+    const user = await this.prismaService.user.findUnique({
+      where: { id: refreshTokenRecord.userId },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('User no longer exists');
+    }
+
+    // Create a new JWT payload for regular user
     const jwtPayload: JwtPayload = {
-      id: refreshTokenRecord.user.id,
-      email: refreshTokenRecord.user.email || '',
+      id: user.id,
+      email: user.email || '',
       sessiontoken: null,
       memberid: null,
-      userType: refreshTokenRecord.user.userType || null,
-      role: refreshTokenRecord.user.role || null,
+      userType: user.userType || null,
+      role: user.role || null,
     };
 
     // Generate new access token
@@ -298,11 +371,7 @@ export class AuthService {
       expiresIn: this.ACCESS_TOKEN_EXPIRATION,
     });
 
-    // Generate new refresh token
-    // const newRefreshToken = await this.regenerateRefreshToken(
-    //   refreshTokenRecord.id,
-    // );
-
+    // For now, return empty refresh token for regular users (as in original code)
     return {
       access_token,
       refresh_token: '',
@@ -369,6 +438,211 @@ export class AuthService {
       return true;
     } catch (error) {
       console.error('Error revoking user refresh tokens:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Register a new admin user
+   * @param username - Admin username
+   * @param email - Admin email
+   * @param password - Admin password (will be hashed)
+   * @returns Admin data with tokens
+   */
+  async adminSignup(
+    username: string,
+    email: string,
+    password: string,
+  ): Promise<AdminAuthResult> {
+    try {
+      // Check if admin with same email or username already exists
+      const existingAdmin = await this.prismaService.userAdmin.findFirst({
+        where: {
+          OR: [{ email: email }, { username: username }],
+        },
+      });
+
+      if (existingAdmin) {
+        if (existingAdmin.email === email) {
+          throw new ConflictException('Admin with this email already exists');
+        }
+        if (existingAdmin.username === username) {
+          throw new ConflictException(
+            'Admin with this username already exists',
+          );
+        }
+      }
+
+      // Hash the password
+      const saltRounds = 12;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+      // Create new admin
+      const newAdmin = await this.prismaService.userAdmin.create({
+        data: {
+          username,
+          email,
+          password: hashedPassword,
+        },
+      });
+
+      // Generate tokens
+      const jwtPayload: JwtPayload = {
+        id: newAdmin.id,
+        email: newAdmin.email,
+        sessiontoken: null,
+        memberid: null,
+        userType: 'admin',
+        role: 'admin',
+        isAdmin: true,
+      };
+
+      const access_token = this.jwtService.sign(jwtPayload, {
+        expiresIn: this.ACCESS_TOKEN_EXPIRATION,
+      });
+
+      const refresh_token = await this.generateAdminRefreshToken(newAdmin.id);
+
+      return {
+        admin: {
+          id: newAdmin.id,
+          username: newAdmin.username,
+          email: newAdmin.email,
+        },
+        access_token,
+        refresh_token,
+      };
+    } catch (error) {
+      if (error instanceof ConflictException) {
+        throw error;
+      }
+      console.error('Admin signup error:', error);
+      throw new BadRequestException('Failed to create admin account');
+    }
+  }
+
+  /**
+   * Login admin user
+   * @param usernameOrEmail - Admin username or email
+   * @param password - Admin password
+   * @returns Admin data with tokens
+   */
+  async adminSignin(
+    usernameOrEmail: string,
+    password: string,
+  ): Promise<AdminAuthResult> {
+    try {
+      // Find admin by username or email
+      const admin = await this.prismaService.userAdmin.findFirst({
+        where: {
+          OR: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
+        },
+      });
+
+      if (!admin) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+
+      // Verify password
+      const isPasswordValid = await bcrypt.compare(password, admin.password);
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+
+      // Generate tokens
+      const jwtPayload: JwtPayload = {
+        id: admin.id,
+        email: admin.email,
+        sessiontoken: null,
+        memberid: null,
+        userType: 'admin',
+        role: 'admin',
+        isAdmin: true,
+      };
+
+      const access_token = this.jwtService.sign(jwtPayload, {
+        expiresIn: this.ACCESS_TOKEN_EXPIRATION,
+      });
+
+      const refresh_token = await this.generateAdminRefreshToken(admin.id);
+
+      return {
+        admin: {
+          id: admin.id,
+          username: admin.username,
+          email: admin.email,
+        },
+        access_token,
+        refresh_token,
+      };
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+      console.error('Admin signin error:', error);
+      throw new UnauthorizedException('Failed to authenticate admin');
+    }
+  }
+
+  /**
+   * Generate a refresh token specifically for admin users
+   * @param adminId - Admin user ID
+   * @returns The refresh token string
+   */
+  private async generateAdminRefreshToken(adminId: string): Promise<string> {
+    // Create a random token string
+    const tokenString = uuidv4();
+
+    // Calculate expiration date (7 days from now)
+    const expiresAt = addDays(new Date(), this.REFRESH_TOKEN_EXPIRATION_DAYS);
+
+    // Use AdminRefreshToken table for admin tokens
+    await this.prismaService.adminRefreshToken.create({
+      data: {
+        token: tokenString,
+        adminId: adminId,
+        expiresAt,
+      },
+    });
+
+    return tokenString;
+  }
+
+  /**
+   * Revoke an admin refresh token
+   * @param token - The admin refresh token string to revoke
+   * @returns True if the token was revoked successfully
+   */
+  async revokeAdminRefreshToken(token: string): Promise<boolean> {
+    try {
+      await this.prismaService.adminRefreshToken.update({
+        where: { token },
+        data: { revokedAt: new Date() },
+      });
+      return true;
+    } catch (error) {
+      console.error('Error revoking admin refresh token:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Revoke all admin refresh tokens for an admin user
+   * @param adminId - The admin ID
+   * @returns True if the tokens were revoked successfully
+   */
+  async revokeAllAdminRefreshTokens(adminId: string): Promise<boolean> {
+    try {
+      await this.prismaService.adminRefreshToken.updateMany({
+        where: {
+          adminId,
+          revokedAt: null,
+        },
+        data: { revokedAt: new Date() },
+      });
+      return true;
+    } catch (error) {
+      console.error('Error revoking admin refresh tokens:', error);
       return false;
     }
   }

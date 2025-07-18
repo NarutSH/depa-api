@@ -3,6 +3,12 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateFreelanceDto } from './dto/create-freelance.dto';
 import { QueryMetadataDto, ResponseMetadata } from 'src/utils';
 import { QueryUtilsService } from 'src/utils/services/query-utils.service';
+import {
+  GetFreelancesResponse,
+  FreelanceWithExtendedUser,
+  FreelanceWithUser,
+} from './dto/freelance-response.dto';
+import { Freelance } from 'generated/prisma';
 
 @Injectable()
 export class FreelanceService {
@@ -11,7 +17,9 @@ export class FreelanceService {
     private readonly queryUtils: QueryUtilsService,
   ) {}
 
-  async getFreelances(queryDto: QueryMetadataDto) {
+  async getFreelances(
+    queryDto: QueryMetadataDto,
+  ): Promise<GetFreelancesResponse> {
     // Ensure we have valid pagination values
     const page = Number(queryDto.page) || 1;
     const limit = Number(queryDto.limit) || 10;
@@ -88,7 +96,7 @@ export class FreelanceService {
     );
   }
 
-  async getAl(industry: string) {
+  async getAl(industry: string): Promise<FreelanceWithExtendedUser[]> {
     try {
       return await this.prismaService.freelance.findMany({
         where: industry ? { industryTypes: { has: industry } } : {},
@@ -112,7 +120,7 @@ export class FreelanceService {
     }
   }
 
-  async create(data: CreateFreelanceDto) {
+  async create(data: CreateFreelanceDto): Promise<Freelance> {
     try {
       const company = await this.prismaService.freelance.create({
         data,
@@ -126,7 +134,7 @@ export class FreelanceService {
     }
   }
 
-  async getByUserId(userId: string) {
+  async getByUserId(userId: string): Promise<Freelance> {
     const freelance = await this.prismaService.freelance.findUnique({
       where: { userId },
     });
@@ -136,7 +144,7 @@ export class FreelanceService {
     return freelance;
   }
 
-  async getById(id: string) {
+  async getById(id: string): Promise<FreelanceWithUser> {
     const freelance = await this.prismaService.freelance.findUnique({
       where: {
         id,
@@ -151,7 +159,7 @@ export class FreelanceService {
     return freelance;
   }
 
-  async getByJuristicId(juristicId: string) {
+  async getByJuristicId(juristicId: string): Promise<Freelance> {
     const freelance = await this.prismaService.freelance.findUnique({
       where: { juristicId },
     });
@@ -163,7 +171,10 @@ export class FreelanceService {
     return freelance;
   }
 
-  async update(freelanceId: string, data: Partial<CreateFreelanceDto>) {
+  async update(
+    freelanceId: string,
+    data: Partial<CreateFreelanceDto>,
+  ): Promise<Freelance> {
     try {
       const updatedFreelance = await this.prismaService.freelance.update({
         where: { id: freelanceId },

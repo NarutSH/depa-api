@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateCompanyRevenueDto } from './dto/create-company-revenue.dto';
 import { QueryMetadataDto, ResponseMetadata } from 'src/utils';
 import { QueryUtilsService } from 'src/utils/services/query-utils.service';
+import { CompanyRevenue } from 'generated/prisma';
 
 @Injectable()
 export class CompanyRevenueService {
@@ -11,7 +12,7 @@ export class CompanyRevenueService {
     private readonly queryUtils: QueryUtilsService,
   ) {}
 
-  async getAll(queryDto?: QueryMetadataDto) {
+  async getAll(queryDto?: QueryMetadataDto): Promise<CompanyRevenue[] | any> {
     // If no query params provided, return all results without pagination
     if (!queryDto) {
       return this.prismaService.companyRevenue.findMany();
@@ -63,7 +64,10 @@ export class CompanyRevenueService {
     );
   }
 
-  async getByCompanyId(companyId: string, queryDto?: QueryMetadataDto) {
+  async getByCompanyId(
+    companyId: string,
+    queryDto?: QueryMetadataDto,
+  ): Promise<CompanyRevenue[] | any> {
     if (!queryDto) {
       return this.prismaService.companyRevenue.findMany({
         where: {
@@ -124,7 +128,7 @@ export class CompanyRevenueService {
     );
   }
 
-  async create(data: CreateCompanyRevenueDto) {
+  async create(data: CreateCompanyRevenueDto): Promise<CompanyRevenue> {
     return this.prismaService.companyRevenue.upsert({
       create: data,
       update: data,

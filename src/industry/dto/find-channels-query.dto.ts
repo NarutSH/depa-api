@@ -6,6 +6,7 @@ export class FindChannelsQueryDto {
   @ApiProperty({
     description: 'Number of items to skip for pagination',
     required: false,
+    example: 0,
     minimum: 0,
   })
   @IsOptional()
@@ -17,6 +18,7 @@ export class FindChannelsQueryDto {
   @ApiProperty({
     description: 'Number of items to take for pagination',
     required: false,
+    example: 10,
     minimum: 1,
   })
   @IsOptional()
@@ -28,9 +30,18 @@ export class FindChannelsQueryDto {
   @ApiProperty({
     description: 'Filter channels by industry slug',
     required: false,
-    example: 'game',
+    example: 'information-technology',
   })
   @IsString()
   @IsOptional()
   industrySlug?: string;
+
+  @ApiProperty({
+    description: 'Search channels by name (case-insensitive)',
+    required: false,
+    example: 'web development',
+  })
+  @IsString()
+  @IsOptional()
+  search?: string;
 }

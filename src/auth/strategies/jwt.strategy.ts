@@ -2,11 +2,15 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UsersService } from '../../users/users.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { JwtPayload } from '../auth.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private usersService: UsersService) {
+  constructor(
+    private usersService: UsersService,
+    private prismaService: PrismaService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -21,7 +25,28 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       return payload;
     }
 
-    // Try to find the user by ID
+    // Check if this is an admin token
+    if (payload.isAdmin) {
+      const admin = await this.prismaService.userAdmin.findUnique({
+        where: { id: payload.id },
+      });
+
+      if (!admin) {
+        throw new UnauthorizedException('Admin no longer exists');
+      }
+
+      // Return admin data with special flag
+      return {
+        id: admin.id,
+        username: admin.username,
+        email: admin.email,
+        userType: 'admin',
+        role: 'admin',
+        isAdmin: true,
+      };
+    }
+
+    // Try to find the regular user by ID
     const user = await this.usersService.getUserById(payload.id);
     if (!user) {
       throw new UnauthorizedException('User no longer exists');

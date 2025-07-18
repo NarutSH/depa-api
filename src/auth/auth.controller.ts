@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Post,
+  Get,
   UnauthorizedException,
   HttpCode,
   UseGuards,
@@ -19,10 +20,12 @@ import {
   AuthService,
   TechHuntLoginResult,
   RefreshTokenResponse,
+  AdminAuthResult,
 } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { User } from './decorators/user.decorator';
 import { Public } from './decorators/public.decorator';
+import { AdminGuard } from './guards/admin.guard';
 
 class TechhuntLoginDto {
   @ApiProperty({
@@ -41,6 +44,45 @@ class RefreshTokenDto {
   @ApiProperty({ description: 'The refresh token' })
   @IsString()
   refreshToken: string;
+}
+
+class AdminSignupDto {
+  @ApiProperty({
+    description: 'Admin username',
+    example: 'admin123',
+  })
+  @IsString()
+  username: string;
+
+  @ApiProperty({
+    description: 'Admin email address',
+    example: 'admin@depa.com',
+  })
+  @IsString()
+  email: string;
+
+  @ApiProperty({
+    description: 'Admin password',
+    example: 'SecureAdminPass123!',
+  })
+  @IsString()
+  password: string;
+}
+
+class AdminSigninDto {
+  @ApiProperty({
+    description: 'Admin username or email address',
+    example: 'admin123',
+  })
+  @IsString()
+  usernameOrEmail: string;
+
+  @ApiProperty({
+    description: 'Admin password',
+    example: 'SecureAdminPass123!',
+  })
+  @IsString()
+  password: string;
 }
 
 @ApiTags('Auth')
@@ -98,10 +140,17 @@ export class AuthController {
   async logout(
     @Body() refreshTokenDto: RefreshTokenDto,
   ): Promise<{ success: boolean }> {
-    // Revoke the provided refresh token
-    const success = await this.authService.revokeRefreshToken(
+    // Try to revoke admin refresh token first
+    let success = await this.authService.revokeAdminRefreshToken(
       refreshTokenDto.refreshToken,
     );
+
+    // If not admin token, try regular user token
+    if (!success) {
+      success = await this.authService.revokeRefreshToken(
+        refreshTokenDto.refreshToken,
+      );
+    }
 
     return { success };
   }
@@ -127,5 +176,70 @@ export class AuthController {
     const success = await this.authService.revokeAllUserRefreshTokens(user.id);
 
     return { success };
+  }
+
+  @Public()
+  @Post('admin/signup')
+  @ApiOperation({ summary: 'Register a new admin account' })
+  @ApiBody({ type: AdminSignupDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Admin account created successfully',
+  })
+  @ApiResponse({ status: 409, description: 'Admin already exists' })
+  @ApiResponse({ status: 400, description: 'Invalid input data' })
+  @HttpCode(201)
+  async adminSignup(
+    @Body() signupDto: AdminSignupDto,
+  ): Promise<AdminAuthResult> {
+    try {
+      return await this.authService.adminSignup(
+        signupDto.username,
+        signupDto.email,
+        signupDto.password,
+      );
+    } catch (error) {
+      throw error; // Re-throw to let NestJS handle the appropriate HTTP status
+    }
+  }
+
+  @Public()
+  @Post('admin/signin')
+  @ApiOperation({ summary: 'Sign in as admin' })
+  @ApiBody({ type: AdminSigninDto })
+  @ApiResponse({ status: 200, description: 'Admin signed in successfully' })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
+  @HttpCode(200)
+  async adminSignin(
+    @Body() signinDto: AdminSigninDto,
+  ): Promise<AdminAuthResult> {
+    try {
+      return await this.authService.adminSignin(
+        signinDto.usernameOrEmail,
+        signinDto.password,
+      );
+    } catch (error) {
+      throw error; // Re-throw to let NestJS handle the appropriate HTTP status
+    }
+  }
+
+  @Get('admin/profile')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @ApiOperation({ summary: 'Get admin profile (admin only)' })
+  @ApiResponse({ status: 200, description: 'Admin profile retrieved' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Admin access required' })
+  async getAdminProfile(@User() admin: any): Promise<any> {
+    return {
+      admin: {
+        id: admin.id,
+        username: admin.username,
+        email: admin.email,
+        userType: admin.userType,
+        role: admin.role,
+        isAdmin: admin.isAdmin,
+      },
+    };
   }
 }

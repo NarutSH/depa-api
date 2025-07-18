@@ -4,6 +4,13 @@ import CreateUserDto from './dtos/create-user.dto';
 import UpdateUserDto from './dtos/update-user.dto';
 import { QueryMetadataDto, ResponseMetadata } from 'src/utils';
 import { QueryUtilsService } from 'src/utils/services/query-utils.service';
+import {
+  GetAllUsersResponse,
+  UserWithDetailedRelations,
+  UserWithRevenueRelations,
+  TransformedUserResponse,
+} from './dtos/user-response.dto';
+import { User } from 'generated/prisma';
 
 @Injectable()
 export class UsersService {
@@ -12,7 +19,7 @@ export class UsersService {
     private readonly queryUtils: QueryUtilsService,
   ) {}
 
-  async getAllUsers(queryDto: QueryMetadataDto) {
+  async getAllUsers(queryDto: QueryMetadataDto): Promise<GetAllUsersResponse> {
     // Ensure we have valid pagination values
     const page = Number(queryDto.page) || 1;
     const limit = Number(queryDto.limit) || 10;
@@ -123,11 +130,11 @@ export class UsersService {
     );
   }
 
-  async createUser(data: CreateUserDto) {
+  async createUser(data: CreateUserDto): Promise<User> {
     return this.prismaService.user.create({ data });
   }
 
-  async updateUser(id: string, data: UpdateUserDto) {
+  async updateUser(id: string, data: UpdateUserDto): Promise<User> {
     // Extract relationship arrays from DTO
     const {
       tags_array,
@@ -201,13 +208,13 @@ export class UsersService {
     return updatedUser;
   }
 
-  async updateUserByEmail(email: string, data: UpdateUserDto) {
+  async updateUserByEmail(email: string, data: UpdateUserDto): Promise<User> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { tags_array, channels_array, specialists_array, ...userData } = data;
     return this.prismaService.user.update({ where: { email }, data: userData });
   }
 
-  async getUserById(id: string) {
+  async getUserById(id: string): Promise<UserWithDetailedRelations> {
     const user = await this.prismaService.user.findUnique({
       where: { id: id },
       include: {
@@ -243,7 +250,7 @@ export class UsersService {
     return user;
   }
 
-  async getMe(userId: string) {
+  async getMe(userId: string): Promise<TransformedUserResponse> {
     const user = await this.prismaService.user.findUnique({
       where: { id: userId },
       include: {
@@ -339,7 +346,7 @@ export class UsersService {
     return transformedUser;
   }
 
-  async getUserByEmail(email: string) {
+  async getUserByEmail(email: string): Promise<UserWithRevenueRelations> {
     const user = await this.prismaService.user.findUnique({
       where: { email: email },
       include: {

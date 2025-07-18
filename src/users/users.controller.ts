@@ -12,7 +12,6 @@ import {
 import CreateUserDto from './dtos/create-user.dto';
 import UpdateUserDto from './dtos/update-user.dto';
 import { UsersService } from './users.service';
-// Removed imports to deleted files
 import {
   ApiBearerAuth,
   ApiBody,
@@ -24,7 +23,7 @@ import {
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { Role } from '../auth/roles.enum';
-import QueryMetadataDto from './dtos/query-metadata.dto';
+import { QueryMetadataDto } from 'src/utils';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -32,60 +31,157 @@ import QueryMetadataDto from './dtos/query-metadata.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // Only admin can list all users
   @Get()
-  // @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({
     summary: 'Get all users',
-    description: 'Retrieves all users. Admin only.',
+    description:
+      'Retrieves a paginated list of all users with industry relations and filtering support. Admin only.',
   })
   @ApiResponse({
     status: 200,
     description: 'List of all users retrieved successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              email: { type: 'string' },
+              fullnameTh: { type: 'string' },
+              fullnameEn: { type: 'string' },
+              about: { type: 'string' },
+              phoneNumber: { type: 'string' },
+              website: { type: 'string' },
+              location: { type: 'string' },
+              image: { type: 'string' },
+              createdAt: { type: 'string', format: 'date-time' },
+              updatedAt: { type: 'string', format: 'date-time' },
+            },
+          },
+        },
+        total: { type: 'number' },
+        page: { type: 'number' },
+        limit: { type: 'number' },
+        totalPages: { type: 'number' },
+      },
+    },
   })
-  @ApiResponse({ status: 403, description: 'Forbidden - requires admin role' })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - requires admin role',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request - Invalid query parameters',
+  })
   @ApiQuery({
     name: 'page',
     required: false,
     type: Number,
-    description: 'Page number (1-based)',
+    description: 'Page number for pagination (default: 1)',
+    example: 1,
   })
   @ApiQuery({
     name: 'limit',
     required: false,
     type: Number,
-    description: 'Items per page',
+    description: 'Number of items per page (default: 10, max: 100)',
+    example: 10,
   })
   @ApiQuery({
     name: 'search',
     required: false,
     type: String,
-    description: 'Search term for email, fullnameTh, fullnameEn',
+    description: 'Search term for user name, email, or about fields',
+    example: 'software developer',
   })
   @ApiQuery({
-    name: 'sort',
+    name: 'sortBy',
     required: false,
     type: String,
-    description: 'Sort field and direction (e.g., email:asc, createdAt:desc)',
+    description:
+      'Sort field (createdAt, updatedAt, fullnameTh, fullnameEn, email)',
+    example: 'createdAt',
+  })
+  @ApiQuery({
+    name: 'sortOrder',
+    required: false,
+    type: String,
+    description: 'Sort order (asc/desc)',
+    example: 'desc',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Users retrieved successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              email: { type: 'string' },
+              fullnameTh: { type: 'string' },
+              fullnameEn: { type: 'string' },
+              about: { type: 'string' },
+              phoneNumber: { type: 'string' },
+              website: { type: 'string' },
+              location: { type: 'string' },
+              image: { type: 'string' },
+              createdAt: { type: 'string', format: 'date-time' },
+              updatedAt: { type: 'string', format: 'date-time' },
+            },
+          },
+        },
+        total: { type: 'number' },
+        page: { type: 'number' },
+        limit: { type: 'number' },
+        totalPages: { type: 'number' },
+      },
+    },
   })
   async getAllUsers(@Query() query: QueryMetadataDto) {
     return this.usersService.getAllUsers(query);
   }
 
-  // Get current user profile
   @Get('me')
-  // @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Get current user profile',
-    description: 'Retrieves the profile of the currently authenticated user.',
+    description:
+      'Retrieves the profile of the currently authenticated user with transformed data structure.',
   })
   @ApiResponse({
     status: 200,
     description: 'Current user profile retrieved successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        email: { type: 'string' },
+        fullnameTh: { type: 'string' },
+        fullnameEn: { type: 'string' },
+        about: { type: 'string' },
+        phoneNumber: { type: 'string' },
+        website: { type: 'string' },
+        location: { type: 'string' },
+        image: { type: 'string' },
+        createdAt: { type: 'string', format: 'date-time' },
+        updatedAt: { type: 'string', format: 'date-time' },
+      },
+    },
   })
   @ApiResponse({
     status: 401,
     description: 'Unauthorized - requires authentication',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - User ID not found in request',
   })
   async getMe(@Req() req: Request) {
     console.log('req==>', req);
@@ -98,21 +194,50 @@ export class UsersController {
     return this.usersService.getMe(user.id);
   }
 
-  // User profile access - restricted by role
   @Get(':id')
-  // @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({
     summary: 'Get user by ID',
     description:
-      'Retrieves user by ID. Users can only access their own profile.',
+      'Retrieves user by ID with detailed relations. Users can only access their own profile unless they are admin.',
   })
-  @ApiParam({ name: 'id', description: 'User ID' })
-  @ApiResponse({ status: 200, description: 'User retrieved successfully' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    description: 'User unique identifier',
+    example: 'clxyz123456789',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'User retrieved successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        email: { type: 'string' },
+        fullnameTh: { type: 'string' },
+        fullnameEn: { type: 'string' },
+        about: { type: 'string' },
+        phoneNumber: { type: 'string' },
+        website: { type: 'string' },
+        location: { type: 'string' },
+        image: { type: 'string' },
+        createdAt: { type: 'string', format: 'date-time' },
+        updatedAt: { type: 'string', format: 'date-time' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - requires authentication',
+  })
   @ApiResponse({
     status: 403,
     description: "Forbidden - cannot access other users' profiles",
   })
-  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
+  })
   async getUserById(@Param('id') id: string, @Req() req: Request) {
     const user = req.user as any;
 
@@ -129,41 +254,93 @@ export class UsersController {
     throw new ForbiddenException('You can only access your own profile');
   }
 
-  // Allow email lookup for all authenticated users
   @Get('email/:email')
-  // @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Get user by email',
-    description: 'Retrieves user by email for any authenticated user.',
+    description:
+      'Retrieves a user by their email address with revenue stream relations',
   })
-  @ApiParam({ name: 'email', description: 'User email address' })
-  @ApiResponse({ status: 200, description: 'User retrieved successfully' })
+  @ApiParam({
+    name: 'email',
+    type: String,
+    description: 'User email address',
+    example: 'john.smith@example.com',
+  })
   @ApiResponse({
-    status: 401,
-    description: 'Unauthorized - requires authentication',
+    status: 200,
+    description: 'User retrieved successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        email: { type: 'string' },
+        fullnameTh: { type: 'string' },
+        fullnameEn: { type: 'string' },
+        about: { type: 'string' },
+        phoneNumber: { type: 'string' },
+        website: { type: 'string' },
+        location: { type: 'string' },
+        image: { type: 'string' },
+        createdAt: { type: 'string', format: 'date-time' },
+        updatedAt: { type: 'string', format: 'date-time' },
+      },
+    },
   })
-  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
+  })
   async getUserByEmail(@Param('email') email: string) {
     return this.usersService.getUserByEmail(email);
   }
 
-  // Allow users to create their own profile
   @Post()
-  // @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Create user profile',
-    description: 'Creates a new user profile for authenticated users.',
+    description:
+      'Creates a new user profile for authenticated users with industry associations.',
   })
-  @ApiBody({ type: CreateUserDto })
+  @ApiBody({
+    type: CreateUserDto,
+    description:
+      'User creation data with profile information and industry associations',
+  })
   @ApiResponse({
     status: 201,
     description: 'User profile created successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        email: { type: 'string' },
+        fullnameTh: { type: 'string' },
+        fullnameEn: { type: 'string' },
+        about: { type: 'string' },
+        phoneNumber: { type: 'string' },
+        website: { type: 'string' },
+        location: { type: 'string' },
+        image: { type: 'string' },
+        createdAt: { type: 'string', format: 'date-time' },
+        updatedAt: { type: 'string', format: 'date-time' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request - invalid input data or validation errors',
   })
   @ApiResponse({
     status: 401,
     description: 'Unauthorized - requires authentication',
   })
-  @ApiResponse({ status: 400, description: 'Bad request - invalid input' })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - can only create profile with own email',
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'Conflict - user profile already exists',
+  })
   async createUser(@Body() body: CreateUserDto, @Req() req: Request) {
     const user = req.user as any;
 
@@ -177,48 +354,122 @@ export class UsersController {
     return this.usersService.createUser(body);
   }
 
-  // Update user profile - restricted by role
   @Patch(':id')
-  // @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({
-    summary: 'Update user',
+    summary: 'Update user profile',
     description:
-      'Updates a user by ID. Users can only update their own profile.',
+      'Updates a user profile by ID. Users can only update their own profile unless they are admin.',
   })
-  @ApiParam({ name: 'id', description: 'User ID' })
-  @ApiBody({ type: UpdateUserDto })
-  @ApiResponse({ status: 200, description: 'User updated successfully' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    description: 'User unique identifier',
+    example: 'clxyz123456789',
+  })
+  @ApiBody({
+    type: UpdateUserDto,
+    description:
+      'User update data with optional profile fields and industry associations',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'User updated successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        email: { type: 'string' },
+        fullnameTh: { type: 'string' },
+        fullnameEn: { type: 'string' },
+        about: { type: 'string' },
+        phoneNumber: { type: 'string' },
+        website: { type: 'string' },
+        location: { type: 'string' },
+        image: { type: 'string' },
+        createdAt: { type: 'string', format: 'date-time' },
+        updatedAt: { type: 'string', format: 'date-time' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request - invalid input data or validation errors',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - requires authentication',
+  })
   @ApiResponse({
     status: 403,
-    description: "Forbidden - cannot update other users's profiles",
+    description: "Forbidden - cannot update other users' profiles",
   })
-  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
+  })
   async updateUser(
     @Param('id') id: string,
     @Body() body: UpdateUserDto,
-    // @Req() req: Request,
+    @Req() req: Request,
   ) {
-    try {
+    const user = req.user as any;
+
+    // Admin can update any profile
+    if (user.userType === Role.ADMIN) {
       return this.usersService.updateUser(id, body);
-    } catch (error) {
-      console.error('Error updating user:', error);
-      throw new ForbiddenException('Failed to update user');
     }
+
+    // Users can only update their own profile
+    if (user.id === id) {
+      return this.usersService.updateUser(id, body);
+    }
+
+    throw new ForbiddenException('You can only update your own profile');
   }
 
-  // Update by email - admin only
   @Patch('email/:email')
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN)
   @ApiOperation({
     summary: 'Update user by email',
-    description: 'Updates a user by email. Admin only.',
+    description: 'Updates user information using email as identifier',
   })
-  @ApiParam({ name: 'email', description: 'User email address' })
-  @ApiBody({ type: UpdateUserDto })
-  @ApiResponse({ status: 200, description: 'User updated successfully' })
-  @ApiResponse({ status: 403, description: 'Forbidden - requires admin role' })
-  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiParam({
+    name: 'email',
+    type: String,
+    description: 'User email address',
+    example: 'john.smith@example.com',
+  })
+  @ApiBody({
+    type: UpdateUserDto,
+    description: 'User update data',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'User updated successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        email: { type: 'string' },
+        fullnameTh: { type: 'string' },
+        fullnameEn: { type: 'string' },
+        about: { type: 'string' },
+        phoneNumber: { type: 'string' },
+        website: { type: 'string' },
+        location: { type: 'string' },
+        image: { type: 'string' },
+        createdAt: { type: 'string', format: 'date-time' },
+        updatedAt: { type: 'string', format: 'date-time' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request - Invalid input data',
+  })
   async updateUserByEmail(
     @Param('email') email: string,
     @Body() body: UpdateUserDto,

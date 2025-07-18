@@ -7,11 +7,20 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Server is running - returns HTML status page",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "example": "<html>...</html>"
+                }
+              }
+            }
           }
         },
+        "summary": "Health check endpoint",
         "tags": [
-          "Ping"
+          "ping"
         ]
       }
     },
@@ -364,7 +373,63 @@
         ],
         "responses": {
           "200": {
-            "description": "Return a paginated list of companies with their details"
+            "description": "Return a paginated list of companies with their details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Company"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "user": {
+                                "$ref": "#/components/schemas/User"
+                              },
+                              "companyRevenue": {
+                                "type": "array",
+                                "items": {
+                                  "$ref": "#/components/schemas/CompanyRevenue"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "number"
+                        },
+                        "page": {
+                          "type": "number"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "totalPages": {
+                          "type": "number"
+                        },
+                        "hasNext": {
+                          "type": "boolean"
+                        },
+                        "hasPrevious": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -392,7 +457,14 @@
         },
         "responses": {
           "201": {
-            "description": "The company has been successfully created"
+            "description": "The company has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Company"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -422,7 +494,50 @@
         ],
         "responses": {
           "200": {
-            "description": "Return all companies matching the optional industry filter"
+            "description": "Return all companies matching the optional industry filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Company"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "user": {
+                            "allOf": [
+                              {
+                                "$ref": "#/components/schemas/User"
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "industriesRelated": {
+                                    "type": "array"
+                                  },
+                                  "industryChannels": {
+                                    "type": "array"
+                                  },
+                                  "industrySkills": {
+                                    "type": "array"
+                                  },
+                                  "industryTags": {
+                                    "type": "array"
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -452,7 +567,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Return the company with the specified user ID"
+            "description": "Return the company with the specified user ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Company"
+                }
+              }
+            }
           },
           "404": {
             "description": "Company not found"
@@ -495,7 +617,14 @@
         },
         "responses": {
           "200": {
-            "description": "The company has been successfully updated"
+            "description": "The company has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Company"
+                }
+              }
+            }
           },
           "404": {
             "description": "Company not found"
@@ -526,7 +655,26 @@
         ],
         "responses": {
           "200": {
-            "description": "Return the company with the specified ID"
+            "description": "Return the company with the specified ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Company"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           },
           "404": {
             "description": "Company not found"
@@ -569,7 +717,14 @@
         },
         "responses": {
           "200": {
-            "description": "The company has been successfully updated"
+            "description": "The company has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Company"
+                }
+              }
+            }
           },
           "404": {
             "description": "Company not found"
@@ -600,7 +755,29 @@
         ],
         "responses": {
           "200": {
-            "description": "Return the company with the specified juristic ID"
+            "description": "Return the company with the specified juristic ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Company"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "companyRevenue": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/CompanyRevenue"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           },
           "404": {
             "description": "Company not found"
@@ -1567,6 +1744,7 @@
             "description": "Page number (1-based)",
             "schema": {
               "default": 1,
+              "example": 1,
               "type": "number"
             }
           },
@@ -1577,6 +1755,7 @@
             "description": "Items per page",
             "schema": {
               "default": 10,
+              "example": 10,
               "type": "number"
             }
           },
@@ -1586,6 +1765,7 @@
             "in": "query",
             "description": "Search term for numeric fields",
             "schema": {
+              "example": "2024",
               "type": "string"
             }
           },
@@ -1595,6 +1775,7 @@
             "in": "query",
             "description": "Sort field and direction (e.g., year:asc, total:desc)",
             "schema": {
+              "example": "year:desc",
               "type": "string"
             }
           },
@@ -1602,15 +1783,70 @@
             "name": "filter",
             "required": false,
             "in": "query",
-            "description": "Filter criteria (e.g., year)",
+            "description": "Filter criteria (e.g., year:2024)",
             "schema": {
-              "$ref": "#/components/schemas/Object"
+              "example": "year:2024",
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Return a paginated list of company revenue records"
+            "description": "Return a paginated list of company revenue records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "allOf": [
+                              {
+                                "$ref": "#/components/schemas/CompanyRevenue"
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "company": {
+                                    "type": "object",
+                                    "properties": {
+                                      "juristicId": {
+                                        "type": "string"
+                                      },
+                                      "nameTh": {
+                                        "type": "string"
+                                      },
+                                      "nameEn": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "total": {
+                          "type": "number"
+                        },
+                        "page": {
+                          "type": "number"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -1628,6 +1864,7 @@
         "parameters": [],
         "requestBody": {
           "required": true,
+          "description": "Company revenue data to create or update",
           "content": {
             "application/json": {
               "schema": {
@@ -1638,7 +1875,40 @@
         },
         "responses": {
           "201": {
-            "description": "The company revenue record has been successfully created or updated"
+            "description": "The company revenue record has been successfully created or updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/CompanyRevenue"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "company": {
+                          "type": "object",
+                          "properties": {
+                            "juristicId": {
+                              "type": "string"
+                            },
+                            "nameTh": {
+                              "type": "string"
+                            },
+                            "nameEn": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
           }
         },
         "security": [
@@ -1662,6 +1932,7 @@
             "in": "path",
             "description": "The ID of the company",
             "schema": {
+              "example": "123e4567-e89b-12d3-a456-426614174000",
               "type": "string"
             }
           },
@@ -1672,6 +1943,7 @@
             "description": "Page number (1-based)",
             "schema": {
               "default": 1,
+              "example": 1,
               "type": "number"
             }
           },
@@ -1682,6 +1954,7 @@
             "description": "Items per page",
             "schema": {
               "default": 10,
+              "example": 10,
               "type": "number"
             }
           },
@@ -1691,6 +1964,7 @@
             "in": "query",
             "description": "Search term for numeric fields",
             "schema": {
+              "example": "2024",
               "type": "string"
             }
           },
@@ -1700,6 +1974,7 @@
             "in": "query",
             "description": "Sort field and direction (e.g., year:asc, total:desc)",
             "schema": {
+              "example": "year:desc",
               "type": "string"
             }
           },
@@ -1715,7 +1990,61 @@
         ],
         "responses": {
           "200": {
-            "description": "Return revenue data for the specified company"
+            "description": "Return revenue data for the specified company",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "allOf": [
+                              {
+                                "$ref": "#/components/schemas/CompanyRevenue"
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "company": {
+                                    "type": "object",
+                                    "properties": {
+                                      "juristicId": {
+                                        "type": "string"
+                                      },
+                                      "nameTh": {
+                                        "type": "string"
+                                      },
+                                      "nameEn": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "total": {
+                          "type": "number"
+                        },
+                        "page": {
+                          "type": "number"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -1783,7 +2112,46 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved all portfolios"
+            "description": "Successfully retrieved all portfolios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Portfolio"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "standards": {
+                                "type": "array"
+                              },
+                              "Image": {
+                                "type": "array"
+                              },
+                              "company": {
+                                "type": "object"
+                              },
+                              "freelance": {
+                                "type": "object"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -1855,7 +2223,62 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponseMetadata"
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Portfolio"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "standards": {
+                                "type": "array"
+                              },
+                              "Image": {
+                                "type": "array"
+                              },
+                              "company": {
+                                "type": "object"
+                              },
+                              "freelance": {
+                                "type": "object"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "number"
+                        },
+                        "page": {
+                          "type": "number"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "totalPages": {
+                          "type": "number"
+                        },
+                        "hasNext": {
+                          "type": "boolean"
+                        },
+                        "hasPrevious": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -1877,16 +2300,103 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePortfolioWithImagesAndStandardsDto"
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "freelanceId": {
+                    "type": "string"
+                  },
+                  "companyId": {
+                    "type": "string"
+                  },
+                  "companyJuristicId": {
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "looking_for": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "link": {
+                    "type": "string"
+                  },
+                  "industryTypeSlug": {
+                    "type": "string"
+                  },
+                  "standards": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "cover": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "main_image": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Portfolio created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Portfolio"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "standards": {
+                          "type": "array"
+                        },
+                        "Image": {
+                          "type": "array"
+                        },
+                        "company": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -1894,6 +2404,7 @@
             "bearer": []
           }
         ],
+        "summary": "Create a new portfolio",
         "tags": [
           "Portfolio"
         ]
@@ -1907,6 +2418,7 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Portfolio ID",
             "schema": {
               "type": "string"
             }
@@ -1914,7 +2426,38 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successfully retrieved portfolio",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Portfolio"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "standards": {
+                          "type": "array"
+                        },
+                        "Image": {
+                          "type": "array"
+                        },
+                        "company": {
+                          "type": "object"
+                        },
+                        "freelance": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Portfolio not found"
           }
         },
         "security": [
@@ -1922,6 +2465,7 @@
             "bearer": []
           }
         ],
+        "summary": "Get portfolio by ID",
         "tags": [
           "Portfolio"
         ]
@@ -1933,6 +2477,7 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Portfolio ID",
             "schema": {
               "type": "string"
             }
@@ -1940,7 +2485,19 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Portfolio deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -1948,6 +2505,7 @@
             "bearer": []
           }
         ],
+        "summary": "Delete a portfolio",
         "tags": [
           "Portfolio"
         ]
@@ -1959,6 +2517,7 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Portfolio ID",
             "schema": {
               "type": "string"
             }
@@ -1967,16 +2526,91 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UpdatePortfolioDto"
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "looking_for": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "link": {
+                    "type": "string"
+                  },
+                  "standards": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "cover": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "main_image": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Portfolio updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Portfolio"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "standards": {
+                          "type": "array"
+                        },
+                        "Image": {
+                          "type": "array"
+                        },
+                        "company": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -1984,6 +2618,7 @@
             "bearer": []
           }
         ],
+        "summary": "Update a portfolio",
         "tags": [
           "Portfolio"
         ]
@@ -1997,6 +2632,7 @@
             "name": "companyJuristicId",
             "required": true,
             "in": "path",
+            "description": "Company juristic ID",
             "schema": {
               "type": "string"
             }
@@ -2004,7 +2640,35 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successfully retrieved portfolios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Portfolio"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "standards": {
+                            "type": "array"
+                          },
+                          "Image": {
+                            "type": "array"
+                          },
+                          "company": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2012,6 +2676,7 @@
             "bearer": []
           }
         ],
+        "summary": "Get portfolios by company juristic ID",
         "tags": [
           "Portfolio"
         ]
@@ -2025,6 +2690,7 @@
             "name": "freelanceId",
             "required": true,
             "in": "path",
+            "description": "Freelance ID",
             "schema": {
               "type": "string"
             }
@@ -2032,7 +2698,35 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successfully retrieved portfolios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Portfolio"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "standards": {
+                            "type": "array"
+                          },
+                          "Image": {
+                            "type": "array"
+                          },
+                          "company": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2040,6 +2734,7 @@
             "bearer": []
           }
         ],
+        "summary": "Get portfolios by freelance ID",
         "tags": [
           "Portfolio"
         ]
@@ -2053,6 +2748,7 @@
             "name": "industrySlug",
             "required": true,
             "in": "path",
+            "description": "Industry slug",
             "schema": {
               "type": "string"
             }
@@ -2060,7 +2756,35 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successfully retrieved portfolios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Portfolio"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "standards": {
+                            "type": "array"
+                          },
+                          "Image": {
+                            "type": "array"
+                          },
+                          "company": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2068,6 +2792,7 @@
             "bearer": []
           }
         ],
+        "summary": "Get portfolios by industry slug",
         "tags": [
           "Portfolio"
         ]
@@ -2088,8 +2813,23 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Favorite status toggled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "isFavorite": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2097,6 +2837,7 @@
             "bearer": []
           }
         ],
+        "summary": "Toggle favorite status for a portfolio",
         "tags": [
           "Portfolio"
         ]
@@ -2110,6 +2851,7 @@
             "name": "portfolioId",
             "required": true,
             "in": "path",
+            "description": "Portfolio ID",
             "schema": {
               "type": "string"
             }
@@ -2117,7 +2859,22 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Favorite status retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isFavorite": {
+                      "type": "boolean"
+                    },
+                    "favoriteCount": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2125,6 +2882,7 @@
             "bearer": []
           }
         ],
+        "summary": "Get favorite status for a portfolio",
         "tags": [
           "Portfolio"
         ]
@@ -2136,7 +2894,35 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "User favorite portfolios retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Portfolio"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "standards": {
+                            "type": "array"
+                          },
+                          "Image": {
+                            "type": "array"
+                          },
+                          "company": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2144,6 +2930,7 @@
             "bearer": []
           }
         ],
+        "summary": "Get user favorite portfolios",
         "tags": [
           "Portfolio"
         ]
@@ -2341,7 +3128,7 @@
     },
     "/standards": {
       "get": {
-        "description": "Retrieves all standards with pagination, filtering and sorting",
+        "description": "Retrieves all standards with advanced pagination, filtering, and sorting capabilities",
         "operationId": "StandardsController_getStandards",
         "parameters": [
           {
@@ -2351,6 +3138,7 @@
             "description": "Page number (1-based)",
             "schema": {
               "default": 1,
+              "example": 1,
               "type": "number"
             }
           },
@@ -2358,9 +3146,10 @@
             "name": "limit",
             "required": false,
             "in": "query",
-            "description": "Items per page",
+            "description": "Number of items per page",
             "schema": {
               "default": 10,
+              "example": 10,
               "type": "number"
             }
           },
@@ -2370,6 +3159,7 @@
             "in": "query",
             "description": "Search term for name and description",
             "schema": {
+              "example": "ISO 27001",
               "type": "string"
             }
           },
@@ -2379,6 +3169,7 @@
             "in": "query",
             "description": "Sort field and direction (e.g., name:asc, createdAt:desc)",
             "schema": {
+              "example": "name:asc",
               "type": "string"
             }
           },
@@ -2394,7 +3185,14 @@
         ],
         "responses": {
           "200": {
-            "description": "List of all standards retrieved successfully"
+            "description": "Standards retrieved successfully with pagination metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardsListApiResponse"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2402,27 +3200,74 @@
             "bearer": []
           }
         ],
-        "summary": "Get all standards",
+        "summary": "Get all standards with pagination",
         "tags": [
           "Standards"
         ]
       },
       "post": {
+        "description": "Creates a new standard with optional image upload",
         "operationId": "StandardsController_createStandard",
         "parameters": [],
         "requestBody": {
           "required": true,
+          "description": "Standard creation data with optional image",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CreateStandardDto"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Standard name",
+                    "example": "ISO 27001 Information Security Management"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Standard description",
+                    "example": "International standard for information security management systems"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "CERTIFICATION",
+                      "FRAMEWORK",
+                      "GUIDELINE",
+                      "METHODOLOGY"
+                    ],
+                    "description": "Type of standard",
+                    "example": "CERTIFICATION"
+                  },
+                  "industrySlug": {
+                    "type": "string",
+                    "description": "Industry slug",
+                    "example": "information-technology"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Standard image file"
+                  }
+                },
+                "required": [
+                  "name",
+                  "type",
+                  "industrySlug"
+                ]
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Standard created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardApiResponse"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2430,6 +3275,7 @@
             "bearer": []
           }
         ],
+        "summary": "Create a new standard",
         "tags": [
           "Standards"
         ]
@@ -2437,11 +3283,22 @@
     },
     "/standards/all": {
       "get": {
+        "description": "Retrieves all standards in the system without pagination",
         "operationId": "StandardsController_getAllStandards",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "All standards retrieved successfully"
+            "description": "All standards retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StandardResponseDto"
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2449,7 +3306,7 @@
             "bearer": []
           }
         ],
-        "summary": "Get all standards (no pagination)",
+        "summary": "Get all standards without pagination",
         "tags": [
           "Standards"
         ]
@@ -2457,30 +3314,74 @@
     },
     "/standards/{id}": {
       "patch": {
+        "description": "Updates a standard with optional image upload",
         "operationId": "StandardsController_updateStandard",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Standard unique identifier",
             "schema": {
+              "example": "standard-123-uuid",
               "type": "string"
             }
           }
         ],
         "requestBody": {
           "required": true,
+          "description": "Standard update data with optional image",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateStandardDto"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Updated standard name",
+                    "example": "ISO 27001 Information Security Management System"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Updated standard description",
+                    "example": "International standard for information security management systems with enhanced controls"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "CERTIFICATION",
+                      "FRAMEWORK",
+                      "GUIDELINE",
+                      "METHODOLOGY"
+                    ],
+                    "description": "Updated type of standard",
+                    "example": "CERTIFICATION"
+                  },
+                  "industrySlug": {
+                    "type": "string",
+                    "description": "Updated industry slug",
+                    "example": "information-technology"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Updated standard image file"
+                  }
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Standard updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardApiResponse"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2488,6 +3389,7 @@
             "bearer": []
           }
         ],
+        "summary": "Update an existing standard",
         "tags": [
           "Standards"
         ]
@@ -2551,20 +3453,65 @@
         "parameters": [
           {
             "name": "folder",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Folder name to store the file",
             "schema": {
+              "example": "portfolio",
               "type": "string"
             }
           }
         ],
-        "responses": {
-          "201": {
-            "description": ""
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File to upload (images only)"
+                  }
+                },
+                "required": [
+                  "file"
+                ]
+              }
+            }
           }
         },
+        "responses": {
+          "201": {
+            "description": "File uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "description": "URL of the uploaded file",
+                      "example": "https://example.com/uploads/file.jpg"
+                    },
+                    "filename": {
+                      "type": "string",
+                      "description": "Name of the uploaded file",
+                      "example": "file.jpg"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - File validation failed"
+          }
+        },
+        "summary": "Upload a single file",
         "tags": [
-          "Upload"
+          "upload"
         ]
       }
     },
@@ -2574,20 +3521,71 @@
         "parameters": [
           {
             "name": "folder",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Folder name to store the files",
             "schema": {
+              "example": "portfolio",
               "type": "string"
             }
           }
         ],
-        "responses": {
-          "201": {
-            "description": ""
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "Files to upload (images only, max 10 files)"
+                  }
+                },
+                "required": [
+                  "files"
+                ]
+              }
+            }
           }
         },
+        "responses": {
+          "201": {
+            "description": "Files uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "URL of the uploaded file",
+                        "example": "https://example.com/uploads/file.jpg"
+                      },
+                      "filename": {
+                        "type": "string",
+                        "description": "Name of the uploaded file",
+                        "example": "file.jpg"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Files upload failed"
+          }
+        },
+        "summary": "Upload multiple files",
         "tags": [
-          "Upload"
+          "upload"
         ]
       }
     },
@@ -2632,7 +3630,17 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "List of all industries with categories, sources, and channels"
+            "description": "List of all industries with categories, sources, and channels",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IndustryBasicResponseDto"
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2654,7 +3662,7 @@
             "name": "skip",
             "required": false,
             "in": "query",
-            "description": "Number of records to skip",
+            "description": "Number of records to skip for pagination",
             "schema": {
               "type": "number"
             }
@@ -2663,7 +3671,7 @@
             "name": "take",
             "required": false,
             "in": "query",
-            "description": "Number of records to take",
+            "description": "Number of records to take for pagination",
             "schema": {
               "type": "number"
             }
@@ -2671,7 +3679,7 @@
         ],
         "responses": {
           "200": {
-            "description": "List of all industries",
+            "description": "List of industries with pagination support",
             "content": {
               "application/json": {
                 "schema": {
@@ -2689,7 +3697,7 @@
             "bearer": []
           }
         ],
-        "summary": "Get all industries",
+        "summary": "Get all industries with pagination",
         "tags": [
           "Industry"
         ]
@@ -2703,7 +3711,7 @@
             "name": "id",
             "required": true,
             "in": "path",
-            "description": "Industry ID",
+            "description": "Industry unique identifier",
             "schema": {
               "type": "string"
             }
@@ -2711,11 +3719,69 @@
         ],
         "responses": {
           "200": {
-            "description": "Industry details including related entities",
+            "description": "Industry details including all related entities",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IndustryResponseDto"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Industry"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "Category": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "Industry categories"
+                        },
+                        "Channel": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "Industry channels"
+                        },
+                        "Source": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "Industry sources"
+                        },
+                        "Segment": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "Industry segments"
+                        },
+                        "Skill": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "Industry skills"
+                        },
+                        "Tag": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "Industry tags"
+                        },
+                        "LookingFor": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "Looking for options"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -2726,7 +3792,7 @@
             "bearer": []
           }
         ],
-        "summary": "Get an industry by ID",
+        "summary": "Get an industry by ID with all relations",
         "tags": [
           "Industry"
         ]
@@ -2738,7 +3804,7 @@
             "name": "id",
             "required": true,
             "in": "path",
-            "description": "Industry ID",
+            "description": "Industry unique identifier",
             "schema": {
               "type": "string"
             }
@@ -2783,7 +3849,7 @@
             "name": "id",
             "required": true,
             "in": "path",
-            "description": "Industry ID",
+            "description": "Industry unique identifier",
             "schema": {
               "type": "string"
             }
@@ -2820,7 +3886,7 @@
             "name": "slug",
             "required": true,
             "in": "path",
-            "description": "Industry slug",
+            "description": "Industry slug identifier",
             "schema": {
               "type": "string"
             }
@@ -2828,11 +3894,69 @@
         ],
         "responses": {
           "200": {
-            "description": "Industry details including related entities",
+            "description": "Industry details including all related entities",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IndustryResponseDto"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Industry"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "Category": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "Industry categories"
+                        },
+                        "Channel": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "Industry channels"
+                        },
+                        "Source": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "Industry sources"
+                        },
+                        "Segment": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "Industry segments"
+                        },
+                        "Skill": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "Industry skills"
+                        },
+                        "Tag": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "Industry tags"
+                        },
+                        "LookingFor": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "Looking for options"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -2843,7 +3967,7 @@
             "bearer": []
           }
         ],
-        "summary": "Get an industry by slug",
+        "summary": "Get an industry by slug with all relations",
         "tags": [
           "Industry"
         ]
@@ -2897,6 +4021,7 @@
             "description": "Number of items to skip for pagination",
             "schema": {
               "minimum": 0,
+              "example": 0,
               "type": "number"
             }
           },
@@ -2907,6 +4032,7 @@
             "description": "Number of items to take for pagination",
             "schema": {
               "minimum": 1,
+              "example": 10,
               "type": "number"
             }
           },
@@ -2916,7 +4042,17 @@
             "in": "query",
             "description": "Filter skills by industry slug",
             "schema": {
-              "example": "game",
+              "example": "information-technology",
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search skills by title",
+            "schema": {
+              "example": "javascript",
               "type": "string"
             }
           }
@@ -2972,11 +4108,37 @@
         ],
         "responses": {
           "200": {
-            "description": "The skill data",
+            "description": "The skill data with industry information",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SkillResponseDto"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Skill"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "industry": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "Information Technology"
+                            },
+                            "slug": {
+                              "type": "string",
+                              "example": "information-technology"
+                            },
+                            "color": {
+                              "type": "string",
+                              "example": "#3498db"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -3121,6 +4283,7 @@
             "description": "Number of items to skip for pagination",
             "schema": {
               "minimum": 0,
+              "example": 0,
               "type": "number"
             }
           },
@@ -3131,6 +4294,7 @@
             "description": "Number of items to take for pagination",
             "schema": {
               "minimum": 1,
+              "example": 10,
               "type": "number"
             }
           },
@@ -3140,7 +4304,17 @@
             "in": "query",
             "description": "Filter tags by industry slug",
             "schema": {
-              "example": "game",
+              "example": "information-technology",
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search tags by name",
+            "schema": {
+              "example": "programming",
               "type": "string"
             }
           }
@@ -3196,11 +4370,37 @@
         ],
         "responses": {
           "200": {
-            "description": "The tag data",
+            "description": "The tag data with industry information",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TagResponseDto"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Tag"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "industry": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "Information Technology"
+                            },
+                            "slug": {
+                              "type": "string",
+                              "example": "information-technology"
+                            },
+                            "color": {
+                              "type": "string",
+                              "example": "#3498db"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -3345,6 +4545,7 @@
             "description": "Number of items to skip for pagination",
             "schema": {
               "minimum": 0,
+              "example": 0,
               "type": "number"
             }
           },
@@ -3355,6 +4556,7 @@
             "description": "Number of items to take for pagination",
             "schema": {
               "minimum": 1,
+              "example": 10,
               "type": "number"
             }
           },
@@ -3364,7 +4566,17 @@
             "in": "query",
             "description": "Filter channels by industry slug",
             "schema": {
-              "example": "game",
+              "example": "information-technology",
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search channels by name",
+            "schema": {
+              "example": "web development",
               "type": "string"
             }
           }
@@ -3420,11 +4632,37 @@
         ],
         "responses": {
           "200": {
-            "description": "The channel data",
+            "description": "The channel data with industry information",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChannelResponseDto"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Channel"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "industry": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "Information Technology"
+                            },
+                            "slug": {
+                              "type": "string",
+                              "example": "information-technology"
+                            },
+                            "color": {
+                              "type": "string",
+                              "example": "#3498db"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -3575,7 +4813,89 @@
         ],
         "responses": {
           "200": {
-            "description": "Return a paginated list of freelances with their details"
+            "description": "Return a paginated list of freelances with their details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Freelance"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "user": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "fullnameTh": {
+                                    "type": "string"
+                                  },
+                                  "fullnameEn": {
+                                    "type": "string"
+                                  },
+                                  "email": {
+                                    "type": "string"
+                                  },
+                                  "image": {
+                                    "type": "string"
+                                  },
+                                  "tags": {
+                                    "type": "object"
+                                  },
+                                  "industryTags": {
+                                    "type": "array"
+                                  },
+                                  "industrySkills": {
+                                    "type": "array"
+                                  }
+                                }
+                              },
+                              "Portfolio": {
+                                "type": "array"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "number"
+                        },
+                        "page": {
+                          "type": "number"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "totalPages": {
+                          "type": "number"
+                        },
+                        "hasNext": {
+                          "type": "boolean"
+                        },
+                        "hasPrevious": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3603,7 +4923,14 @@
         },
         "responses": {
           "201": {
-            "description": "The freelance has been successfully created"
+            "description": "The freelance has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Freelance"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3633,7 +4960,50 @@
         ],
         "responses": {
           "200": {
-            "description": "Return all freelances matching the optional industry filter"
+            "description": "Return all freelances matching the optional industry filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Freelance"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "user": {
+                            "allOf": [
+                              {
+                                "$ref": "#/components/schemas/User"
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "industrySkills": {
+                                    "type": "array"
+                                  },
+                                  "industriesRelated": {
+                                    "type": "array"
+                                  },
+                                  "industryChannels": {
+                                    "type": "array"
+                                  },
+                                  "industryTags": {
+                                    "type": "array"
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3663,7 +5033,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Return the freelance with the specified user ID"
+            "description": "Return the freelance with the specified user ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Freelance"
+                }
+              }
+            }
           },
           "404": {
             "description": "Freelance not found"
@@ -3688,21 +5065,34 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "The ID of the freelance",
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "userId",
-            "required": true,
-            "in": "path",
-            "description": "The user ID of the freelance",
-            "schema": {}
           }
         ],
         "responses": {
           "200": {
-            "description": "Return the freelance with the specified user ID"
+            "description": "Return the freelance with the specified ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Freelance"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           },
           "404": {
             "description": "Freelance not found"
@@ -3713,7 +5103,7 @@
             "bearer": []
           }
         ],
-        "summary": "Get freelance by user ID",
+        "summary": "Get freelance by ID",
         "tags": [
           "Freelance"
         ]
@@ -3735,7 +5125,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Return the freelance with the specified juristic ID"
+            "description": "Return the freelance with the specified juristic ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Freelance"
+                }
+              }
+            }
           },
           "404": {
             "description": "Freelance not found"
@@ -3768,7 +5165,14 @@
         ],
         "responses": {
           "200": {
-            "description": "The freelance has been successfully updated"
+            "description": "The freelance has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Freelance"
+                }
+              }
+            }
           },
           "404": {
             "description": "Freelance not found"
@@ -3897,12 +5301,98 @@
         ]
       }
     },
+    "/auth/admin/signup": {
+      "post": {
+        "operationId": "AuthController_adminSignup",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminSignupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Admin account created successfully"
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "409": {
+            "description": "Admin already exists"
+          }
+        },
+        "summary": "Register a new admin account",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/admin/signin": {
+      "post": {
+        "operationId": "AuthController_adminSignin",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminSigninDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Admin signed in successfully"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        },
+        "summary": "Sign in as admin",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/admin/profile": {
+      "get": {
+        "operationId": "AuthController_getAdminProfile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Admin profile retrieved"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Admin access required"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get admin profile (admin only)",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
     "/channel": {
       "post": {
         "operationId": "ChannelController_create",
         "parameters": [],
         "requestBody": {
           "required": true,
+          "description": "Channel data to create",
           "content": {
             "application/json": {
               "schema": {
@@ -3913,7 +5403,21 @@
         },
         "responses": {
           "201": {
-            "description": "Channel created successfully"
+            "description": "Channel created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Channel"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
           }
         },
         "security": [
@@ -3930,13 +5434,21 @@
         "operationId": "ChannelController_findAll",
         "parameters": [
           {
-            "name": "page",
+            "name": "sort",
             "required": false,
             "in": "query",
-            "description": "Page number (1-based)",
+            "description": "Sort field and direction (e.g., name:asc, createdAt:desc)",
             "schema": {
-              "default": 1,
-              "type": "number"
+              "example": "name:asc"
+            }
+          },
+          {
+            "name": "industry",
+            "required": false,
+            "in": "query",
+            "description": "Filter by industry slug",
+            "schema": {
+              "example": "technology"
             }
           },
           {
@@ -3945,44 +5457,57 @@
             "in": "query",
             "description": "Number of items per page",
             "schema": {
-              "default": 10,
-              "type": "number"
+              "example": 10
             }
           },
           {
-            "name": "search",
+            "name": "page",
             "required": false,
             "in": "query",
-            "description": "Search term that will be applied to configured fields",
+            "description": "Page number (1-based)",
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "sort",
-            "required": false,
-            "in": "query",
-            "description": "Field to sort by, with optional direction (e.g., \"name:asc\", \"createdAt:desc\")",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter",
-            "required": false,
-            "in": "query",
-            "description": "Filter criteria in JSON format or as query parameters",
-            "schema": {
-              "$ref": "#/components/schemas/Object"
+              "example": 1
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "List of channels"
+            "description": "List of channels retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Channel"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "number"
+                        },
+                        "page": {
+                          "type": "number"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "totalPages": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         },
-        "summary": "Get all channels",
+        "summary": "Get all channels with pagination and filtering",
         "tags": [
           "Channel"
         ]
@@ -3996,14 +5521,27 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Channel ID",
             "schema": {
+              "example": "123e4567-e89b-12d3-a456-426614174000",
               "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Channel found"
+            "description": "Channel found successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Channel"
+                    }
+                  ]
+                }
+              }
+            }
           },
           "404": {
             "description": "Channel not found"
@@ -4021,13 +5559,16 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Channel ID",
             "schema": {
+              "example": "123e4567-e89b-12d3-a456-426614174000",
               "type": "string"
             }
           }
         ],
         "requestBody": {
           "required": true,
+          "description": "Channel data to update",
           "content": {
             "application/json": {
               "schema": {
@@ -4038,7 +5579,24 @@
         },
         "responses": {
           "200": {
-            "description": "Channel updated successfully"
+            "description": "Channel updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Channel"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "404": {
+            "description": "Channel not found"
           }
         },
         "security": [
@@ -4058,14 +5616,30 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Channel ID",
             "schema": {
+              "example": "123e4567-e89b-12d3-a456-426614174000",
               "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Channel deleted successfully"
+            "description": "Channel deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Channel"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Channel not found"
           }
         },
         "security": [
@@ -4095,11 +5669,23 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Looking for category created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/LookingFor"
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
+        "summary": "Create a new looking for category",
         "tags": [
-          "LookingFor"
+          "looking-for"
         ]
       },
       "get": {
@@ -4107,44 +5693,63 @@
         "parameters": [
           {
             "name": "skip",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Number of items to skip",
             "schema": {
+              "example": 0,
               "type": "number"
             }
           },
           {
             "name": "take",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Number of items to take",
             "schema": {
+              "example": 10,
               "type": "number"
             }
           },
           {
             "name": "search",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Search term to filter by name",
             "schema": {
+              "example": "web",
               "type": "string"
             }
           },
           {
             "name": "industrySlug",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Industry slug to filter by",
             "schema": {
+              "example": "technology",
               "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "List of looking for categories retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LookingFor"
+                  }
+                }
+              }
+            }
           }
         },
+        "summary": "Get all looking for categories with pagination and filtering",
         "tags": [
-          "LookingFor"
+          "looking-for"
         ]
       }
     },
@@ -4154,11 +5759,22 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "All looking for categories retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LookingFor"
+                  }
+                }
+              }
+            }
           }
         },
+        "summary": "Get all looking for categories without pagination",
         "tags": [
-          "LookingFor"
+          "looking-for"
         ]
       }
     },
@@ -4170,18 +5786,31 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Looking for category ID",
             "schema": {
+              "example": "123e4567-e89b-12d3-a456-426614174000",
               "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Looking for category retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookingFor"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Looking for category not found"
           }
         },
+        "summary": "Get a looking for category by ID",
         "tags": [
-          "LookingFor"
+          "looking-for"
         ]
       },
       "patch": {
@@ -4191,7 +5820,9 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Looking for category ID",
             "schema": {
+              "example": "123e4567-e89b-12d3-a456-426614174000",
               "type": "string"
             }
           }
@@ -4208,11 +5839,22 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Looking for category updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookingFor"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Looking for category not found"
           }
         },
+        "summary": "Update a looking for category",
         "tags": [
-          "LookingFor"
+          "looking-for"
         ]
       },
       "delete": {
@@ -4222,18 +5864,31 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Looking for category ID",
             "schema": {
+              "example": "123e4567-e89b-12d3-a456-426614174000",
               "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Looking for category deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookingFor"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Looking for category not found"
           }
         },
+        "summary": "Delete a looking for category",
         "tags": [
-          "LookingFor"
+          "looking-for"
         ]
       }
     }
@@ -4416,7 +6071,88 @@
       },
       "CreateCompanyDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "juristicId": {
+            "type": "string",
+            "description": "Company juristic ID"
+          },
+          "nameTh": {
+            "type": "string",
+            "description": "Company name in Thai"
+          },
+          "nameEn": {
+            "type": "string",
+            "description": "Company name in English"
+          },
+          "description": {
+            "type": "string",
+            "description": "Company description"
+          },
+          "address": {
+            "type": "string",
+            "description": "Company address"
+          },
+          "subDistrict": {
+            "type": "string",
+            "description": "Sub-district"
+          },
+          "district": {
+            "type": "string",
+            "description": "District"
+          },
+          "province": {
+            "type": "string",
+            "description": "Province"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Postal code"
+          },
+          "registerdCapital": {
+            "type": "number",
+            "description": "Registered capital amount"
+          },
+          "employeeCount": {
+            "type": "number",
+            "description": "Number of employees"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Company phone number"
+          },
+          "email": {
+            "type": "string",
+            "description": "Company email address"
+          },
+          "website": {
+            "type": "string",
+            "description": "Company website URL"
+          },
+          "logo": {
+            "type": "string",
+            "description": "Company logo URL"
+          },
+          "userId": {
+            "type": "string",
+            "description": "User ID associated with the company"
+          },
+          "image": {
+            "type": "string",
+            "description": "Company image URL"
+          },
+          "cover_image": {
+            "type": "string",
+            "description": "Company cover image URL"
+          }
+        },
+        "required": [
+          "juristicId",
+          "nameTh",
+          "address",
+          "registerdCapital",
+          "employeeCount",
+          "userId"
+        ]
       },
       "CreateRevenueStreamDto": {
         "type": "object",
@@ -4432,79 +6168,31 @@
       },
       "CreateCompanyRevenueDto": {
         "type": "object",
-        "properties": {}
-      },
-      "PaginationMetadata": {
-        "type": "object",
         "properties": {
-          "page": {
+          "year": {
             "type": "number",
-            "description": "Current page number (1-based)"
+            "description": "Year of the revenue record",
+            "example": 2024,
+            "minimum": 1900,
+            "maximum": 2100
           },
-          "limit": {
-            "type": "number",
-            "description": "Number of items per page"
+          "companyId": {
+            "type": "string",
+            "description": "Company ID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
           },
           "total": {
             "type": "number",
-            "description": "Total number of items available"
-          },
-          "pageCount": {
-            "type": "number",
-            "description": "Total number of pages"
-          },
-          "hasNextPage": {
-            "type": "boolean",
-            "description": "Has next page"
-          },
-          "hasPreviousPage": {
-            "type": "boolean",
-            "description": "Has previous page"
+            "description": "Total revenue amount",
+            "example": 1000000,
+            "minimum": 0
           }
         },
         "required": [
-          "page",
-          "limit",
-          "total",
-          "pageCount",
-          "hasNextPage",
-          "hasPreviousPage"
+          "year",
+          "companyId",
+          "total"
         ]
-      },
-      "ResponseMetadata": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "description": "Data returned from the request"
-          },
-          "meta": {
-            "description": "Pagination information",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PaginationMetadata"
-              }
-            ]
-          },
-          "success": {
-            "type": "boolean",
-            "description": "Request success status",
-            "default": true
-          },
-          "message": {
-            "type": "string",
-            "description": "Optional message"
-          }
-        },
-        "required": [
-          "data",
-          "meta",
-          "success"
-        ]
-      },
-      "CreatePortfolioWithImagesAndStandardsDto": {
-        "type": "object",
-        "properties": {}
       },
       "FavoritePortfolioDto": {
         "type": "object",
@@ -4531,17 +6219,180 @@
           "portfolioId"
         ]
       },
-      "UpdatePortfolioDto": {
-        "type": "object",
-        "properties": {}
+      "StandardsType": {
+        "type": "string",
+        "enum": [
+          "ERSB",
+          "PEGI",
+          "CERO",
+          "USK",
+          "ACB",
+          "IARC",
+          "GRAC",
+          "VSC",
+          "OFLC",
+          "BBFC",
+          "FPB",
+          "RARS",
+          "GSRB",
+          "GSRR",
+          "MPA",
+          "EIRIN",
+          "NBTC",
+          "ESRB"
+        ],
+        "description": "Type of standard"
       },
-      "CreateStandardDto": {
+      "IndustryDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Industry name",
+            "example": "Information Technology"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Industry slug identifier",
+            "example": "information-technology"
+          }
+        },
+        "required": [
+          "name",
+          "slug"
+        ]
       },
-      "UpdateStandardDto": {
+      "StandardResponseDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier",
+            "example": "standard-123-uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "Standard name",
+            "example": "ISO 27001 Information Security Management"
+          },
+          "type": {
+            "description": "Type of standard",
+            "example": "CERTIFICATION",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StandardsType"
+              }
+            ]
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the standard",
+            "example": "International standard for information security management systems"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image path for the standard",
+            "example": "/uploads/standards/iso-27001.png"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug this standard belongs to",
+            "example": "information-technology"
+          },
+          "industry": {
+            "description": "Associated industry data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IndustryDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type",
+          "industrySlug",
+          "industry"
+        ]
+      },
+      "StandardsListApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Success status",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message",
+            "example": "Standards retrieved successfully"
+          },
+          "data": {
+            "description": "List of standards",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StandardResponseDto"
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Pagination metadata",
+            "properties": {
+              "total": {
+                "type": "number",
+                "example": 50
+              },
+              "page": {
+                "type": "number",
+                "example": 1
+              },
+              "limit": {
+                "type": "number",
+                "example": 10
+              },
+              "totalPages": {
+                "type": "number",
+                "example": 5
+              }
+            }
+          }
+        },
+        "required": [
+          "success",
+          "message",
+          "data",
+          "metadata"
+        ]
+      },
+      "StandardApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Success status",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message",
+            "example": "Standard retrieved successfully"
+          },
+          "data": {
+            "description": "Standard data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StandardResponseDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "success",
+          "message",
+          "data"
+        ]
       },
       "CreateIndustryDto": {
         "type": "object",
@@ -4549,12 +6400,27 @@
           "name": {
             "type": "string",
             "description": "Industry name",
-            "example": "Game Development"
+            "example": "Information Technology"
           },
           "slug": {
             "type": "string",
             "description": "Industry slug (URL friendly identifier)",
-            "example": "game-development"
+            "example": "information-technology"
+          },
+          "color": {
+            "type": "string",
+            "description": "Color code associated with the industry",
+            "example": "#3498db"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the industry",
+            "example": "Technology sector including software development, IT services, and digital solutions"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL for the industry",
+            "example": "https://example.com/industry-image.jpg"
           }
         },
         "required": [
@@ -4607,14 +6473,66 @@
           "name": {
             "type": "string",
             "description": "Updated industry name",
-            "example": "Game Development & Design"
+            "example": "Information Technology & Services"
           },
           "slug": {
             "type": "string",
             "description": "Updated industry slug",
-            "example": "game-dev-design"
+            "example": "information-technology-services"
+          },
+          "color": {
+            "type": "string",
+            "description": "Updated color code for the industry",
+            "example": "#2980b9"
+          },
+          "description": {
+            "type": "string",
+            "description": "Updated description of the industry",
+            "example": "Comprehensive technology sector including software development, IT services, digital solutions, and emerging technologies"
+          },
+          "image": {
+            "type": "string",
+            "description": "Updated image URL for the industry",
+            "example": "https://example.com/updated-industry-image.jpg"
           }
         }
+      },
+      "IndustryBasicResponseDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Industry name",
+            "example": "Information Technology"
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL-friendly slug of the industry",
+            "example": "information-technology"
+          },
+          "color": {
+            "type": "string",
+            "description": "Color code associated with the industry",
+            "example": "#3498db"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the industry",
+            "example": "Technology sector including software development, IT services, and digital solutions"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL for the industry",
+            "example": "https://example.com/industry-image.jpg"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "color",
+          "description",
+          "image"
+        ]
       },
       "CreateSkillDto": {
         "type": "object",
@@ -4646,73 +6564,42 @@
           "industrySlug"
         ]
       },
-      "IndustryDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Industry name"
-          },
-          "slug": {
-            "type": "string",
-            "description": "Industry slug identifier"
-          }
-        },
-        "required": [
-          "name",
-          "slug"
-        ]
-      },
       "SkillResponseDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "description": "Unique identifier"
-          },
           "title": {
             "type": "string",
-            "description": "Skill title"
+            "description": "Skill title",
+            "example": "JavaScript Programming"
           },
           "slug": {
             "type": "string",
-            "description": "Skill slug identifier"
-          },
-          "group": {
-            "type": "string",
-            "description": "Optional skill group"
-          },
-          "industrySlug": {
-            "type": "string",
-            "description": "Associated industry slug"
+            "description": "Skill slug",
+            "example": "javascript-programming"
           },
           "industry": {
-            "description": "Associated industry data",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IndustryDto"
+            "type": "object",
+            "description": "Associated industry information",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "Information Technology"
+              },
+              "slug": {
+                "type": "string",
+                "example": "information-technology"
+              },
+              "color": {
+                "type": "string",
+                "example": "#3498db"
               }
-            ]
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Creation timestamp"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Last update timestamp"
+            }
           }
         },
         "required": [
-          "id",
           "title",
           "slug",
-          "industrySlug",
-          "industry",
-          "createdAt",
-          "updatedAt"
+          "industry"
         ]
       },
       "UpdateSkillDto": {
@@ -4763,49 +6650,39 @@
       "TagResponseDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "description": "Unique identifier"
-          },
           "name": {
             "type": "string",
-            "description": "Tag name"
+            "description": "Tag name",
+            "example": "Programming"
           },
           "slug": {
             "type": "string",
-            "description": "Tag slug identifier"
-          },
-          "industrySlug": {
-            "type": "string",
-            "description": "Associated industry slug"
+            "description": "Tag slug",
+            "example": "programming"
           },
           "industry": {
-            "description": "Associated industry data",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IndustryDto"
+            "type": "object",
+            "description": "Associated industry information",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "Information Technology"
+              },
+              "slug": {
+                "type": "string",
+                "example": "information-technology"
+              },
+              "color": {
+                "type": "string",
+                "example": "#3498db"
               }
-            ]
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Creation timestamp"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Last update timestamp"
+            }
           }
         },
         "required": [
-          "id",
           "name",
           "slug",
-          "industrySlug",
-          "industry",
-          "createdAt",
-          "updatedAt"
+          "industry"
         ]
       },
       "UpdateTagDto": {
@@ -4827,19 +6704,29 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of the channel",
+            "example": "Mobile Development"
           },
           "slug": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique slug for the channel",
+            "example": "mobile-development"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Optional description of the channel",
+            "example": "Mobile app development and related services"
           },
           "image": {
-            "type": "string"
+            "type": "string",
+            "description": "Optional image URL for the channel",
+            "example": "https://example.com/images/mobile-dev.jpg"
           },
           "industrySlug": {
-            "type": "string"
+            "type": "string",
+            "description": "Industry slug this channel belongs to",
+            "example": "technology"
           }
         },
         "required": [
@@ -4851,68 +6738,68 @@
       "ChannelResponseDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "description": "Unique identifier"
-          },
           "name": {
             "type": "string",
-            "description": "Channel name"
+            "description": "Channel name",
+            "example": "Web Development"
           },
           "slug": {
             "type": "string",
-            "description": "Channel slug identifier"
-          },
-          "industrySlug": {
-            "type": "string",
-            "description": "Associated industry slug"
+            "description": "Channel slug",
+            "example": "web-development"
           },
           "industry": {
-            "description": "Associated industry data",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IndustryDto"
+            "type": "object",
+            "description": "Associated industry information",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "Information Technology"
+              },
+              "slug": {
+                "type": "string",
+                "example": "information-technology"
+              },
+              "color": {
+                "type": "string",
+                "example": "#3498db"
               }
-            ]
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Creation timestamp"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Last update timestamp"
+            }
           }
         },
         "required": [
-          "id",
           "name",
           "slug",
-          "industrySlug",
-          "industry",
-          "createdAt",
-          "updatedAt"
+          "industry"
         ]
       },
       "UpdateChannelDto": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of the channel",
+            "example": "Mobile Development"
           },
           "slug": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique slug for the channel",
+            "example": "mobile-development"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Optional description of the channel",
+            "example": "Mobile app development and related services"
           },
           "image": {
-            "type": "string"
+            "type": "string",
+            "description": "Optional image URL for the channel",
+            "example": "https://example.com/images/mobile-dev.jpg"
           },
           "industrySlug": {
-            "type": "string"
+            "type": "string",
+            "description": "Industry slug this channel belongs to",
+            "example": "technology"
           }
         }
       },
@@ -5027,6 +6914,50 @@
         },
         "required": [
           "refreshToken"
+        ]
+      },
+      "AdminSignupDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Admin username",
+            "example": "admin123"
+          },
+          "email": {
+            "type": "string",
+            "description": "Admin email address",
+            "example": "admin@depa.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "Admin password",
+            "example": "SecureAdminPass123!"
+          }
+        },
+        "required": [
+          "username",
+          "email",
+          "password"
+        ]
+      },
+      "AdminSigninDto": {
+        "type": "object",
+        "properties": {
+          "usernameOrEmail": {
+            "type": "string",
+            "description": "Admin username or email address",
+            "example": "admin123"
+          },
+          "password": {
+            "type": "string",
+            "description": "Admin password",
+            "example": "SecureAdminPass123!"
+          }
+        },
+        "required": [
+          "usernameOrEmail",
+          "password"
         ]
       },
       "CreateLookingForDto": {

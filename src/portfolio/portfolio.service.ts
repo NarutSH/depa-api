@@ -6,7 +6,11 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePortfolioDto } from './dto/create-portfolio.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { FavoriteAction, PortfolioImageType } from 'generated/prisma';
+import {
+  FavoriteAction,
+  PortfolioImageType,
+  Portfolio,
+} from 'generated/prisma';
 import { QueryMetadataDto, ResponseMetadata } from 'src/utils';
 import { QueryUtilsService } from 'src/utils/services/query-utils.service';
 import {
@@ -15,6 +19,10 @@ import {
   GetAllCommentsResponse,
   UpdateCommentResponse,
 } from './types/comment.types';
+import {
+  FavoriteStatusResponse,
+  BatchCreateResult,
+} from './dto/portfolio-response.dto';
 
 @Injectable()
 export class PortfolioService {
@@ -23,7 +31,7 @@ export class PortfolioService {
     private readonly queryUtils: QueryUtilsService,
   ) {}
 
-  async getAllPortfolios(queryDto?: QueryMetadataDto) {
+  async getAllPortfolios(queryDto?: QueryMetadataDto): Promise<any> {
     // Define searchable fields for portfolios
     const searchableFields = ['title', 'description', 'tags'];
 
@@ -104,7 +112,7 @@ export class PortfolioService {
     };
   }
 
-  async getPortfolios(queryDto: QueryMetadataDto) {
+  async getPortfolios(queryDto: QueryMetadataDto): Promise<any> {
     // Ensure we have valid pagination values
     const page = Number(queryDto.page) || 1;
     const limit = Number(queryDto.limit) || 10;
@@ -197,7 +205,7 @@ export class PortfolioService {
     );
   }
 
-  async getPortfolioById(id: string) {
+  async getPortfolioById(id: string): Promise<any> {
     const model = await this.prismaService.portfolio.findUnique({
       where: { id },
       include: {
@@ -231,7 +239,7 @@ export class PortfolioService {
     };
   }
 
-  async getPortfolioByIndustry(industrySlug: string) {
+  async getPortfolioByIndustry(industrySlug: string): Promise<any[]> {
     console.log('industrySlug', industrySlug);
     return this.prismaService.portfolio.findMany({
       where: {
@@ -285,7 +293,9 @@ export class PortfolioService {
     });
   }
 
-  async getPortfolioByCompanyJuristicId(companyJuristicId: string) {
+  async getPortfolioByCompanyJuristicId(
+    companyJuristicId: string,
+  ): Promise<any[]> {
     return this.prismaService.portfolio.findMany({
       where: { companyJuristicId },
 
@@ -313,7 +323,7 @@ export class PortfolioService {
       },
     });
   }
-  async getPortfolioByFreelanceId(freelanceId: string) {
+  async getPortfolioByFreelanceId(freelanceId: string): Promise<any[]> {
     return this.prismaService.portfolio.findMany({
       where: { freelanceId },
 
@@ -347,7 +357,7 @@ export class PortfolioService {
       industryTags?: string[];
       industryLookingFor?: string[];
     },
-  ) {
+  ): Promise<Portfolio> {
     if (!data.freelanceId && !data.companyJuristicId) {
       throw new NotFoundException(
         'Freelance ID or Company Juristic ID is required',
@@ -398,7 +408,10 @@ export class PortfolioService {
     return portfolio;
   }
 
-  async addStandardsToPortfolio(portfolioId: string, standardIds: string[]) {
+  async addStandardsToPortfolio(
+    portfolioId: string,
+    standardIds: string[],
+  ): Promise<BatchCreateResult> {
     // Remove duplicate standardIds to avoid unique constraint error
     const uniqueStandardIds = Array.from(new Set(standardIds));
     const result = await this.prismaService.portfolioStandards.createMany({
@@ -416,7 +429,7 @@ export class PortfolioService {
     portfolioId: string,
     imagePaths: string[],
     type: PortfolioImageType,
-  ) {
+  ): Promise<BatchCreateResult> {
     const result = await this.prismaService.portfolioImage.createMany({
       data: imagePaths.map((path) => ({
         portfolioId,
@@ -428,7 +441,7 @@ export class PortfolioService {
     return result;
   }
 
-  async deletePortfolio(id: string) {
+  async deletePortfolio(id: string): Promise<Portfolio> {
     const portfolio = await this.prismaService.portfolio.findUnique({
       where: { id },
     });
@@ -450,7 +463,7 @@ export class PortfolioService {
     portfolioId: string,
     userId: string,
     action: FavoriteAction,
-  ) {
+  ): Promise<any> {
     const portfolio = await this.prismaService.portfolio.findUnique({
       where: { id: portfolioId },
     });
@@ -495,7 +508,10 @@ export class PortfolioService {
     });
   }
 
-  async getFavoriteStatus(portfolioId: string, userId: string) {
+  async getFavoriteStatus(
+    portfolioId: string,
+    userId: string,
+  ): Promise<FavoriteStatusResponse> {
     const favorite = await this.prismaService.favorite.findUnique({
       where: {
         userId_portfolioId: {
@@ -513,7 +529,7 @@ export class PortfolioService {
     };
   }
 
-  async getUserFavorites(userId: string) {
+  async getUserFavorites(userId: string): Promise<any[]> {
     const favorites = await this.prismaService.favorite.findMany({
       where: {
         userId,
@@ -793,7 +809,7 @@ export class PortfolioService {
       industryLookingFor?: string[];
       standards?: string[];
     },
-  ) {
+  ): Promise<Portfolio> {
     const portfolio = await this.prismaService.portfolio.findUnique({
       where: { id },
     });
@@ -866,7 +882,7 @@ export class PortfolioService {
     portfolioId: string,
     imagePaths: string[],
     type: PortfolioImageType,
-  ) {
+  ): Promise<void> {
     // Delete existing images of this type for the portfolio
     await this.prismaService.portfolioImage.deleteMany({
       where: { portfolioId, type },
@@ -883,7 +899,7 @@ export class PortfolioService {
     }
   }
 
-  async getPortfolioRandom(limit: number) {
+  async getPortfolioRandom(limit: number): Promise<any[]> {
     try {
       console.log('Getting random portfolios with limit:', limit);
       // Get total count

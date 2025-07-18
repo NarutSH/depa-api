@@ -2,12 +2,19 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import CreateCompanyDto from './dto/create-company.dto';
 import { QueryMetadataDto } from 'src/utils';
+import {
+  GetCompaniesResponse,
+  CompanyWithExtendedUser,
+  CompanyWithUser,
+  CompanyWithRevenue,
+} from './dto/company-response.dto';
+import { Company } from 'generated/prisma';
 
 @Injectable()
 export class CompanyService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getCompanies(query: QueryMetadataDto) {
+  async getCompanies(query: QueryMetadataDto): Promise<GetCompaniesResponse> {
     const { page = 1, limit = 10, search, filter } = query;
     const skip = query.getSkip();
     const sortObj = query.getSortObject();
@@ -71,7 +78,7 @@ export class CompanyService {
     };
   }
 
-  async getAl(industry: string) {
+  async getAl(industry: string): Promise<CompanyWithExtendedUser[]> {
     try {
       const whereClause = industry ? { industries: { has: industry } } : {};
       return await this.prismaService.company.findMany({
@@ -92,7 +99,7 @@ export class CompanyService {
     }
   }
 
-  async getByUserId(userId: string) {
+  async getByUserId(userId: string): Promise<Company> {
     try {
       const company = await this.prismaService.company.findUnique({
         where: {
@@ -113,7 +120,7 @@ export class CompanyService {
     }
   }
 
-  async create(data: CreateCompanyDto) {
+  async create(data: CreateCompanyDto): Promise<Company> {
     try {
       const company = await this.prismaService.company.create({ data });
 
@@ -132,7 +139,7 @@ export class CompanyService {
     }
   }
 
-  async update(id: string, data: CreateCompanyDto) {
+  async update(id: string, data: CreateCompanyDto): Promise<Company> {
     const company = await this.prismaService.company.findUnique({
       where: { id },
     });
@@ -141,7 +148,7 @@ export class CompanyService {
     }
     return this.prismaService.company.update({ where: { id }, data });
   }
-  async updateByJuristic(id: string, data: CreateCompanyDto) {
+  async updateByJuristic(id: string, data: CreateCompanyDto): Promise<Company> {
     const company = await this.prismaService.company.findUnique({
       where: { juristicId: id },
     });
@@ -154,7 +161,7 @@ export class CompanyService {
     });
   }
 
-  async getById(id: string) {
+  async getById(id: string): Promise<CompanyWithUser> {
     const company = await this.prismaService.company.findUnique({
       where: { id },
       include: {
@@ -167,7 +174,7 @@ export class CompanyService {
     return company;
   }
 
-  async getByJuristicId(juristicId: string) {
+  async getByJuristicId(juristicId: string): Promise<CompanyWithRevenue> {
     const company = await this.prismaService.company.findUnique({
       where: {
         juristicId,
