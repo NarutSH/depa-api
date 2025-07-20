@@ -375,7 +375,7 @@ export class RevenueStreamController {
   @Post('bulk')
   @ApiOperation({ summary: 'Create multiple revenue stream records' })
   @ApiBody({
-    type: () => [CreateRevenueStreamDto],
+    type: [CreateRevenueStreamDto],
     examples: {
       example1: {
         summary: 'Bulk revenue stream creation',
@@ -626,7 +626,7 @@ export class RevenueStreamController {
   @Post('bulk-values')
   @ApiOperation({ summary: 'Bulk update or create revenue stream values' })
   @ApiBody({
-    type: () => [UpdateRevenueValueDto],
+    type: [UpdateRevenueValueDto],
     examples: {
       example1: {
         summary: 'Bulk update revenue values',

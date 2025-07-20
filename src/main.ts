@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-// import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
@@ -77,27 +77,27 @@ async function bootstrap() {
   );
 
   // Swagger documentation setup
-  // const config = new DocumentBuilder()
-  //   .setTitle('DEPA API')
-  //   .setDescription('The DEPA API documentation')
-  //   .setVersion('1.0')
-  //   .addBearerAuth()
-  //   .addTag('Auth', 'Authentication endpoints')
-  //   .addTag('Users', 'User management endpoints')
-  //   .addTag('Portfolio', 'Portfolio management endpoints')
-  //   .addTag('Company', 'Company management endpoints')
-  //   .addTag('Freelance', 'Freelance management endpoints')
-  //   .addTag('Health', 'Health check endpoints')
-  //   .build();
-  // const document = SwaggerModule.createDocument(app, config);
+  const config = new DocumentBuilder()
+    .setTitle('DEPA API')
+    .setDescription('The DEPA API documentation')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .addTag('Auth', 'Authentication endpoints')
+    .addTag('Users', 'User management endpoints')
+    .addTag('Portfolio', 'Portfolio management endpoints')
+    .addTag('Company', 'Company management endpoints')
+    .addTag('Freelance', 'Freelance management endpoints')
+    .addTag('Health', 'Health check endpoints')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
 
-  // // Save Swagger JSON to file
-  // fs.writeFileSync(
-  //   path.resolve(process.cwd(), 'swagger.json'),
-  //   JSON.stringify(document, null, 2),
-  // );
+  // Save Swagger JSON to file
+  fs.writeFileSync(
+    path.resolve(process.cwd(), 'swagger.json'),
+    JSON.stringify(document, null, 2),
+  );
 
-  // SwaggerModule.setup('api-docs', app, document);
+  SwaggerModule.setup('api-docs', app, document);
 
   const port = process.env.PORT || 8000;
   await app.listen(port);

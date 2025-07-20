@@ -10,7 +10,6 @@ import { UpdateIndustryDto } from './dto/update-industry.dto';
 import {
   IndustryBasicResponse,
   IndustryWithAllRelations,
-  IndustryWithSkills,
   SkillWithIndustry,
   TagWithIndustry,
   ChannelWithIndustry,
@@ -54,15 +53,13 @@ export class IndustryService {
     });
   }
 
-  async getSkills(): Promise<IndustryWithSkills[]> {
+  async getSkills(): Promise<any[]> {
     return this.prismaService.industry.findMany({
       select: {
         id: true,
         name: true,
         slug: true,
         color: true,
-        description: true,
-        image: true,
         createdAt: true,
         updatedAt: true,
         Skill: {

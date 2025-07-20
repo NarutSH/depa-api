@@ -19,13 +19,6 @@ import { Public } from 'src/auth/decorators/public.decorator';
 import { QueryMetadataDto } from 'src/utils';
 import { CompanyService } from './company.service';
 import CreateCompanyDto from './dto/create-company.dto';
-import {
-  GetCompaniesResponse,
-  CompanyWithExtendedUser,
-  CompanyWithUser,
-  CompanyWithRevenue,
-} from './dto/company-response.dto';
-import { Company } from 'generated/prisma';
 
 @ApiTags('Company')
 @ApiBearerAuth()
@@ -39,44 +32,8 @@ export class CompanyController {
   @ApiResponse({
     status: 200,
     description: 'Return a paginated list of companies with their details',
-    schema: {
-      type: 'object',
-      properties: {
-        data: {
-          type: 'array',
-          items: {
-            allOf: [
-              { $ref: '#/components/schemas/Company' },
-              {
-                type: 'object',
-                properties: {
-                  user: { $ref: '#/components/schemas/User' },
-                  companyRevenue: {
-                    type: 'array',
-                    items: { $ref: '#/components/schemas/CompanyRevenue' },
-                  },
-                },
-              },
-            ],
-          },
-        },
-        meta: {
-          type: 'object',
-          properties: {
-            total: { type: 'number' },
-            page: { type: 'number' },
-            limit: { type: 'number' },
-            totalPages: { type: 'number' },
-            hasNext: { type: 'boolean' },
-            hasPrevious: { type: 'boolean' },
-          },
-        },
-      },
-    },
   })
-  async getCompanies(
-    @Query() query: QueryMetadataDto,
-  ): Promise<GetCompaniesResponse> {
+  async getCompanies(@Query() query: QueryMetadataDto) {
     return this.companyService.getCompanies(query);
   }
 
@@ -91,37 +48,8 @@ export class CompanyController {
   @ApiResponse({
     status: 200,
     description: 'Return all companies matching the optional industry filter',
-    schema: {
-      type: 'array',
-      items: {
-        allOf: [
-          { $ref: '#/components/schemas/Company' },
-          {
-            type: 'object',
-            properties: {
-              user: {
-                allOf: [
-                  { $ref: '#/components/schemas/User' },
-                  {
-                    type: 'object',
-                    properties: {
-                      industriesRelated: { type: 'array' },
-                      industryChannels: { type: 'array' },
-                      industrySkills: { type: 'array' },
-                      industryTags: { type: 'array' },
-                    },
-                  },
-                ],
-              },
-            },
-          },
-        ],
-      },
-    },
   })
-  async getAl(
-    @Query('industry') industry: string,
-  ): Promise<CompanyWithExtendedUser[]> {
+  async getAl(@Query('industry') industry: string) {
     return this.companyService.getAl(industry);
   }
 
@@ -131,13 +59,12 @@ export class CompanyController {
   @ApiResponse({
     status: 200,
     description: 'Return the company with the specified user ID',
-    schema: { $ref: '#/components/schemas/Company' },
   })
   @ApiResponse({
     status: 404,
     description: 'Company not found',
   })
-  async getByUserId(@Param('userId') userId: string): Promise<Company> {
+  async getByUserId(@Param('userId') userId: string) {
     return this.companyService.getByUserId(userId);
   }
 
@@ -146,9 +73,8 @@ export class CompanyController {
   @ApiResponse({
     status: 201,
     description: 'The company has been successfully created',
-    schema: { $ref: '#/components/schemas/Company' },
   })
-  async create(@Body() data: CreateCompanyDto): Promise<Company> {
+  async create(@Body() data: CreateCompanyDto) {
     return this.companyService.create(data);
   }
 
@@ -161,16 +87,12 @@ export class CompanyController {
   @ApiResponse({
     status: 200,
     description: 'The company has been successfully updated',
-    schema: { $ref: '#/components/schemas/Company' },
   })
   @ApiResponse({
     status: 404,
     description: 'Company not found',
   })
-  async update(
-    @Param('id') id: string,
-    @Body() data: CreateCompanyDto,
-  ): Promise<Company> {
+  async update(@Param('id') id: string, @Body() data: CreateCompanyDto) {
     return this.companyService.update(id, data);
   }
 
@@ -183,7 +105,6 @@ export class CompanyController {
   @ApiResponse({
     status: 200,
     description: 'The company has been successfully updated',
-    schema: { $ref: '#/components/schemas/Company' },
   })
   @ApiResponse({
     status: 404,
@@ -192,7 +113,7 @@ export class CompanyController {
   async updateByJuristic(
     @Param('juristicId') juristicId: string,
     @Body() data: CreateCompanyDto,
-  ): Promise<Company> {
+  ) {
     return this.companyService.updateByJuristic(juristicId, data);
   }
 
@@ -203,23 +124,12 @@ export class CompanyController {
   @ApiResponse({
     status: 200,
     description: 'Return the company with the specified ID',
-    schema: {
-      allOf: [
-        { $ref: '#/components/schemas/Company' },
-        {
-          type: 'object',
-          properties: {
-            user: { $ref: '#/components/schemas/User' },
-          },
-        },
-      ],
-    },
   })
   @ApiResponse({
     status: 404,
     description: 'Company not found',
   })
-  async getById(@Param('id') id: string): Promise<CompanyWithUser> {
+  async getById(@Param('id') id: string) {
     return this.companyService.getById(id);
   }
 
@@ -233,28 +143,12 @@ export class CompanyController {
   @ApiResponse({
     status: 200,
     description: 'Return the company with the specified juristic ID',
-    schema: {
-      allOf: [
-        { $ref: '#/components/schemas/Company' },
-        {
-          type: 'object',
-          properties: {
-            companyRevenue: {
-              type: 'array',
-              items: { $ref: '#/components/schemas/CompanyRevenue' },
-            },
-          },
-        },
-      ],
-    },
   })
   @ApiResponse({
     status: 404,
     description: 'Company not found',
   })
-  async getByJuristicId(
-    @Param('juristicId') juristicId: string,
-  ): Promise<CompanyWithRevenue> {
+  async getByJuristicId(@Param('juristicId') juristicId: string) {
     return this.companyService.getByJuristicId(juristicId);
   }
 }

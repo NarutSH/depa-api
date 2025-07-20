@@ -21,30 +21,18 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import { SkillResponseDto } from './dto/skill-response.dto';
 import { CreateIndustryDto } from './dto/create-industry.dto';
 import { UpdateIndustryDto } from './dto/update-industry.dto';
 import { IndustryResponseDto } from './dto/industry-response.dto';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { FindTagsQueryDto } from './dto/find-tags-query.dto';
+import { TagResponseDto } from './dto/tag-response.dto';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
 import { FindChannelsQueryDto } from './dto/find-channels-query.dto';
-import {
-  IndustryBasicResponse,
-  IndustryWithAllRelations,
-  SkillWithIndustry,
-  TagWithIndustry,
-  ChannelWithIndustry,
-  SkillResponse,
-  TagResponse,
-  ChannelResponse,
-  IndustryBasicResponseDto,
-  SkillResponseDto,
-  TagResponseDto,
-  ChannelResponseDto,
-} from './dto/industry-response.dto';
-import { Industry, Skill, Tag, Channel } from 'generated/prisma';
+import { ChannelResponseDto } from './dto/channel-response.dto';
 
 @ApiTags('Industry')
 @ApiBearerAuth()
@@ -60,149 +48,55 @@ export class IndustryController {
     type: IndustryResponseDto,
   })
   @Post()
-  createIndustry(
-    @Body() createIndustryDto: CreateIndustryDto,
-  ): Promise<Industry> {
+  createIndustry(@Body() createIndustryDto: CreateIndustryDto) {
     return this.industryService.createIndustry(createIndustryDto);
   }
 
-  @ApiOperation({ summary: 'Get all industries with pagination' })
+  @ApiOperation({ summary: 'Get all industries' })
   @ApiOkResponse({
-    description: 'List of industries with pagination support',
-    type: () => [IndustryResponseDto],
+    description: 'List of all industries',
+    type: [IndustryResponseDto],
   })
   @ApiQuery({
     name: 'skip',
     required: false,
-    description: 'Number of records to skip for pagination',
-    type: Number,
+    description: 'Number of records to skip',
   })
   @ApiQuery({
     name: 'take',
     required: false,
-    description: 'Number of records to take for pagination',
-    type: Number,
+    description: 'Number of records to take',
   })
   @Get('all')
   findAllIndustries(
     @Query('skip') skip?: number,
     @Query('take') take?: number,
-  ): Promise<Industry[]> {
+  ) {
     return this.industryService.findAllIndustries({
       skip: skip ? Number(skip) : undefined,
       take: take ? Number(take) : undefined,
     });
   }
 
-  @ApiOperation({ summary: 'Get an industry by ID with all relations' })
+  @ApiOperation({ summary: 'Get an industry by ID' })
   @ApiOkResponse({
-    description: 'Industry details including all related entities',
-    schema: {
-      allOf: [
-        { $ref: '#/components/schemas/Industry' },
-        {
-          type: 'object',
-          properties: {
-            Category: {
-              type: 'array',
-              items: { type: 'object' },
-              description: 'Industry categories',
-            },
-            Channel: {
-              type: 'array',
-              items: { type: 'object' },
-              description: 'Industry channels',
-            },
-            Source: {
-              type: 'array',
-              items: { type: 'object' },
-              description: 'Industry sources',
-            },
-            Segment: {
-              type: 'array',
-              items: { type: 'object' },
-              description: 'Industry segments',
-            },
-            Skill: {
-              type: 'array',
-              items: { type: 'object' },
-              description: 'Industry skills',
-            },
-            Tag: {
-              type: 'array',
-              items: { type: 'object' },
-              description: 'Industry tags',
-            },
-            LookingFor: {
-              type: 'array',
-              items: { type: 'object' },
-              description: 'Looking for options',
-            },
-          },
-        },
-      ],
-    },
+    description: 'Industry details including related entities',
+    type: IndustryResponseDto,
   })
-  @ApiParam({ name: 'id', description: 'Industry unique identifier' })
+  @ApiParam({ name: 'id', description: 'Industry ID' })
   @Get(':id')
-  findIndustryById(@Param('id') id: string): Promise<IndustryWithAllRelations> {
+  findIndustryById(@Param('id') id: string) {
     return this.industryService.findIndustryById(id);
   }
 
-  @ApiOperation({ summary: 'Get an industry by slug with all relations' })
+  @ApiOperation({ summary: 'Get an industry by slug' })
   @ApiOkResponse({
-    description: 'Industry details including all related entities',
-    schema: {
-      allOf: [
-        { $ref: '#/components/schemas/Industry' },
-        {
-          type: 'object',
-          properties: {
-            Category: {
-              type: 'array',
-              items: { type: 'object' },
-              description: 'Industry categories',
-            },
-            Channel: {
-              type: 'array',
-              items: { type: 'object' },
-              description: 'Industry channels',
-            },
-            Source: {
-              type: 'array',
-              items: { type: 'object' },
-              description: 'Industry sources',
-            },
-            Segment: {
-              type: 'array',
-              items: { type: 'object' },
-              description: 'Industry segments',
-            },
-            Skill: {
-              type: 'array',
-              items: { type: 'object' },
-              description: 'Industry skills',
-            },
-            Tag: {
-              type: 'array',
-              items: { type: 'object' },
-              description: 'Industry tags',
-            },
-            LookingFor: {
-              type: 'array',
-              items: { type: 'object' },
-              description: 'Looking for options',
-            },
-          },
-        },
-      ],
-    },
+    description: 'Industry details including related entities',
+    type: IndustryResponseDto,
   })
-  @ApiParam({ name: 'slug', description: 'Industry slug identifier' })
+  @ApiParam({ name: 'slug', description: 'Industry slug' })
   @Get('slug/:slug')
-  findIndustryBySlug(
-    @Param('slug') slug: string,
-  ): Promise<IndustryWithAllRelations> {
+  findIndustryBySlug(@Param('slug') slug: string) {
     return this.industryService.findIndustryBySlug(slug);
   }
 
@@ -211,12 +105,12 @@ export class IndustryController {
     description: 'Industry has been successfully updated',
     type: IndustryResponseDto,
   })
-  @ApiParam({ name: 'id', description: 'Industry unique identifier' })
+  @ApiParam({ name: 'id', description: 'Industry ID' })
   @Put(':id')
   updateIndustry(
     @Param('id') id: string,
     @Body() updateIndustryDto: UpdateIndustryDto,
-  ): Promise<Industry> {
+  ) {
     return this.industryService.updateIndustry(id, updateIndustryDto);
   }
 
@@ -225,9 +119,9 @@ export class IndustryController {
     description: 'Industry has been successfully deleted',
     type: IndustryResponseDto,
   })
-  @ApiParam({ name: 'id', description: 'Industry unique identifier' })
+  @ApiParam({ name: 'id', description: 'Industry ID' })
   @Delete(':id')
-  deleteIndustry(@Param('id') id: string): Promise<Industry> {
+  deleteIndustry(@Param('id') id: string) {
     return this.industryService.deleteIndustry(id);
   }
 
@@ -237,10 +131,9 @@ export class IndustryController {
   @ApiOkResponse({
     description:
       'List of all industries with categories, sources, and channels',
-    type: () => [IndustryBasicResponseDto],
   })
   @Get()
-  async getIndustries(): Promise<IndustryBasicResponse[]> {
+  async getIndustries() {
     return this.industryService.getAll();
   }
 
@@ -250,29 +143,17 @@ export class IndustryController {
     type: SkillResponseDto,
   })
   @Post('skills')
-  createSkill(@Body() createSkillDto: CreateSkillDto): Promise<Skill> {
+  createSkill(@Body() createSkillDto: CreateSkillDto) {
     return this.industryService.createSkill(createSkillDto);
   }
 
   @ApiOperation({ summary: 'Get all skills with optional filtering' })
   @ApiOkResponse({
     description: 'List of skills matching the query criteria',
-    type: () => [SkillResponseDto],
-  })
-  @ApiQuery({
-    name: 'industrySlug',
-    required: false,
-    description: 'Filter skills by industry slug',
-    type: String,
-  })
-  @ApiQuery({
-    name: 'search',
-    required: false,
-    description: 'Search skills by title',
-    type: String,
+    type: [SkillResponseDto],
   })
   @Get('skills/all')
-  findAllSkills(@Query() query: FindSkillsQueryDto): Promise<SkillResponse[]> {
+  findAllSkills(@Query() query: FindSkillsQueryDto) {
     return this.industryService.findAllSkills(query);
   }
 
@@ -282,34 +163,16 @@ export class IndustryController {
     name: 'industrySlug',
     required: false,
     description: 'Optional industry slug to filter by',
-    type: String,
   })
   @ApiOkResponse({
-    description: 'The skill data with industry information',
-    schema: {
-      allOf: [
-        { $ref: '#/components/schemas/Skill' },
-        {
-          type: 'object',
-          properties: {
-            industry: {
-              type: 'object',
-              properties: {
-                name: { type: 'string', example: 'Information Technology' },
-                slug: { type: 'string', example: 'information-technology' },
-                color: { type: 'string', example: '#3498db' },
-              },
-            },
-          },
-        },
-      ],
-    },
+    description: 'The skill data',
+    type: SkillResponseDto,
   })
   @Get('skills/:slug')
   findSkillBySlug(
     @Param('slug') slug: string,
     @Query('industrySlug') industrySlug?: string,
-  ): Promise<SkillWithIndustry> {
+  ) {
     return this.industryService.findSkillBySlug(slug, industrySlug);
   }
 
@@ -323,7 +186,7 @@ export class IndustryController {
   updateSkill(
     @Param('slug') slug: string,
     @Body() updateSkillDto: UpdateSkillDto,
-  ): Promise<Skill> {
+  ) {
     return this.industryService.updateSkill(slug, updateSkillDto);
   }
 
@@ -334,7 +197,7 @@ export class IndustryController {
     type: SkillResponseDto,
   })
   @Delete('skills/:slug')
-  deleteSkill(@Param('slug') slug: string): Promise<Skill> {
+  deleteSkill(@Param('slug') slug: string) {
     return this.industryService.deleteSkill(slug);
   }
 
@@ -344,29 +207,17 @@ export class IndustryController {
     type: TagResponseDto,
   })
   @Post('tags')
-  createTag(@Body() createTagDto: CreateTagDto): Promise<Tag> {
+  createTag(@Body() createTagDto: CreateTagDto) {
     return this.industryService.createTag(createTagDto);
   }
 
   @ApiOperation({ summary: 'Get all tags with optional filtering' })
   @ApiOkResponse({
     description: 'List of tags matching the query criteria',
-    type: () => [TagResponseDto],
-  })
-  @ApiQuery({
-    name: 'industrySlug',
-    required: false,
-    description: 'Filter tags by industry slug',
-    type: String,
-  })
-  @ApiQuery({
-    name: 'search',
-    required: false,
-    description: 'Search tags by name',
-    type: String,
+    type: [TagResponseDto],
   })
   @Get('tags/all')
-  findAllTags(@Query() query: FindTagsQueryDto): Promise<TagResponse[]> {
+  findAllTags(@Query() query: FindTagsQueryDto) {
     return this.industryService.findAllTags(query);
   }
 
@@ -376,34 +227,16 @@ export class IndustryController {
     name: 'industrySlug',
     required: false,
     description: 'Optional industry slug to filter by',
-    type: String,
   })
   @ApiOkResponse({
-    description: 'The tag data with industry information',
-    schema: {
-      allOf: [
-        { $ref: '#/components/schemas/Tag' },
-        {
-          type: 'object',
-          properties: {
-            industry: {
-              type: 'object',
-              properties: {
-                name: { type: 'string', example: 'Information Technology' },
-                slug: { type: 'string', example: 'information-technology' },
-                color: { type: 'string', example: '#3498db' },
-              },
-            },
-          },
-        },
-      ],
-    },
+    description: 'The tag data',
+    type: TagResponseDto,
   })
   @Get('tags/:slug')
   findTagBySlug(
     @Param('slug') slug: string,
     @Query('industrySlug') industrySlug?: string,
-  ): Promise<TagWithIndustry> {
+  ) {
     return this.industryService.findTagBySlug(slug, industrySlug);
   }
 
@@ -414,10 +247,7 @@ export class IndustryController {
     type: TagResponseDto,
   })
   @Put('tags/:slug')
-  updateTag(
-    @Param('slug') slug: string,
-    @Body() updateTagDto: UpdateTagDto,
-  ): Promise<Tag> {
+  updateTag(@Param('slug') slug: string, @Body() updateTagDto: UpdateTagDto) {
     return this.industryService.updateTag(slug, updateTagDto);
   }
 
@@ -428,7 +258,7 @@ export class IndustryController {
     type: TagResponseDto,
   })
   @Delete('tags/:slug')
-  deleteTag(@Param('slug') slug: string): Promise<Tag> {
+  deleteTag(@Param('slug') slug: string) {
     return this.industryService.deleteTag(slug);
   }
 
@@ -438,31 +268,17 @@ export class IndustryController {
     type: ChannelResponseDto,
   })
   @Post('channels')
-  createChannel(@Body() createChannelDto: CreateChannelDto): Promise<Channel> {
+  createChannel(@Body() createChannelDto: CreateChannelDto) {
     return this.industryService.createChannel(createChannelDto);
   }
 
   @ApiOperation({ summary: 'Get all channels with optional filtering' })
   @ApiOkResponse({
     description: 'List of channels matching the query criteria',
-    type: () => [ChannelResponseDto],
-  })
-  @ApiQuery({
-    name: 'industrySlug',
-    required: false,
-    description: 'Filter channels by industry slug',
-    type: String,
-  })
-  @ApiQuery({
-    name: 'search',
-    required: false,
-    description: 'Search channels by name',
-    type: String,
+    type: [ChannelResponseDto],
   })
   @Get('channels/all')
-  findAllChannels(
-    @Query() query: FindChannelsQueryDto,
-  ): Promise<ChannelResponse[]> {
+  findAllChannels(@Query() query: FindChannelsQueryDto) {
     return this.industryService.findAllChannels(query);
   }
 
@@ -472,34 +288,16 @@ export class IndustryController {
     name: 'industrySlug',
     required: false,
     description: 'Optional industry slug to filter by',
-    type: String,
   })
   @ApiOkResponse({
-    description: 'The channel data with industry information',
-    schema: {
-      allOf: [
-        { $ref: '#/components/schemas/Channel' },
-        {
-          type: 'object',
-          properties: {
-            industry: {
-              type: 'object',
-              properties: {
-                name: { type: 'string', example: 'Information Technology' },
-                slug: { type: 'string', example: 'information-technology' },
-                color: { type: 'string', example: '#3498db' },
-              },
-            },
-          },
-        },
-      ],
-    },
+    description: 'The channel data',
+    type: ChannelResponseDto,
   })
   @Get('channels/:slug')
   findChannelBySlug(
     @Param('slug') slug: string,
     @Query('industrySlug') industrySlug?: string,
-  ): Promise<ChannelWithIndustry> {
+  ) {
     return this.industryService.findChannelBySlug(slug, industrySlug);
   }
 
@@ -513,7 +311,7 @@ export class IndustryController {
   updateChannel(
     @Param('slug') slug: string,
     @Body() updateChannelDto: UpdateChannelDto,
-  ): Promise<Channel> {
+  ) {
     return this.industryService.updateChannel(slug, updateChannelDto);
   }
 
@@ -524,7 +322,7 @@ export class IndustryController {
     type: ChannelResponseDto,
   })
   @Delete('channels/:slug')
-  deleteChannel(@Param('slug') slug: string): Promise<Channel> {
+  deleteChannel(@Param('slug') slug: string) {
     return this.industryService.deleteChannel(slug);
   }
 }

@@ -6,7 +6,6 @@ export class FindTagsQueryDto {
   @ApiProperty({
     description: 'Number of items to skip for pagination',
     required: false,
-    example: 0,
     minimum: 0,
   })
   @IsOptional()
@@ -18,7 +17,6 @@ export class FindTagsQueryDto {
   @ApiProperty({
     description: 'Number of items to take for pagination',
     required: false,
-    example: 10,
     minimum: 1,
   })
   @IsOptional()
@@ -30,18 +28,9 @@ export class FindTagsQueryDto {
   @ApiProperty({
     description: 'Filter tags by industry slug',
     required: false,
-    example: 'information-technology',
+    example: 'game',
   })
   @IsString()
   @IsOptional()
   industrySlug?: string;
-
-  @ApiProperty({
-    description: 'Search tags by name (case-insensitive)',
-    required: false,
-    example: 'programming',
-  })
-  @IsString()
-  @IsOptional()
-  search?: string;
 }

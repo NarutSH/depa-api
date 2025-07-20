@@ -6,7 +6,7 @@ export class FindSkillsQueryDto {
   @ApiProperty({
     description: 'Number of items to skip for pagination',
     required: false,
-    example: 0,
+    // example: 0,
     minimum: 0,
   })
   @IsOptional()
@@ -18,7 +18,7 @@ export class FindSkillsQueryDto {
   @ApiProperty({
     description: 'Number of items to take for pagination',
     required: false,
-    example: 10,
+    // example: 10,
     minimum: 1,
   })
   @IsOptional()
@@ -30,18 +30,9 @@ export class FindSkillsQueryDto {
   @ApiProperty({
     description: 'Filter skills by industry slug',
     required: false,
-    example: 'information-technology',
+    example: 'game',
   })
   @IsString()
   @IsOptional()
   industrySlug?: string;
-
-  @ApiProperty({
-    description: 'Search skills by title (case-insensitive)',
-    required: false,
-    example: 'javascript',
-  })
-  @IsString()
-  @IsOptional()
-  search?: string;
 }

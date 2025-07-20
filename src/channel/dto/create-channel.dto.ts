@@ -2,44 +2,27 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateChannelDto {
-  @ApiProperty({
-    description: 'Name of the channel',
-    example: 'Mobile Development',
-  })
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({
-    description: 'Unique slug for the channel',
-    example: 'mobile-development',
-  })
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   slug: string;
 
-  @ApiProperty({
-    description: 'Optional description of the channel',
-    example: 'Mobile app development and related services',
-    required: false,
-  })
+  @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
   description?: string;
 
-  @ApiProperty({
-    description: 'Optional image URL for the channel',
-    example: 'https://example.com/images/mobile-dev.jpg',
-    required: false,
-  })
+  @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
   image?: string;
 
-  @ApiProperty({
-    description: 'Industry slug this channel belongs to',
-    example: 'technology',
-  })
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   industrySlug: string;

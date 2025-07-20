@@ -2,9 +2,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
 import { GetAllChannelsResponse } from './dto/channel-response.dto';
-import { ChannelQueryParams } from './dto/channel-query.dto';
 import { Injectable } from '@nestjs/common';
-import { Channel, Prisma } from 'generated/prisma';
+import { Channel } from 'generated/prisma';
 
 @Injectable()
 export class ChannelService {
@@ -14,10 +13,8 @@ export class ChannelService {
     return this.prisma.channel.create({ data });
   }
 
-  async findAll(
-    query: Partial<ChannelQueryParams> = {},
-  ): Promise<GetAllChannelsResponse> {
-    const where: Prisma.ChannelWhereInput = {};
+  async findAll(query: any = {}): Promise<GetAllChannelsResponse> {
+    const where: any = {};
     if (query.industry) {
       where.industrySlug = query.industry;
     }
@@ -27,12 +24,10 @@ export class ChannelService {
         ? (Number(query.page) - 1) * Number(query.limit)
         : undefined;
     const take = query.limit ? Number(query.limit) : undefined;
-    let orderBy: Prisma.ChannelOrderByWithRelationInput = { createdAt: 'desc' };
+    let orderBy: any = { createdAt: 'desc' };
     if (query.sort) {
       const [field, direction] = query.sort.split(':');
-      orderBy = {
-        [field]: direction === 'desc' ? 'desc' : 'asc',
-      } as Prisma.ChannelOrderByWithRelationInput;
+      orderBy = { [field]: direction === 'desc' ? 'desc' : 'asc' };
     }
     const [data, total] = await Promise.all([
       this.prisma.channel.findMany({ where, orderBy, skip, take }),

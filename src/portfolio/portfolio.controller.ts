@@ -15,33 +15,27 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
   ApiBody,
-  ApiConsumes,
   ApiOperation,
   ApiParam,
   ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+// import { PortfolioImageType } from '@prisma/client';
 import { Request } from 'express';
-import { PortfolioImageType } from 'generated/prisma';
-import { Public } from 'src/auth/decorators/public.decorator';
 import { UploadService } from 'src/upload/upload.service';
-import { QueryMetadataDto } from 'src/utils';
+import { QueryMetadataDto, ResponseMetadata } from 'src/utils';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import {
   CreatePortfolioDto,
   CreatePortfolioWithImagesAndStandardsDto,
 } from './dto/create-portfolio.dto';
 import { FavoritePortfolioDto } from './dto/favorite-portfolio.dto';
-import { FavoriteStatusResponse } from './dto/portfolio-response.dto';
 import { UpdatePortfolioDto } from './dto/update-portfolio.dto';
 import { PortfolioService } from './portfolio.service';
-import {
-  CreateCommentResponse,
-  DeleteCommentResponse,
-  GetAllCommentsResponse,
-  UpdateCommentResponse,
-} from './types/comment.types';
+import { PortfolioImageType } from 'generated/prisma';
+import { Public } from 'src/auth/decorators/public.decorator';
+// import { PortfolioImageType } from 'src/generated/prisma';
 
 @ApiTags('Portfolio')
 @ApiBearerAuth()
@@ -60,29 +54,6 @@ export class PortfolioController {
   @ApiResponse({
     status: 200,
     description: 'Successfully retrieved all portfolios',
-    schema: {
-      type: 'object',
-      properties: {
-        data: {
-          type: 'array',
-          items: {
-            allOf: [
-              { $ref: '#/components/schemas/Portfolio' },
-              {
-                type: 'object',
-                properties: {
-                  standards: { type: 'array' },
-                  Image: { type: 'array' },
-                  company: { type: 'object' },
-                  freelance: { type: 'object' },
-                },
-              },
-            ],
-          },
-        },
-        message: { type: 'string' },
-      },
-    },
   })
   @ApiQuery({
     name: 'search',
@@ -102,7 +73,7 @@ export class PortfolioController {
     type: Object,
     description: 'Filter criteria (e.g., industryTypeSlug)',
   })
-  async getAllPortfolios(@Query() query: QueryMetadataDto): Promise<any> {
+  async getAllPortfolios(@Query() query: QueryMetadataDto) {
     return this.portfolioService.getAllPortfolios(query);
   }
 
@@ -116,40 +87,7 @@ export class PortfolioController {
   @ApiResponse({
     status: 200,
     description: 'Successfully retrieved portfolios',
-    schema: {
-      type: 'object',
-      properties: {
-        data: {
-          type: 'array',
-          items: {
-            allOf: [
-              { $ref: '#/components/schemas/Portfolio' },
-              {
-                type: 'object',
-                properties: {
-                  standards: { type: 'array' },
-                  Image: { type: 'array' },
-                  company: { type: 'object' },
-                  freelance: { type: 'object' },
-                },
-              },
-            ],
-          },
-        },
-        meta: {
-          type: 'object',
-          properties: {
-            total: { type: 'number' },
-            page: { type: 'number' },
-            limit: { type: 'number' },
-            totalPages: { type: 'number' },
-            hasNext: { type: 'boolean' },
-            hasPrevious: { type: 'boolean' },
-          },
-        },
-        message: { type: 'string' },
-      },
-    },
+    type: ResponseMetadata,
   })
   @ApiQuery({
     name: 'page',
@@ -181,67 +119,21 @@ export class PortfolioController {
     type: Object,
     description: 'Filter criteria (e.g., industryTypeSlug)',
   })
-  async getPortfolios(@Query() query: QueryMetadataDto): Promise<any> {
+  async getPortfolios(@Query() query: QueryMetadataDto) {
     return this.portfolioService.getPortfolios(query);
   }
 
   @Get(':id')
   @Public()
-  @ApiOperation({ summary: 'Get portfolio by ID' })
-  @ApiParam({ name: 'id', description: 'Portfolio ID' })
-  @ApiResponse({
-    status: 200,
-    description: 'Successfully retrieved portfolio',
-    schema: {
-      allOf: [
-        { $ref: '#/components/schemas/Portfolio' },
-        {
-          type: 'object',
-          properties: {
-            standards: { type: 'array' },
-            Image: { type: 'array' },
-            company: { type: 'object' },
-            freelance: { type: 'object' },
-          },
-        },
-      ],
-    },
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Portfolio not found',
-  })
-  async getPortfolio(@Param('id') id: string): Promise<any> {
+  async getPortfolio(@Param('id') id: string) {
     return this.portfolioService.getPortfolioById(id);
   }
 
   @Get('company/:companyJuristicId')
   @Public()
-  @ApiOperation({ summary: 'Get portfolios by company juristic ID' })
-  @ApiParam({ name: 'companyJuristicId', description: 'Company juristic ID' })
-  @ApiResponse({
-    status: 200,
-    description: 'Successfully retrieved portfolios',
-    schema: {
-      type: 'array',
-      items: {
-        allOf: [
-          { $ref: '#/components/schemas/Portfolio' },
-          {
-            type: 'object',
-            properties: {
-              standards: { type: 'array' },
-              Image: { type: 'array' },
-              company: { type: 'object' },
-            },
-          },
-        ],
-      },
-    },
-  })
   async getPortfolioByCompanyJuristicId(
     @Param('companyJuristicId') companyJuristicId: string,
-  ): Promise<any[]> {
+  ) {
     return this.portfolioService.getPortfolioByCompanyJuristicId(
       companyJuristicId,
     );
@@ -249,61 +141,13 @@ export class PortfolioController {
 
   @Get('freelance/:freelanceId')
   @Public()
-  @ApiOperation({ summary: 'Get portfolios by freelance ID' })
-  @ApiParam({ name: 'freelanceId', description: 'Freelance ID' })
-  @ApiResponse({
-    status: 200,
-    description: 'Successfully retrieved portfolios',
-    schema: {
-      type: 'array',
-      items: {
-        allOf: [
-          { $ref: '#/components/schemas/Portfolio' },
-          {
-            type: 'object',
-            properties: {
-              standards: { type: 'array' },
-              Image: { type: 'array' },
-              company: { type: 'object' },
-            },
-          },
-        ],
-      },
-    },
-  })
-  async getPortfolioByFreelanceId(
-    @Param('freelanceId') freelanceId: string,
-  ): Promise<any[]> {
+  async getPortfolioByFreelanceId(@Param('freelanceId') freelanceId: string) {
     return this.portfolioService.getPortfolioByFreelanceId(freelanceId);
   }
 
   @Get('industry/:industrySlug')
   @Public()
-  @ApiOperation({ summary: 'Get portfolios by industry slug' })
-  @ApiParam({ name: 'industrySlug', description: 'Industry slug' })
-  @ApiResponse({
-    status: 200,
-    description: 'Successfully retrieved portfolios',
-    schema: {
-      type: 'array',
-      items: {
-        allOf: [
-          { $ref: '#/components/schemas/Portfolio' },
-          {
-            type: 'object',
-            properties: {
-              standards: { type: 'array' },
-              Image: { type: 'array' },
-              company: { type: 'object' },
-            },
-          },
-        ],
-      },
-    },
-  })
-  async getPortfolioByIndustry(
-    @Param('industrySlug') industrySlug: string,
-  ): Promise<any[]> {
+  async getPortfolioByIndustry(@Param('industrySlug') industrySlug: string) {
     return this.portfolioService.getPortfolioByIndustry(industrySlug);
   }
 
@@ -318,48 +162,6 @@ export class PortfolioController {
       { name: 'main_image', maxCount: 1 },
     ]),
   )
-  @ApiOperation({ summary: 'Create a new portfolio' })
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        title: { type: 'string' },
-        description: { type: 'string' },
-        freelanceId: { type: 'string' },
-        companyId: { type: 'string' },
-        companyJuristicId: { type: 'string' },
-        tags: { type: 'array', items: { type: 'string' } },
-        looking_for: { type: 'array', items: { type: 'string' } },
-        link: { type: 'string' },
-        industryTypeSlug: { type: 'string' },
-        standards: { type: 'array', items: { type: 'string' } },
-        images: { type: 'array', items: { type: 'string', format: 'binary' } },
-        cover: { type: 'array', items: { type: 'string', format: 'binary' } },
-        main_image: {
-          type: 'array',
-          items: { type: 'string', format: 'binary' },
-        },
-      },
-    },
-  })
-  @ApiResponse({
-    status: 201,
-    description: 'Portfolio created successfully',
-    schema: {
-      allOf: [
-        { $ref: '#/components/schemas/Portfolio' },
-        {
-          type: 'object',
-          properties: {
-            standards: { type: 'array' },
-            Image: { type: 'array' },
-            company: { type: 'object' },
-          },
-        },
-      ],
-    },
-  })
   async createPortfolio(
     @Body() data: CreatePortfolioWithImagesAndStandardsDto,
     @UploadedFiles()
@@ -368,10 +170,11 @@ export class PortfolioController {
       cover: Express.Multer.File[];
       main_image: Express.Multer.File[];
     },
-  ): Promise<any> {
-    // const user = req.user as any;
+    @Req() req: Request,
+  ) {
+    const user = req.user as any;
 
-    // console.log('createPortfolio user', user);
+    console.log('createPortfolio user', user);
 
     const payload: CreatePortfolioDto = {
       title: data.title,
@@ -440,23 +243,10 @@ export class PortfolioController {
 
   @Post('favorite')
   // @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Toggle favorite status for a portfolio' })
-  @ApiBody({ type: FavoritePortfolioDto })
-  @ApiResponse({
-    status: 200,
-    description: 'Favorite status toggled successfully',
-    schema: {
-      type: 'object',
-      properties: {
-        message: { type: 'string' },
-        isFavorite: { type: 'boolean' },
-      },
-    },
-  })
   async toggleFavorite(
     @Body() favoriteDto: FavoritePortfolioDto,
     @Req() req: Request,
-  ): Promise<any> {
+  ) {
     const user = req.user as any;
     return this.portfolioService.toggleFavorite(
       favoriteDto.portfolioId,
@@ -468,23 +258,10 @@ export class PortfolioController {
   @Get('favorite/:portfolioId')
   @Public()
   // @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Get favorite status for a portfolio' })
-  @ApiParam({ name: 'portfolioId', description: 'Portfolio ID' })
-  @ApiResponse({
-    status: 200,
-    description: 'Favorite status retrieved successfully',
-    schema: {
-      type: 'object',
-      properties: {
-        isFavorite: { type: 'boolean' },
-        favoriteCount: { type: 'number' },
-      },
-    },
-  })
   async getFavoriteStatus(
     @Param('portfolioId') portfolioId: string,
     @Req() req: Request,
-  ): Promise<FavoriteStatusResponse> {
+  ) {
     const user = req.user as any;
     return this.portfolioService.getFavoriteStatus(portfolioId, user.userId);
   }
@@ -492,28 +269,7 @@ export class PortfolioController {
   @Get('favorites/user')
   @Public()
   // @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Get user favorite portfolios' })
-  @ApiResponse({
-    status: 200,
-    description: 'User favorite portfolios retrieved successfully',
-    schema: {
-      type: 'array',
-      items: {
-        allOf: [
-          { $ref: '#/components/schemas/Portfolio' },
-          {
-            type: 'object',
-            properties: {
-              standards: { type: 'array' },
-              Image: { type: 'array' },
-              company: { type: 'object' },
-            },
-          },
-        ],
-      },
-    },
-  })
-  async getUserFavorites(@Req() req: Request): Promise<any[]> {
+  async getUserFavorites(@Req() req: Request) {
     const user = req.user as any;
     return this.portfolioService.getUserFavorites(user.userId);
   }
@@ -521,22 +277,10 @@ export class PortfolioController {
   @Delete(':id')
   // @UseGuards(JwtAuthGuard, RolesGuard)
   // @Roles(Role.ADMIN, Role.COMPANY, Role.FREELANCE)
-  @ApiOperation({ summary: 'Delete a portfolio' })
-  @ApiParam({ name: 'id', description: 'Portfolio ID' })
-  @ApiResponse({
-    status: 200,
-    description: 'Portfolio deleted successfully',
-    schema: {
-      type: 'object',
-      properties: {
-        message: { type: 'string' },
-      },
-    },
-  })
   async deletePortfolio(
     @Param('id') id: string,
     //  @Req() req: Request
-  ): Promise<any> {
+  ) {
     // const user = req.user as any;
 
     // // If not admin, verify ownership before delete
@@ -568,9 +312,7 @@ export class PortfolioController {
   @ApiResponse({ status: 404, description: 'Portfolio not found' })
   @Get(':portfolioId/comments')
   @Public()
-  async getPortfolioComments(
-    @Param('portfolioId') portfolioId: string,
-  ): Promise<GetAllCommentsResponse> {
+  async getPortfolioComments(@Param('portfolioId') portfolioId: string) {
     return this.portfolioService.getPortfolioComments(portfolioId);
   }
 
@@ -584,7 +326,7 @@ export class PortfolioController {
   async createComment(
     @Body() commentDto: CreateCommentDto,
     @Req() req: Request,
-  ): Promise<CreateCommentResponse> {
+  ) {
     const user = req.user as any;
     return this.portfolioService.createComment(user.id, commentDto);
   }
@@ -604,7 +346,7 @@ export class PortfolioController {
     @Param('commentId') commentId: string,
     @Body('content') content: string,
     @Req() req: Request,
-  ): Promise<UpdateCommentResponse> {
+  ) {
     const user = req.user as any;
     return this.portfolioService.updateComment(commentId, user.id, content);
   }
@@ -623,7 +365,7 @@ export class PortfolioController {
   async deleteComment(
     @Param('commentId') commentId: string,
     @Req() req: Request,
-  ): Promise<DeleteCommentResponse> {
+  ) {
     const user = req.user as any;
     return this.portfolioService.deleteComment(
       commentId,
@@ -640,45 +382,6 @@ export class PortfolioController {
       { name: 'main_image', maxCount: 1 },
     ]),
   )
-  @ApiOperation({ summary: 'Update a portfolio' })
-  @ApiParam({ name: 'id', description: 'Portfolio ID' })
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        title: { type: 'string' },
-        description: { type: 'string' },
-        tags: { type: 'array', items: { type: 'string' } },
-        looking_for: { type: 'array', items: { type: 'string' } },
-        link: { type: 'string' },
-        standards: { type: 'array', items: { type: 'string' } },
-        images: { type: 'array', items: { type: 'string', format: 'binary' } },
-        cover: { type: 'array', items: { type: 'string', format: 'binary' } },
-        main_image: {
-          type: 'array',
-          items: { type: 'string', format: 'binary' },
-        },
-      },
-    },
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Portfolio updated successfully',
-    schema: {
-      allOf: [
-        { $ref: '#/components/schemas/Portfolio' },
-        {
-          type: 'object',
-          properties: {
-            standards: { type: 'array' },
-            Image: { type: 'array' },
-            company: { type: 'object' },
-          },
-        },
-      ],
-    },
-  })
   async updatePortfolio(
     @Param('id') id: string,
     @Body() data: UpdatePortfolioDto,
@@ -689,7 +392,7 @@ export class PortfolioController {
       main_image: Express.Multer.File[];
     },
     @Req() req: Request,
-  ): Promise<any> {
+  ) {
     // Prepare payload for update
     const payload = {
       ...data,

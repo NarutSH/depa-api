@@ -65,7 +65,7 @@ export class CreateFreelanceDto {
 
   @ApiProperty({
     description: 'Types of industries the freelancer works in',
-    type: () => [String],
+    type: [String],
     example: ['game', 'animation'],
     required: false,
   })

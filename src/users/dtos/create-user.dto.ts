@@ -2,91 +2,61 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsArray, IsEmail, IsOptional, IsString } from 'class-validator';
 
 class CreateUserDto {
-  @ApiProperty({
-    description: 'User full name in Thai',
-    example: 'สมชาย ใจดี',
-  })
+  @ApiProperty({ description: 'User full name in Thai' })
   @IsString()
   @IsOptional()
   fullnameTh?: string;
 
-  @ApiPropertyOptional({
-    description: 'User full name in English',
-    example: 'John Smith',
-  })
+  @ApiPropertyOptional({ description: 'User full name in English' })
   @IsOptional()
   @IsString()
   fullnameEn?: string;
 
-  @ApiPropertyOptional({
-    description: 'About the user - brief description or bio',
-    example:
-      'Experienced software developer with expertise in web applications',
-  })
+  @ApiPropertyOptional({ description: 'About the user' })
   @IsOptional()
   @IsString()
   about?: string;
 
-  @ApiPropertyOptional({
-    description: 'User phone number',
-    example: '+66812345678',
-  })
+  @ApiPropertyOptional({ description: 'User phone number' })
   @IsOptional()
   @IsString()
   phoneNumber?: string;
 
-  @ApiProperty({
-    description: 'User email address',
-    example: 'john.smith@example.com',
-  })
+  @ApiProperty({ description: 'User email address' })
   @IsEmail()
   email: string;
 
-  @ApiPropertyOptional({
-    description: 'User website URL',
-    example: 'https://johnsmith.dev',
-  })
+  @ApiPropertyOptional({ description: 'User website' })
   @IsOptional()
   @IsString()
   website?: string;
 
-  @ApiPropertyOptional({
-    description: 'User location',
-    example: 'Bangkok, Thailand',
-  })
+  @ApiPropertyOptional({ description: 'User location' })
   @IsOptional()
   @IsString()
   location?: string;
 
   @ApiProperty({
     description: 'Industries associated with the user',
-    type: () => [String],
-    example: ['information-technology', 'digital-marketing'],
+    type: [String],
+    example: ['Technology', 'Healthcare'],
   })
   @IsArray()
   industries: string[];
 
   @ApiPropertyOptional({
-    description: 'User tags with categories',
+    description: 'User tags',
     type: 'array',
     items: {
       type: 'object',
       properties: {
-        category: {
-          type: 'string',
-          description: 'Tag category',
-          example: 'skill',
-        },
-        name: {
-          type: 'string',
-          description: 'Tag name',
-          example: 'JavaScript',
-        },
+        category: { type: 'string' },
+        name: { type: 'string' },
       },
     },
     example: [
       { category: 'skill', name: 'JavaScript' },
-      { category: 'interest', name: 'Artificial Intelligence' },
+      { category: 'interest', name: 'AI' },
     ],
   })
   @IsArray()
@@ -102,16 +72,8 @@ class CreateUserDto {
     items: {
       type: 'object',
       properties: {
-        category: {
-          type: 'string',
-          description: 'Channel category',
-          example: 'email',
-        },
-        name: {
-          type: 'string',
-          description: 'Channel identifier',
-          example: 'support@example.com',
-        },
+        category: { type: 'string' },
+        name: { type: 'string' },
       },
     },
     example: [
@@ -126,26 +88,18 @@ class CreateUserDto {
   }>;
 
   @ApiProperty({
-    description: 'User specializations and expertise',
+    description: 'User specializations',
     type: 'array',
     items: {
       type: 'object',
       properties: {
-        category: {
-          type: 'string',
-          description: 'Specialization category',
-          example: 'programming',
-        },
-        name: {
-          type: 'string',
-          description: 'Specialization name',
-          example: 'Backend Development',
-        },
+        category: { type: 'string' },
+        name: { type: 'string' },
       },
     },
     example: [
       { category: 'programming', name: 'Backend Development' },
-      { category: 'design', name: 'UX/UI Design' },
+      { category: 'design', name: 'UX/UI' },
     ],
   })
   @IsArray()
@@ -154,11 +108,6 @@ class CreateUserDto {
     name: string;
   }>;
 
-  @ApiPropertyOptional({
-    description: 'Tags in JSON format (internal use)',
-    type: 'array',
-    items: { type: 'object' },
-  })
   @IsArray()
   @IsOptional()
   tags_json?: Array<{
@@ -166,11 +115,6 @@ class CreateUserDto {
     name: string;
   }>;
 
-  @ApiPropertyOptional({
-    description: 'Channels in JSON format (internal use)',
-    type: 'array',
-    items: { type: 'object' },
-  })
   @IsArray()
   @IsOptional()
   channels_json?: Array<{
@@ -178,11 +122,6 @@ class CreateUserDto {
     name: string;
   }>;
 
-  @ApiPropertyOptional({
-    description: 'Specialists in JSON format (internal use)',
-    type: 'array',
-    items: { type: 'object' },
-  })
   @IsArray()
   @IsOptional()
   specialists_json?: Array<{
