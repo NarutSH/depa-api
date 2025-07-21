@@ -16,9 +16,20 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Public } from 'src/auth/decorators/public.decorator';
-import { QueryMetadataDto } from 'src/utils';
+import {
+  QueryMetadataDto,
+  NotFoundErrorResponseDto,
+  UnauthorizedErrorResponseDto,
+  ValidationErrorResponseDto,
+} from 'src/utils';
 import { CompanyService } from './company.service';
-import CreateCompanyDto from './dto/create-company.dto';
+import {
+  CreateCompanyDto,
+  CompanyListResponseDto,
+  CompanyResponseDto,
+  CompanyWithRevenueResponseDto,
+  CompanyWithUserResponseDto,
+} from './dto';
 
 @ApiTags('Company')
 @ApiBearerAuth()
@@ -32,8 +43,11 @@ export class CompanyController {
   @ApiResponse({
     status: 200,
     description: 'Return a paginated list of companies with their details',
+    type: CompanyListResponseDto,
   })
-  async getCompanies(@Query() query: QueryMetadataDto) {
+  async getCompanies(
+    @Query() query: QueryMetadataDto,
+  ): Promise<CompanyListResponseDto> {
     return this.companyService.getCompanies(query);
   }
 
@@ -48,8 +62,11 @@ export class CompanyController {
   @ApiResponse({
     status: 200,
     description: 'Return all companies matching the optional industry filter',
+    type: [CompanyWithUserResponseDto],
   })
-  async getAl(@Query('industry') industry: string) {
+  async getAl(
+    @Query('industry') industry: string,
+  ): Promise<CompanyWithUserResponseDto[]> {
     return this.companyService.getAl(industry);
   }
 
@@ -59,12 +76,16 @@ export class CompanyController {
   @ApiResponse({
     status: 200,
     description: 'Return the company with the specified user ID',
+    type: CompanyResponseDto,
   })
   @ApiResponse({
     status: 404,
     description: 'Company not found',
+    type: NotFoundErrorResponseDto,
   })
-  async getByUserId(@Param('userId') userId: string) {
+  async getByUserId(
+    @Param('userId') userId: string,
+  ): Promise<CompanyResponseDto> {
     return this.companyService.getByUserId(userId);
   }
 
@@ -73,8 +94,19 @@ export class CompanyController {
   @ApiResponse({
     status: 201,
     description: 'The company has been successfully created',
+    type: CompanyResponseDto,
   })
-  async create(@Body() data: CreateCompanyDto) {
+  @ApiResponse({
+    status: 400,
+    description: 'Validation failed',
+    type: ValidationErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+    type: UnauthorizedErrorResponseDto,
+  })
+  async create(@Body() data: CreateCompanyDto): Promise<CompanyResponseDto> {
     return this.companyService.create(data);
   }
 
@@ -87,12 +119,27 @@ export class CompanyController {
   @ApiResponse({
     status: 200,
     description: 'The company has been successfully updated',
+    type: CompanyResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation failed',
+    type: ValidationErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+    type: UnauthorizedErrorResponseDto,
   })
   @ApiResponse({
     status: 404,
     description: 'Company not found',
+    type: NotFoundErrorResponseDto,
   })
-  async update(@Param('id') id: string, @Body() data: CreateCompanyDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() data: CreateCompanyDto,
+  ): Promise<CompanyResponseDto> {
     return this.companyService.update(id, data);
   }
 
@@ -105,15 +152,27 @@ export class CompanyController {
   @ApiResponse({
     status: 200,
     description: 'The company has been successfully updated',
+    type: CompanyResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation failed',
+    type: ValidationErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+    type: UnauthorizedErrorResponseDto,
   })
   @ApiResponse({
     status: 404,
     description: 'Company not found',
+    type: NotFoundErrorResponseDto,
   })
   async updateByJuristic(
     @Param('juristicId') juristicId: string,
     @Body() data: CreateCompanyDto,
-  ) {
+  ): Promise<CompanyResponseDto> {
     return this.companyService.updateByJuristic(juristicId, data);
   }
 
@@ -124,12 +183,14 @@ export class CompanyController {
   @ApiResponse({
     status: 200,
     description: 'Return the company with the specified ID',
+    type: CompanyWithUserResponseDto,
   })
   @ApiResponse({
     status: 404,
     description: 'Company not found',
+    type: NotFoundErrorResponseDto,
   })
-  async getById(@Param('id') id: string) {
+  async getById(@Param('id') id: string): Promise<CompanyWithUserResponseDto> {
     return this.companyService.getById(id);
   }
 
@@ -143,12 +204,16 @@ export class CompanyController {
   @ApiResponse({
     status: 200,
     description: 'Return the company with the specified juristic ID',
+    type: CompanyWithRevenueResponseDto,
   })
   @ApiResponse({
     status: 404,
     description: 'Company not found',
+    type: NotFoundErrorResponseDto,
   })
-  async getByJuristicId(@Param('juristicId') juristicId: string) {
+  async getByJuristicId(
+    @Param('juristicId') juristicId: string,
+  ): Promise<CompanyWithRevenueResponseDto> {
     return this.companyService.getByJuristicId(juristicId);
   }
 }

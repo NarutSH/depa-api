@@ -88,8 +88,17 @@ async function bootstrap() {
     .addTag('Company', 'Company management endpoints')
     .addTag('Freelance', 'Freelance management endpoints')
     .addTag('Health', 'Health check endpoints')
+    .addServer(
+      process.env.API_BASE_URL || 'http://localhost:8000',
+      'Development server',
+    )
     .build();
-  const document = SwaggerModule.createDocument(app, config);
+
+  const document = SwaggerModule.createDocument(app, config, {
+    operationIdFactory: (controllerKey: string, methodKey: string) => {
+      return `${controllerKey}_${methodKey}`;
+    },
+  });
 
   // Save Swagger JSON to file
   fs.writeFileSync(

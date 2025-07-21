@@ -19,6 +19,17 @@ import {
 } from '@nestjs/swagger';
 import { QueryMetadataDto } from 'src/utils';
 import { Public } from 'src/auth/decorators/public.decorator';
+import {
+  FreelanceListResponseDto,
+  FreelanceResponseDto,
+  FreelanceWithPortfolioResponseDto,
+  FreelanceWithUserResponseDto,
+} from './dto/freelance-response.dto';
+import {
+  ValidationErrorResponseDto,
+  NotFoundErrorResponseDto,
+  UnauthorizedErrorResponseDto,
+} from 'src/utils/dtos/error-response.dto';
 
 @ApiTags('Freelance')
 @ApiBearerAuth()
@@ -32,8 +43,16 @@ export class FreelanceController {
   @ApiResponse({
     status: 200,
     description: 'Return a paginated list of freelances with their details',
+    type: FreelanceListResponseDto,
   })
-  async getFreelances(@Query() query: QueryMetadataDto) {
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+    type: ValidationErrorResponseDto,
+  })
+  async getFreelances(
+    @Query() query: QueryMetadataDto,
+  ): Promise<FreelanceListResponseDto> {
     return this.freelanceService.getFreelances(query);
   }
 
@@ -48,8 +67,16 @@ export class FreelanceController {
   @ApiResponse({
     status: 200,
     description: 'Return all freelances matching the optional industry filter',
+    type: [FreelanceWithPortfolioResponseDto],
   })
-  async getAl(@Query('industry') industry: string) {
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+    type: ValidationErrorResponseDto,
+  })
+  async getAl(
+    @Query('industry') industry: string,
+  ): Promise<FreelanceWithPortfolioResponseDto[]> {
     return this.freelanceService.getAl(industry);
   }
 
@@ -59,28 +86,36 @@ export class FreelanceController {
   @ApiResponse({
     status: 200,
     description: 'Return the freelance with the specified user ID',
+    type: FreelanceWithUserResponseDto,
   })
   @ApiResponse({
     status: 404,
     description: 'Freelance not found',
+    type: NotFoundErrorResponseDto,
   })
-  async getByUserId(@Param('userId') userId: string) {
+  async getByUserId(
+    @Param('userId') userId: string,
+  ): Promise<FreelanceWithUserResponseDto> {
     return this.freelanceService.getByUserId(userId);
   }
 
   @Get('/:id')
   @Public()
-  @ApiOperation({ summary: 'Get freelance by user ID' })
-  @ApiParam({ name: 'userId', description: 'The user ID of the freelance' })
+  @ApiOperation({ summary: 'Get freelance by ID' })
+  @ApiParam({ name: 'id', description: 'The ID of the freelance' })
   @ApiResponse({
     status: 200,
-    description: 'Return the freelance with the specified user ID',
+    description: 'Return the freelance with the specified ID',
+    type: FreelanceWithPortfolioResponseDto,
   })
   @ApiResponse({
     status: 404,
     description: 'Freelance not found',
+    type: NotFoundErrorResponseDto,
   })
-  async getById(@Param('id') id: string) {
+  async getById(
+    @Param('id') id: string,
+  ): Promise<FreelanceWithPortfolioResponseDto> {
     return this.freelanceService.getById(id);
   }
 
@@ -89,8 +124,21 @@ export class FreelanceController {
   @ApiResponse({
     status: 201,
     description: 'The freelance has been successfully created',
+    type: FreelanceResponseDto,
   })
-  async create(@Body() data: CreateFreelanceDto) {
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+    type: ValidationErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized access',
+    type: UnauthorizedErrorResponseDto,
+  })
+  async create(
+    @Body() data: CreateFreelanceDto,
+  ): Promise<FreelanceResponseDto> {
     return this.freelanceService.create(data);
   }
 
@@ -103,12 +151,16 @@ export class FreelanceController {
   @ApiResponse({
     status: 200,
     description: 'Return the freelance with the specified juristic ID',
+    type: FreelanceWithUserResponseDto,
   })
   @ApiResponse({
     status: 404,
     description: 'Freelance not found',
+    type: NotFoundErrorResponseDto,
   })
-  async getByJuristicId(@Param('juristicId') juristicId: string) {
+  async getByJuristicId(
+    @Param('juristicId') juristicId: string,
+  ): Promise<FreelanceWithUserResponseDto> {
     return this.freelanceService.getByJuristicId(juristicId);
   }
 
@@ -121,15 +173,27 @@ export class FreelanceController {
   @ApiResponse({
     status: 200,
     description: 'The freelance has been successfully updated',
+    type: FreelanceResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+    type: ValidationErrorResponseDto,
   })
   @ApiResponse({
     status: 404,
     description: 'Freelance not found',
+    type: NotFoundErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized access',
+    type: UnauthorizedErrorResponseDto,
   })
   async update(
     @Param('freelanceId') freelanceId: string,
     @Body() data: Partial<CreateFreelanceDto>,
-  ) {
+  ): Promise<FreelanceResponseDto> {
     return this.freelanceService.update(freelanceId, data);
   }
 }

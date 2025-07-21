@@ -364,7 +364,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Return a paginated list of companies with their details"
+            "description": "Return a paginated list of companies with their details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyListResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -392,7 +399,34 @@
         },
         "responses": {
           "201": {
-            "description": "The company has been successfully created"
+            "description": "The company has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -422,7 +456,17 @@
         ],
         "responses": {
           "200": {
-            "description": "Return all companies matching the optional industry filter"
+            "description": "Return all companies matching the optional industry filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyWithUserResponseDto"
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -452,10 +496,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Return the company with the specified user ID"
+            "description": "Return the company with the specified user ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyResponseDto"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Company not found"
+            "description": "Company not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -495,10 +553,44 @@
         },
         "responses": {
           "200": {
-            "description": "The company has been successfully updated"
+            "description": "The company has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Company not found"
+            "description": "Company not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -526,10 +618,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Return the company with the specified ID"
+            "description": "Return the company with the specified ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyWithUserResponseDto"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Company not found"
+            "description": "Company not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -569,10 +675,44 @@
         },
         "responses": {
           "200": {
-            "description": "The company has been successfully updated"
+            "description": "The company has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Company not found"
+            "description": "Company not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -600,10 +740,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Return the company with the specified juristic ID"
+            "description": "Return the company with the specified juristic ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyWithRevenueResponseDto"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Company not found"
+            "description": "Company not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3575,7 +3729,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Return a paginated list of freelances with their details"
+            "description": "Return a paginated list of freelances with their details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FreelanceListResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3603,7 +3774,34 @@
         },
         "responses": {
           "201": {
-            "description": "The freelance has been successfully created"
+            "description": "The freelance has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FreelanceResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3633,7 +3831,27 @@
         ],
         "responses": {
           "200": {
-            "description": "Return all freelances matching the optional industry filter"
+            "description": "Return all freelances matching the optional industry filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FreelanceWithPortfolioResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3663,10 +3881,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Return the freelance with the specified user ID"
+            "description": "Return the freelance with the specified user ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FreelanceWithUserResponseDto"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Freelance not found"
+            "description": "Freelance not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3688,24 +3920,32 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "The ID of the freelance",
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "userId",
-            "required": true,
-            "in": "path",
-            "description": "The user ID of the freelance",
-            "schema": {}
           }
         ],
         "responses": {
           "200": {
-            "description": "Return the freelance with the specified user ID"
+            "description": "Return the freelance with the specified ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FreelanceWithPortfolioResponseDto"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Freelance not found"
+            "description": "Freelance not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3713,7 +3953,7 @@
             "bearer": []
           }
         ],
-        "summary": "Get freelance by user ID",
+        "summary": "Get freelance by ID",
         "tags": [
           "Freelance"
         ]
@@ -3735,10 +3975,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Return the freelance with the specified juristic ID"
+            "description": "Return the freelance with the specified juristic ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FreelanceWithUserResponseDto"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Freelance not found"
+            "description": "Freelance not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3768,10 +4022,44 @@
         ],
         "responses": {
           "200": {
-            "description": "The freelance has been successfully updated"
+            "description": "The freelance has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FreelanceResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Freelance not found"
+            "description": "Freelance not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -4489,7 +4777,12 @@
       "description": "Health check endpoints"
     }
   ],
-  "servers": [],
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Development server"
+    }
+  ],
   "components": {
     "securitySchemes": {
       "bearer": {
@@ -4633,9 +4926,798 @@
         "type": "object",
         "properties": {}
       },
+      "UserResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "User unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email address",
+            "example": "user@example.com"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "User first name",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "User last name",
+            "example": "Doe"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "User phone number",
+            "example": "+66-123-456-789"
+          },
+          "role": {
+            "type": "string",
+            "description": "User role",
+            "example": "COMPANY",
+            "enum": [
+              "COMPANY",
+              "FREELANCE",
+              "ADMIN"
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "User creation timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "User last update timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "role",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CompanyWithUserResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Company unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "juristicId": {
+            "type": "string",
+            "description": "Company juristic ID",
+            "example": "1234567890123"
+          },
+          "nameTh": {
+            "type": "string",
+            "description": "Company name in Thai",
+            "example": "บริษัท เทคโนโลยี จำกัด"
+          },
+          "nameEn": {
+            "type": "string",
+            "description": "Company name in English",
+            "example": "Technology Company Limited"
+          },
+          "description": {
+            "type": "string",
+            "description": "Company description",
+            "example": "A leading technology company specializing in software development"
+          },
+          "description_en": {
+            "type": "string",
+            "description": "Company description in English",
+            "example": "A leading technology company specializing in software development"
+          },
+          "image": {
+            "type": "string",
+            "description": "Company logo image URL",
+            "example": "https://example.com/logo.png"
+          },
+          "cover_image": {
+            "type": "string",
+            "description": "Company cover image URL",
+            "example": "https://example.com/cover.jpg"
+          },
+          "address": {
+            "type": "string",
+            "description": "Company address",
+            "example": "123 Technology Street"
+          },
+          "subDistrict": {
+            "type": "string",
+            "description": "Sub-district",
+            "example": "Silom"
+          },
+          "district": {
+            "type": "string",
+            "description": "District",
+            "example": "Bang Rak"
+          },
+          "province": {
+            "type": "string",
+            "description": "Province",
+            "example": "Bangkok"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Postal code",
+            "example": "10500"
+          },
+          "registerdCapital": {
+            "type": "number",
+            "description": "Registered capital amount",
+            "example": 1000000
+          },
+          "employeeCount": {
+            "type": "number",
+            "description": "Number of employees",
+            "example": 50
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Company phone number",
+            "example": "+66-2-123-4567"
+          },
+          "email": {
+            "type": "string",
+            "description": "Company email address",
+            "example": "contact@company.com"
+          },
+          "website": {
+            "type": "string",
+            "description": "Company website URL",
+            "example": "https://www.company.com"
+          },
+          "logo": {
+            "type": "string",
+            "description": "Company logo URL",
+            "example": "https://example.com/logo.png"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Associated user ID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "industries": {
+            "description": "Legacy industries array",
+            "example": [
+              "technology",
+              "software"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Company creation timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Company last update timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "user": {
+            "description": "Associated user information",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserResponseDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "juristicId",
+          "nameTh",
+          "userId",
+          "createdAt",
+          "updatedAt",
+          "user"
+        ]
+      },
+      "CompanyListResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Array of companies with pagination",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompanyWithUserResponseDto"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "description": "Pagination metadata",
+            "properties": {
+              "total": {
+                "type": "number",
+                "example": 100
+              },
+              "page": {
+                "type": "number",
+                "example": 1
+              },
+              "limit": {
+                "type": "number",
+                "example": 10
+              },
+              "totalPages": {
+                "type": "number",
+                "example": 10
+              },
+              "hasNext": {
+                "type": "boolean",
+                "example": true
+              },
+              "hasPrevious": {
+                "type": "boolean",
+                "example": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
+      "CompanyResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Company unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "juristicId": {
+            "type": "string",
+            "description": "Company juristic ID",
+            "example": "1234567890123"
+          },
+          "nameTh": {
+            "type": "string",
+            "description": "Company name in Thai",
+            "example": "บริษัท เทคโนโลยี จำกัด"
+          },
+          "nameEn": {
+            "type": "string",
+            "description": "Company name in English",
+            "example": "Technology Company Limited"
+          },
+          "description": {
+            "type": "string",
+            "description": "Company description",
+            "example": "A leading technology company specializing in software development"
+          },
+          "description_en": {
+            "type": "string",
+            "description": "Company description in English",
+            "example": "A leading technology company specializing in software development"
+          },
+          "image": {
+            "type": "string",
+            "description": "Company logo image URL",
+            "example": "https://example.com/logo.png"
+          },
+          "cover_image": {
+            "type": "string",
+            "description": "Company cover image URL",
+            "example": "https://example.com/cover.jpg"
+          },
+          "address": {
+            "type": "string",
+            "description": "Company address",
+            "example": "123 Technology Street"
+          },
+          "subDistrict": {
+            "type": "string",
+            "description": "Sub-district",
+            "example": "Silom"
+          },
+          "district": {
+            "type": "string",
+            "description": "District",
+            "example": "Bang Rak"
+          },
+          "province": {
+            "type": "string",
+            "description": "Province",
+            "example": "Bangkok"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Postal code",
+            "example": "10500"
+          },
+          "registerdCapital": {
+            "type": "number",
+            "description": "Registered capital amount",
+            "example": 1000000
+          },
+          "employeeCount": {
+            "type": "number",
+            "description": "Number of employees",
+            "example": 50
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Company phone number",
+            "example": "+66-2-123-4567"
+          },
+          "email": {
+            "type": "string",
+            "description": "Company email address",
+            "example": "contact@company.com"
+          },
+          "website": {
+            "type": "string",
+            "description": "Company website URL",
+            "example": "https://www.company.com"
+          },
+          "logo": {
+            "type": "string",
+            "description": "Company logo URL",
+            "example": "https://example.com/logo.png"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Associated user ID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "industries": {
+            "description": "Legacy industries array",
+            "example": [
+              "technology",
+              "software"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Company creation timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Company last update timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "juristicId",
+          "nameTh",
+          "userId",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "NotFoundErrorResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "HTTP status code",
+            "example": 404
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Not Found"
+          },
+          "error": {
+            "type": "string",
+            "description": "Error description or detailed message",
+            "example": "Validation failed"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Request timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "path": {
+            "type": "string",
+            "description": "Request path",
+            "example": "/api/company"
+          }
+        },
+        "required": [
+          "statusCode",
+          "message",
+          "timestamp",
+          "path"
+        ]
+      },
       "CreateCompanyDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "juristicId": {
+            "type": "string",
+            "description": "Company juristic ID",
+            "example": "1234567890123"
+          },
+          "nameTh": {
+            "type": "string",
+            "description": "Company name in Thai",
+            "example": "บริษัท เทคโนโลยี จำกัด"
+          },
+          "nameEn": {
+            "type": "string",
+            "description": "Company name in English",
+            "example": "Technology Company Limited"
+          },
+          "description": {
+            "type": "string",
+            "description": "Company description",
+            "example": "A leading technology company specializing in software development"
+          },
+          "address": {
+            "type": "string",
+            "description": "Company address",
+            "example": "123 Technology Street"
+          },
+          "subDistrict": {
+            "type": "string",
+            "description": "Sub-district",
+            "example": "Silom"
+          },
+          "district": {
+            "type": "string",
+            "description": "District",
+            "example": "Bang Rak"
+          },
+          "province": {
+            "type": "string",
+            "description": "Province",
+            "example": "Bangkok"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Postal code",
+            "example": "10500"
+          },
+          "registerdCapital": {
+            "type": "number",
+            "description": "Registered capital amount",
+            "example": 1000000
+          },
+          "employeeCount": {
+            "type": "number",
+            "description": "Number of employees",
+            "example": 50
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Company phone number",
+            "example": "+66-2-123-4567"
+          },
+          "email": {
+            "type": "string",
+            "description": "Company email address",
+            "example": "contact@company.com"
+          },
+          "website": {
+            "type": "string",
+            "description": "Company website URL",
+            "example": "https://www.company.com"
+          },
+          "logo": {
+            "type": "string",
+            "description": "Company logo URL",
+            "example": "https://example.com/logo.png"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Associated user ID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "image": {
+            "type": "string",
+            "description": "Company image URL",
+            "example": "https://example.com/image.jpg"
+          },
+          "cover_image": {
+            "type": "string",
+            "description": "Company cover image URL",
+            "example": "https://example.com/cover.jpg"
+          }
+        },
+        "required": [
+          "juristicId",
+          "nameTh",
+          "address",
+          "registerdCapital",
+          "employeeCount",
+          "userId"
+        ]
+      },
+      "ValidationErrorResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "HTTP status code",
+            "example": 400
+          },
+          "message": {
+            "description": "Array of validation error messages",
+            "example": [
+              "nameTh should not be empty",
+              "juristicId must be a string"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "error": {
+            "type": "string",
+            "description": "Error description or detailed message",
+            "example": "Validation failed"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Request timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "path": {
+            "type": "string",
+            "description": "Request path",
+            "example": "/api/company"
+          }
+        },
+        "required": [
+          "statusCode",
+          "message",
+          "timestamp",
+          "path"
+        ]
+      },
+      "UnauthorizedErrorResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "HTTP status code",
+            "example": 401
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Unauthorized"
+          },
+          "error": {
+            "type": "string",
+            "description": "Error description or detailed message",
+            "example": "Validation failed"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Request timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "path": {
+            "type": "string",
+            "description": "Request path",
+            "example": "/api/company"
+          }
+        },
+        "required": [
+          "statusCode",
+          "message",
+          "timestamp",
+          "path"
+        ]
+      },
+      "CompanyRevenueDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Revenue record unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "year": {
+            "type": "number",
+            "description": "Revenue year",
+            "example": 2024
+          },
+          "total": {
+            "type": "number",
+            "description": "Total revenue amount",
+            "example": 5000000
+          },
+          "companyId": {
+            "type": "string",
+            "description": "Associated company ID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Revenue record creation timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Revenue record last update timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "year",
+          "total",
+          "companyId",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CompanyWithRevenueResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Company unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "juristicId": {
+            "type": "string",
+            "description": "Company juristic ID",
+            "example": "1234567890123"
+          },
+          "nameTh": {
+            "type": "string",
+            "description": "Company name in Thai",
+            "example": "บริษัท เทคโนโลยี จำกัด"
+          },
+          "nameEn": {
+            "type": "string",
+            "description": "Company name in English",
+            "example": "Technology Company Limited"
+          },
+          "description": {
+            "type": "string",
+            "description": "Company description",
+            "example": "A leading technology company specializing in software development"
+          },
+          "description_en": {
+            "type": "string",
+            "description": "Company description in English",
+            "example": "A leading technology company specializing in software development"
+          },
+          "image": {
+            "type": "string",
+            "description": "Company logo image URL",
+            "example": "https://example.com/logo.png"
+          },
+          "cover_image": {
+            "type": "string",
+            "description": "Company cover image URL",
+            "example": "https://example.com/cover.jpg"
+          },
+          "address": {
+            "type": "string",
+            "description": "Company address",
+            "example": "123 Technology Street"
+          },
+          "subDistrict": {
+            "type": "string",
+            "description": "Sub-district",
+            "example": "Silom"
+          },
+          "district": {
+            "type": "string",
+            "description": "District",
+            "example": "Bang Rak"
+          },
+          "province": {
+            "type": "string",
+            "description": "Province",
+            "example": "Bangkok"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Postal code",
+            "example": "10500"
+          },
+          "registerdCapital": {
+            "type": "number",
+            "description": "Registered capital amount",
+            "example": 1000000
+          },
+          "employeeCount": {
+            "type": "number",
+            "description": "Number of employees",
+            "example": 50
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Company phone number",
+            "example": "+66-2-123-4567"
+          },
+          "email": {
+            "type": "string",
+            "description": "Company email address",
+            "example": "contact@company.com"
+          },
+          "website": {
+            "type": "string",
+            "description": "Company website URL",
+            "example": "https://www.company.com"
+          },
+          "logo": {
+            "type": "string",
+            "description": "Company logo URL",
+            "example": "https://example.com/logo.png"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Associated user ID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "industries": {
+            "description": "Legacy industries array",
+            "example": [
+              "technology",
+              "software"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Company creation timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Company last update timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "companyRevenue": {
+            "description": "Company revenue records",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompanyRevenueDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "juristicId",
+          "nameTh",
+          "userId",
+          "createdAt",
+          "updatedAt",
+          "companyRevenue"
+        ]
       },
       "CreateRevenueStreamDto": {
         "type": "object",
@@ -5135,6 +6217,378 @@
           }
         }
       },
+      "PortfolioImageDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Image URL",
+            "example": "https://example.com/portfolio/image1.jpg"
+          },
+          "type": {
+            "type": "string",
+            "description": "Image type",
+            "example": "MAIN"
+          },
+          "description": {
+            "type": "string",
+            "description": "Image description",
+            "example": "Project screenshot"
+          }
+        },
+        "required": [
+          "url",
+          "type"
+        ]
+      },
+      "PortfolioDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Portfolio unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "title": {
+            "type": "string",
+            "description": "Portfolio title",
+            "example": "Web Development Project"
+          },
+          "description": {
+            "type": "string",
+            "description": "Portfolio description",
+            "example": "A complete e-commerce website built with React and Node.js"
+          },
+          "Image": {
+            "description": "Portfolio images",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PortfolioImageDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ]
+      },
+      "FreelanceWithPortfolioResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Freelance unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "juristicId": {
+            "type": "string",
+            "description": "Freelance juristic ID",
+            "example": "1234567890123"
+          },
+          "firstNameTh": {
+            "type": "string",
+            "description": "First name in Thai",
+            "example": "สมชาย"
+          },
+          "lastNameTh": {
+            "type": "string",
+            "description": "Last name in Thai",
+            "example": "ใจดี"
+          },
+          "firstNameEn": {
+            "type": "string",
+            "description": "First name in English",
+            "example": "John"
+          },
+          "lastNameEn": {
+            "type": "string",
+            "description": "Last name in English",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address",
+            "example": "freelancer@example.com"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Phone number",
+            "example": "+66-123-456-789"
+          },
+          "address": {
+            "type": "string",
+            "description": "Address",
+            "example": "123 Freelancer Street"
+          },
+          "subDistrict": {
+            "type": "string",
+            "description": "Sub-district",
+            "example": "Silom"
+          },
+          "district": {
+            "type": "string",
+            "description": "District",
+            "example": "Bang Rak"
+          },
+          "province": {
+            "type": "string",
+            "description": "Province",
+            "example": "Bangkok"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Postal code",
+            "example": "10500"
+          },
+          "image": {
+            "type": "string",
+            "description": "Profile image URL",
+            "example": "https://example.com/profile.jpg"
+          },
+          "cover_image": {
+            "type": "string",
+            "description": "Cover image URL",
+            "example": "https://example.com/cover.jpg"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Associated user ID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "industryTypes": {
+            "description": "Industry types array",
+            "example": [
+              "technology",
+              "design"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Freelance creation timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Freelance last update timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "user": {
+            "description": "Associated user information",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserResponseDto"
+              }
+            ]
+          },
+          "Portfolio": {
+            "description": "Portfolio items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PortfolioDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "firstNameTh",
+          "lastNameTh",
+          "email",
+          "userId",
+          "createdAt",
+          "updatedAt",
+          "user"
+        ]
+      },
+      "FreelanceListResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Array of freelances with pagination",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FreelanceWithPortfolioResponseDto"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "description": "Pagination metadata",
+            "properties": {
+              "total": {
+                "type": "number",
+                "example": 100
+              },
+              "page": {
+                "type": "number",
+                "example": 1
+              },
+              "limit": {
+                "type": "number",
+                "example": 10
+              },
+              "totalPages": {
+                "type": "number",
+                "example": 10
+              },
+              "hasNext": {
+                "type": "boolean",
+                "example": true
+              },
+              "hasPrevious": {
+                "type": "boolean",
+                "example": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Success status",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message",
+            "example": "Freelances retrieved successfully"
+          }
+        },
+        "required": [
+          "data",
+          "meta",
+          "success"
+        ]
+      },
+      "FreelanceWithUserResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Freelance unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "juristicId": {
+            "type": "string",
+            "description": "Freelance juristic ID",
+            "example": "1234567890123"
+          },
+          "firstNameTh": {
+            "type": "string",
+            "description": "First name in Thai",
+            "example": "สมชาย"
+          },
+          "lastNameTh": {
+            "type": "string",
+            "description": "Last name in Thai",
+            "example": "ใจดี"
+          },
+          "firstNameEn": {
+            "type": "string",
+            "description": "First name in English",
+            "example": "John"
+          },
+          "lastNameEn": {
+            "type": "string",
+            "description": "Last name in English",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address",
+            "example": "freelancer@example.com"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Phone number",
+            "example": "+66-123-456-789"
+          },
+          "address": {
+            "type": "string",
+            "description": "Address",
+            "example": "123 Freelancer Street"
+          },
+          "subDistrict": {
+            "type": "string",
+            "description": "Sub-district",
+            "example": "Silom"
+          },
+          "district": {
+            "type": "string",
+            "description": "District",
+            "example": "Bang Rak"
+          },
+          "province": {
+            "type": "string",
+            "description": "Province",
+            "example": "Bangkok"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Postal code",
+            "example": "10500"
+          },
+          "image": {
+            "type": "string",
+            "description": "Profile image URL",
+            "example": "https://example.com/profile.jpg"
+          },
+          "cover_image": {
+            "type": "string",
+            "description": "Cover image URL",
+            "example": "https://example.com/cover.jpg"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Associated user ID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "industryTypes": {
+            "description": "Industry types array",
+            "example": [
+              "technology",
+              "design"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Freelance creation timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Freelance last update timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "user": {
+            "description": "Associated user information",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserResponseDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "firstNameTh",
+          "lastNameTh",
+          "email",
+          "userId",
+          "createdAt",
+          "updatedAt",
+          "user"
+        ]
+      },
       "CreateFreelanceDto": {
         "type": "object",
         "properties": {
@@ -5215,6 +6669,123 @@
           "firstNameTh",
           "lastNameTh",
           "email"
+        ]
+      },
+      "FreelanceResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Freelance unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "juristicId": {
+            "type": "string",
+            "description": "Freelance juristic ID",
+            "example": "1234567890123"
+          },
+          "firstNameTh": {
+            "type": "string",
+            "description": "First name in Thai",
+            "example": "สมชาย"
+          },
+          "lastNameTh": {
+            "type": "string",
+            "description": "Last name in Thai",
+            "example": "ใจดี"
+          },
+          "firstNameEn": {
+            "type": "string",
+            "description": "First name in English",
+            "example": "John"
+          },
+          "lastNameEn": {
+            "type": "string",
+            "description": "Last name in English",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address",
+            "example": "freelancer@example.com"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Phone number",
+            "example": "+66-123-456-789"
+          },
+          "address": {
+            "type": "string",
+            "description": "Address",
+            "example": "123 Freelancer Street"
+          },
+          "subDistrict": {
+            "type": "string",
+            "description": "Sub-district",
+            "example": "Silom"
+          },
+          "district": {
+            "type": "string",
+            "description": "District",
+            "example": "Bang Rak"
+          },
+          "province": {
+            "type": "string",
+            "description": "Province",
+            "example": "Bangkok"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Postal code",
+            "example": "10500"
+          },
+          "image": {
+            "type": "string",
+            "description": "Profile image URL",
+            "example": "https://example.com/profile.jpg"
+          },
+          "cover_image": {
+            "type": "string",
+            "description": "Cover image URL",
+            "example": "https://example.com/cover.jpg"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Associated user ID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "industryTypes": {
+            "description": "Industry types array",
+            "example": [
+              "technology",
+              "design"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Freelance creation timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Freelance last update timestamp",
+            "example": "2025-01-01T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "firstNameTh",
+          "lastNameTh",
+          "email",
+          "userId",
+          "createdAt",
+          "updatedAt"
         ]
       },
       "TechhuntLoginDto": {
