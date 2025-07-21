@@ -49,6 +49,17 @@ enum StandardsType {
   ESRB
 }
 
+model UserAdmin {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @updatedAt @db.Timestamptz()
+
+  refreshTokens AdminRefreshToken[]
+}
+
 model User {
   id String @id @default(uuid()) @db.Uuid
 
@@ -155,6 +166,19 @@ model RefreshToken {
   revokedAt DateTime? @db.Timestamptz()
 
   @@index([userId])
+  @@index([token])
+}
+
+model AdminRefreshToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  token     String    @unique
+  adminId   String    @db.Uuid
+  admin     UserAdmin @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  expiresAt DateTime  @db.Timestamptz()
+  issuedAt  DateTime  @default(now()) @db.Timestamptz()
+  revokedAt DateTime? @db.Timestamptz()
+
+  @@index([adminId])
   @@index([token])
 }
 

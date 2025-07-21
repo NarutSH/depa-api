@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Post,
+  Get,
   UnauthorizedException,
   HttpCode,
   UseGuards,
@@ -15,12 +16,15 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
+import { IsEmail, IsStrongPassword, MinLength } from 'class-validator';
 import {
   AuthService,
   TechHuntLoginResult,
   RefreshTokenResponse,
+  AdminAuthResult,
 } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 import { User } from './decorators/user.decorator';
 import { Public } from './decorators/public.decorator';
 
@@ -37,10 +41,58 @@ class TechhuntLoginDto {
   password: string;
 }
 
-class RefreshTokenDto {
-  @ApiProperty({ description: 'The refresh token' })
+export class RefreshTokenDto {
+  @ApiProperty({ description: 'Refresh token', example: 'abc123...' })
   @IsString()
   refreshToken: string;
+}
+
+export class AdminSignupDto {
+  @ApiProperty({
+    description: 'Admin email address',
+    example: 'admin@depa.go.th',
+  })
+  @IsEmail()
+  email: string;
+
+  @ApiProperty({
+    description: 'Admin username',
+    example: 'admin_user',
+  })
+  @IsString()
+  @MinLength(3)
+  username: string;
+
+  @ApiProperty({
+    description: 'Admin password',
+    example: 'SecurePassword123!',
+  })
+  @IsStrongPassword({
+    minLength: 8,
+    minLowercase: 1,
+    minUppercase: 1,
+    minNumbers: 1,
+    minSymbols: 1,
+  })
+  password: string;
+}
+
+export class AdminSigninDto {
+  @ApiProperty({
+    description: 'Admin email or username',
+    example: 'admin@depa.go.th',
+  })
+  @IsString()
+  @MinLength(3)
+  emailOrUsername: string;
+
+  @ApiProperty({
+    description: 'Admin password',
+    example: 'SecurePassword123!',
+  })
+  @IsString()
+  @MinLength(1)
+  password: string;
 }
 
 @ApiTags('Auth')
@@ -69,6 +121,74 @@ export class AuthController {
   }
 
   @Public()
+  @Post('admin/signup')
+  @ApiOperation({ summary: 'Admin signup' })
+  @ApiBody({ type: AdminSignupDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Admin successfully registered',
+    schema: {
+      type: 'object',
+      properties: {
+        admin: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            username: { type: 'string' },
+            email: { type: 'string' },
+          },
+        },
+        access_token: { type: 'string' },
+        refresh_token: { type: 'string' },
+      },
+    },
+  })
+  @ApiResponse({ status: 409, description: 'Email or username already exists' })
+  async adminSignup(
+    @Body() adminSignupDto: AdminSignupDto,
+  ): Promise<AdminAuthResult> {
+    return this.authService.adminSignup(
+      adminSignupDto.email,
+      adminSignupDto.username,
+      adminSignupDto.password,
+    );
+  }
+
+  @Public()
+  @Post('admin/signin')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Admin signin' })
+  @ApiBody({ type: AdminSigninDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Admin successfully logged in',
+    schema: {
+      type: 'object',
+      properties: {
+        admin: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            username: { type: 'string' },
+            email: { type: 'string' },
+          },
+        },
+        access_token: { type: 'string' },
+        refresh_token: { type: 'string' },
+      },
+    },
+  })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
+  async adminSignin(
+    @Body() adminSigninDto: AdminSigninDto,
+  ): Promise<AdminAuthResult> {
+    return this.authService.adminSignin(
+      adminSigninDto.emailOrUsername,
+      adminSigninDto.password,
+    );
+  }
+
+  @Public()
   @Post('refresh')
   @ApiOperation({ summary: 'Refresh access token using refresh token' })
   @ApiBody({ type: RefreshTokenDto })
@@ -87,6 +207,35 @@ export class AuthController {
     }
   }
 
+  @Get('admin/me')
+  @UseGuards(AdminGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get current admin profile' })
+  @ApiResponse({
+    status: 200,
+    description: 'Admin profile retrieved successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        username: { type: 'string' },
+        email: { type: 'string' },
+        createdAt: { type: 'string', format: 'date-time' },
+        updatedAt: { type: 'string', format: 'date-time' },
+      },
+    },
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async getAdminProfile(@User() user: any) {
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+  }
+
   @Post('logout')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -100,6 +249,25 @@ export class AuthController {
   ): Promise<{ success: boolean }> {
     // Revoke the provided refresh token
     const success = await this.authService.revokeRefreshToken(
+      refreshTokenDto.refreshToken,
+    );
+
+    return { success };
+  }
+
+  @Post('admin/logout')
+  @ApiBearerAuth()
+  @UseGuards(AdminGuard)
+  @ApiOperation({ summary: 'Admin log out and revoke refresh token' })
+  @ApiBody({ type: RefreshTokenDto })
+  @ApiResponse({ status: 200, description: 'Admin logged out successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @HttpCode(200)
+  async adminLogout(
+    @Body() refreshTokenDto: RefreshTokenDto,
+  ): Promise<{ success: boolean }> {
+    // Revoke the provided admin refresh token
+    const success = await this.authService.revokeAdminRefreshToken(
       refreshTokenDto.refreshToken,
     );
 
@@ -125,6 +293,26 @@ export class AuthController {
 
     // Revoke all refresh tokens for this user
     const success = await this.authService.revokeAllUserRefreshTokens(user.id);
+
+    return { success };
+  }
+
+  @Post('admin/logout-all')
+  @ApiBearerAuth()
+  @UseGuards(AdminGuard)
+  @ApiOperation({
+    summary:
+      'Admin log out from all devices by revoking all admin refresh tokens',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'All admin sessions logged out successfully',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @HttpCode(200)
+  async adminLogoutAll(@User() user: any): Promise<{ success: boolean }> {
+    // Revoke all refresh tokens for this admin
+    const success = await this.authService.revokeAllAdminRefreshTokens(user.id);
 
     return { success };
   }
