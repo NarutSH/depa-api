@@ -19,20 +19,36 @@ import {
   ApiOperation,
   ApiParam,
   ApiQuery,
+  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { SkillResponseDto } from './dto/skill-response.dto';
+import {
+  SkillResponseDto,
+  SkillListResponseDto,
+} from './dto/skill-response.dto';
 import { CreateIndustryDto } from './dto/create-industry.dto';
 import { UpdateIndustryDto } from './dto/update-industry.dto';
-import { IndustryResponseDto } from './dto/industry-response.dto';
+import {
+  IndustryResponseDto,
+  IndustryWithRelationsResponseDto,
+  IndustryListResponseDto,
+} from './dto/industry-response.dto';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { FindTagsQueryDto } from './dto/find-tags-query.dto';
-import { TagResponseDto } from './dto/tag-response.dto';
+import { TagResponseDto, TagListResponseDto } from './dto/tag-response.dto';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
 import { FindChannelsQueryDto } from './dto/find-channels-query.dto';
-import { ChannelResponseDto } from './dto/channel-response.dto';
+import {
+  ChannelResponseDto,
+  ChannelListResponseDto,
+} from './dto/channel-response.dto';
+import {
+  ValidationErrorResponseDto,
+  NotFoundErrorResponseDto,
+  UnauthorizedErrorResponseDto,
+} from 'src/utils/dtos/error-response.dto';
 
 @ApiTags('Industry')
 @ApiBearerAuth()
@@ -47,15 +63,27 @@ export class IndustryController {
     description: 'Industry has been successfully created',
     type: IndustryResponseDto,
   })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+    type: ValidationErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized access',
+    type: UnauthorizedErrorResponseDto,
+  })
   @Post()
-  createIndustry(@Body() createIndustryDto: CreateIndustryDto) {
+  createIndustry(
+    @Body() createIndustryDto: CreateIndustryDto,
+  ): Promise<IndustryResponseDto> {
     return this.industryService.createIndustry(createIndustryDto);
   }
 
   @ApiOperation({ summary: 'Get all industries' })
   @ApiOkResponse({
     description: 'List of all industries',
-    type: [IndustryResponseDto],
+    type: IndustryListResponseDto,
   })
   @ApiQuery({
     name: 'skip',
@@ -67,11 +95,16 @@ export class IndustryController {
     required: false,
     description: 'Number of records to take',
   })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+    type: ValidationErrorResponseDto,
+  })
   @Get('all')
   findAllIndustries(
     @Query('skip') skip?: number,
     @Query('take') take?: number,
-  ) {
+  ): Promise<IndustryListResponseDto> {
     return this.industryService.findAllIndustries({
       skip: skip ? Number(skip) : undefined,
       take: take ? Number(take) : undefined,
@@ -81,22 +114,36 @@ export class IndustryController {
   @ApiOperation({ summary: 'Get an industry by ID' })
   @ApiOkResponse({
     description: 'Industry details including related entities',
-    type: IndustryResponseDto,
+    type: IndustryWithRelationsResponseDto,
   })
   @ApiParam({ name: 'id', description: 'Industry ID' })
+  @ApiResponse({
+    status: 404,
+    description: 'Industry not found',
+    type: NotFoundErrorResponseDto,
+  })
   @Get(':id')
-  findIndustryById(@Param('id') id: string) {
+  findIndustryById(
+    @Param('id') id: string,
+  ): Promise<IndustryWithRelationsResponseDto> {
     return this.industryService.findIndustryById(id);
   }
 
   @ApiOperation({ summary: 'Get an industry by slug' })
   @ApiOkResponse({
     description: 'Industry details including related entities',
-    type: IndustryResponseDto,
+    type: IndustryWithRelationsResponseDto,
   })
   @ApiParam({ name: 'slug', description: 'Industry slug' })
+  @ApiResponse({
+    status: 404,
+    description: 'Industry not found',
+    type: NotFoundErrorResponseDto,
+  })
   @Get('slug/:slug')
-  findIndustryBySlug(@Param('slug') slug: string) {
+  findIndustryBySlug(
+    @Param('slug') slug: string,
+  ): Promise<IndustryWithRelationsResponseDto> {
     return this.industryService.findIndustryBySlug(slug);
   }
 
@@ -106,11 +153,26 @@ export class IndustryController {
     type: IndustryResponseDto,
   })
   @ApiParam({ name: 'id', description: 'Industry ID' })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+    type: ValidationErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Industry not found',
+    type: NotFoundErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized access',
+    type: UnauthorizedErrorResponseDto,
+  })
   @Put(':id')
   updateIndustry(
     @Param('id') id: string,
     @Body() updateIndustryDto: UpdateIndustryDto,
-  ) {
+  ): Promise<IndustryResponseDto> {
     return this.industryService.updateIndustry(id, updateIndustryDto);
   }
 
@@ -120,8 +182,18 @@ export class IndustryController {
     type: IndustryResponseDto,
   })
   @ApiParam({ name: 'id', description: 'Industry ID' })
+  @ApiResponse({
+    status: 404,
+    description: 'Industry not found',
+    type: NotFoundErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized access',
+    type: UnauthorizedErrorResponseDto,
+  })
   @Delete(':id')
-  deleteIndustry(@Param('id') id: string) {
+  deleteIndustry(@Param('id') id: string): Promise<IndustryResponseDto> {
     return this.industryService.deleteIndustry(id);
   }
 
@@ -131,9 +203,10 @@ export class IndustryController {
   @ApiOkResponse({
     description:
       'List of all industries with categories, sources, and channels',
+    type: IndustryListResponseDto,
   })
   @Get()
-  async getIndustries() {
+  async getIndustries(): Promise<IndustryListResponseDto> {
     return this.industryService.getAll();
   }
 
@@ -142,18 +215,37 @@ export class IndustryController {
     description: 'The skill has been successfully created',
     type: SkillResponseDto,
   })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+    type: ValidationErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized access',
+    type: UnauthorizedErrorResponseDto,
+  })
   @Post('skills')
-  createSkill(@Body() createSkillDto: CreateSkillDto) {
+  createSkill(
+    @Body() createSkillDto: CreateSkillDto,
+  ): Promise<SkillResponseDto> {
     return this.industryService.createSkill(createSkillDto);
   }
 
   @ApiOperation({ summary: 'Get all skills with optional filtering' })
   @ApiOkResponse({
     description: 'List of skills matching the query criteria',
-    type: [SkillResponseDto],
+    type: SkillListResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+    type: ValidationErrorResponseDto,
   })
   @Get('skills/all')
-  findAllSkills(@Query() query: FindSkillsQueryDto) {
+  findAllSkills(
+    @Query() query: FindSkillsQueryDto,
+  ): Promise<SkillListResponseDto> {
     return this.industryService.findAllSkills(query);
   }
 
@@ -168,11 +260,16 @@ export class IndustryController {
     description: 'The skill data',
     type: SkillResponseDto,
   })
+  @ApiResponse({
+    status: 404,
+    description: 'Skill not found',
+    type: NotFoundErrorResponseDto,
+  })
   @Get('skills/:slug')
   findSkillBySlug(
     @Param('slug') slug: string,
     @Query('industrySlug') industrySlug?: string,
-  ) {
+  ): Promise<SkillResponseDto> {
     return this.industryService.findSkillBySlug(slug, industrySlug);
   }
 
@@ -182,11 +279,26 @@ export class IndustryController {
     description: 'The skill has been successfully updated',
     type: SkillResponseDto,
   })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+    type: ValidationErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Skill not found',
+    type: NotFoundErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized access',
+    type: UnauthorizedErrorResponseDto,
+  })
   @Put('skills/:slug')
   updateSkill(
     @Param('slug') slug: string,
     @Body() updateSkillDto: UpdateSkillDto,
-  ) {
+  ): Promise<SkillResponseDto> {
     return this.industryService.updateSkill(slug, updateSkillDto);
   }
 
@@ -206,18 +318,33 @@ export class IndustryController {
     description: 'The tag has been successfully created',
     type: TagResponseDto,
   })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+    type: ValidationErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized access',
+    type: UnauthorizedErrorResponseDto,
+  })
   @Post('tags')
-  createTag(@Body() createTagDto: CreateTagDto) {
+  createTag(@Body() createTagDto: CreateTagDto): Promise<TagResponseDto> {
     return this.industryService.createTag(createTagDto);
   }
 
   @ApiOperation({ summary: 'Get all tags with optional filtering' })
   @ApiOkResponse({
     description: 'List of tags matching the query criteria',
-    type: [TagResponseDto],
+    type: TagListResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+    type: ValidationErrorResponseDto,
   })
   @Get('tags/all')
-  findAllTags(@Query() query: FindTagsQueryDto) {
+  findAllTags(@Query() query: FindTagsQueryDto): Promise<TagListResponseDto> {
     return this.industryService.findAllTags(query);
   }
 
@@ -275,10 +402,17 @@ export class IndustryController {
   @ApiOperation({ summary: 'Get all channels with optional filtering' })
   @ApiOkResponse({
     description: 'List of channels matching the query criteria',
-    type: [ChannelResponseDto],
+    type: ChannelListResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+    type: ValidationErrorResponseDto,
   })
   @Get('channels/all')
-  findAllChannels(@Query() query: FindChannelsQueryDto) {
+  findAllChannels(
+    @Query() query: FindChannelsQueryDto,
+  ): Promise<ChannelListResponseDto> {
     return this.industryService.findAllChannels(query);
   }
 

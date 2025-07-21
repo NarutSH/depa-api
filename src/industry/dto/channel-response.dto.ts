@@ -30,3 +30,24 @@ export class ChannelResponseDto {
   @ApiProperty({ description: 'Last update timestamp' })
   updatedAt: Date;
 }
+
+export class ChannelListResponseDto {
+  @ApiProperty({
+    description: 'Array of channels',
+    type: [ChannelResponseDto],
+  })
+  data: ChannelResponseDto[];
+
+  @ApiProperty({
+    description: 'Success status',
+    example: true,
+  })
+  success: boolean;
+
+  @ApiProperty({
+    description: 'Response message',
+    example: 'Channels retrieved successfully',
+    required: false,
+  })
+  message?: string;
+}

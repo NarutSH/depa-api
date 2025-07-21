@@ -33,3 +33,24 @@ export class SkillResponseDto {
   @ApiProperty({ description: 'Last update timestamp' })
   updatedAt: Date;
 }
+
+export class SkillListResponseDto {
+  @ApiProperty({
+    description: 'Array of skills',
+    type: [SkillResponseDto],
+  })
+  data: SkillResponseDto[];
+
+  @ApiProperty({
+    description: 'Success status',
+    example: true,
+  })
+  success: boolean;
+
+  @ApiProperty({
+    description: 'Response message',
+    example: 'Skills retrieved successfully',
+    required: false,
+  })
+  message?: string;
+}

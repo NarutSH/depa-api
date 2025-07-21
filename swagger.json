@@ -2769,6 +2769,26 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2786,7 +2806,14 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "List of all industries with categories, sources, and channels"
+            "description": "List of all industries with categories, sources, and channels",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndustryListResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2829,10 +2856,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IndustryResponseDto"
-                  }
+                  "$ref": "#/components/schemas/IndustryListResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
                 }
               }
             }
@@ -2869,7 +2903,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IndustryResponseDto"
+                  "$ref": "#/components/schemas/IndustryWithRelationsResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Industry not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
                 }
               }
             }
@@ -2918,6 +2962,36 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Industry not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2950,6 +3024,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IndustryResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Industry not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
                 }
               }
             }
@@ -2986,7 +3080,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IndustryResponseDto"
+                  "$ref": "#/components/schemas/IndustryWithRelationsResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Industry not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
                 }
               }
             }
@@ -3024,6 +3128,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SkillResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
                 }
               }
             }
@@ -3081,10 +3205,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SkillResponseDto"
-                  }
+                  "$ref": "#/components/schemas/SkillListResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
                 }
               }
             }
@@ -3134,6 +3265,16 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Skill not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3176,6 +3317,36 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SkillResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Skill not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
                 }
               }
             }
@@ -3251,6 +3422,26 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3305,10 +3496,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TagResponseDto"
-                  }
+                  "$ref": "#/components/schemas/TagListResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
                 }
               }
             }
@@ -3529,10 +3727,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChannelResponseDto"
-                  }
+                  "$ref": "#/components/schemas/ChannelListResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
                 }
               }
             }
@@ -5881,6 +6086,16 @@
             "description": "Industry slug (URL friendly identifier)",
             "example": "game-development"
           },
+          "description": {
+            "type": "string",
+            "description": "Industry description",
+            "example": "Comprehensive game development services"
+          },
+          "image": {
+            "type": "string",
+            "description": "Industry image URL",
+            "example": "https://example.com/industry-image.jpg"
+          },
           "createdAt": {
             "format": "date-time",
             "type": "string",
@@ -5900,51 +6115,6 @@
           "slug",
           "createdAt",
           "updatedAt"
-        ]
-      },
-      "UpdateIndustryDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Updated industry name",
-            "example": "Game Development & Design"
-          },
-          "slug": {
-            "type": "string",
-            "description": "Updated industry slug",
-            "example": "game-dev-design"
-          }
-        }
-      },
-      "CreateSkillDto": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "Skill title",
-            "example": "Game Design"
-          },
-          "slug": {
-            "type": "string",
-            "description": "Skill slug identifier (URL-friendly)",
-            "example": "game-design"
-          },
-          "group": {
-            "type": "string",
-            "description": "Optional skill group for categorization",
-            "example": "Design"
-          },
-          "industrySlug": {
-            "type": "string",
-            "description": "Industry slug that this skill belongs to",
-            "example": "game"
-          }
-        },
-        "required": [
-          "title",
-          "slug",
-          "industrySlug"
         ]
       },
       "IndustryDto": {
@@ -6016,51 +6186,6 @@
           "updatedAt"
         ]
       },
-      "UpdateSkillDto": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "Updated skill title",
-            "example": "Advanced Game Design"
-          },
-          "group": {
-            "type": "string",
-            "description": "Updated skill group",
-            "example": "Design"
-          },
-          "newSlug": {
-            "type": "string",
-            "description": "New slug for the skill (if you want to change it)",
-            "example": "advanced-game-design"
-          }
-        }
-      },
-      "CreateTagDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Tag name",
-            "example": "Mobile Gaming"
-          },
-          "slug": {
-            "type": "string",
-            "description": "Tag slug identifier (URL-friendly)",
-            "example": "mobile-gaming"
-          },
-          "industrySlug": {
-            "type": "string",
-            "description": "Industry slug that this tag belongs to",
-            "example": "game"
-          }
-        },
-        "required": [
-          "name",
-          "slug",
-          "industrySlug"
-        ]
-      },
       "TagResponseDto": {
         "type": "object",
         "properties": {
@@ -6109,46 +6234,6 @@
           "updatedAt"
         ]
       },
-      "UpdateTagDto": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "Updated tag title",
-            "example": "Advanced Mobile Gaming"
-          },
-          "newSlug": {
-            "type": "string",
-            "description": "New slug for the tag (if you want to change it)",
-            "example": "advanced-mobile-gaming"
-          }
-        }
-      },
-      "CreateChannelDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "slug": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "image": {
-            "type": "string"
-          },
-          "industrySlug": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "name",
-          "slug",
-          "industrySlug"
-        ]
-      },
       "ChannelResponseDto": {
         "type": "object",
         "properties": {
@@ -6195,6 +6280,310 @@
           "industry",
           "createdAt",
           "updatedAt"
+        ]
+      },
+      "IndustryWithRelationsResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Industry unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Industry name",
+            "example": "Game Development"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Industry slug (URL friendly identifier)",
+            "example": "game-development"
+          },
+          "description": {
+            "type": "string",
+            "description": "Industry description",
+            "example": "Comprehensive game development services"
+          },
+          "image": {
+            "type": "string",
+            "description": "Industry image URL",
+            "example": "https://example.com/industry-image.jpg"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp",
+            "example": "2025-05-11T10:30:00Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp",
+            "example": "2025-05-11T10:30:00Z"
+          },
+          "skills": {
+            "description": "Associated skills",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SkillResponseDto"
+            }
+          },
+          "tags": {
+            "description": "Associated tags",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagResponseDto"
+            }
+          },
+          "channels": {
+            "description": "Associated channels",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChannelResponseDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "IndustryListResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Array of industries",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndustryWithRelationsResponseDto"
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Success status",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message",
+            "example": "Industries retrieved successfully"
+          }
+        },
+        "required": [
+          "data",
+          "success"
+        ]
+      },
+      "UpdateIndustryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Updated industry name",
+            "example": "Game Development & Design"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Updated industry slug",
+            "example": "game-dev-design"
+          }
+        }
+      },
+      "CreateSkillDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Skill title",
+            "example": "Game Design"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Skill slug identifier (URL-friendly)",
+            "example": "game-design"
+          },
+          "group": {
+            "type": "string",
+            "description": "Optional skill group for categorization",
+            "example": "Design"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug that this skill belongs to",
+            "example": "game"
+          }
+        },
+        "required": [
+          "title",
+          "slug",
+          "industrySlug"
+        ]
+      },
+      "SkillListResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Array of skills",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SkillResponseDto"
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Success status",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message",
+            "example": "Skills retrieved successfully"
+          }
+        },
+        "required": [
+          "data",
+          "success"
+        ]
+      },
+      "UpdateSkillDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Updated skill title",
+            "example": "Advanced Game Design"
+          },
+          "group": {
+            "type": "string",
+            "description": "Updated skill group",
+            "example": "Design"
+          },
+          "newSlug": {
+            "type": "string",
+            "description": "New slug for the skill (if you want to change it)",
+            "example": "advanced-game-design"
+          }
+        }
+      },
+      "CreateTagDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Tag name",
+            "example": "Mobile Gaming"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Tag slug identifier (URL-friendly)",
+            "example": "mobile-gaming"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug that this tag belongs to",
+            "example": "game"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "industrySlug"
+        ]
+      },
+      "TagListResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Array of tags",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagResponseDto"
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Success status",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message",
+            "example": "Tags retrieved successfully"
+          }
+        },
+        "required": [
+          "data",
+          "success"
+        ]
+      },
+      "UpdateTagDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Updated tag title",
+            "example": "Advanced Mobile Gaming"
+          },
+          "newSlug": {
+            "type": "string",
+            "description": "New slug for the tag (if you want to change it)",
+            "example": "advanced-mobile-gaming"
+          }
+        }
+      },
+      "CreateChannelDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "industrySlug": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "industrySlug"
+        ]
+      },
+      "ChannelListResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Array of channels",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChannelResponseDto"
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Success status",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message",
+            "example": "Channels retrieved successfully"
+          }
+        },
+        "required": [
+          "data",
+          "success"
         ]
       },
       "UpdateChannelDto": {

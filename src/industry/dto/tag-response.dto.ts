@@ -30,3 +30,24 @@ export class TagResponseDto {
   @ApiProperty({ description: 'Last update timestamp' })
   updatedAt: Date;
 }
+
+export class TagListResponseDto {
+  @ApiProperty({
+    description: 'Array of tags',
+    type: [TagResponseDto],
+  })
+  data: TagResponseDto[];
+
+  @ApiProperty({
+    description: 'Success status',
+    example: true,
+  })
+  success: boolean;
+
+  @ApiProperty({
+    description: 'Response message',
+    example: 'Tags retrieved successfully',
+    required: false,
+  })
+  message?: string;
+}

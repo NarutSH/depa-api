@@ -1,25 +1,39 @@
 import {
+  ConflictException,
   Injectable,
   NotFoundException,
-  ConflictException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '../../generated/prisma';
+import { ChannelListResponseDto } from './dto/channel-response.dto';
 import { CreateIndustryDto } from './dto/create-industry.dto';
+import {
+  IndustryListResponseDto,
+  IndustryResponseDto,
+  IndustryWithRelationsResponseDto,
+} from './dto/industry-response.dto';
+import {
+  SkillListResponseDto,
+  SkillResponseDto,
+} from './dto/skill-response.dto';
+import { TagListResponseDto, TagResponseDto } from './dto/tag-response.dto';
 import { UpdateIndustryDto } from './dto/update-industry.dto';
 
 @Injectable()
 export class IndustryService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getAll() {
-    return this.prismaService.industry.findMany({
+  async getAll(): Promise<IndustryListResponseDto> {
+    const industries = await this.prismaService.industry.findMany({
       select: {
         name: true,
         slug: true,
         color: true,
         description: true,
         image: true,
+        id: true,
+        createdAt: true,
+        updatedAt: true,
         // Category: {
         //   select: {
         //     slug: true,
@@ -40,6 +54,12 @@ export class IndustryService {
         // },
       },
     });
+
+    return {
+      data: industries as IndustryWithRelationsResponseDto[],
+      success: true,
+      message: 'Industries retrieved successfully',
+    };
   }
 
   async getSkills() {
@@ -63,7 +83,9 @@ export class IndustryService {
   }
 
   // Industry CRUD operations
-  async createIndustry(createIndustryDto: CreateIndustryDto) {
+  async createIndustry(
+    createIndustryDto: CreateIndustryDto,
+  ): Promise<IndustryResponseDto> {
     // Check if industry with slug already exists
     const existingIndustry = await this.prismaService.industry.findUnique({
       where: { slug: createIndustryDto.slug },
@@ -75,22 +97,35 @@ export class IndustryService {
       );
     }
 
-    return this.prismaService.industry.create({
+    const industry = await this.prismaService.industry.create({
       data: createIndustryDto,
     });
+
+    return industry as IndustryResponseDto;
   }
 
-  async findAllIndustries(params?: { skip?: number; take?: number }) {
+  async findAllIndustries(params?: {
+    skip?: number;
+    take?: number;
+  }): Promise<IndustryListResponseDto> {
     const { skip, take } = params || {};
 
-    return this.prismaService.industry.findMany({
+    const industries = await this.prismaService.industry.findMany({
       skip,
       take,
       orderBy: { name: 'asc' },
     });
+
+    return {
+      data: industries as IndustryWithRelationsResponseDto[],
+      success: true,
+      message: 'Industries retrieved successfully',
+    };
   }
 
-  async findIndustryById(id: string) {
+  async findIndustryById(
+    id: string,
+  ): Promise<IndustryWithRelationsResponseDto> {
     const industry = await this.prismaService.industry.findUnique({
       where: { id },
       include: {
@@ -100,7 +135,6 @@ export class IndustryService {
         Segment: true,
         Skill: true,
         Tag: true,
-        LookingFor: true,
       },
     });
 
@@ -108,10 +142,12 @@ export class IndustryService {
       throw new NotFoundException(`Industry with ID ${id} not found`);
     }
 
-    return industry;
+    return industry as IndustryWithRelationsResponseDto;
   }
 
-  async findIndustryBySlug(slug: string) {
+  async findIndustryBySlug(
+    slug: string,
+  ): Promise<IndustryWithRelationsResponseDto> {
     const industry = await this.prismaService.industry.findUnique({
       where: { slug },
       include: {
@@ -129,7 +165,7 @@ export class IndustryService {
       throw new NotFoundException(`Industry with slug ${slug} not found`);
     }
 
-    return industry;
+    return industry as IndustryWithRelationsResponseDto;
   }
 
   async updateIndustry(id: string, updateIndustryDto: UpdateIndustryDto) {
@@ -283,7 +319,7 @@ export class IndustryService {
     skip?: number;
     take?: number;
     industrySlug?: string;
-  }): Promise<SkillResponse[]> {
+  }): Promise<SkillListResponseDto> {
     const { skip, take, industrySlug } = params;
 
     const where: Prisma.SkillWhereInput = {};
@@ -292,7 +328,7 @@ export class IndustryService {
       where.industrySlug = industrySlug;
     }
 
-    return this.prismaService.skill.findMany({
+    const skills = await this.prismaService.skill.findMany({
       skip,
       take,
       where,
@@ -306,8 +342,19 @@ export class IndustryService {
             color: true,
           },
         },
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        industrySlug: true,
+        group: true,
       },
     });
+
+    return {
+      data: skills as SkillResponseDto[],
+      success: true,
+      message: 'Skills retrieved successfully',
+    };
   }
 
   async findSkillBySlug(slug: string, industrySlug?: string) {
@@ -411,7 +458,7 @@ export class IndustryService {
     skip?: number;
     take?: number;
     industrySlug?: string;
-  }): Promise<TagResponse[]> {
+  }): Promise<TagListResponseDto> {
     const { skip, take, industrySlug } = params;
 
     const where: Prisma.TagWhereInput = {};
@@ -420,7 +467,7 @@ export class IndustryService {
       where.industrySlug = industrySlug;
     }
 
-    return this.prismaService.tag.findMany({
+    const tags = await this.prismaService.tag.findMany({
       skip,
       take,
       where,
@@ -434,8 +481,18 @@ export class IndustryService {
             color: true,
           },
         },
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        industrySlug: true,
       },
     });
+
+    return {
+      data: tags as TagResponseDto[],
+      success: true,
+      message: 'Tags retrieved successfully',
+    };
   }
   async findTagBySlug(slug: string, industrySlug?: string) {
     const where: Prisma.TagWhereInput = { slug };
@@ -539,7 +596,7 @@ export class IndustryService {
     skip?: number;
     take?: number;
     industrySlug?: string;
-  }): Promise<ChannelResponse[]> {
+  }): Promise<ChannelListResponseDto> {
     const { skip, take, industrySlug } = params;
 
     const where: Prisma.ChannelWhereInput = {};
@@ -548,13 +605,17 @@ export class IndustryService {
       where.industrySlug = industrySlug;
     }
 
-    return this.prismaService.channel.findMany({
+    const channels = await this.prismaService.channel.findMany({
       skip,
       take,
       where,
       select: {
+        id: true,
         name: true,
         slug: true,
+        industrySlug: true,
+        createdAt: true,
+        updatedAt: true,
         industry: {
           select: {
             name: true,
@@ -564,6 +625,12 @@ export class IndustryService {
         },
       },
     });
+
+    return {
+      data: channels,
+      success: true,
+      message: 'Channels retrieved successfully',
+    };
   }
   async findChannelBySlug(slug: string, industrySlug?: string) {
     const where: Prisma.ChannelWhereInput = { slug };
@@ -628,28 +695,3 @@ export class IndustryService {
     });
   }
 }
-
-type SkillResponse = {
-  title: string;
-  slug: string;
-  industry: {
-    name: string;
-    slug: string;
-  };
-};
-type TagResponse = {
-  name: string;
-  slug: string;
-  industry: {
-    name: string;
-    slug: string;
-  };
-};
-type ChannelResponse = {
-  name: string;
-  slug: string;
-  industry: {
-    name: string;
-    slug: string;
-  };
-};
