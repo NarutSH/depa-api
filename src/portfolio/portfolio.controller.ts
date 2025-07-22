@@ -215,7 +215,7 @@ export class PortfolioController {
       'portfolio',
     );
 
-    const imagePaths = resImages.map((image) => image.fullPath);
+    const imagePaths = resImages.data.map((image) => image.fullPath);
 
     // add gallery images
     await this.portfolioService.addImagesToPortfolio(
@@ -227,14 +227,14 @@ export class PortfolioController {
     // add cover image
     await this.portfolioService.addImagesToPortfolio(
       resPort.id,
-      resCover.map((image) => image.fullPath),
+      resCover.data.map((image) => image.fullPath),
       PortfolioImageType.cover,
     );
 
     // add main image
     await this.portfolioService.addImagesToPortfolio(
       resPort.id,
-      resMainImage.map((image) => image.fullPath),
+      resMainImage.data.map((image) => image.fullPath),
       PortfolioImageType.main,
     );
 
@@ -418,7 +418,7 @@ export class PortfolioController {
       );
       await this.portfolioService.replaceImagesForPortfolio(
         id,
-        resImages.map((img) => img.fullPath),
+        resImages.data.map((img) => img.fullPath),
         PortfolioImageType.gallery,
       );
     }
@@ -429,7 +429,7 @@ export class PortfolioController {
       );
       await this.portfolioService.replaceImagesForPortfolio(
         id,
-        resCover.map((img) => img.fullPath),
+        resCover.data.map((img) => img.fullPath),
         PortfolioImageType.cover,
       );
     }
@@ -440,7 +440,7 @@ export class PortfolioController {
       );
       await this.portfolioService.replaceImagesForPortfolio(
         id,
-        resMainImage.map((img) => img.fullPath),
+        resMainImage.data.map((img) => img.fullPath),
         PortfolioImageType.main,
       );
     }

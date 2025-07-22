@@ -2705,18 +2705,59 @@
         "parameters": [
           {
             "name": "folder",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Optional folder name to organize uploads",
             "schema": {
+              "example": "portfolio",
               "type": "string"
             }
           }
         ],
-        "responses": {
-          "201": {
-            "description": ""
+        "requestBody": {
+          "required": true,
+          "description": "File upload",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The file to upload (image files only)"
+                  }
+                },
+                "required": [
+                  "file"
+                ]
+              }
+            }
           }
         },
+        "responses": {
+          "201": {
+            "description": "File uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleUploadResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "File validation failed or upload error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Upload a single file",
         "tags": [
           "Upload"
         ]
@@ -2728,18 +2769,62 @@
         "parameters": [
           {
             "name": "folder",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Optional folder name to organize uploads",
             "schema": {
+              "example": "portfolio",
               "type": "string"
             }
           }
         ],
-        "responses": {
-          "201": {
-            "description": ""
+        "requestBody": {
+          "required": true,
+          "description": "Multiple file upload",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "Array of files to upload (up to 10 image files)"
+                  }
+                },
+                "required": [
+                  "files"
+                ]
+              }
+            }
           }
         },
+        "responses": {
+          "201": {
+            "description": "Files uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MultipleUploadResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "File validation failed or upload error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Upload multiple files",
         "tags": [
           "Upload"
         ]
@@ -6048,6 +6133,98 @@
       "UpdateStandardDto": {
         "type": "object",
         "properties": {}
+      },
+      "UploadFileResponseDto": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Relative path of the uploaded file",
+            "example": "portfolio/image-1642531200000.jpg"
+          },
+          "fullPath": {
+            "type": "string",
+            "description": "Full path of the uploaded file",
+            "example": "portfolio/image-1642531200000.jpg"
+          },
+          "publicUrl": {
+            "type": "string",
+            "description": "Public URL to access the uploaded file",
+            "example": "https://digitalcontent.depa.or.th/uploads/portfolio/image-1642531200000.jpg"
+          },
+          "size": {
+            "type": "number",
+            "description": "File size in bytes",
+            "example": 1024576
+          },
+          "mimetype": {
+            "type": "string",
+            "description": "MIME type of the uploaded file",
+            "example": "image/jpeg"
+          }
+        },
+        "required": [
+          "path",
+          "fullPath",
+          "publicUrl",
+          "size",
+          "mimetype"
+        ]
+      },
+      "SingleUploadResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Uploaded file information",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UploadFileResponseDto"
+              }
+            ]
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Success status",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message",
+            "example": "File uploaded successfully"
+          }
+        },
+        "required": [
+          "data",
+          "success",
+          "message"
+        ]
+      },
+      "MultipleUploadResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Array of uploaded file information",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadFileResponseDto"
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Success status",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message",
+            "example": "Files uploaded successfully"
+          }
+        },
+        "required": [
+          "data",
+          "success",
+          "message"
+        ]
       },
       "CreateIndustryDto": {
         "type": "object",

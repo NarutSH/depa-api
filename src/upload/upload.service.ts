@@ -1,6 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
+import {
+  SingleUploadResponseDto,
+  MultipleUploadResponseDto,
+  UploadFileResponseDto,
+} from './dto/upload-response.dto';
 
 @Injectable()
 export class UploadService {
@@ -18,7 +23,10 @@ export class UploadService {
     // }
   }
 
-  async uploadFile(file: Express.Multer.File, folderName: string = '') {
+  async uploadFile(
+    file: Express.Multer.File,
+    folderName: string = '',
+  ): Promise<SingleUploadResponseDto> {
     try {
       const [fileName, fileType] = file.originalname.split('.');
 
@@ -47,27 +55,39 @@ export class UploadService {
       const baseUrl = process.env.BASE_URL || 'http://localhost:8000';
       const publicUrl = `${baseUrl}/uploads/${relativePath}`;
 
-      return {
+      const fileData: UploadFileResponseDto = {
         path: relativePath,
         fullPath: relativePath,
-        // fullPath: filePath,
         publicUrl: publicUrl,
         size: file.size,
         mimetype: file.mimetype,
+      };
+
+      return {
+        data: fileData,
+        success: true,
+        message: 'File uploaded successfully',
       };
     } catch (error) {
       throw new BadRequestException(`File upload failed: ${error.message}`);
     }
   }
 
-  async uploadMultiFile(files: Express.Multer.File[], folderName: string = '') {
-    const uploadResults = [];
+  async uploadMultiFile(
+    files: Express.Multer.File[],
+    folderName: string = '',
+  ): Promise<MultipleUploadResponseDto> {
+    const uploadResults: UploadFileResponseDto[] = [];
 
     for (const file of files) {
       const result = await this.uploadFile(file, folderName);
-      uploadResults.push(result);
+      uploadResults.push(result.data);
     }
 
-    return uploadResults;
+    return {
+      data: uploadResults,
+      success: true,
+      message: 'Files uploaded successfully',
+    };
   }
 }

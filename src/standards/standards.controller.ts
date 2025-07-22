@@ -101,7 +101,7 @@ export class StandardsController {
         image,
         'portfolio/standards',
       );
-      imagePath = uploadResult.path;
+      imagePath = uploadResult.data.path;
     }
     return this.standardsService.createStandard({
       ...createStandardDto,
@@ -122,7 +122,7 @@ export class StandardsController {
         image,
         'standards',
       );
-      imagePath = uploadResult.path;
+      imagePath = uploadResult.data.path;
     }
     return this.standardsService.updateStandard(id, {
       ...updateStandardDto,
