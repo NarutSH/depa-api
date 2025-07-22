@@ -17,7 +17,7 @@
     },
     "/users": {
       "get": {
-        "description": "Retrieves all users. Admin only.",
+        "description": "Retrieves all users with pagination and filtering. Admin only.",
         "operationId": "UsersController_getAllUsers",
         "parameters": [
           {
@@ -70,10 +70,24 @@
         ],
         "responses": {
           "200": {
-            "description": "List of all users retrieved successfully"
+            "description": "List of all users retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MultipleUsersResponseDto"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden - requires admin role"
+            "description": "Forbidden - requires admin role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -102,13 +116,44 @@
         },
         "responses": {
           "201": {
-            "description": "User profile created successfully"
+            "description": "User profile created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserResponseDto"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad request - invalid input"
+            "description": "Bad request - invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized - requires authentication"
+            "description": "Unauthorized - requires authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - can only create profile with own email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -129,10 +174,34 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Current user profile retrieved successfully"
+            "description": "Current user profile retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleUserResponseDto"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized - requires authentication"
+            "description": "Unauthorized - requires authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - User ID not found in request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -163,13 +232,34 @@
         ],
         "responses": {
           "200": {
-            "description": "User retrieved successfully"
+            "description": "User retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleUserResponseDto"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden - cannot access other users' profiles"
+            "description": "Forbidden - cannot access other users' profiles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
           },
           "404": {
-            "description": "User not found"
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -208,13 +298,44 @@
         },
         "responses": {
           "200": {
-            "description": "User updated successfully"
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden - cannot update other users's profiles"
+            "description": "Forbidden - cannot update other users's profiles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
           },
           "404": {
-            "description": "User not found"
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -245,13 +366,34 @@
         ],
         "responses": {
           "200": {
-            "description": "User retrieved successfully"
+            "description": "User retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleUserResponseDto"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized - requires authentication"
+            "description": "Unauthorized - requires authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
           },
           "404": {
-            "description": "User not found"
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -290,13 +432,44 @@
         },
         "responses": {
           "200": {
-            "description": "User updated successfully"
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden - requires admin role"
+            "description": "Forbidden - requires admin role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
           },
           "404": {
-            "description": "User not found"
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -5086,6 +5259,356 @@
         "type": "object",
         "properties": {}
       },
+      "UserDataDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "User unique identifier"
+          },
+          "fullnameTh": {
+            "type": "string",
+            "description": "User full name in Thai"
+          },
+          "fullnameEn": {
+            "type": "string",
+            "description": "User full name in English"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email address"
+          },
+          "about": {
+            "type": "string",
+            "description": "About the user"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "User phone number"
+          },
+          "website": {
+            "type": "string",
+            "description": "User website"
+          },
+          "location": {
+            "type": "string",
+            "description": "User location"
+          },
+          "userType": {
+            "type": "string",
+            "description": "User type"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "User creation date"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "User last update date"
+          },
+          "company": {
+            "type": "object",
+            "description": "Associated company information",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "nameTh": {
+                "type": "string"
+              },
+              "nameEn": {
+                "type": "string"
+              },
+              "juristicId": {
+                "type": "string"
+              }
+            }
+          },
+          "freelance": {
+            "type": "object",
+            "description": "Associated freelance information",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "firstNameTh": {
+                "type": "string"
+              },
+              "lastNameTh": {
+                "type": "string"
+              },
+              "firstNameEn": {
+                "type": "string"
+              },
+              "lastNameEn": {
+                "type": "string"
+              },
+              "juristicId": {
+                "type": "string"
+              }
+            }
+          },
+          "industryTags": {
+            "type": "array",
+            "description": "User industry tags",
+            "items": {
+              "type": "object",
+              "properties": {
+                "tag": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "slug": {
+                      "type": "string"
+                    },
+                    "industry": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "slug": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "industryChannels": {
+            "type": "array",
+            "description": "User industry channels",
+            "items": {
+              "type": "object",
+              "properties": {
+                "channel": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "slug": {
+                      "type": "string"
+                    },
+                    "industry": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "slug": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "industrySkills": {
+            "type": "array",
+            "description": "User industry skills",
+            "items": {
+              "type": "object",
+              "properties": {
+                "skill": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "slug": {
+                      "type": "string"
+                    },
+                    "industry": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "slug": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "industriesRelated": {
+            "type": "array",
+            "description": "Related industries",
+            "items": {
+              "type": "object",
+              "properties": {
+                "industry": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "PaginationMetadataDto": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "number",
+            "description": "Current page number"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Items per page"
+          },
+          "total": {
+            "type": "number",
+            "description": "Total number of items"
+          },
+          "pageCount": {
+            "type": "number",
+            "description": "Total number of pages"
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Has next page"
+          },
+          "hasPreviousPage": {
+            "type": "boolean",
+            "description": "Has previous page"
+          }
+        },
+        "required": [
+          "page",
+          "limit",
+          "total",
+          "pageCount",
+          "hasNextPage",
+          "hasPreviousPage"
+        ]
+      },
+      "MultipleUsersResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Array of user data",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDataDto"
+            }
+          },
+          "meta": {
+            "description": "Pagination metadata",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationMetadataDto"
+              }
+            ]
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Operation success status",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message",
+            "example": "Users retrieved successfully"
+          }
+        },
+        "required": [
+          "data",
+          "meta",
+          "success",
+          "message"
+        ]
+      },
+      "UserErrorResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "description": "Error message",
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "User not found"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "Email must be a valid email",
+                  "Full name is required"
+                ]
+              }
+            ]
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "HTTP status code",
+            "example": 400
+          },
+          "error": {
+            "type": "string",
+            "description": "Error type",
+            "example": "Bad Request"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Operation success status",
+            "example": false
+          }
+        },
+        "required": [
+          "message",
+          "statusCode",
+          "error",
+          "success"
+        ]
+      },
+      "SingleUserResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "User data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserDataDto"
+              }
+            ]
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Operation success status",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message",
+            "example": "User retrieved successfully"
+          }
+        },
+        "required": [
+          "data",
+          "success",
+          "message"
+        ]
+      },
       "CreateUserDto": {
         "type": "object",
         "properties": {
@@ -5212,9 +5735,212 @@
           "specialists"
         ]
       },
+      "CreateUserResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Created user data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserDataDto"
+              }
+            ]
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Operation success status",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message",
+            "example": "User created successfully"
+          }
+        },
+        "required": [
+          "data",
+          "success",
+          "message"
+        ]
+      },
       "UpdateUserDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "fullnameTh": {
+            "type": "string",
+            "description": "User full name in Thai"
+          },
+          "fullnameEn": {
+            "type": "string",
+            "description": "User full name in English"
+          },
+          "about": {
+            "type": "string",
+            "description": "About the user"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "User phone number"
+          },
+          "website": {
+            "type": "string",
+            "description": "User website"
+          },
+          "location": {
+            "type": "string",
+            "description": "User location"
+          },
+          "industries": {
+            "description": "Industries associated with the user",
+            "example": [
+              "technology",
+              "healthcare"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "description": "User tags",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": [
+              {
+                "category": "skill",
+                "name": "javascript"
+              },
+              {
+                "category": "technology",
+                "name": "react"
+              }
+            ]
+          },
+          "channels": {
+            "type": "array",
+            "description": "User channels",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": [
+              {
+                "category": "social",
+                "name": "linkedin"
+              },
+              {
+                "category": "professional",
+                "name": "github"
+              }
+            ]
+          },
+          "specialists": {
+            "type": "array",
+            "description": "User specialists/skills",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": [
+              {
+                "category": "programming",
+                "name": "typescript"
+              },
+              {
+                "category": "design",
+                "name": "figma"
+              }
+            ]
+          },
+          "tags_array": {
+            "description": "User tags array (simplified)",
+            "example": [
+              "javascript",
+              "react",
+              "typescript"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "channels_array": {
+            "description": "User channels array (simplified)",
+            "example": [
+              "linkedin",
+              "github",
+              "behance"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "specialists_array": {
+            "description": "User specialists array (simplified)",
+            "example": [
+              "typescript",
+              "figma",
+              "photoshop"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "UpdateUserResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Updated user data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserDataDto"
+              }
+            ]
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Operation success status",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Response message",
+            "example": "User updated successfully"
+          }
+        },
+        "required": [
+          "data",
+          "success",
+          "message"
+        ]
       },
       "UserResponseDto": {
         "type": "object",

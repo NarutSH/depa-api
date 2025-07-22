@@ -25,6 +25,13 @@ import {
 import { Request } from 'express';
 import { Role } from '../auth/roles.enum';
 import QueryMetadataDto from './dtos/query-metadata.dto';
+import {
+  SingleUserResponseDto,
+  MultipleUsersResponseDto,
+  CreateUserResponseDto,
+  UpdateUserResponseDto,
+} from './dtos/user-response.dto';
+import { UserErrorResponseDto } from './dtos/user-error.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -37,13 +44,19 @@ export class UsersController {
   // @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({
     summary: 'Get all users',
-    description: 'Retrieves all users. Admin only.',
+    description:
+      'Retrieves all users with pagination and filtering. Admin only.',
   })
   @ApiResponse({
     status: 200,
     description: 'List of all users retrieved successfully',
+    type: MultipleUsersResponseDto,
   })
-  @ApiResponse({ status: 403, description: 'Forbidden - requires admin role' })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - requires admin role',
+    type: UserErrorResponseDto,
+  })
   @ApiQuery({
     name: 'page',
     required: false,
@@ -68,7 +81,9 @@ export class UsersController {
     type: String,
     description: 'Sort field and direction (e.g., email:asc, createdAt:desc)',
   })
-  async getAllUsers(@Query() query: QueryMetadataDto) {
+  async getAllUsers(
+    @Query() query: QueryMetadataDto,
+  ): Promise<MultipleUsersResponseDto> {
     return this.usersService.getAllUsers(query);
   }
 
@@ -82,12 +97,19 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: 'Current user profile retrieved successfully',
+    type: SingleUserResponseDto,
   })
   @ApiResponse({
     status: 401,
     description: 'Unauthorized - requires authentication',
+    type: UserErrorResponseDto,
   })
-  async getMe(@Req() req: Request) {
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - User ID not found in request',
+    type: UserErrorResponseDto,
+  })
+  async getMe(@Req() req: Request): Promise<SingleUserResponseDto> {
     console.log('req==>', req);
     const user = req.user as any;
 
@@ -107,13 +129,25 @@ export class UsersController {
       'Retrieves user by ID. Users can only access their own profile.',
   })
   @ApiParam({ name: 'id', description: 'User ID' })
-  @ApiResponse({ status: 200, description: 'User retrieved successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'User retrieved successfully',
+    type: SingleUserResponseDto,
+  })
   @ApiResponse({
     status: 403,
     description: "Forbidden - cannot access other users' profiles",
+    type: UserErrorResponseDto,
   })
-  @ApiResponse({ status: 404, description: 'User not found' })
-  async getUserById(@Param('id') id: string, @Req() req: Request) {
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
+    type: UserErrorResponseDto,
+  })
+  async getUserById(
+    @Param('id') id: string,
+    @Req() req: Request,
+  ): Promise<SingleUserResponseDto> {
     const user = req.user as any;
 
     // Admin can access any profile
@@ -137,13 +171,24 @@ export class UsersController {
     description: 'Retrieves user by email for any authenticated user.',
   })
   @ApiParam({ name: 'email', description: 'User email address' })
-  @ApiResponse({ status: 200, description: 'User retrieved successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'User retrieved successfully',
+    type: SingleUserResponseDto,
+  })
   @ApiResponse({
     status: 401,
     description: 'Unauthorized - requires authentication',
+    type: UserErrorResponseDto,
   })
-  @ApiResponse({ status: 404, description: 'User not found' })
-  async getUserByEmail(@Param('email') email: string) {
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
+    type: UserErrorResponseDto,
+  })
+  async getUserByEmail(
+    @Param('email') email: string,
+  ): Promise<SingleUserResponseDto> {
     return this.usersService.getUserByEmail(email);
   }
 
@@ -158,13 +203,27 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: 'User profile created successfully',
+    type: CreateUserResponseDto,
   })
   @ApiResponse({
     status: 401,
     description: 'Unauthorized - requires authentication',
+    type: UserErrorResponseDto,
   })
-  @ApiResponse({ status: 400, description: 'Bad request - invalid input' })
-  async createUser(@Body() body: CreateUserDto, @Req() req: Request) {
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request - invalid input',
+    type: UserErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - can only create profile with own email',
+    type: UserErrorResponseDto,
+  })
+  async createUser(
+    @Body() body: CreateUserDto,
+    @Req() req: Request,
+  ): Promise<CreateUserResponseDto> {
     const user = req.user as any;
 
     // Ensure the email in the profile matches the authenticated user
@@ -187,17 +246,31 @@ export class UsersController {
   })
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiBody({ type: UpdateUserDto })
-  @ApiResponse({ status: 200, description: 'User updated successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'User updated successfully',
+    type: UpdateUserResponseDto,
+  })
   @ApiResponse({
     status: 403,
     description: "Forbidden - cannot update other users's profiles",
+    type: UserErrorResponseDto,
   })
-  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
+    type: UserErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request - invalid input',
+    type: UserErrorResponseDto,
+  })
   async updateUser(
     @Param('id') id: string,
     @Body() body: UpdateUserDto,
     // @Req() req: Request,
-  ) {
+  ): Promise<UpdateUserResponseDto> {
     try {
       return this.usersService.updateUser(id, body);
     } catch (error) {
@@ -216,13 +289,30 @@ export class UsersController {
   })
   @ApiParam({ name: 'email', description: 'User email address' })
   @ApiBody({ type: UpdateUserDto })
-  @ApiResponse({ status: 200, description: 'User updated successfully' })
-  @ApiResponse({ status: 403, description: 'Forbidden - requires admin role' })
-  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({
+    status: 200,
+    description: 'User updated successfully',
+    type: UpdateUserResponseDto,
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - requires admin role',
+    type: UserErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
+    type: UserErrorResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request - invalid input',
+    type: UserErrorResponseDto,
+  })
   async updateUserByEmail(
     @Param('email') email: string,
     @Body() body: UpdateUserDto,
-  ) {
+  ): Promise<UpdateUserResponseDto> {
     return this.usersService.updateUserByEmail(email, body);
   }
 }

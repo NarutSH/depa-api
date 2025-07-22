@@ -4,6 +4,12 @@ import CreateUserDto from './dtos/create-user.dto';
 import UpdateUserDto from './dtos/update-user.dto';
 import { QueryMetadataDto, ResponseMetadata } from 'src/utils';
 import { QueryUtilsService } from 'src/utils/services/query-utils.service';
+import {
+  SingleUserResponseDto,
+  MultipleUsersResponseDto,
+  CreateUserResponseDto,
+  UpdateUserResponseDto,
+} from './dtos/user-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -12,7 +18,9 @@ export class UsersService {
     private readonly queryUtils: QueryUtilsService,
   ) {}
 
-  async getAllUsers(queryDto: QueryMetadataDto) {
+  async getAllUsers(
+    queryDto: QueryMetadataDto,
+  ): Promise<MultipleUsersResponseDto> {
     // Ensure we have valid pagination values
     const page = Number(queryDto.page) || 1;
     const limit = Number(queryDto.limit) || 10;
@@ -113,21 +121,32 @@ export class UsersService {
       this.prismaService.user.count({ where }),
     ]);
 
-    // Return paginated response with metadata
-    return ResponseMetadata.paginated(
+    // Return paginated response with metadata in the correct format
+    const response = ResponseMetadata.paginated(
       users,
       total,
       page,
       limit,
       'Users retrieved successfully',
     );
+
+    return response as MultipleUsersResponseDto;
   }
 
-  async createUser(data: CreateUserDto) {
-    return this.prismaService.user.create({ data });
+  async createUser(data: CreateUserDto): Promise<CreateUserResponseDto> {
+    const user = await this.prismaService.user.create({ data });
+
+    return {
+      data: user,
+      success: true,
+      message: 'User created successfully',
+    };
   }
 
-  async updateUser(id: string, data: UpdateUserDto) {
+  async updateUser(
+    id: string,
+    data: UpdateUserDto,
+  ): Promise<UpdateUserResponseDto> {
     // Extract relationship arrays from DTO
     const {
       tags_array,
@@ -149,11 +168,12 @@ export class UsersService {
     await this.prismaService.userIndustry.deleteMany({
       where: { userId: id },
     });
-    if (industries) {
+
+    if (industries && industries.length > 0) {
       await this.prismaService.userIndustry.createMany({
-        data: industries.map((industry) => ({
+        data: industries.map((industrySlug) => ({
           userId: id,
-          industrySlug: industry,
+          industrySlug,
         })),
       });
     }
@@ -163,11 +183,11 @@ export class UsersService {
       where: { userId: id },
     });
 
-    if (tags_array) {
+    if (tags_array && tags_array.length > 0) {
       await this.prismaService.userTags.createMany({
-        data: tags_array.map((tag) => ({
+        data: tags_array.map((tagSlug) => ({
           userId: id,
-          tagSlug: tag,
+          tagSlug: tagSlug,
         })),
       });
     }
@@ -176,38 +196,56 @@ export class UsersService {
     await this.prismaService.userChannels.deleteMany({
       where: { userId: id },
     });
-    if (channels_array) {
+
+    if (channels_array && channels_array.length > 0) {
       await this.prismaService.userChannels.createMany({
-        data: channels_array.map((channel) => ({
+        data: channels_array.map((channelSlug) => ({
           userId: id,
-          channelSlug: channel,
+          channelSlug: channelSlug,
         })),
       });
     }
 
-    // Update user specialists
+    // Update user skills
     await this.prismaService.userSkills.deleteMany({
       where: { userId: id },
     });
-    if (specialists_array) {
+
+    if (specialists_array && specialists_array.length > 0) {
       await this.prismaService.userSkills.createMany({
-        data: specialists_array.map((specialist) => ({
+        data: specialists_array.map((skillSlug) => ({
           userId: id,
-          skillSlug: specialist,
+          skillSlug: skillSlug,
         })),
       });
     }
 
-    return updatedUser;
+    return {
+      data: updatedUser,
+      success: true,
+      message: 'User updated successfully',
+    };
   }
 
-  async updateUserByEmail(email: string, data: UpdateUserDto) {
+  async updateUserByEmail(
+    email: string,
+    data: UpdateUserDto,
+  ): Promise<UpdateUserResponseDto> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { tags_array, channels_array, specialists_array, ...userData } = data;
-    return this.prismaService.user.update({ where: { email }, data: userData });
+    const updatedUser = await this.prismaService.user.update({
+      where: { email },
+      data: userData,
+    });
+
+    return {
+      data: updatedUser,
+      success: true,
+      message: 'User updated successfully',
+    };
   }
 
-  async getUserById(id: string) {
+  async getUserById(id: string): Promise<SingleUserResponseDto> {
     const user = await this.prismaService.user.findUnique({
       where: { id: id },
       include: {
@@ -240,10 +278,14 @@ export class UsersService {
       throw new NotFoundException(`User with id ${id} not found`);
     }
 
-    return user;
+    return {
+      data: user as any, // Cast to any to handle complex Prisma relationships
+      success: true,
+      message: 'User retrieved successfully',
+    };
   }
 
-  async getMe(userId: string) {
+  async getMe(userId: string): Promise<SingleUserResponseDto> {
     const user = await this.prismaService.user.findUnique({
       where: { id: userId },
       include: {
@@ -336,10 +378,14 @@ export class UsersService {
       })),
     };
 
-    return transformedUser;
+    return {
+      data: transformedUser as any, // Cast to any to handle complex Prisma relationships
+      success: true,
+      message: 'User profile retrieved successfully',
+    };
   }
 
-  async getUserByEmail(email: string) {
+  async getUserByEmail(email: string): Promise<SingleUserResponseDto> {
     const user = await this.prismaService.user.findUnique({
       where: { email: email },
       include: {
@@ -413,6 +459,10 @@ export class UsersService {
       throw new NotFoundException(`User with email ${email} not found`);
     }
 
-    return user;
+    return {
+      data: user as any, // Cast to any to handle complex Prisma relationships
+      success: true,
+      message: 'User retrieved successfully',
+    };
   }
 }
