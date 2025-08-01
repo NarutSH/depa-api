@@ -23,6 +23,7 @@ import {
 } from '@nestjs/swagger';
 // import { PortfolioImageType } from '@prisma/client';
 import { Request } from 'express';
+import { CurrentUser } from '../auth/interfaces/current-user.interface';
 import { UploadService } from 'src/upload/upload.service';
 import { QueryMetadataDto, ResponseMetadata } from 'src/utils';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -172,7 +173,7 @@ export class PortfolioController {
     },
     @Req() req: Request,
   ) {
-    const user = req.user as any;
+    const user = req.user as CurrentUser;
 
     console.log('createPortfolio user', user);
 
@@ -247,10 +248,10 @@ export class PortfolioController {
     @Body() favoriteDto: FavoritePortfolioDto,
     @Req() req: Request,
   ) {
-    const user = req.user as any;
+    const user = req.user as CurrentUser;
     return this.portfolioService.toggleFavorite(
       favoriteDto.portfolioId,
-      user.userId,
+      user.id,
       favoriteDto.action,
     );
   }
@@ -262,16 +263,16 @@ export class PortfolioController {
     @Param('portfolioId') portfolioId: string,
     @Req() req: Request,
   ) {
-    const user = req.user as any;
-    return this.portfolioService.getFavoriteStatus(portfolioId, user.userId);
+    const user = req.user as CurrentUser;
+    return this.portfolioService.getFavoriteStatus(portfolioId, user.id);
   }
 
   @Get('favorites/user')
   @Public()
   // @UseGuards(JwtAuthGuard)
   async getUserFavorites(@Req() req: Request) {
-    const user = req.user as any;
-    return this.portfolioService.getUserFavorites(user.userId);
+    const user = req.user as CurrentUser;
+    return this.portfolioService.getUserFavorites(user.id);
   }
 
   @Delete(':id')
@@ -327,7 +328,7 @@ export class PortfolioController {
     @Body() commentDto: CreateCommentDto,
     @Req() req: Request,
   ) {
-    const user = req.user as any;
+    const user = req.user as CurrentUser;
     return this.portfolioService.createComment(user.id, commentDto);
   }
 
@@ -347,7 +348,7 @@ export class PortfolioController {
     @Body('content') content: string,
     @Req() req: Request,
   ) {
-    const user = req.user as any;
+    const user = req.user as CurrentUser;
     return this.portfolioService.updateComment(commentId, user.id, content);
   }
 
@@ -366,7 +367,7 @@ export class PortfolioController {
     @Param('commentId') commentId: string,
     @Req() req: Request,
   ) {
-    const user = req.user as any;
+    const user = req.user as CurrentUser;
     return this.portfolioService.deleteComment(
       commentId,
       user.id,

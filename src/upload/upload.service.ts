@@ -1,26 +1,63 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import * as fs from 'fs';
-import * as path from 'path';
+import {
+  Injectable,
+  Inject,
+  Logger,
+  BadRequestException,
+} from '@nestjs/common';
+import { Client } from 'minio';
+import * as crypto from 'crypto';
 import {
   SingleUploadResponseDto,
   MultipleUploadResponseDto,
   UploadFileResponseDto,
 } from './dto/upload-response.dto';
 
+// สร้าง Injection Token สำหรับ MinIO Client
+export const MINIO_CLIENT = 'MINIO_CLIENT';
+
 @Injectable()
 export class UploadService {
-  private readonly uploadDir: string;
+  private readonly logger = new Logger(UploadService.name);
+  private readonly bucketName: string;
+  private readonly baseUrl: string;
 
-  constructor() {
-    this.uploadDir =
-      process.env.UPLOAD_DIR || path.join(process.cwd(), 'uploads');
+  constructor(@Inject(MINIO_CLIENT) private readonly minioClient: Client) {
+    // ดึงชื่อ Bucket และ Base URL จาก Environment Variables
+    this.bucketName = process.env.MINIO_BUCKET || 'uploads';
+    this.baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+    this.logger.log(`UploadService initialized for bucket: ${this.bucketName}`);
+  }
 
-    console.log(`Upload service using directory: ${this.uploadDir}`);
+  /**
+   * ตรวจสอบและสร้าง Bucket ถ้ายังไม่มี
+   */
+  private async ensureBucketExists() {
+    const bucketExists = await this.minioClient.bucketExists(this.bucketName);
+    if (!bucketExists) {
+      this.logger.log(
+        `Bucket "${this.bucketName}" does not exist. Creating...`,
+      );
+      await this.minioClient.makeBucket(this.bucketName);
 
-    // // Ensure upload directory exists
-    // if (!fs.existsSync(this.uploadDir)) {
-    //   fs.mkdirSync(this.uploadDir, { recursive: true });
-    // }
+      this.logger.log(`Bucket "${this.bucketName}" created successfully.`);
+      // (Optional) ตั้งค่า Policy ให้ Bucket เป็น Public-Read
+      const policy = {
+        Version: '2012-10-17',
+        Statement: [
+          {
+            Effect: 'Allow',
+            Principal: { AWS: ['*'] },
+            Action: ['s3:GetObject'],
+            Resource: [`arn:aws:s3:::${this.bucketName}/*`],
+          },
+        ],
+      };
+      await this.minioClient.setBucketPolicy(
+        this.bucketName,
+        JSON.stringify(policy),
+      );
+      this.logger.log(`Bucket "${this.bucketName}" policy set to public-read.`);
+    }
   }
 
   async uploadFile(
@@ -28,36 +65,47 @@ export class UploadService {
     folderName: string = '',
   ): Promise<SingleUploadResponseDto> {
     try {
-      const [fileName, fileType] = file.originalname.split('.');
+      // ตรวจสอบว่า Bucket มีอยู่จริงหรือไม่
+      await this.ensureBucketExists();
 
-      const sanitizedName = fileName.replace(/[^a-zA-Z0-9.]/g, '');
-      const uniqueFilename = `${sanitizedName}-${Date.now()}.${fileType}`;
+      const originalName = file.originalname;
+      const extension = originalName.split('.').pop();
+      const fileName = originalName.slice(0, -(extension.length + 1));
 
-      // Create folder if specified and doesn't exist
-      const uploadPath = folderName
-        ? path.join(this.uploadDir, folderName)
-        : this.uploadDir;
+      // สร้างชื่อไฟล์ใหม่ที่ไม่ซ้ำกัน
+      const sanitizedName = fileName.replace(/[^a-zA-Z0-9.-]/g, '');
+      const uniqueSuffix = crypto.randomBytes(6).toString('hex');
+      const objectName = folderName
+        ? `${folderName}/${sanitizedName}-${uniqueSuffix}.${extension}`
+        : `${sanitizedName}-${uniqueSuffix}.${extension}`;
 
-      if (folderName && !fs.existsSync(uploadPath)) {
-        fs.mkdirSync(uploadPath, { recursive: true });
-      }
+      // Metadata สำหรับไฟล์
+      const metaData = {
+        'Content-Type': file.mimetype,
+      };
 
-      const filePath = path.join(uploadPath, uniqueFilename);
+      // อัปโหลดไฟล์ไปยัง MinIO
+      this.logger.log(
+        `Uploading ${objectName} to bucket ${this.bucketName}...`,
+      );
+      const responseUpload = await this.minioClient.putObject(
+        this.bucketName,
+        objectName,
+        file.buffer,
+        file.size,
+        metaData,
+      );
+      this.logger.log(`Successfully uploaded ${objectName}.`);
 
-      // Write file to disk
-      fs.writeFileSync(filePath, file.buffer);
+      console.log('responseUpload', responseUpload);
 
-      // Calculate relative path for URL
-      const relativePath = folderName
-        ? `${folderName}/${uniqueFilename}`
-        : uniqueFilename;
-
-      const baseUrl = process.env.BASE_URL || 'http://localhost:8000';
-      const publicUrl = `${baseUrl}/uploads/${relativePath}`;
+      // สร้าง URL ที่สามารถเข้าถึงไฟล์ได้ผ่าน Gateway Nginx
+      // จะได้ URL เช่น: https://digitalcontent.depa.or.th/storage/depa-uploads/my-image-1a2b3c.jpg
+      const publicUrl = `${this.baseUrl}/storage/${this.bucketName}/${objectName}`;
 
       const fileData: UploadFileResponseDto = {
-        path: relativePath,
-        fullPath: relativePath,
+        path: objectName, // path ภายใน bucket
+        fullPath: objectName,
         publicUrl: publicUrl,
         size: file.size,
         mimetype: file.mimetype,
@@ -69,6 +117,7 @@ export class UploadService {
         message: 'File uploaded successfully',
       };
     } catch (error) {
+      this.logger.error(`File upload failed: ${error.message}`, error.stack);
       throw new BadRequestException(`File upload failed: ${error.message}`);
     }
   }

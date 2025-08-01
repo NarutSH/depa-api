@@ -286,6 +286,8 @@ export class UsersService {
   }
 
   async getMe(userId: string): Promise<SingleUserResponseDto> {
+    console.log('getMe', userId);
+
     const user = await this.prismaService.user.findUnique({
       where: { id: userId },
       include: {

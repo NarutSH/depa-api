@@ -71,6 +71,8 @@ export class UploadController {
       .build();
 
     try {
+      console.log('file======>', file);
+      console.log('folder======>', folder);
       await fileValidationPipe.transform(file);
       return this.uploadService.uploadFile(file, folder);
     } catch (error) {

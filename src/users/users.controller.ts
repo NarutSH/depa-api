@@ -23,6 +23,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Request } from 'express';
+import { CurrentUser } from '../auth/interfaces/current-user.interface';
 import { Role } from '../auth/roles.enum';
 import QueryMetadataDto from './dtos/query-metadata.dto';
 import {
@@ -110,8 +111,10 @@ export class UsersController {
     type: UserErrorResponseDto,
   })
   async getMe(@Req() req: Request): Promise<SingleUserResponseDto> {
-    console.log('req==>', req);
-    const user = req.user as any;
+    console.log('req.user*==>', req.user);
+    const user = req.user as CurrentUser;
+
+    console.log();
 
     if (!user?.id) {
       throw new ForbiddenException('User ID not found in request');
@@ -148,7 +151,7 @@ export class UsersController {
     @Param('id') id: string,
     @Req() req: Request,
   ): Promise<SingleUserResponseDto> {
-    const user = req.user as any;
+    const user = req.user as CurrentUser;
 
     // Admin can access any profile
     if (user.userType === Role.ADMIN) {
@@ -224,7 +227,7 @@ export class UsersController {
     @Body() body: CreateUserDto,
     @Req() req: Request,
   ): Promise<CreateUserResponseDto> {
-    const user = req.user as any;
+    const user = req.user as CurrentUser;
 
     // Ensure the email in the profile matches the authenticated user
     if (user.email !== body.email) {

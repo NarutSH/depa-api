@@ -2666,6 +2666,137 @@
         ]
       }
     },
+    "/upload": {
+      "post": {
+        "operationId": "UploadController_uploadFile",
+        "parameters": [
+          {
+            "name": "folder",
+            "required": false,
+            "in": "query",
+            "description": "Optional folder name to organize uploads",
+            "schema": {
+              "example": "portfolio",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "File upload",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The file to upload (image files only)"
+                  }
+                },
+                "required": [
+                  "file"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "File uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleUploadResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "File validation failed or upload error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Upload a single file",
+        "tags": [
+          "Upload"
+        ]
+      }
+    },
+    "/upload/multiple": {
+      "post": {
+        "operationId": "UploadController_uploadMultipleFiles",
+        "parameters": [
+          {
+            "name": "folder",
+            "required": false,
+            "in": "query",
+            "description": "Optional folder name to organize uploads",
+            "schema": {
+              "example": "portfolio",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Multiple file upload",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "Array of files to upload (up to 10 image files)"
+                  }
+                },
+                "required": [
+                  "files"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Files uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MultipleUploadResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "File validation failed or upload error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Upload multiple files",
+        "tags": [
+          "Upload"
+        ]
+      }
+    },
     "/standards": {
       "get": {
         "description": "Retrieves all standards with pagination, filtering and sorting",
@@ -2869,137 +3000,6 @@
         ],
         "tags": [
           "Standards"
-        ]
-      }
-    },
-    "/upload": {
-      "post": {
-        "operationId": "UploadController_uploadFile",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": false,
-            "in": "query",
-            "description": "Optional folder name to organize uploads",
-            "schema": {
-              "example": "portfolio",
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "description": "File upload",
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "The file to upload (image files only)"
-                  }
-                },
-                "required": [
-                  "file"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "File uploaded successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SingleUploadResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "File validation failed or upload error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Upload a single file",
-        "tags": [
-          "Upload"
-        ]
-      }
-    },
-    "/upload/multiple": {
-      "post": {
-        "operationId": "UploadController_uploadMultipleFiles",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": false,
-            "in": "query",
-            "description": "Optional folder name to organize uploads",
-            "schema": {
-              "example": "portfolio",
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "description": "Multiple file upload",
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "files": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    },
-                    "description": "Array of files to upload (up to 10 image files)"
-                  }
-                },
-                "required": [
-                  "files"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Files uploaded successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MultipleUploadResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "File validation failed or upload error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Upload multiple files",
-        "tags": [
-          "Upload"
         ]
       }
     },
@@ -6852,14 +6852,6 @@
         "type": "object",
         "properties": {}
       },
-      "CreateStandardDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "UpdateStandardDto": {
-        "type": "object",
-        "properties": {}
-      },
       "UploadFileResponseDto": {
         "type": "object",
         "properties": {
@@ -6951,6 +6943,14 @@
           "success",
           "message"
         ]
+      },
+      "CreateStandardDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateStandardDto": {
+        "type": "object",
+        "properties": {}
       },
       "CreateIndustryDto": {
         "type": "object",

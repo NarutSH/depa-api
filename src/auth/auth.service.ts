@@ -135,6 +135,7 @@ export class AuthService {
         // Return the response for other cases
         loginData = response.data;
       }
+      console.log('DEBUG loginData:', loginData);
 
       // Get or create user in our system based on third-party response
       let user;
@@ -144,6 +145,7 @@ export class AuthService {
         user = await this.usersService.getUserByEmail(
           loginData.email || username,
         );
+        console.log('DEBUG user from getUserByEmail:', user);
       } catch (error) {
         console.log('Error fetching user:', error);
         // User doesn't exist yet - create a new user with the email
@@ -167,18 +169,20 @@ export class AuthService {
 
       // Create a simplified JWT payload from TechHunt data with only memberid, email and userType
       const jwtPayload = {
-        id: user?.id || null,
+        id: user?.data?.id || null,
         email: loginData.email || username,
         sessiontoken: loginData.sessiontoken || null,
         memberid: loginData.memberid || null,
-        userType: user?.userType || null,
-        role: user?.role || null,
+        userType: user?.data?.userType || null,
+        role: user?.data?.role || null,
       };
+      console.log('DEBUG jwtPayload before sign:', jwtPayload);
 
       // Generate access token using TechHunt data
       const access_token = this.jwtService.sign(jwtPayload, {
         expiresIn: this.ACCESS_TOKEN_EXPIRATION,
       });
+      console.log('DEBUG access_token:', access_token);
 
       // Generate refresh token using memberid instead of user.id
       const refresh_token = null;
