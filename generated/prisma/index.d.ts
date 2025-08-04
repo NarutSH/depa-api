@@ -4236,10 +4236,12 @@ export namespace Prisma {
 
   export type CategoryCountOutputType = {
     RevenueStream: number
+    Portfolio: number
   }
 
   export type CategoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     RevenueStream?: boolean | CategoryCountOutputTypeCountRevenueStreamArgs
+    Portfolio?: boolean | CategoryCountOutputTypeCountPortfolioArgs
   }
 
   // Custom InputTypes
@@ -4258,6 +4260,13 @@ export namespace Prisma {
    */
   export type CategoryCountOutputTypeCountRevenueStreamArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RevenueStreamWhereInput
+  }
+
+  /**
+   * CategoryCountOutputType without action
+   */
+  export type CategoryCountOutputTypeCountPortfolioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PortfolioWhereInput
   }
 
 
@@ -26818,6 +26827,7 @@ export namespace Prisma {
     industrySlug?: boolean
     industry?: boolean | IndustryDefaultArgs<ExtArgs>
     RevenueStream?: boolean | Category$RevenueStreamArgs<ExtArgs>
+    Portfolio?: boolean | Category$PortfolioArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["category"]>
 
@@ -26860,6 +26870,7 @@ export namespace Prisma {
   export type CategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     industry?: boolean | IndustryDefaultArgs<ExtArgs>
     RevenueStream?: boolean | Category$RevenueStreamArgs<ExtArgs>
+    Portfolio?: boolean | Category$PortfolioArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CategoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -26874,6 +26885,7 @@ export namespace Prisma {
     objects: {
       industry: Prisma.$IndustryPayload<ExtArgs>
       RevenueStream: Prisma.$RevenueStreamPayload<ExtArgs>[]
+      Portfolio: Prisma.$PortfolioPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -27280,6 +27292,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     industry<T extends IndustryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IndustryDefaultArgs<ExtArgs>>): Prisma__IndustryClient<$Result.GetResult<Prisma.$IndustryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     RevenueStream<T extends Category$RevenueStreamArgs<ExtArgs> = {}>(args?: Subset<T, Category$RevenueStreamArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueStreamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Portfolio<T extends Category$PortfolioArgs<ExtArgs> = {}>(args?: Subset<T, Category$PortfolioArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PortfolioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -27734,6 +27747,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RevenueStreamScalarFieldEnum | RevenueStreamScalarFieldEnum[]
+  }
+
+  /**
+   * Category.Portfolio
+   */
+  export type Category$PortfolioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Portfolio
+     */
+    select?: PortfolioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Portfolio
+     */
+    omit?: PortfolioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PortfolioInclude<ExtArgs> | null
+    where?: PortfolioWhereInput
+    orderBy?: PortfolioOrderByWithRelationInput | PortfolioOrderByWithRelationInput[]
+    cursor?: PortfolioWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PortfolioScalarFieldEnum | PortfolioScalarFieldEnum[]
   }
 
   /**
@@ -31183,6 +31220,7 @@ export namespace Prisma {
     cover_image: string | null
     link: string | null
     industryTypeSlug: string | null
+    categorySlug: string | null
     freelanceId: string | null
     companyId: string | null
     companyJuristicId: string | null
@@ -31199,6 +31237,7 @@ export namespace Prisma {
     cover_image: string | null
     link: string | null
     industryTypeSlug: string | null
+    categorySlug: string | null
     freelanceId: string | null
     companyId: string | null
     companyJuristicId: string | null
@@ -31217,6 +31256,7 @@ export namespace Prisma {
     industryTypeSlug: number
     tags: number
     looking_for: number
+    categorySlug: number
     freelanceId: number
     companyId: number
     companyJuristicId: number
@@ -31235,6 +31275,7 @@ export namespace Prisma {
     cover_image?: true
     link?: true
     industryTypeSlug?: true
+    categorySlug?: true
     freelanceId?: true
     companyId?: true
     companyJuristicId?: true
@@ -31251,6 +31292,7 @@ export namespace Prisma {
     cover_image?: true
     link?: true
     industryTypeSlug?: true
+    categorySlug?: true
     freelanceId?: true
     companyId?: true
     companyJuristicId?: true
@@ -31269,6 +31311,7 @@ export namespace Prisma {
     industryTypeSlug?: true
     tags?: true
     looking_for?: true
+    categorySlug?: true
     freelanceId?: true
     companyId?: true
     companyJuristicId?: true
@@ -31360,6 +31403,7 @@ export namespace Prisma {
     industryTypeSlug: string
     tags: string[]
     looking_for: string[]
+    categorySlug: string
     freelanceId: string | null
     companyId: string | null
     companyJuristicId: string | null
@@ -31395,11 +31439,13 @@ export namespace Prisma {
     industryTypeSlug?: boolean
     tags?: boolean
     looking_for?: boolean
+    categorySlug?: boolean
     freelanceId?: boolean
     companyId?: boolean
     companyJuristicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    category?: boolean | CategoryDefaultArgs<ExtArgs>
     industryTags?: boolean | Portfolio$industryTagsArgs<ExtArgs>
     industryLookingFor?: boolean | Portfolio$industryLookingForArgs<ExtArgs>
     freelance?: boolean | Portfolio$freelanceArgs<ExtArgs>
@@ -31422,11 +31468,13 @@ export namespace Prisma {
     industryTypeSlug?: boolean
     tags?: boolean
     looking_for?: boolean
+    categorySlug?: boolean
     freelanceId?: boolean
     companyId?: boolean
     companyJuristicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    category?: boolean | CategoryDefaultArgs<ExtArgs>
     freelance?: boolean | Portfolio$freelanceArgs<ExtArgs>
     company?: boolean | Portfolio$companyArgs<ExtArgs>
   }, ExtArgs["result"]["portfolio"]>
@@ -31442,11 +31490,13 @@ export namespace Prisma {
     industryTypeSlug?: boolean
     tags?: boolean
     looking_for?: boolean
+    categorySlug?: boolean
     freelanceId?: boolean
     companyId?: boolean
     companyJuristicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    category?: boolean | CategoryDefaultArgs<ExtArgs>
     freelance?: boolean | Portfolio$freelanceArgs<ExtArgs>
     company?: boolean | Portfolio$companyArgs<ExtArgs>
   }, ExtArgs["result"]["portfolio"]>
@@ -31462,6 +31512,7 @@ export namespace Prisma {
     industryTypeSlug?: boolean
     tags?: boolean
     looking_for?: boolean
+    categorySlug?: boolean
     freelanceId?: boolean
     companyId?: boolean
     companyJuristicId?: boolean
@@ -31469,8 +31520,9 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type PortfolioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "title_en" | "description" | "description_en" | "cover_image" | "link" | "industryTypeSlug" | "tags" | "looking_for" | "freelanceId" | "companyId" | "companyJuristicId" | "createdAt" | "updatedAt", ExtArgs["result"]["portfolio"]>
+  export type PortfolioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "title_en" | "description" | "description_en" | "cover_image" | "link" | "industryTypeSlug" | "tags" | "looking_for" | "categorySlug" | "freelanceId" | "companyId" | "companyJuristicId" | "createdAt" | "updatedAt", ExtArgs["result"]["portfolio"]>
   export type PortfolioInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    category?: boolean | CategoryDefaultArgs<ExtArgs>
     industryTags?: boolean | Portfolio$industryTagsArgs<ExtArgs>
     industryLookingFor?: boolean | Portfolio$industryLookingForArgs<ExtArgs>
     freelance?: boolean | Portfolio$freelanceArgs<ExtArgs>
@@ -31482,10 +31534,12 @@ export namespace Prisma {
     _count?: boolean | PortfolioCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PortfolioIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    category?: boolean | CategoryDefaultArgs<ExtArgs>
     freelance?: boolean | Portfolio$freelanceArgs<ExtArgs>
     company?: boolean | Portfolio$companyArgs<ExtArgs>
   }
   export type PortfolioIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    category?: boolean | CategoryDefaultArgs<ExtArgs>
     freelance?: boolean | Portfolio$freelanceArgs<ExtArgs>
     company?: boolean | Portfolio$companyArgs<ExtArgs>
   }
@@ -31493,6 +31547,7 @@ export namespace Prisma {
   export type $PortfolioPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Portfolio"
     objects: {
+      category: Prisma.$CategoryPayload<ExtArgs>
       industryTags: Prisma.$PortfolioTagPayload<ExtArgs>[]
       industryLookingFor: Prisma.$PortfolioLookingForPayload<ExtArgs>[]
       freelance: Prisma.$FreelancePayload<ExtArgs> | null
@@ -31513,6 +31568,7 @@ export namespace Prisma {
       industryTypeSlug: string
       tags: string[]
       looking_for: string[]
+      categorySlug: string
       freelanceId: string | null
       companyId: string | null
       companyJuristicId: string | null
@@ -31912,6 +31968,7 @@ export namespace Prisma {
    */
   export interface Prisma__PortfolioClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    category<T extends CategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CategoryDefaultArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     industryTags<T extends Portfolio$industryTagsArgs<ExtArgs> = {}>(args?: Subset<T, Portfolio$industryTagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PortfolioTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     industryLookingFor<T extends Portfolio$industryLookingForArgs<ExtArgs> = {}>(args?: Subset<T, Portfolio$industryLookingForArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PortfolioLookingForPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     freelance<T extends Portfolio$freelanceArgs<ExtArgs> = {}>(args?: Subset<T, Portfolio$freelanceArgs<ExtArgs>>): Prisma__FreelanceClient<$Result.GetResult<Prisma.$FreelancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -31959,6 +32016,7 @@ export namespace Prisma {
     readonly industryTypeSlug: FieldRef<"Portfolio", 'String'>
     readonly tags: FieldRef<"Portfolio", 'String[]'>
     readonly looking_for: FieldRef<"Portfolio", 'String[]'>
+    readonly categorySlug: FieldRef<"Portfolio", 'String'>
     readonly freelanceId: FieldRef<"Portfolio", 'String'>
     readonly companyId: FieldRef<"Portfolio", 'String'>
     readonly companyJuristicId: FieldRef<"Portfolio", 'String'>
@@ -41678,6 +41736,7 @@ export namespace Prisma {
     industryTypeSlug: 'industryTypeSlug',
     tags: 'tags',
     looking_for: 'looking_for',
+    categorySlug: 'categorySlug',
     freelanceId: 'freelanceId',
     companyId: 'companyId',
     companyJuristicId: 'companyJuristicId',
@@ -43490,6 +43549,7 @@ export namespace Prisma {
     industrySlug?: StringFilter<"Category"> | string
     industry?: XOR<IndustryScalarRelationFilter, IndustryWhereInput>
     RevenueStream?: RevenueStreamListRelationFilter
+    Portfolio?: PortfolioListRelationFilter
   }
 
   export type CategoryOrderByWithRelationInput = {
@@ -43503,6 +43563,7 @@ export namespace Prisma {
     industrySlug?: SortOrder
     industry?: IndustryOrderByWithRelationInput
     RevenueStream?: RevenueStreamOrderByRelationAggregateInput
+    Portfolio?: PortfolioOrderByRelationAggregateInput
   }
 
   export type CategoryWhereUniqueInput = Prisma.AtLeast<{
@@ -43520,6 +43581,7 @@ export namespace Prisma {
     industrySlug?: StringFilter<"Category"> | string
     industry?: XOR<IndustryScalarRelationFilter, IndustryWhereInput>
     RevenueStream?: RevenueStreamListRelationFilter
+    Portfolio?: PortfolioListRelationFilter
   }, "id" | "slug" | "slug_industrySlug">
 
   export type CategoryOrderByWithAggregationInput = {
@@ -43789,11 +43851,13 @@ export namespace Prisma {
     industryTypeSlug?: StringFilter<"Portfolio"> | string
     tags?: StringNullableListFilter<"Portfolio">
     looking_for?: StringNullableListFilter<"Portfolio">
+    categorySlug?: StringFilter<"Portfolio"> | string
     freelanceId?: UuidNullableFilter<"Portfolio"> | string | null
     companyId?: UuidNullableFilter<"Portfolio"> | string | null
     companyJuristicId?: StringNullableFilter<"Portfolio"> | string | null
     createdAt?: DateTimeFilter<"Portfolio"> | Date | string
     updatedAt?: DateTimeFilter<"Portfolio"> | Date | string
+    category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
     industryTags?: PortfolioTagListRelationFilter
     industryLookingFor?: PortfolioLookingForListRelationFilter
     freelance?: XOR<FreelanceNullableScalarRelationFilter, FreelanceWhereInput> | null
@@ -43815,11 +43879,13 @@ export namespace Prisma {
     industryTypeSlug?: SortOrder
     tags?: SortOrder
     looking_for?: SortOrder
+    categorySlug?: SortOrder
     freelanceId?: SortOrderInput | SortOrder
     companyId?: SortOrderInput | SortOrder
     companyJuristicId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    category?: CategoryOrderByWithRelationInput
     industryTags?: PortfolioTagOrderByRelationAggregateInput
     industryLookingFor?: PortfolioLookingForOrderByRelationAggregateInput
     freelance?: FreelanceOrderByWithRelationInput
@@ -43844,11 +43910,13 @@ export namespace Prisma {
     industryTypeSlug?: StringFilter<"Portfolio"> | string
     tags?: StringNullableListFilter<"Portfolio">
     looking_for?: StringNullableListFilter<"Portfolio">
+    categorySlug?: StringFilter<"Portfolio"> | string
     freelanceId?: UuidNullableFilter<"Portfolio"> | string | null
     companyId?: UuidNullableFilter<"Portfolio"> | string | null
     companyJuristicId?: StringNullableFilter<"Portfolio"> | string | null
     createdAt?: DateTimeFilter<"Portfolio"> | Date | string
     updatedAt?: DateTimeFilter<"Portfolio"> | Date | string
+    category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
     industryTags?: PortfolioTagListRelationFilter
     industryLookingFor?: PortfolioLookingForListRelationFilter
     freelance?: XOR<FreelanceNullableScalarRelationFilter, FreelanceWhereInput> | null
@@ -43870,6 +43938,7 @@ export namespace Prisma {
     industryTypeSlug?: SortOrder
     tags?: SortOrder
     looking_for?: SortOrder
+    categorySlug?: SortOrder
     freelanceId?: SortOrderInput | SortOrder
     companyId?: SortOrderInput | SortOrder
     companyJuristicId?: SortOrderInput | SortOrder
@@ -43894,6 +43963,7 @@ export namespace Prisma {
     industryTypeSlug?: StringWithAggregatesFilter<"Portfolio"> | string
     tags?: StringNullableListFilter<"Portfolio">
     looking_for?: StringNullableListFilter<"Portfolio">
+    categorySlug?: StringWithAggregatesFilter<"Portfolio"> | string
     freelanceId?: UuidNullableWithAggregatesFilter<"Portfolio"> | string | null
     companyId?: UuidNullableWithAggregatesFilter<"Portfolio"> | string | null
     companyJuristicId?: StringNullableWithAggregatesFilter<"Portfolio"> | string | null
@@ -46048,6 +46118,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutCategoryInput
     RevenueStream?: RevenueStreamCreateNestedManyWithoutCategoryInput
+    Portfolio?: PortfolioCreateNestedManyWithoutCategoryInput
   }
 
   export type CategoryUncheckedCreateInput = {
@@ -46060,6 +46131,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     industrySlug: string
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutCategoryInput
+    Portfolio?: PortfolioUncheckedCreateNestedManyWithoutCategoryInput
   }
 
   export type CategoryUpdateInput = {
@@ -46072,6 +46144,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutCategoryNestedInput
     RevenueStream?: RevenueStreamUpdateManyWithoutCategoryNestedInput
+    Portfolio?: PortfolioUpdateManyWithoutCategoryNestedInput
   }
 
   export type CategoryUncheckedUpdateInput = {
@@ -46084,6 +46157,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutCategoryNestedInput
+    Portfolio?: PortfolioUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
   export type CategoryCreateManyInput = {
@@ -46376,6 +46450,7 @@ export namespace Prisma {
     companyJuristicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutPortfolioInput
     industryTags?: PortfolioTagCreateNestedManyWithoutPortfolioInput
     industryLookingFor?: PortfolioLookingForCreateNestedManyWithoutPortfolioInput
     freelance?: FreelanceCreateNestedOneWithoutPortfolioInput
@@ -46397,6 +46472,7 @@ export namespace Prisma {
     industryTypeSlug: string
     tags?: PortfolioCreatetagsInput | string[]
     looking_for?: PortfolioCreatelooking_forInput | string[]
+    categorySlug: string
     freelanceId?: string | null
     companyId?: string | null
     companyJuristicId?: string | null
@@ -46424,6 +46500,7 @@ export namespace Prisma {
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutPortfolioNestedInput
     industryTags?: PortfolioTagUpdateManyWithoutPortfolioNestedInput
     industryLookingFor?: PortfolioLookingForUpdateManyWithoutPortfolioNestedInput
     freelance?: FreelanceUpdateOneWithoutPortfolioNestedInput
@@ -46445,6 +46522,7 @@ export namespace Prisma {
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
     tags?: PortfolioUpdatetagsInput | string[]
     looking_for?: PortfolioUpdatelooking_forInput | string[]
+    categorySlug?: StringFieldUpdateOperationsInput | string
     freelanceId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: NullableStringFieldUpdateOperationsInput | string | null
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46469,6 +46547,7 @@ export namespace Prisma {
     industryTypeSlug: string
     tags?: PortfolioCreatetagsInput | string[]
     looking_for?: PortfolioCreatelooking_forInput | string[]
+    categorySlug: string
     freelanceId?: string | null
     companyId?: string | null
     companyJuristicId?: string | null
@@ -46503,6 +46582,7 @@ export namespace Prisma {
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
     tags?: PortfolioUpdatetagsInput | string[]
     looking_for?: PortfolioUpdatelooking_forInput | string[]
+    categorySlug?: StringFieldUpdateOperationsInput | string
     freelanceId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: NullableStringFieldUpdateOperationsInput | string | null
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48613,6 +48693,7 @@ export namespace Prisma {
     industryTypeSlug?: SortOrder
     tags?: SortOrder
     looking_for?: SortOrder
+    categorySlug?: SortOrder
     freelanceId?: SortOrder
     companyId?: SortOrder
     companyJuristicId?: SortOrder
@@ -48629,6 +48710,7 @@ export namespace Prisma {
     cover_image?: SortOrder
     link?: SortOrder
     industryTypeSlug?: SortOrder
+    categorySlug?: SortOrder
     freelanceId?: SortOrder
     companyId?: SortOrder
     companyJuristicId?: SortOrder
@@ -48645,6 +48727,7 @@ export namespace Prisma {
     cover_image?: SortOrder
     link?: SortOrder
     industryTypeSlug?: SortOrder
+    categorySlug?: SortOrder
     freelanceId?: SortOrder
     companyId?: SortOrder
     companyJuristicId?: SortOrder
@@ -50935,11 +51018,25 @@ export namespace Prisma {
     connect?: RevenueStreamWhereUniqueInput | RevenueStreamWhereUniqueInput[]
   }
 
+  export type PortfolioCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<PortfolioCreateWithoutCategoryInput, PortfolioUncheckedCreateWithoutCategoryInput> | PortfolioCreateWithoutCategoryInput[] | PortfolioUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: PortfolioCreateOrConnectWithoutCategoryInput | PortfolioCreateOrConnectWithoutCategoryInput[]
+    createMany?: PortfolioCreateManyCategoryInputEnvelope
+    connect?: PortfolioWhereUniqueInput | PortfolioWhereUniqueInput[]
+  }
+
   export type RevenueStreamUncheckedCreateNestedManyWithoutCategoryInput = {
     create?: XOR<RevenueStreamCreateWithoutCategoryInput, RevenueStreamUncheckedCreateWithoutCategoryInput> | RevenueStreamCreateWithoutCategoryInput[] | RevenueStreamUncheckedCreateWithoutCategoryInput[]
     connectOrCreate?: RevenueStreamCreateOrConnectWithoutCategoryInput | RevenueStreamCreateOrConnectWithoutCategoryInput[]
     createMany?: RevenueStreamCreateManyCategoryInputEnvelope
     connect?: RevenueStreamWhereUniqueInput | RevenueStreamWhereUniqueInput[]
+  }
+
+  export type PortfolioUncheckedCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<PortfolioCreateWithoutCategoryInput, PortfolioUncheckedCreateWithoutCategoryInput> | PortfolioCreateWithoutCategoryInput[] | PortfolioUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: PortfolioCreateOrConnectWithoutCategoryInput | PortfolioCreateOrConnectWithoutCategoryInput[]
+    createMany?: PortfolioCreateManyCategoryInputEnvelope
+    connect?: PortfolioWhereUniqueInput | PortfolioWhereUniqueInput[]
   }
 
   export type IndustryUpdateOneRequiredWithoutCategoryNestedInput = {
@@ -50964,6 +51061,20 @@ export namespace Prisma {
     deleteMany?: RevenueStreamScalarWhereInput | RevenueStreamScalarWhereInput[]
   }
 
+  export type PortfolioUpdateManyWithoutCategoryNestedInput = {
+    create?: XOR<PortfolioCreateWithoutCategoryInput, PortfolioUncheckedCreateWithoutCategoryInput> | PortfolioCreateWithoutCategoryInput[] | PortfolioUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: PortfolioCreateOrConnectWithoutCategoryInput | PortfolioCreateOrConnectWithoutCategoryInput[]
+    upsert?: PortfolioUpsertWithWhereUniqueWithoutCategoryInput | PortfolioUpsertWithWhereUniqueWithoutCategoryInput[]
+    createMany?: PortfolioCreateManyCategoryInputEnvelope
+    set?: PortfolioWhereUniqueInput | PortfolioWhereUniqueInput[]
+    disconnect?: PortfolioWhereUniqueInput | PortfolioWhereUniqueInput[]
+    delete?: PortfolioWhereUniqueInput | PortfolioWhereUniqueInput[]
+    connect?: PortfolioWhereUniqueInput | PortfolioWhereUniqueInput[]
+    update?: PortfolioUpdateWithWhereUniqueWithoutCategoryInput | PortfolioUpdateWithWhereUniqueWithoutCategoryInput[]
+    updateMany?: PortfolioUpdateManyWithWhereWithoutCategoryInput | PortfolioUpdateManyWithWhereWithoutCategoryInput[]
+    deleteMany?: PortfolioScalarWhereInput | PortfolioScalarWhereInput[]
+  }
+
   export type RevenueStreamUncheckedUpdateManyWithoutCategoryNestedInput = {
     create?: XOR<RevenueStreamCreateWithoutCategoryInput, RevenueStreamUncheckedCreateWithoutCategoryInput> | RevenueStreamCreateWithoutCategoryInput[] | RevenueStreamUncheckedCreateWithoutCategoryInput[]
     connectOrCreate?: RevenueStreamCreateOrConnectWithoutCategoryInput | RevenueStreamCreateOrConnectWithoutCategoryInput[]
@@ -50976,6 +51087,20 @@ export namespace Prisma {
     update?: RevenueStreamUpdateWithWhereUniqueWithoutCategoryInput | RevenueStreamUpdateWithWhereUniqueWithoutCategoryInput[]
     updateMany?: RevenueStreamUpdateManyWithWhereWithoutCategoryInput | RevenueStreamUpdateManyWithWhereWithoutCategoryInput[]
     deleteMany?: RevenueStreamScalarWhereInput | RevenueStreamScalarWhereInput[]
+  }
+
+  export type PortfolioUncheckedUpdateManyWithoutCategoryNestedInput = {
+    create?: XOR<PortfolioCreateWithoutCategoryInput, PortfolioUncheckedCreateWithoutCategoryInput> | PortfolioCreateWithoutCategoryInput[] | PortfolioUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: PortfolioCreateOrConnectWithoutCategoryInput | PortfolioCreateOrConnectWithoutCategoryInput[]
+    upsert?: PortfolioUpsertWithWhereUniqueWithoutCategoryInput | PortfolioUpsertWithWhereUniqueWithoutCategoryInput[]
+    createMany?: PortfolioCreateManyCategoryInputEnvelope
+    set?: PortfolioWhereUniqueInput | PortfolioWhereUniqueInput[]
+    disconnect?: PortfolioWhereUniqueInput | PortfolioWhereUniqueInput[]
+    delete?: PortfolioWhereUniqueInput | PortfolioWhereUniqueInput[]
+    connect?: PortfolioWhereUniqueInput | PortfolioWhereUniqueInput[]
+    update?: PortfolioUpdateWithWhereUniqueWithoutCategoryInput | PortfolioUpdateWithWhereUniqueWithoutCategoryInput[]
+    updateMany?: PortfolioUpdateManyWithWhereWithoutCategoryInput | PortfolioUpdateManyWithWhereWithoutCategoryInput[]
+    deleteMany?: PortfolioScalarWhereInput | PortfolioScalarWhereInput[]
   }
 
   export type IndustryCreateNestedOneWithoutSourceInput = {
@@ -51196,6 +51321,12 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type CategoryCreateNestedOneWithoutPortfolioInput = {
+    create?: XOR<CategoryCreateWithoutPortfolioInput, CategoryUncheckedCreateWithoutPortfolioInput>
+    connectOrCreate?: CategoryCreateOrConnectWithoutPortfolioInput
+    connect?: CategoryWhereUniqueInput
+  }
+
   export type PortfolioTagCreateNestedManyWithoutPortfolioInput = {
     create?: XOR<PortfolioTagCreateWithoutPortfolioInput, PortfolioTagUncheckedCreateWithoutPortfolioInput> | PortfolioTagCreateWithoutPortfolioInput[] | PortfolioTagUncheckedCreateWithoutPortfolioInput[]
     connectOrCreate?: PortfolioTagCreateOrConnectWithoutPortfolioInput | PortfolioTagCreateOrConnectWithoutPortfolioInput[]
@@ -51300,6 +51431,14 @@ export namespace Prisma {
   export type PortfolioUpdatelooking_forInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type CategoryUpdateOneRequiredWithoutPortfolioNestedInput = {
+    create?: XOR<CategoryCreateWithoutPortfolioInput, CategoryUncheckedCreateWithoutPortfolioInput>
+    connectOrCreate?: CategoryCreateOrConnectWithoutPortfolioInput
+    upsert?: CategoryUpsertWithoutPortfolioInput
+    connect?: CategoryWhereUniqueInput
+    update?: XOR<XOR<CategoryUpdateToOneWithWhereWithoutPortfolioInput, CategoryUpdateWithoutPortfolioInput>, CategoryUncheckedUpdateWithoutPortfolioInput>
   }
 
   export type PortfolioTagUpdateManyWithoutPortfolioNestedInput = {
@@ -54270,6 +54409,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     industry: IndustryCreateNestedOneWithoutCategoryInput
+    Portfolio?: PortfolioCreateNestedManyWithoutCategoryInput
   }
 
   export type CategoryUncheckedCreateWithoutRevenueStreamInput = {
@@ -54281,6 +54421,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     industrySlug: string
+    Portfolio?: PortfolioUncheckedCreateNestedManyWithoutCategoryInput
   }
 
   export type CategoryCreateOrConnectWithoutRevenueStreamInput = {
@@ -54511,6 +54652,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industry?: IndustryUpdateOneRequiredWithoutCategoryNestedInput
+    Portfolio?: PortfolioUpdateManyWithoutCategoryNestedInput
   }
 
   export type CategoryUncheckedUpdateWithoutRevenueStreamInput = {
@@ -54522,6 +54664,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     industrySlug?: StringFieldUpdateOperationsInput | string
+    Portfolio?: PortfolioUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
   export type SourceUpsertWithoutRevenueStreamInput = {
@@ -54865,6 +55008,7 @@ export namespace Prisma {
     companyJuristicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutPortfolioInput
     industryTags?: PortfolioTagCreateNestedManyWithoutPortfolioInput
     industryLookingFor?: PortfolioLookingForCreateNestedManyWithoutPortfolioInput
     freelance?: FreelanceCreateNestedOneWithoutPortfolioInput
@@ -54885,6 +55029,7 @@ export namespace Prisma {
     industryTypeSlug: string
     tags?: PortfolioCreatetagsInput | string[]
     looking_for?: PortfolioCreatelooking_forInput | string[]
+    categorySlug: string
     freelanceId?: string | null
     companyJuristicId?: string | null
     createdAt?: Date | string
@@ -55100,6 +55245,7 @@ export namespace Prisma {
     industryTypeSlug?: StringFilter<"Portfolio"> | string
     tags?: StringNullableListFilter<"Portfolio">
     looking_for?: StringNullableListFilter<"Portfolio">
+    categorySlug?: StringFilter<"Portfolio"> | string
     freelanceId?: UuidNullableFilter<"Portfolio"> | string | null
     companyId?: UuidNullableFilter<"Portfolio"> | string | null
     companyJuristicId?: StringNullableFilter<"Portfolio"> | string | null
@@ -55508,6 +55654,7 @@ export namespace Prisma {
     companyJuristicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutPortfolioInput
     industryTags?: PortfolioTagCreateNestedManyWithoutPortfolioInput
     industryLookingFor?: PortfolioLookingForCreateNestedManyWithoutPortfolioInput
     company?: CompanyCreateNestedOneWithoutPortfolioInput
@@ -55528,6 +55675,7 @@ export namespace Prisma {
     industryTypeSlug: string
     tags?: PortfolioCreatetagsInput | string[]
     looking_for?: PortfolioCreatelooking_forInput | string[]
+    categorySlug: string
     companyId?: string | null
     companyJuristicId?: string | null
     createdAt?: Date | string
@@ -56086,6 +56234,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     RevenueStream?: RevenueStreamCreateNestedManyWithoutCategoryInput
+    Portfolio?: PortfolioCreateNestedManyWithoutCategoryInput
   }
 
   export type CategoryUncheckedCreateWithoutIndustryInput = {
@@ -56097,6 +56246,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutCategoryInput
+    Portfolio?: PortfolioUncheckedCreateNestedManyWithoutCategoryInput
   }
 
   export type CategoryCreateOrConnectWithoutIndustryInput = {
@@ -57243,6 +57393,64 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PortfolioCreateWithoutCategoryInput = {
+    id?: string
+    title: string
+    title_en?: string | null
+    description?: string | null
+    description_en?: string | null
+    cover_image?: string | null
+    link?: string | null
+    industryTypeSlug: string
+    tags?: PortfolioCreatetagsInput | string[]
+    looking_for?: PortfolioCreatelooking_forInput | string[]
+    companyJuristicId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    industryTags?: PortfolioTagCreateNestedManyWithoutPortfolioInput
+    industryLookingFor?: PortfolioLookingForCreateNestedManyWithoutPortfolioInput
+    freelance?: FreelanceCreateNestedOneWithoutPortfolioInput
+    company?: CompanyCreateNestedOneWithoutPortfolioInput
+    Favorite?: FavoriteCreateNestedManyWithoutPortfolioInput
+    Image?: PortfolioImageCreateNestedManyWithoutPortfolioInput
+    standards?: PortfolioStandardsCreateNestedManyWithoutPortfolioInput
+    comments?: PortfolioCommentCreateNestedManyWithoutPortfolioInput
+  }
+
+  export type PortfolioUncheckedCreateWithoutCategoryInput = {
+    id?: string
+    title: string
+    title_en?: string | null
+    description?: string | null
+    description_en?: string | null
+    cover_image?: string | null
+    link?: string | null
+    industryTypeSlug: string
+    tags?: PortfolioCreatetagsInput | string[]
+    looking_for?: PortfolioCreatelooking_forInput | string[]
+    freelanceId?: string | null
+    companyId?: string | null
+    companyJuristicId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    industryTags?: PortfolioTagUncheckedCreateNestedManyWithoutPortfolioInput
+    industryLookingFor?: PortfolioLookingForUncheckedCreateNestedManyWithoutPortfolioInput
+    Favorite?: FavoriteUncheckedCreateNestedManyWithoutPortfolioInput
+    Image?: PortfolioImageUncheckedCreateNestedManyWithoutPortfolioInput
+    standards?: PortfolioStandardsUncheckedCreateNestedManyWithoutPortfolioInput
+    comments?: PortfolioCommentUncheckedCreateNestedManyWithoutPortfolioInput
+  }
+
+  export type PortfolioCreateOrConnectWithoutCategoryInput = {
+    where: PortfolioWhereUniqueInput
+    create: XOR<PortfolioCreateWithoutCategoryInput, PortfolioUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type PortfolioCreateManyCategoryInputEnvelope = {
+    data: PortfolioCreateManyCategoryInput | PortfolioCreateManyCategoryInput[]
+    skipDuplicates?: boolean
+  }
+
   export type IndustryUpsertWithoutCategoryInput = {
     update: XOR<IndustryUpdateWithoutCategoryInput, IndustryUncheckedUpdateWithoutCategoryInput>
     create: XOR<IndustryCreateWithoutCategoryInput, IndustryUncheckedCreateWithoutCategoryInput>
@@ -57314,6 +57522,22 @@ export namespace Prisma {
   export type RevenueStreamUpdateManyWithWhereWithoutCategoryInput = {
     where: RevenueStreamScalarWhereInput
     data: XOR<RevenueStreamUpdateManyMutationInput, RevenueStreamUncheckedUpdateManyWithoutCategoryInput>
+  }
+
+  export type PortfolioUpsertWithWhereUniqueWithoutCategoryInput = {
+    where: PortfolioWhereUniqueInput
+    update: XOR<PortfolioUpdateWithoutCategoryInput, PortfolioUncheckedUpdateWithoutCategoryInput>
+    create: XOR<PortfolioCreateWithoutCategoryInput, PortfolioUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type PortfolioUpdateWithWhereUniqueWithoutCategoryInput = {
+    where: PortfolioWhereUniqueInput
+    data: XOR<PortfolioUpdateWithoutCategoryInput, PortfolioUncheckedUpdateWithoutCategoryInput>
+  }
+
+  export type PortfolioUpdateManyWithWhereWithoutCategoryInput = {
+    where: PortfolioScalarWhereInput
+    data: XOR<PortfolioUpdateManyMutationInput, PortfolioUncheckedUpdateManyWithoutCategoryInput>
   }
 
   export type IndustryCreateWithoutSourceInput = {
@@ -57849,6 +58073,35 @@ export namespace Prisma {
     data: XOR<RevenueStreamUpdateManyMutationInput, RevenueStreamUncheckedUpdateManyWithoutSegmentInput>
   }
 
+  export type CategoryCreateWithoutPortfolioInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    industry: IndustryCreateNestedOneWithoutCategoryInput
+    RevenueStream?: RevenueStreamCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryUncheckedCreateWithoutPortfolioInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    industrySlug: string
+    RevenueStream?: RevenueStreamUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryCreateOrConnectWithoutPortfolioInput = {
+    where: CategoryWhereUniqueInput
+    create: XOR<CategoryCreateWithoutPortfolioInput, CategoryUncheckedCreateWithoutPortfolioInput>
+  }
+
   export type PortfolioTagCreateWithoutPortfolioInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -58119,6 +58372,41 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CategoryUpsertWithoutPortfolioInput = {
+    update: XOR<CategoryUpdateWithoutPortfolioInput, CategoryUncheckedUpdateWithoutPortfolioInput>
+    create: XOR<CategoryCreateWithoutPortfolioInput, CategoryUncheckedCreateWithoutPortfolioInput>
+    where?: CategoryWhereInput
+  }
+
+  export type CategoryUpdateToOneWithWhereWithoutPortfolioInput = {
+    where?: CategoryWhereInput
+    data: XOR<CategoryUpdateWithoutPortfolioInput, CategoryUncheckedUpdateWithoutPortfolioInput>
+  }
+
+  export type CategoryUpdateWithoutPortfolioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    industry?: IndustryUpdateOneRequiredWithoutCategoryNestedInput
+    RevenueStream?: RevenueStreamUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type CategoryUncheckedUpdateWithoutPortfolioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    industrySlug?: StringFieldUpdateOperationsInput | string
+    RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
   export type PortfolioTagUpsertWithWhereUniqueWithoutPortfolioInput = {
     where: PortfolioTagWhereUniqueInput
     update: XOR<PortfolioTagUpdateWithoutPortfolioInput, PortfolioTagUncheckedUpdateWithoutPortfolioInput>
@@ -58383,6 +58671,7 @@ export namespace Prisma {
     companyJuristicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutPortfolioInput
     industryLookingFor?: PortfolioLookingForCreateNestedManyWithoutPortfolioInput
     freelance?: FreelanceCreateNestedOneWithoutPortfolioInput
     company?: CompanyCreateNestedOneWithoutPortfolioInput
@@ -58403,6 +58692,7 @@ export namespace Prisma {
     industryTypeSlug: string
     tags?: PortfolioCreatetagsInput | string[]
     looking_for?: PortfolioCreatelooking_forInput | string[]
+    categorySlug: string
     freelanceId?: string | null
     companyId?: string | null
     companyJuristicId?: string | null
@@ -58470,6 +58760,7 @@ export namespace Prisma {
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutPortfolioNestedInput
     industryLookingFor?: PortfolioLookingForUpdateManyWithoutPortfolioNestedInput
     freelance?: FreelanceUpdateOneWithoutPortfolioNestedInput
     company?: CompanyUpdateOneWithoutPortfolioNestedInput
@@ -58490,6 +58781,7 @@ export namespace Prisma {
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
     tags?: PortfolioUpdatetagsInput | string[]
     looking_for?: PortfolioUpdatelooking_forInput | string[]
+    categorySlug?: StringFieldUpdateOperationsInput | string
     freelanceId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: NullableStringFieldUpdateOperationsInput | string | null
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -58547,6 +58839,7 @@ export namespace Prisma {
     companyJuristicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutPortfolioInput
     industryTags?: PortfolioTagCreateNestedManyWithoutPortfolioInput
     freelance?: FreelanceCreateNestedOneWithoutPortfolioInput
     company?: CompanyCreateNestedOneWithoutPortfolioInput
@@ -58567,6 +58860,7 @@ export namespace Prisma {
     industryTypeSlug: string
     tags?: PortfolioCreatetagsInput | string[]
     looking_for?: PortfolioCreatelooking_forInput | string[]
+    categorySlug: string
     freelanceId?: string | null
     companyId?: string | null
     companyJuristicId?: string | null
@@ -58632,6 +58926,7 @@ export namespace Prisma {
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutPortfolioNestedInput
     industryTags?: PortfolioTagUpdateManyWithoutPortfolioNestedInput
     freelance?: FreelanceUpdateOneWithoutPortfolioNestedInput
     company?: CompanyUpdateOneWithoutPortfolioNestedInput
@@ -58652,6 +58947,7 @@ export namespace Prisma {
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
     tags?: PortfolioUpdatetagsInput | string[]
     looking_for?: PortfolioUpdatelooking_forInput | string[]
+    categorySlug?: StringFieldUpdateOperationsInput | string
     freelanceId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: NullableStringFieldUpdateOperationsInput | string | null
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -58707,6 +59003,7 @@ export namespace Prisma {
     companyJuristicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutPortfolioInput
     industryTags?: PortfolioTagCreateNestedManyWithoutPortfolioInput
     industryLookingFor?: PortfolioLookingForCreateNestedManyWithoutPortfolioInput
     freelance?: FreelanceCreateNestedOneWithoutPortfolioInput
@@ -58727,6 +59024,7 @@ export namespace Prisma {
     industryTypeSlug: string
     tags?: PortfolioCreatetagsInput | string[]
     looking_for?: PortfolioCreatelooking_forInput | string[]
+    categorySlug: string
     freelanceId?: string | null
     companyId?: string | null
     companyJuristicId?: string | null
@@ -58796,6 +59094,7 @@ export namespace Prisma {
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutPortfolioNestedInput
     industryTags?: PortfolioTagUpdateManyWithoutPortfolioNestedInput
     industryLookingFor?: PortfolioLookingForUpdateManyWithoutPortfolioNestedInput
     freelance?: FreelanceUpdateOneWithoutPortfolioNestedInput
@@ -58816,6 +59115,7 @@ export namespace Prisma {
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
     tags?: PortfolioUpdatetagsInput | string[]
     looking_for?: PortfolioUpdatelooking_forInput | string[]
+    categorySlug?: StringFieldUpdateOperationsInput | string
     freelanceId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: NullableStringFieldUpdateOperationsInput | string | null
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -58875,6 +59175,7 @@ export namespace Prisma {
     companyJuristicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutPortfolioInput
     industryTags?: PortfolioTagCreateNestedManyWithoutPortfolioInput
     industryLookingFor?: PortfolioLookingForCreateNestedManyWithoutPortfolioInput
     freelance?: FreelanceCreateNestedOneWithoutPortfolioInput
@@ -58895,6 +59196,7 @@ export namespace Prisma {
     industryTypeSlug: string
     tags?: PortfolioCreatetagsInput | string[]
     looking_for?: PortfolioCreatelooking_forInput | string[]
+    categorySlug: string
     freelanceId?: string | null
     companyId?: string | null
     companyJuristicId?: string | null
@@ -58937,6 +59239,7 @@ export namespace Prisma {
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutPortfolioNestedInput
     industryTags?: PortfolioTagUpdateManyWithoutPortfolioNestedInput
     industryLookingFor?: PortfolioLookingForUpdateManyWithoutPortfolioNestedInput
     freelance?: FreelanceUpdateOneWithoutPortfolioNestedInput
@@ -58957,6 +59260,7 @@ export namespace Prisma {
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
     tags?: PortfolioUpdatetagsInput | string[]
     looking_for?: PortfolioUpdatelooking_forInput | string[]
+    categorySlug?: StringFieldUpdateOperationsInput | string
     freelanceId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: NullableStringFieldUpdateOperationsInput | string | null
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -58983,6 +59287,7 @@ export namespace Prisma {
     companyJuristicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutPortfolioInput
     industryTags?: PortfolioTagCreateNestedManyWithoutPortfolioInput
     industryLookingFor?: PortfolioLookingForCreateNestedManyWithoutPortfolioInput
     freelance?: FreelanceCreateNestedOneWithoutPortfolioInput
@@ -59003,6 +59308,7 @@ export namespace Prisma {
     industryTypeSlug: string
     tags?: PortfolioCreatetagsInput | string[]
     looking_for?: PortfolioCreatelooking_forInput | string[]
+    categorySlug: string
     freelanceId?: string | null
     companyId?: string | null
     companyJuristicId?: string | null
@@ -59112,6 +59418,7 @@ export namespace Prisma {
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutPortfolioNestedInput
     industryTags?: PortfolioTagUpdateManyWithoutPortfolioNestedInput
     industryLookingFor?: PortfolioLookingForUpdateManyWithoutPortfolioNestedInput
     freelance?: FreelanceUpdateOneWithoutPortfolioNestedInput
@@ -59132,6 +59439,7 @@ export namespace Prisma {
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
     tags?: PortfolioUpdatetagsInput | string[]
     looking_for?: PortfolioUpdatelooking_forInput | string[]
+    categorySlug?: StringFieldUpdateOperationsInput | string
     freelanceId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: NullableStringFieldUpdateOperationsInput | string | null
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -59641,6 +59949,7 @@ export namespace Prisma {
     companyJuristicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutPortfolioInput
     industryTags?: PortfolioTagCreateNestedManyWithoutPortfolioInput
     industryLookingFor?: PortfolioLookingForCreateNestedManyWithoutPortfolioInput
     freelance?: FreelanceCreateNestedOneWithoutPortfolioInput
@@ -59661,6 +59970,7 @@ export namespace Prisma {
     industryTypeSlug: string
     tags?: PortfolioCreatetagsInput | string[]
     looking_for?: PortfolioCreatelooking_forInput | string[]
+    categorySlug: string
     freelanceId?: string | null
     companyId?: string | null
     companyJuristicId?: string | null
@@ -59825,6 +60135,7 @@ export namespace Prisma {
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutPortfolioNestedInput
     industryTags?: PortfolioTagUpdateManyWithoutPortfolioNestedInput
     industryLookingFor?: PortfolioLookingForUpdateManyWithoutPortfolioNestedInput
     freelance?: FreelanceUpdateOneWithoutPortfolioNestedInput
@@ -59845,6 +60156,7 @@ export namespace Prisma {
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
     tags?: PortfolioUpdatetagsInput | string[]
     looking_for?: PortfolioUpdatelooking_forInput | string[]
+    categorySlug?: StringFieldUpdateOperationsInput | string
     freelanceId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: NullableStringFieldUpdateOperationsInput | string | null
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -60256,6 +60568,7 @@ export namespace Prisma {
     industryTypeSlug: string
     tags?: PortfolioCreatetagsInput | string[]
     looking_for?: PortfolioCreatelooking_forInput | string[]
+    categorySlug: string
     freelanceId?: string | null
     companyJuristicId?: string | null
     createdAt?: Date | string
@@ -60366,6 +60679,7 @@ export namespace Prisma {
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutPortfolioNestedInput
     industryTags?: PortfolioTagUpdateManyWithoutPortfolioNestedInput
     industryLookingFor?: PortfolioLookingForUpdateManyWithoutPortfolioNestedInput
     freelance?: FreelanceUpdateOneWithoutPortfolioNestedInput
@@ -60386,6 +60700,7 @@ export namespace Prisma {
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
     tags?: PortfolioUpdatetagsInput | string[]
     looking_for?: PortfolioUpdatelooking_forInput | string[]
+    categorySlug?: StringFieldUpdateOperationsInput | string
     freelanceId?: NullableStringFieldUpdateOperationsInput | string | null
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -60409,6 +60724,7 @@ export namespace Prisma {
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
     tags?: PortfolioUpdatetagsInput | string[]
     looking_for?: PortfolioUpdatelooking_forInput | string[]
+    categorySlug?: StringFieldUpdateOperationsInput | string
     freelanceId?: NullableStringFieldUpdateOperationsInput | string | null
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -60450,6 +60766,7 @@ export namespace Prisma {
     industryTypeSlug: string
     tags?: PortfolioCreatetagsInput | string[]
     looking_for?: PortfolioCreatelooking_forInput | string[]
+    categorySlug: string
     companyId?: string | null
     companyJuristicId?: string | null
     createdAt?: Date | string
@@ -60544,6 +60861,7 @@ export namespace Prisma {
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutPortfolioNestedInput
     industryTags?: PortfolioTagUpdateManyWithoutPortfolioNestedInput
     industryLookingFor?: PortfolioLookingForUpdateManyWithoutPortfolioNestedInput
     company?: CompanyUpdateOneWithoutPortfolioNestedInput
@@ -60564,6 +60882,7 @@ export namespace Prisma {
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
     tags?: PortfolioUpdatetagsInput | string[]
     looking_for?: PortfolioUpdatelooking_forInput | string[]
+    categorySlug?: StringFieldUpdateOperationsInput | string
     companyId?: NullableStringFieldUpdateOperationsInput | string | null
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -60587,6 +60906,7 @@ export namespace Prisma {
     industryTypeSlug?: StringFieldUpdateOperationsInput | string
     tags?: PortfolioUpdatetagsInput | string[]
     looking_for?: PortfolioUpdatelooking_forInput | string[]
+    categorySlug?: StringFieldUpdateOperationsInput | string
     companyId?: NullableStringFieldUpdateOperationsInput | string | null
     companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -60851,6 +61171,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RevenueStream?: RevenueStreamUpdateManyWithoutCategoryNestedInput
+    Portfolio?: PortfolioUpdateManyWithoutCategoryNestedInput
   }
 
   export type CategoryUncheckedUpdateWithoutIndustryInput = {
@@ -60862,6 +61183,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RevenueStream?: RevenueStreamUncheckedUpdateManyWithoutCategoryNestedInput
+    Portfolio?: PortfolioUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
   export type CategoryUncheckedUpdateManyWithoutIndustryInput = {
@@ -61210,6 +61532,24 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type PortfolioCreateManyCategoryInput = {
+    id?: string
+    title: string
+    title_en?: string | null
+    description?: string | null
+    description_en?: string | null
+    cover_image?: string | null
+    link?: string | null
+    industryTypeSlug: string
+    tags?: PortfolioCreatetagsInput | string[]
+    looking_for?: PortfolioCreatelooking_forInput | string[]
+    freelanceId?: string | null
+    companyId?: string | null
+    companyJuristicId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type RevenueStreamUpdateWithoutCategoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     year?: IntFieldUpdateOperationsInput | number
@@ -61252,6 +61592,72 @@ export namespace Prisma {
     value?: NullableFloatFieldUpdateOperationsInput | number | null
     companyId?: StringFieldUpdateOperationsInput | string
     companyJuristicId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PortfolioUpdateWithoutCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
+    cover_image?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    industryTypeSlug?: StringFieldUpdateOperationsInput | string
+    tags?: PortfolioUpdatetagsInput | string[]
+    looking_for?: PortfolioUpdatelooking_forInput | string[]
+    companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    industryTags?: PortfolioTagUpdateManyWithoutPortfolioNestedInput
+    industryLookingFor?: PortfolioLookingForUpdateManyWithoutPortfolioNestedInput
+    freelance?: FreelanceUpdateOneWithoutPortfolioNestedInput
+    company?: CompanyUpdateOneWithoutPortfolioNestedInput
+    Favorite?: FavoriteUpdateManyWithoutPortfolioNestedInput
+    Image?: PortfolioImageUpdateManyWithoutPortfolioNestedInput
+    standards?: PortfolioStandardsUpdateManyWithoutPortfolioNestedInput
+    comments?: PortfolioCommentUpdateManyWithoutPortfolioNestedInput
+  }
+
+  export type PortfolioUncheckedUpdateWithoutCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
+    cover_image?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    industryTypeSlug?: StringFieldUpdateOperationsInput | string
+    tags?: PortfolioUpdatetagsInput | string[]
+    looking_for?: PortfolioUpdatelooking_forInput | string[]
+    freelanceId?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: NullableStringFieldUpdateOperationsInput | string | null
+    companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    industryTags?: PortfolioTagUncheckedUpdateManyWithoutPortfolioNestedInput
+    industryLookingFor?: PortfolioLookingForUncheckedUpdateManyWithoutPortfolioNestedInput
+    Favorite?: FavoriteUncheckedUpdateManyWithoutPortfolioNestedInput
+    Image?: PortfolioImageUncheckedUpdateManyWithoutPortfolioNestedInput
+    standards?: PortfolioStandardsUncheckedUpdateManyWithoutPortfolioNestedInput
+    comments?: PortfolioCommentUncheckedUpdateManyWithoutPortfolioNestedInput
+  }
+
+  export type PortfolioUncheckedUpdateManyWithoutCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    title_en?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    description_en?: NullableStringFieldUpdateOperationsInput | string | null
+    cover_image?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    industryTypeSlug?: StringFieldUpdateOperationsInput | string
+    tags?: PortfolioUpdatetagsInput | string[]
+    looking_for?: PortfolioUpdatelooking_forInput | string[]
+    freelanceId?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: NullableStringFieldUpdateOperationsInput | string | null
+    companyJuristicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

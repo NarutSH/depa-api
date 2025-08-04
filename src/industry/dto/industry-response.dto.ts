@@ -2,6 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 import { SkillResponseDto } from './skill-response.dto';
 import { TagResponseDto } from './tag-response.dto';
 import { ChannelResponseDto } from './channel-response.dto';
+import { CategoryResponseDto } from './category-response.dto';
+import { SourceResponseDto } from './source-response.dto';
+import { SegmentResponseDto } from './segment-response.dto';
+import { LookingForResponseDto } from './looking-for-response.dto';
 
 export class IndustryResponseDto {
   @ApiProperty({
@@ -51,25 +55,53 @@ export class IndustryResponseDto {
 
 export class IndustryWithRelationsResponseDto extends IndustryResponseDto {
   @ApiProperty({
-    description: 'Associated skills',
-    type: [SkillResponseDto],
+    description: 'Associated categories',
+    type: [CategoryResponseDto],
     required: false,
   })
-  skills?: SkillResponseDto[];
-
-  @ApiProperty({
-    description: 'Associated tags',
-    type: [TagResponseDto],
-    required: false,
-  })
-  tags?: TagResponseDto[];
+  Category?: CategoryResponseDto[];
 
   @ApiProperty({
     description: 'Associated channels',
     type: [ChannelResponseDto],
     required: false,
   })
-  channels?: ChannelResponseDto[];
+  Channel?: ChannelResponseDto[];
+
+  @ApiProperty({
+    description: 'Associated sources',
+    type: [SourceResponseDto],
+    required: false,
+  })
+  Source?: SourceResponseDto[];
+
+  @ApiProperty({
+    description: 'Associated segments',
+    type: [SegmentResponseDto],
+    required: false,
+  })
+  Segment?: SegmentResponseDto[];
+
+  @ApiProperty({
+    description: 'Associated skills',
+    type: [SkillResponseDto],
+    required: false,
+  })
+  Skill?: SkillResponseDto[];
+
+  @ApiProperty({
+    description: 'Associated tags',
+    type: [TagResponseDto],
+    required: false,
+  })
+  Tag?: TagResponseDto[];
+
+  @ApiProperty({
+    description: 'Associated looking for items',
+    type: [LookingForResponseDto],
+    required: false,
+  })
+  LookingFor?: LookingForResponseDto[];
 }
 
 export class IndustryListResponseDto {

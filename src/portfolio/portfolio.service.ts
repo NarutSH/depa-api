@@ -6,7 +6,7 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePortfolioDto } from './dto/create-portfolio.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { FavoriteAction, PortfolioImageType } from 'generated/prisma';
+import { FavoriteAction, PortfolioImageType, Prisma } from 'generated/prisma';
 import { QueryMetadataDto, ResponseMetadata } from 'src/utils';
 import { QueryUtilsService } from 'src/utils/services/query-utils.service';
 import {
@@ -360,8 +360,11 @@ export class PortfolioService {
 
     // Destructure to remove join-table fields
     const { industryTags, industryLookingFor, ...rest } = data;
-    const makeData = {
+
+    // Prepare the data for Prisma creation with required fields
+    const portfolioData: Prisma.PortfolioUncheckedCreateInput = {
       ...rest,
+      categorySlug: 'default', // Add required categorySlug with default value
       tags: Array.isArray(rest.tags) ? rest.tags : [rest.tags],
       looking_for: Array.isArray(rest.looking_for)
         ? rest.looking_for
@@ -370,7 +373,7 @@ export class PortfolioService {
 
     // Create portfolio first
     const portfolio = await this.prismaService.portfolio.create({
-      data: makeData,
+      data: portfolioData,
     });
 
     // Handle industryTags (projectTagSlug)

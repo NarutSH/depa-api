@@ -9018,6 +9018,61 @@
           "updatedAt"
         ]
       },
+      "CategoryResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the category",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the category",
+            "example": "Mobile Games"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique slug identifier for the category",
+            "example": "mobile-games"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the category",
+            "example": "Games designed for mobile platforms"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL for the category",
+            "example": "https://example.com/mobile-games.jpg"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug this category belongs to",
+            "example": "game"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp",
+            "example": "2024-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp",
+            "example": "2024-01-01T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "industrySlug",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
       "IndustryDto": {
         "type": "object",
         "properties": {
@@ -9033,6 +9088,164 @@
         "required": [
           "name",
           "slug"
+        ]
+      },
+      "ChannelResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier"
+          },
+          "name": {
+            "type": "string",
+            "description": "Channel name"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Channel slug identifier"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Associated industry slug"
+          },
+          "industry": {
+            "description": "Associated industry data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IndustryDto"
+              }
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "industrySlug",
+          "industry",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "SourceResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the source",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the source",
+            "example": "Steam"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique slug identifier for the source",
+            "example": "steam"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the source",
+            "example": "Digital distribution platform for games"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL for the source",
+            "example": "https://example.com/steam.jpg"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug this source belongs to",
+            "example": "game"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp",
+            "example": "2024-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp",
+            "example": "2024-01-01T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "industrySlug",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "SegmentResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the segment",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the segment",
+            "example": "Casual Gamers"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique slug identifier for the segment",
+            "example": "casual-gamers"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the segment",
+            "example": "Games for casual gaming audience"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL for the segment",
+            "example": "https://example.com/casual-gamers.jpg"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug this segment belongs to",
+            "example": "game"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp",
+            "example": "2024-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp",
+            "example": "2024-01-01T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "industrySlug",
+          "createdAt",
+          "updatedAt"
         ]
       },
       "SkillResponseDto": {
@@ -9135,42 +9348,40 @@
           "updatedAt"
         ]
       },
-      "ChannelResponseDto": {
+      "LookingForResponseDto": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "description": "Unique identifier"
+            "description": "Looking for unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
           },
           "name": {
             "type": "string",
-            "description": "Channel name"
+            "description": "Looking for name",
+            "example": "Game Developer"
           },
           "slug": {
             "type": "string",
-            "description": "Channel slug identifier"
+            "description": "Looking for slug",
+            "example": "game-developer"
           },
           "industrySlug": {
             "type": "string",
-            "description": "Associated industry slug"
-          },
-          "industry": {
-            "description": "Associated industry data",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IndustryDto"
-              }
-            ]
+            "description": "Industry slug that this looking for belongs to",
+            "example": "technology"
           },
           "createdAt": {
             "format": "date-time",
             "type": "string",
-            "description": "Creation timestamp"
+            "description": "Created timestamp",
+            "example": "2024-01-01T00:00:00Z"
           },
           "updatedAt": {
             "format": "date-time",
             "type": "string",
-            "description": "Last update timestamp"
+            "description": "Updated timestamp",
+            "example": "2024-01-01T00:00:00Z"
           }
         },
         "required": [
@@ -9178,7 +9389,6 @@
           "name",
           "slug",
           "industrySlug",
-          "industry",
           "createdAt",
           "updatedAt"
         ]
@@ -9223,25 +9433,53 @@
             "description": "Last update timestamp",
             "example": "2025-05-11T10:30:00Z"
           },
-          "skills": {
+          "Category": {
+            "description": "Associated categories",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryResponseDto"
+            }
+          },
+          "Channel": {
+            "description": "Associated channels",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChannelResponseDto"
+            }
+          },
+          "Source": {
+            "description": "Associated sources",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceResponseDto"
+            }
+          },
+          "Segment": {
+            "description": "Associated segments",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SegmentResponseDto"
+            }
+          },
+          "Skill": {
             "description": "Associated skills",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/SkillResponseDto"
             }
           },
-          "tags": {
+          "Tag": {
             "description": "Associated tags",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TagResponseDto"
             }
           },
-          "channels": {
-            "description": "Associated channels",
+          "LookingFor": {
+            "description": "Associated looking for items",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ChannelResponseDto"
+              "$ref": "#/components/schemas/LookingForResponseDto"
             }
           }
         },
@@ -9542,61 +9780,6 @@
           "industrySlug"
         ]
       },
-      "CategoryResponseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Unique identifier of the category",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "name": {
-            "type": "string",
-            "description": "Name of the category",
-            "example": "Mobile Games"
-          },
-          "slug": {
-            "type": "string",
-            "description": "Unique slug identifier for the category",
-            "example": "mobile-games"
-          },
-          "description": {
-            "type": "string",
-            "description": "Description of the category",
-            "example": "Games designed for mobile platforms"
-          },
-          "image": {
-            "type": "string",
-            "description": "Image URL for the category",
-            "example": "https://example.com/mobile-games.jpg"
-          },
-          "industrySlug": {
-            "type": "string",
-            "description": "Industry slug this category belongs to",
-            "example": "game"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Creation timestamp",
-            "example": "2024-01-01T00:00:00.000Z"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Last update timestamp",
-            "example": "2024-01-01T00:00:00.000Z"
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "slug",
-          "industrySlug",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
       "CategoryListResponseDto": {
         "type": "object",
         "properties": {
@@ -9683,61 +9866,6 @@
           "industrySlug"
         ]
       },
-      "SourceResponseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Unique identifier of the source",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "name": {
-            "type": "string",
-            "description": "Name of the source",
-            "example": "Steam"
-          },
-          "slug": {
-            "type": "string",
-            "description": "Unique slug identifier for the source",
-            "example": "steam"
-          },
-          "description": {
-            "type": "string",
-            "description": "Description of the source",
-            "example": "Digital distribution platform for games"
-          },
-          "image": {
-            "type": "string",
-            "description": "Image URL for the source",
-            "example": "https://example.com/steam.jpg"
-          },
-          "industrySlug": {
-            "type": "string",
-            "description": "Industry slug this source belongs to",
-            "example": "game"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Creation timestamp",
-            "example": "2024-01-01T00:00:00.000Z"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Last update timestamp",
-            "example": "2024-01-01T00:00:00.000Z"
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "slug",
-          "industrySlug",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
       "SourceListResponseDto": {
         "type": "object",
         "properties": {
@@ -9822,61 +9950,6 @@
           "name",
           "slug",
           "industrySlug"
-        ]
-      },
-      "SegmentResponseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Unique identifier of the segment",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "name": {
-            "type": "string",
-            "description": "Name of the segment",
-            "example": "Casual Gamers"
-          },
-          "slug": {
-            "type": "string",
-            "description": "Unique slug identifier for the segment",
-            "example": "casual-gamers"
-          },
-          "description": {
-            "type": "string",
-            "description": "Description of the segment",
-            "example": "Games for casual gaming audience"
-          },
-          "image": {
-            "type": "string",
-            "description": "Image URL for the segment",
-            "example": "https://example.com/casual-gamers.jpg"
-          },
-          "industrySlug": {
-            "type": "string",
-            "description": "Industry slug this segment belongs to",
-            "example": "game"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Creation timestamp",
-            "example": "2024-01-01T00:00:00.000Z"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Last update timestamp",
-            "example": "2024-01-01T00:00:00.000Z"
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "slug",
-          "industrySlug",
-          "createdAt",
-          "updatedAt"
         ]
       },
       "SegmentListResponseDto": {
@@ -10202,51 +10275,6 @@
       "CreateLookingForDto": {
         "type": "object",
         "properties": {}
-      },
-      "LookingForResponseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Looking for unique identifier",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "name": {
-            "type": "string",
-            "description": "Looking for name",
-            "example": "Game Developer"
-          },
-          "slug": {
-            "type": "string",
-            "description": "Looking for slug",
-            "example": "game-developer"
-          },
-          "industrySlug": {
-            "type": "string",
-            "description": "Industry slug that this looking for belongs to",
-            "example": "technology"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Created timestamp",
-            "example": "2024-01-01T00:00:00Z"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Updated timestamp",
-            "example": "2024-01-01T00:00:00Z"
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "slug",
-          "industrySlug",
-          "createdAt",
-          "updatedAt"
-        ]
       },
       "UpdateLookingForDto": {
         "type": "object",

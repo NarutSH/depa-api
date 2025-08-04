@@ -390,6 +390,7 @@ exports.Prisma.PortfolioScalarFieldEnum = {
   industryTypeSlug: 'industryTypeSlug',
   tags: 'tags',
   looking_for: 'looking_for',
+  categorySlug: 'categorySlug',
   freelanceId: 'freelanceId',
   companyId: 'companyId',
   companyJuristicId: 'companyJuristicId',

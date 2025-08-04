@@ -431,6 +431,7 @@ model Category {
   industrySlug  String
   industry      Industry        @relation(fields: [industrySlug], references: [slug])
   RevenueStream RevenueStream[]
+  Portfolio     Portfolio[]
 
   @@unique([slug, industrySlug])
 }
@@ -499,6 +500,9 @@ model Portfolio {
   looking_for String[]
 
   // New relations
+  categorySlug String
+  category     Category @relation(fields: [categorySlug], references: [slug])
+
   industryTags       PortfolioTag[]
   industryLookingFor PortfolioLookingFor[]
 
@@ -512,10 +516,11 @@ model Portfolio {
   companyJuristicId String?
   // company           Company? @relation(fields: [companyJuristicId], references: [juristicId])
 
-  createdAt DateTime             @default(now()) @db.Timestamptz()
-  updatedAt DateTime             @default(now()) @updatedAt @db.Timestamptz()
+  createdAt DateTime         @default(now()) @db.Timestamptz()
+  updatedAt DateTime         @default(now()) @updatedAt @db.Timestamptz()
   Favorite  Favorite[]
   Image     PortfolioImage[]
+
   standards PortfolioStandards[]
   comments  PortfolioComment[]
 }
