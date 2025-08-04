@@ -51,6 +51,7 @@ export class PortfolioController {
   @Public()
   @ApiOperation({
     summary: 'Get all portfolios without pagination',
+    operationId: 'getAllPortfolios',
   })
   @ApiResponse({
     status: 200,
@@ -84,6 +85,7 @@ export class PortfolioController {
   @ApiOperation({
     summary:
       'Get all portfolios with pagination, filtering, sorting, and search capabilities',
+    operationId: 'getPortfolios',
   })
   @ApiResponse({
     status: 200,
@@ -126,12 +128,34 @@ export class PortfolioController {
 
   @Get(':id')
   @Public()
+  @ApiOperation({
+    summary: 'Get portfolio by ID',
+    operationId: 'getPortfolioById',
+  })
+  @ApiParam({ name: 'id', description: 'Portfolio ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved portfolio',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Portfolio not found',
+  })
   async getPortfolio(@Param('id') id: string) {
     return this.portfolioService.getPortfolioById(id);
   }
 
   @Get('company/:companyJuristicId')
   @Public()
+  @ApiOperation({
+    summary: 'Get portfolios by company juristic ID',
+    operationId: 'getPortfoliosByCompanyJuristicId',
+  })
+  @ApiParam({ name: 'companyJuristicId', description: 'Company juristic ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved portfolios for company',
+  })
   async getPortfolioByCompanyJuristicId(
     @Param('companyJuristicId') companyJuristicId: string,
   ) {
@@ -142,12 +166,30 @@ export class PortfolioController {
 
   @Get('freelance/:freelanceId')
   @Public()
+  @ApiOperation({
+    summary: 'Get portfolios by freelance ID',
+    operationId: 'getPortfoliosByFreelanceId',
+  })
+  @ApiParam({ name: 'freelanceId', description: 'Freelance ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved portfolios for freelancer',
+  })
   async getPortfolioByFreelanceId(@Param('freelanceId') freelanceId: string) {
     return this.portfolioService.getPortfolioByFreelanceId(freelanceId);
   }
 
   @Get('industry/:industrySlug')
   @Public()
+  @ApiOperation({
+    summary: 'Get portfolios by industry',
+    operationId: 'getPortfoliosByIndustry',
+  })
+  @ApiParam({ name: 'industrySlug', description: 'Industry slug' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved portfolios for industry',
+  })
   async getPortfolioByIndustry(@Param('industrySlug') industrySlug: string) {
     return this.portfolioService.getPortfolioByIndustry(industrySlug);
   }
@@ -156,6 +198,23 @@ export class PortfolioController {
   @Post()
   // @UseGuards(AuthGuard)
   // @Roles(Role.ADMIN, Role.COMPANY, Role.FREELANCE)
+  @ApiOperation({
+    summary: 'Create a new portfolio with images and standards',
+    operationId: 'createPortfolio',
+  })
+  @ApiBody({ type: CreatePortfolioWithImagesAndStandardsDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Portfolio created successfully',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid input data',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'images', maxCount: 6 },
@@ -244,6 +303,19 @@ export class PortfolioController {
 
   @Post('favorite')
   // @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Toggle favorite status for a portfolio',
+    operationId: 'togglePortfolioFavorite',
+  })
+  @ApiBody({ type: FavoritePortfolioDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Favorite status toggled successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
   async toggleFavorite(
     @Body() favoriteDto: FavoritePortfolioDto,
     @Req() req: Request,
@@ -259,6 +331,15 @@ export class PortfolioController {
   @Get('favorite/:portfolioId')
   @Public()
   // @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Get favorite status for a portfolio',
+    operationId: 'getPortfolioFavoriteStatus',
+  })
+  @ApiParam({ name: 'portfolioId', description: 'Portfolio ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved favorite status',
+  })
   async getFavoriteStatus(
     @Param('portfolioId') portfolioId: string,
     @Req() req: Request,
@@ -270,6 +351,18 @@ export class PortfolioController {
   @Get('favorites/user')
   @Public()
   // @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Get user favorite portfolios',
+    operationId: 'getUserFavoritePortfolios',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved user favorite portfolios',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
   async getUserFavorites(@Req() req: Request) {
     const user = req.user as CurrentUser;
     return this.portfolioService.getUserFavorites(user.id);
@@ -278,6 +371,27 @@ export class PortfolioController {
   @Delete(':id')
   // @UseGuards(JwtAuthGuard, RolesGuard)
   // @Roles(Role.ADMIN, Role.COMPANY, Role.FREELANCE)
+  @ApiOperation({
+    summary: 'Delete a portfolio',
+    operationId: 'deletePortfolio',
+  })
+  @ApiParam({ name: 'id', description: 'Portfolio ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Portfolio deleted successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - not allowed to delete this portfolio',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Portfolio not found',
+  })
   async deletePortfolio(
     @Param('id') id: string,
     //  @Req() req: Request
@@ -304,7 +418,10 @@ export class PortfolioController {
 
   // Comment related endpoints
 
-  @ApiOperation({ summary: 'Get comments for a portfolio' })
+  @ApiOperation({
+    summary: 'Get comments for a portfolio',
+    operationId: 'getPortfolioComments',
+  })
   @ApiParam({ name: 'portfolioId', description: 'Portfolio ID' })
   @ApiResponse({
     status: 200,
@@ -317,7 +434,10 @@ export class PortfolioController {
     return this.portfolioService.getPortfolioComments(portfolioId);
   }
 
-  @ApiOperation({ summary: 'Create a new comment on a portfolio' })
+  @ApiOperation({
+    summary: 'Create a new comment on a portfolio',
+    operationId: 'createPortfolioComment',
+  })
   @ApiBody({ type: CreateCommentDto })
   @ApiResponse({ status: 201, description: 'Comment created successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized - must be logged in' })
@@ -332,7 +452,10 @@ export class PortfolioController {
     return this.portfolioService.createComment(user.id, commentDto);
   }
 
-  @ApiOperation({ summary: 'Update an existing comment' })
+  @ApiOperation({
+    summary: 'Update an existing comment',
+    operationId: 'updatePortfolioComment',
+  })
   @ApiParam({ name: 'commentId', description: 'Comment ID' })
   @ApiBody({
     schema: { type: 'object', properties: { content: { type: 'string' } } },
@@ -352,7 +475,10 @@ export class PortfolioController {
     return this.portfolioService.updateComment(commentId, user.id, content);
   }
 
-  @ApiOperation({ summary: 'Delete a comment' })
+  @ApiOperation({
+    summary: 'Delete a comment',
+    operationId: 'deletePortfolioComment',
+  })
   @ApiParam({ name: 'commentId', description: 'Comment ID' })
   @ApiResponse({ status: 200, description: 'Comment deleted successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
@@ -376,6 +502,28 @@ export class PortfolioController {
   }
 
   @Patch(':id')
+  @ApiOperation({
+    summary: 'Update a portfolio with images and standards',
+    operationId: 'updatePortfolio',
+  })
+  @ApiParam({ name: 'id', description: 'Portfolio ID' })
+  @ApiBody({ type: UpdatePortfolioDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Portfolio updated successfully',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid input data',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Portfolio not found',
+  })
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'images', maxCount: 6 },
@@ -392,7 +540,6 @@ export class PortfolioController {
       cover: Express.Multer.File[];
       main_image: Express.Multer.File[];
     },
-    @Req() req: Request,
   ) {
     // Prepare payload for update
     const payload = {
@@ -451,7 +598,10 @@ export class PortfolioController {
 
   @Get('random')
   @Public()
-  @ApiOperation({ summary: 'Get random portfolios' })
+  @ApiOperation({
+    summary: 'Get random portfolios',
+    operationId: 'getRandomPortfolios',
+  })
   @ApiQuery({
     name: 'limit',
     required: false,

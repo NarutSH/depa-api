@@ -102,7 +102,10 @@ export class AuthController {
 
   @Public()
   @Post('techhunt-login')
-  @ApiOperation({ summary: 'Login through TechHunt API' })
+  @ApiOperation({
+    summary: 'Login through TechHunt API',
+    operationId: 'techHuntLogin',
+  })
   @ApiBody({ type: TechhuntLoginDto })
   @ApiResponse({ status: 200, description: 'TechHunt login successful' })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
@@ -122,7 +125,10 @@ export class AuthController {
 
   @Public()
   @Post('admin/signup')
-  @ApiOperation({ summary: 'Admin signup' })
+  @ApiOperation({
+    summary: 'Admin signup',
+    operationId: 'adminSignup',
+  })
   @ApiBody({ type: AdminSignupDto })
   @ApiResponse({
     status: 201,
@@ -157,7 +163,10 @@ export class AuthController {
   @Public()
   @Post('admin/signin')
   @HttpCode(200)
-  @ApiOperation({ summary: 'Admin signin' })
+  @ApiOperation({
+    summary: 'Admin signin',
+    operationId: 'adminSignin',
+  })
   @ApiBody({ type: AdminSigninDto })
   @ApiResponse({
     status: 200,
@@ -190,7 +199,10 @@ export class AuthController {
 
   @Public()
   @Post('refresh')
-  @ApiOperation({ summary: 'Refresh access token using refresh token' })
+  @ApiOperation({
+    summary: 'Refresh access token using refresh token',
+    operationId: 'refreshToken',
+  })
   @ApiBody({ type: RefreshTokenDto })
   @ApiResponse({ status: 200, description: 'Token refreshed successfully' })
   @ApiResponse({ status: 401, description: 'Invalid or expired refresh token' })
@@ -210,7 +222,10 @@ export class AuthController {
   @Get('admin/me')
   @UseGuards(AdminGuard)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get current admin profile' })
+  @ApiOperation({
+    summary: 'Get current admin profile',
+    operationId: 'getAdminProfile',
+  })
   @ApiResponse({
     status: 200,
     description: 'Admin profile retrieved successfully',
@@ -239,7 +254,10 @@ export class AuthController {
   @Post('logout')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Log out and revoke refresh token' })
+  @ApiOperation({
+    summary: 'Log out and revoke refresh token',
+    operationId: 'logout',
+  })
   @ApiBody({ type: RefreshTokenDto })
   @ApiResponse({ status: 200, description: 'Logged out successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
@@ -258,7 +276,10 @@ export class AuthController {
   @Post('admin/logout')
   @ApiBearerAuth()
   @UseGuards(AdminGuard)
-  @ApiOperation({ summary: 'Admin log out and revoke refresh token' })
+  @ApiOperation({
+    summary: 'Admin log out and revoke refresh token',
+    operationId: 'adminLogout',
+  })
   @ApiBody({ type: RefreshTokenDto })
   @ApiResponse({ status: 200, description: 'Admin logged out successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
@@ -279,6 +300,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Log out from all devices by revoking all refresh tokens',
+    operationId: 'logoutAll',
   })
   @ApiResponse({
     status: 200,
@@ -303,6 +325,7 @@ export class AuthController {
   @ApiOperation({
     summary:
       'Admin log out from all devices by revoking all admin refresh tokens',
+    operationId: 'adminLogoutAll',
   })
   @ApiResponse({
     status: 200,

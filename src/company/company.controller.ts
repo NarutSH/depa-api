@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiParam,
   ApiQuery,
@@ -25,6 +26,7 @@ import {
 import { CompanyService } from './company.service';
 import {
   CreateCompanyDto,
+  UpdateCompanyDto,
   CompanyListResponseDto,
   CompanyResponseDto,
   CompanyWithRevenueResponseDto,
@@ -39,7 +41,27 @@ export class CompanyController {
 
   @Get()
   @Public()
-  @ApiOperation({ summary: 'Get all companies with filtering and pagination' })
+  @ApiOperation({
+    summary: 'Get all companies with filtering and pagination',
+    operationId: 'getCompanies',
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'Page number (default: 1)',
+    example: 1,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Items per page (default: 10)',
+    example: 10,
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    description: 'Search term for company name or description',
+  })
   @ApiResponse({
     status: 200,
     description: 'Return a paginated list of companies with their details',
@@ -53,7 +75,10 @@ export class CompanyController {
 
   @Get('all')
   @Public()
-  @ApiOperation({ summary: 'Get all companies with optional industry filter' })
+  @ApiOperation({
+    summary: 'Get all companies with optional industry filter',
+    operationId: 'getAllCompanies',
+  })
   @ApiQuery({
     name: 'industry',
     required: false,
@@ -71,7 +96,10 @@ export class CompanyController {
   }
 
   @Get('user/:userId')
-  @ApiOperation({ summary: 'Get company by user ID' })
+  @ApiOperation({
+    summary: 'Get company by user ID',
+    operationId: 'getCompanyByUserId',
+  })
   @ApiParam({ name: 'userId', description: 'The user ID of the company' })
   @ApiResponse({
     status: 200,
@@ -90,7 +118,15 @@ export class CompanyController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create new company' })
+  @ApiOperation({
+    summary: 'Create new company',
+    operationId: 'createCompany',
+  })
+  @ApiBody({
+    type: CreateCompanyDto,
+    description: 'Company data to create',
+    required: true,
+  })
   @ApiResponse({
     status: 201,
     description: 'The company has been successfully created',
@@ -111,10 +147,18 @@ export class CompanyController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update company details' })
+  @ApiOperation({
+    summary: 'Update company details',
+    operationId: 'updateCompany',
+  })
   @ApiParam({
     name: 'id',
     description: 'The ID of the company to update',
+  })
+  @ApiBody({
+    type: UpdateCompanyDto,
+    description: 'Company data to update',
+    required: true,
   })
   @ApiResponse({
     status: 200,
@@ -138,16 +182,24 @@ export class CompanyController {
   })
   async update(
     @Param('id') id: string,
-    @Body() data: CreateCompanyDto,
+    @Body() data: UpdateCompanyDto,
   ): Promise<CompanyResponseDto> {
     return this.companyService.update(id, data);
   }
 
   @Patch('juristic/:juristicId')
-  @ApiOperation({ summary: 'Update company by juristic ID' })
+  @ApiOperation({
+    summary: 'Update company by juristic ID',
+    operationId: 'updateCompanyByJuristic',
+  })
   @ApiParam({
     name: 'juristicId',
     description: 'The juristic ID of the company to update',
+  })
+  @ApiBody({
+    type: UpdateCompanyDto,
+    description: 'Company data to update',
+    required: true,
   })
   @ApiResponse({
     status: 200,
@@ -171,14 +223,17 @@ export class CompanyController {
   })
   async updateByJuristic(
     @Param('juristicId') juristicId: string,
-    @Body() data: CreateCompanyDto,
+    @Body() data: UpdateCompanyDto,
   ): Promise<CompanyResponseDto> {
     return this.companyService.updateByJuristic(juristicId, data);
   }
 
   @Get(':id')
   @Public()
-  @ApiOperation({ summary: 'Get company by ID' })
+  @ApiOperation({
+    summary: 'Get company by ID',
+    operationId: 'getCompanyById',
+  })
   @ApiParam({ name: 'id', description: 'The ID of the company' })
   @ApiResponse({
     status: 200,
@@ -196,7 +251,10 @@ export class CompanyController {
 
   @Get('juristic/:juristicId')
   @Public()
-  @ApiOperation({ summary: 'Get company by juristic ID' })
+  @ApiOperation({
+    summary: 'Get company by juristic ID',
+    operationId: 'getCompanyByJuristicId',
+  })
   @ApiParam({
     name: 'juristicId',
     description: 'The juristic ID of the company',

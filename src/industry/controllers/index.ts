@@ -1,0 +1,10 @@
+export { IndustryController } from './industry.controller';
+export { SkillController } from './skill.controller';
+export { TagController } from './tag.controller';
+export { ChannelController } from './channel.controller';
+export { CategoryController } from './category.controller';
+export { SourceController } from './source.controller';
+export { SegmentController } from './segment.controller';
+export { ProjectTagController } from './project-tag.controller';
+export { StandardsController } from './standards.controller';
+export { LookingForController } from './looking-for.controller';

@@ -30,7 +30,10 @@ import { ValidationErrorResponseDto } from './dto/upload-error.dto';
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
-  @ApiOperation({ summary: 'Upload a single file' })
+  @ApiOperation({
+    summary: 'Upload a single file',
+    operationId: 'uploadSingleFile',
+  })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'File upload',
@@ -71,8 +74,6 @@ export class UploadController {
       .build();
 
     try {
-      console.log('file======>', file);
-      console.log('folder======>', folder);
       await fileValidationPipe.transform(file);
       return this.uploadService.uploadFile(file, folder);
     } catch (error) {
@@ -80,7 +81,10 @@ export class UploadController {
     }
   }
 
-  @ApiOperation({ summary: 'Upload multiple files' })
+  @ApiOperation({
+    summary: 'Upload multiple files',
+    operationId: 'uploadMultipleFiles',
+  })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'Multiple file upload',

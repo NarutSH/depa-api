@@ -33,6 +33,7 @@ export class RevenueStreamController {
   @Get()
   @ApiOperation({
     summary: 'Get all revenue stream data with filtering and pagination',
+    operationId: 'getAllRevenueStreams',
   })
   @ApiResponse({
     status: 200,
@@ -126,7 +127,10 @@ export class RevenueStreamController {
   }
 
   @Get('company/:companyJuristicId')
-  @ApiOperation({ summary: 'Get revenue stream data for a specific company' })
+  @ApiOperation({
+    summary: 'Get revenue stream data for a specific company',
+    operationId: 'getRevenueStreamsByCompany',
+  })
   @ApiParam({
     name: 'companyJuristicId',
     description: 'The juristic ID of the company',
@@ -220,7 +224,10 @@ export class RevenueStreamController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get a specific revenue stream record by ID' })
+  @ApiOperation({
+    summary: 'Get a specific revenue stream record by ID',
+    operationId: 'getRevenueStreamById',
+  })
   @ApiParam({ name: 'id', description: 'The ID of the revenue stream record' })
   @ApiResponse({
     status: 200,
@@ -305,7 +312,10 @@ export class RevenueStreamController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create a new revenue stream record' })
+  @ApiOperation({
+    summary: 'Create a new revenue stream record',
+    operationId: 'createRevenueStream',
+  })
   @ApiBody({
     type: CreateRevenueStreamDto,
     examples: {
@@ -373,7 +383,10 @@ export class RevenueStreamController {
   }
 
   @Post('bulk')
-  @ApiOperation({ summary: 'Create multiple revenue stream records' })
+  @ApiOperation({
+    summary: 'Create multiple revenue stream records',
+    operationId: 'createBulkRevenueStreams',
+  })
   @ApiBody({
     type: [CreateRevenueStreamDto],
     examples: {
@@ -492,7 +505,10 @@ export class RevenueStreamController {
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Update a revenue stream record' })
+  @ApiOperation({
+    summary: 'Update a revenue stream record',
+    operationId: 'updateRevenueStream',
+  })
   @ApiParam({
     name: 'id',
     description: 'The ID of the revenue stream record to update',
@@ -569,7 +585,10 @@ export class RevenueStreamController {
   }
 
   @Patch(':id/value')
-  @ApiOperation({ summary: 'Update just the value of a revenue stream record' })
+  @ApiOperation({
+    summary: 'Update just the value of a revenue stream record',
+    operationId: 'updateRevenueStreamValue',
+  })
   @ApiParam({ name: 'id', description: 'The ID of the revenue stream record' })
   @ApiBody({
     type: UpdateRevenueValueDto,
@@ -624,7 +643,10 @@ export class RevenueStreamController {
   }
 
   @Post('bulk-values')
-  @ApiOperation({ summary: 'Bulk update or create revenue stream values' })
+  @ApiOperation({
+    summary: 'Bulk update or create revenue stream values',
+    operationId: 'bulkUpsertRevenueStreamValues',
+  })
   @ApiBody({
     type: [UpdateRevenueValueDto],
     examples: {
@@ -696,7 +718,10 @@ export class RevenueStreamController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete a revenue stream record' })
+  @ApiOperation({
+    summary: 'Delete a revenue stream record',
+    operationId: 'deleteRevenueStream',
+  })
   @ApiParam({
     name: 'id',
     description: 'The ID of the revenue stream record to delete',

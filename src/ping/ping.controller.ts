@@ -1,11 +1,28 @@
 import { Controller, Get, Res } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from '../auth/decorators/public.decorator';
 import { Response } from 'express';
 
+@ApiTags('Ping')
 @Controller('ping')
 export class PingController {
   @Public()
   @Get()
+  @ApiOperation({
+    summary: 'Ping server to check if API is running',
+    operationId: 'pingServer',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Server is running - returns HTML status page',
+    content: {
+      'text/html': {
+        schema: {
+          type: 'string',
+        },
+      },
+    },
+  })
   ping(@Res() res: Response) {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.send(`

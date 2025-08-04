@@ -47,6 +47,7 @@ export class UsersController {
     summary: 'Get all users',
     description:
       'Retrieves all users with pagination and filtering. Admin only.',
+    operationId: 'getAllUsers',
   })
   @ApiResponse({
     status: 200,
@@ -94,6 +95,7 @@ export class UsersController {
   @ApiOperation({
     summary: 'Get current user profile',
     description: 'Retrieves the profile of the currently authenticated user.',
+    operationId: 'getCurrentUser',
   })
   @ApiResponse({
     status: 200,
@@ -130,6 +132,7 @@ export class UsersController {
     summary: 'Get user by ID',
     description:
       'Retrieves user by ID. Users can only access their own profile.',
+    operationId: 'getUserById',
   })
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiResponse({
@@ -172,6 +175,7 @@ export class UsersController {
   @ApiOperation({
     summary: 'Get user by email',
     description: 'Retrieves user by email for any authenticated user.',
+    operationId: 'getUserByEmail',
   })
   @ApiParam({ name: 'email', description: 'User email address' })
   @ApiResponse({
@@ -201,6 +205,7 @@ export class UsersController {
   @ApiOperation({
     summary: 'Create user profile',
     description: 'Creates a new user profile for authenticated users.',
+    operationId: 'createUser',
   })
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({
@@ -246,6 +251,7 @@ export class UsersController {
     summary: 'Update user',
     description:
       'Updates a user by ID. Users can only update their own profile.',
+    operationId: 'updateUser',
   })
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiBody({ type: UpdateUserDto })
@@ -289,6 +295,7 @@ export class UsersController {
   @ApiOperation({
     summary: 'Update user by email',
     description: 'Updates a user by email. Admin only.',
+    operationId: 'updateUserByEmail',
   })
   @ApiParam({ name: 'email', description: 'User email address' })
   @ApiBody({ type: UpdateUserDto })

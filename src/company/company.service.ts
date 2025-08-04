@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
+import { UpdateCompanyDto } from './dto/update-company.dto';
 import { QueryMetadataDto } from 'src/utils';
 import {
   CompanyListResponseDto,
@@ -140,7 +141,7 @@ export class CompanyService {
 
   async update(
     id: string,
-    data: CreateCompanyDto,
+    data: UpdateCompanyDto,
   ): Promise<CompanyResponseDto> {
     const company = await this.prismaService.company.findUnique({
       where: { id },
@@ -152,7 +153,7 @@ export class CompanyService {
   }
   async updateByJuristic(
     id: string,
-    data: CreateCompanyDto,
+    data: UpdateCompanyDto,
   ): Promise<CompanyResponseDto> {
     const company = await this.prismaService.company.findUnique({
       where: { juristicId: id },

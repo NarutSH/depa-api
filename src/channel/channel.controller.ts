@@ -11,7 +11,10 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
+  ApiParam,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -29,15 +32,48 @@ export class ChannelController {
 
   @Post()
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Create a new channel' })
+  @ApiOperation({
+    summary: 'Create a new channel',
+    operationId: 'createChannel',
+  })
+  @ApiBody({ type: CreateChannelDto })
   @ApiResponse({ status: 201, description: 'Channel created successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid input data' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   async create(@Body() createChannelDto: CreateChannelDto) {
     return this.channelService.create(createChannelDto);
   }
 
   @Get()
   @Public()
-  @ApiOperation({ summary: 'Get all channels' })
+  @ApiOperation({
+    summary: 'Get all channels with pagination, filtering, and sorting',
+    operationId: 'getChannels',
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number (1-based)',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Items per page',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String,
+    description: 'Search term',
+  })
+  @ApiQuery({
+    name: 'sort',
+    required: false,
+    type: String,
+    description: 'Sort field and direction',
+  })
   @ApiResponse({ status: 200, description: 'List of channels' })
   async findAll(@Query() query: QueryMetadataDto, @Res() res: Response) {
     const result = await this.channelService.findAll(query);
@@ -47,7 +83,11 @@ export class ChannelController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get channel by ID' })
+  @ApiOperation({
+    summary: 'Get channel by ID',
+    operationId: 'getChannelById',
+  })
+  @ApiParam({ name: 'id', description: 'Channel ID' })
   @ApiResponse({ status: 200, description: 'Channel found' })
   @ApiResponse({ status: 404, description: 'Channel not found' })
   async findOne(@Param('id') id: string) {
@@ -56,8 +96,16 @@ export class ChannelController {
 
   @Put(':id')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update channel by ID' })
+  @ApiOperation({
+    summary: 'Update channel by ID',
+    operationId: 'updateChannel',
+  })
+  @ApiParam({ name: 'id', description: 'Channel ID' })
+  @ApiBody({ type: UpdateChannelDto })
   @ApiResponse({ status: 200, description: 'Channel updated successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid input data' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Channel not found' })
   async update(
     @Param('id') id: string,
     @Body() updateChannelDto: UpdateChannelDto,
@@ -67,8 +115,14 @@ export class ChannelController {
 
   @Delete(':id')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete channel by ID' })
+  @ApiOperation({
+    summary: 'Delete channel by ID',
+    operationId: 'deleteChannel',
+  })
+  @ApiParam({ name: 'id', description: 'Channel ID' })
   @ApiResponse({ status: 200, description: 'Channel deleted successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Channel not found' })
   async remove(@Param('id') id: string) {
     return this.channelService.remove(id);
   }

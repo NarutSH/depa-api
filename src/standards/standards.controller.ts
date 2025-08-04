@@ -13,7 +13,10 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { StandardsService } from './standards.service';
 import {
+  ApiBody,
+  ApiConsumes,
   ApiOperation,
+  ApiParam,
   ApiQuery,
   ApiResponse,
   ApiTags,
@@ -39,6 +42,7 @@ export class StandardsController {
     summary: 'Get all standards',
     description:
       'Retrieves all standards with pagination, filtering and sorting',
+    operationId: 'getStandards',
   })
   @ApiResponse({
     status: 200,
@@ -80,7 +84,10 @@ export class StandardsController {
 
   @Get('all')
   @Public()
-  @ApiOperation({ summary: 'Get all standards (no pagination)' })
+  @ApiOperation({
+    summary: 'Get all standards (no pagination)',
+    operationId: 'getAllStandards',
+  })
   @ApiResponse({
     status: 200,
     description: 'All standards retrieved successfully',
@@ -90,6 +97,41 @@ export class StandardsController {
   }
 
   @Post()
+  @ApiOperation({
+    summary: 'Create a new standard with optional image',
+    operationId: 'createStandard',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Standard creation data with optional image',
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+        description: { type: 'string' },
+        type: { type: 'string' },
+        industrySlug: { type: 'string' },
+        image: {
+          type: 'string',
+          format: 'binary',
+          description: 'Optional image file',
+        },
+      },
+      required: ['name'],
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Standard created successfully',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid input data',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
   @UseInterceptors(FileInterceptor('image'))
   async createStandard(
     @Body() createStandardDto: CreateStandardDto,
@@ -110,6 +152,45 @@ export class StandardsController {
   }
 
   @Patch(':id')
+  @ApiOperation({
+    summary: 'Update a standard with optional image',
+    operationId: 'updateStandard',
+  })
+  @ApiParam({ name: 'id', description: 'Standard ID' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Standard update data with optional image',
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+        description: { type: 'string' },
+        type: { type: 'string' },
+        industrySlug: { type: 'string' },
+        image: {
+          type: 'string',
+          format: 'binary',
+          description: 'Optional image file',
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Standard updated successfully',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid input data',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Standard not found',
+  })
   @UseInterceptors(FileInterceptor('image'))
   async updateStandard(
     @Param('id') id: string,
@@ -131,11 +212,41 @@ export class StandardsController {
   }
 
   @Delete(':id')
+  @ApiOperation({
+    summary: 'Delete a standard by ID',
+    operationId: 'deleteStandard',
+  })
+  @ApiParam({ name: 'id', description: 'Standard ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Standard deleted successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Standard not found',
+  })
   async deleteStandard(@Param('id') id: string) {
     return this.standardsService.deleteStandard(id);
   }
 
   @Get(':id')
+  @ApiOperation({
+    summary: 'Get a standard by ID',
+    operationId: 'getStandardById',
+  })
+  @ApiParam({ name: 'id', description: 'Standard ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Standard retrieved successfully',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Standard not found',
+  })
   async getStandard(@Param('id') id: string) {
     return this.standardsService.getStandard(id);
   }

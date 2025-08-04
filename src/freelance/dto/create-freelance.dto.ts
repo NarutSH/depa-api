@@ -2,63 +2,111 @@ import { IsEmail, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateFreelanceDto {
-  @ApiProperty({ description: 'User ID associated with this freelance' })
+  @ApiProperty({
+    description: 'User ID associated with this freelance',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
   @IsString()
   userId: string;
 
-  @ApiProperty({ description: 'First name in Thai' })
+  @ApiProperty({
+    description: 'First name in Thai',
+    example: 'สมชาย',
+  })
   @IsString()
   firstNameTh: string;
 
-  @ApiProperty({ description: 'Last name in Thai' })
+  @ApiProperty({
+    description: 'Last name in Thai',
+    example: 'ใจดี',
+  })
   @IsString()
   lastNameTh: string;
 
-  @ApiProperty({ description: 'First name in English', required: false })
+  @ApiProperty({
+    description: 'First name in English',
+    example: 'John',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   firstNameEn?: string;
 
-  @ApiProperty({ description: 'Last name in English', required: false })
+  @ApiProperty({
+    description: 'Last name in English',
+    example: 'Doe',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   lastNameEn?: string;
 
-  @ApiProperty({ description: 'Address', required: false })
+  @ApiProperty({
+    description: 'Address',
+    example: '123 Main Street',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   address?: string;
 
-  @ApiProperty({ description: 'Sub-district/Tambon', required: false })
+  @ApiProperty({
+    description: 'Sub-district/Tambon',
+    example: 'Silom',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   subDistrict?: string;
 
-  @ApiProperty({ description: 'District/Amphoe', required: false })
+  @ApiProperty({
+    description: 'District/Amphoe',
+    example: 'Bang Rak',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   district?: string;
 
-  @ApiProperty({ description: 'Province/Changwat', required: false })
+  @ApiProperty({
+    description: 'Province/Changwat',
+    example: 'Bangkok',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   province?: string;
 
-  @ApiProperty({ description: 'Postal code', required: false })
+  @ApiProperty({
+    description: 'Postal code',
+    example: '10500',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   postalCode?: string;
 
-  @ApiProperty({ description: 'Contact phone number', required: false })
+  @ApiProperty({
+    description: 'Contact phone number',
+    example: '+66-123-456-789',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   phoneNumber?: string;
 
-  @ApiProperty({ description: 'Email address' })
+  @ApiProperty({
+    description: 'Email address',
+    example: 'john.doe@example.com',
+  })
   @IsEmail()
   email: string;
 
-  @ApiProperty({ description: 'Juristic ID (if applicable)', required: false })
+  @ApiProperty({
+    description: 'Juristic ID (if applicable)',
+    example: '1234567890123',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   juristicId?: string;
@@ -73,12 +121,20 @@ export class CreateFreelanceDto {
   @IsString({ each: true })
   industryTypes?: string[];
 
-  @ApiProperty({ description: 'Profile image URL', required: false })
+  @ApiProperty({
+    description: 'Profile image URL',
+    example: 'https://example.com/profile.jpg',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   image?: string;
 
-  @ApiProperty({ description: 'Cover image URL', required: false })
+  @ApiProperty({
+    description: 'Cover image URL',
+    example: 'https://example.com/cover.jpg',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   cover_image?: string;

@@ -3,6 +3,7 @@ import { CompanyRevenueService } from './company-revenue.service';
 import { CreateCompanyRevenueDto } from './dto/create-company-revenue.dto';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiParam,
   ApiQuery,
@@ -20,6 +21,7 @@ export class CompanyRevenueController {
   @Get()
   @ApiOperation({
     summary: 'Get all company revenue data with filtering and pagination',
+    operationId: 'getAllCompanyRevenues',
   })
   @ApiResponse({
     status: 200,
@@ -63,6 +65,7 @@ export class CompanyRevenueController {
   @ApiOperation({
     summary:
       'Get revenue data for a specific company with filtering and pagination',
+    operationId: 'getCompanyRevenuesByCompanyId',
   })
   @ApiParam({ name: 'companyId', description: 'The ID of the company' })
   @ApiResponse({
@@ -101,11 +104,23 @@ export class CompanyRevenueController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create or update company revenue data' })
+  @ApiOperation({
+    summary: 'Create or update company revenue data',
+    operationId: 'createCompanyRevenue',
+  })
+  @ApiBody({ type: CreateCompanyRevenueDto })
   @ApiResponse({
     status: 201,
     description:
       'The company revenue record has been successfully created or updated',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid input data',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
   })
   async create(@Body() data: CreateCompanyRevenueDto) {
     return this.companyRevenueService.create(data);

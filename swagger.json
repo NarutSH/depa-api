@@ -3,13 +3,21 @@
   "paths": {
     "/ping": {
       "get": {
-        "operationId": "PingController_ping",
+        "operationId": "pingServer",
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Server is running - returns HTML status page",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
+        "summary": "Ping server to check if API is running",
         "tags": [
           "Ping"
         ]
@@ -18,7 +26,7 @@
     "/users": {
       "get": {
         "description": "Retrieves all users with pagination and filtering. Admin only.",
-        "operationId": "UsersController_getAllUsers",
+        "operationId": "getAllUsers",
         "parameters": [
           {
             "name": "page",
@@ -102,7 +110,7 @@
       },
       "post": {
         "description": "Creates a new user profile for authenticated users.",
-        "operationId": "UsersController_createUser",
+        "operationId": "createUser",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -170,7 +178,7 @@
     "/users/me": {
       "get": {
         "description": "Retrieves the profile of the currently authenticated user.",
-        "operationId": "UsersController_getMe",
+        "operationId": "getCurrentUser",
         "parameters": [],
         "responses": {
           "200": {
@@ -218,7 +226,7 @@
     "/users/{id}": {
       "get": {
         "description": "Retrieves user by ID. Users can only access their own profile.",
-        "operationId": "UsersController_getUserById",
+        "operationId": "getUserById",
         "parameters": [
           {
             "name": "id",
@@ -274,7 +282,7 @@
       },
       "patch": {
         "description": "Updates a user by ID. Users can only update their own profile.",
-        "operationId": "UsersController_updateUser",
+        "operationId": "updateUser",
         "parameters": [
           {
             "name": "id",
@@ -352,7 +360,7 @@
     "/users/email/{email}": {
       "get": {
         "description": "Retrieves user by email for any authenticated user.",
-        "operationId": "UsersController_getUserByEmail",
+        "operationId": "getUserByEmail",
         "parameters": [
           {
             "name": "email",
@@ -408,7 +416,7 @@
       },
       "patch": {
         "description": "Updates a user by email. Admin only.",
-        "operationId": "UsersController_updateUserByEmail",
+        "operationId": "updateUserByEmail",
         "parameters": [
           {
             "name": "email",
@@ -485,15 +493,16 @@
     },
     "/company": {
       "get": {
-        "operationId": "CompanyController_getCompanies",
+        "operationId": "getCompanies",
         "parameters": [
           {
             "name": "page",
             "required": false,
             "in": "query",
-            "description": "Page number (1-based)",
+            "description": "Page number (default: 1)",
             "schema": {
               "default": 1,
+              "example": 1,
               "type": "number"
             }
           },
@@ -501,9 +510,10 @@
             "name": "limit",
             "required": false,
             "in": "query",
-            "description": "Number of items per page",
+            "description": "Items per page (default: 10)",
             "schema": {
               "default": 10,
+              "example": 10,
               "type": "number"
             }
           },
@@ -511,7 +521,7 @@
             "name": "search",
             "required": false,
             "in": "query",
-            "description": "Search term that will be applied to configured fields",
+            "description": "Search term for company name or description",
             "schema": {
               "type": "string"
             }
@@ -558,10 +568,11 @@
         ]
       },
       "post": {
-        "operationId": "CompanyController_create",
+        "operationId": "createCompany",
         "parameters": [],
         "requestBody": {
           "required": true,
+          "description": "Company data to create",
           "content": {
             "application/json": {
               "schema": {
@@ -615,7 +626,7 @@
     },
     "/company/all": {
       "get": {
-        "operationId": "CompanyController_getAl",
+        "operationId": "getAllCompanies",
         "parameters": [
           {
             "name": "industry",
@@ -655,7 +666,7 @@
     },
     "/company/user/{userId}": {
       "get": {
-        "operationId": "CompanyController_getByUserId",
+        "operationId": "getCompanyByUserId",
         "parameters": [
           {
             "name": "userId",
@@ -702,7 +713,7 @@
     },
     "/company/{id}": {
       "patch": {
-        "operationId": "CompanyController_update",
+        "operationId": "updateCompany",
         "parameters": [
           {
             "name": "id",
@@ -716,10 +727,11 @@
         ],
         "requestBody": {
           "required": true,
+          "description": "Company data to update",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateCompanyDto"
+                "$ref": "#/components/schemas/UpdateCompanyDto"
               }
             }
           }
@@ -777,7 +789,7 @@
         ]
       },
       "get": {
-        "operationId": "CompanyController_getById",
+        "operationId": "getCompanyById",
         "parameters": [
           {
             "name": "id",
@@ -824,7 +836,7 @@
     },
     "/company/juristic/{juristicId}": {
       "patch": {
-        "operationId": "CompanyController_updateByJuristic",
+        "operationId": "updateCompanyByJuristic",
         "parameters": [
           {
             "name": "juristicId",
@@ -838,10 +850,11 @@
         ],
         "requestBody": {
           "required": true,
+          "description": "Company data to update",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateCompanyDto"
+                "$ref": "#/components/schemas/UpdateCompanyDto"
               }
             }
           }
@@ -899,7 +912,7 @@
         ]
       },
       "get": {
-        "operationId": "CompanyController_getByJuristicId",
+        "operationId": "getCompanyByJuristicId",
         "parameters": [
           {
             "name": "juristicId",
@@ -946,7 +959,7 @@
     },
     "/revenue-stream": {
       "get": {
-        "operationId": "RevenueStreamController_getAll",
+        "operationId": "getAllRevenueStreams",
         "parameters": [
           {
             "name": "page",
@@ -1069,7 +1082,7 @@
         ]
       },
       "post": {
-        "operationId": "RevenueStreamController_create",
+        "operationId": "createRevenueStream",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -1158,7 +1171,7 @@
     },
     "/revenue-stream/company/{companyJuristicId}": {
       "get": {
-        "operationId": "RevenueStreamController_getByCompanyId",
+        "operationId": "getRevenueStreamsByCompany",
         "parameters": [
           {
             "name": "companyJuristicId",
@@ -1286,7 +1299,7 @@
     },
     "/revenue-stream/{id}": {
       "get": {
-        "operationId": "RevenueStreamController_getById",
+        "operationId": "getRevenueStreamById",
         "parameters": [
           {
             "name": "id",
@@ -1394,7 +1407,7 @@
         ]
       },
       "put": {
-        "operationId": "RevenueStreamController_update",
+        "operationId": "updateRevenueStream",
         "parameters": [
           {
             "name": "id",
@@ -1498,7 +1511,7 @@
         ]
       },
       "delete": {
-        "operationId": "RevenueStreamController_delete",
+        "operationId": "deleteRevenueStream",
         "parameters": [
           {
             "name": "id",
@@ -1563,7 +1576,7 @@
     },
     "/revenue-stream/bulk": {
       "post": {
-        "operationId": "RevenueStreamController_createMany",
+        "operationId": "createBulkRevenueStreams",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -1706,7 +1719,7 @@
     },
     "/revenue-stream/{id}/value": {
       "patch": {
-        "operationId": "RevenueStreamController_updateValue",
+        "operationId": "updateRevenueStreamValue",
         "parameters": [
           {
             "name": "id",
@@ -1790,7 +1803,7 @@
     },
     "/revenue-stream/bulk-values": {
       "post": {
-        "operationId": "RevenueStreamController_bulkUpsertValues",
+        "operationId": "bulkUpsertRevenueStreamValues",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -1885,7 +1898,7 @@
     },
     "/company-revenue": {
       "get": {
-        "operationId": "CompanyRevenueController_getAll",
+        "operationId": "getAllCompanyRevenues",
         "parameters": [
           {
             "name": "page",
@@ -1951,7 +1964,7 @@
         ]
       },
       "post": {
-        "operationId": "CompanyRevenueController_create",
+        "operationId": "createCompanyRevenue",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -1966,6 +1979,12 @@
         "responses": {
           "201": {
             "description": "The company revenue record has been successfully created or updated"
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "security": [
@@ -1981,7 +2000,7 @@
     },
     "/company-revenue/company/{companyId}": {
       "get": {
-        "operationId": "CompanyRevenueController_getByCompanyId",
+        "operationId": "getCompanyRevenuesByCompanyId",
         "parameters": [
           {
             "name": "companyId",
@@ -2058,7 +2077,7 @@
     },
     "/portfolio/all": {
       "get": {
-        "operationId": "PortfolioController_getAllPortfolios",
+        "operationId": "getAllPortfolios",
         "parameters": [
           {
             "name": "page",
@@ -2126,7 +2145,7 @@
     },
     "/portfolio": {
       "get": {
-        "operationId": "PortfolioController_getPortfolios",
+        "operationId": "getPortfolios",
         "parameters": [
           {
             "name": "page",
@@ -2199,7 +2218,7 @@
         ]
       },
       "post": {
-        "operationId": "PortfolioController_createPortfolio",
+        "operationId": "createPortfolio",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2213,7 +2232,13 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Portfolio created successfully"
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "security": [
@@ -2221,6 +2246,7 @@
             "bearer": []
           }
         ],
+        "summary": "Create a new portfolio with images and standards",
         "tags": [
           "Portfolio"
         ]
@@ -2228,12 +2254,13 @@
     },
     "/portfolio/{id}": {
       "get": {
-        "operationId": "PortfolioController_getPortfolio",
+        "operationId": "getPortfolioById",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Portfolio ID",
             "schema": {
               "type": "string"
             }
@@ -2241,7 +2268,10 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successfully retrieved portfolio"
+          },
+          "404": {
+            "description": "Portfolio not found"
           }
         },
         "security": [
@@ -2249,17 +2279,19 @@
             "bearer": []
           }
         ],
+        "summary": "Get portfolio by ID",
         "tags": [
           "Portfolio"
         ]
       },
       "delete": {
-        "operationId": "PortfolioController_deletePortfolio",
+        "operationId": "deletePortfolio",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Portfolio ID",
             "schema": {
               "type": "string"
             }
@@ -2267,7 +2299,16 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Portfolio deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - not allowed to delete this portfolio"
+          },
+          "404": {
+            "description": "Portfolio not found"
           }
         },
         "security": [
@@ -2275,17 +2316,19 @@
             "bearer": []
           }
         ],
+        "summary": "Delete a portfolio",
         "tags": [
           "Portfolio"
         ]
       },
       "patch": {
-        "operationId": "PortfolioController_updatePortfolio",
+        "operationId": "updatePortfolio",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Portfolio ID",
             "schema": {
               "type": "string"
             }
@@ -2303,7 +2346,16 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Portfolio updated successfully"
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Portfolio not found"
           }
         },
         "security": [
@@ -2311,6 +2363,7 @@
             "bearer": []
           }
         ],
+        "summary": "Update a portfolio with images and standards",
         "tags": [
           "Portfolio"
         ]
@@ -2318,12 +2371,13 @@
     },
     "/portfolio/company/{companyJuristicId}": {
       "get": {
-        "operationId": "PortfolioController_getPortfolioByCompanyJuristicId",
+        "operationId": "getPortfoliosByCompanyJuristicId",
         "parameters": [
           {
             "name": "companyJuristicId",
             "required": true,
             "in": "path",
+            "description": "Company juristic ID",
             "schema": {
               "type": "string"
             }
@@ -2331,7 +2385,7 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successfully retrieved portfolios for company"
           }
         },
         "security": [
@@ -2339,6 +2393,7 @@
             "bearer": []
           }
         ],
+        "summary": "Get portfolios by company juristic ID",
         "tags": [
           "Portfolio"
         ]
@@ -2346,12 +2401,13 @@
     },
     "/portfolio/freelance/{freelanceId}": {
       "get": {
-        "operationId": "PortfolioController_getPortfolioByFreelanceId",
+        "operationId": "getPortfoliosByFreelanceId",
         "parameters": [
           {
             "name": "freelanceId",
             "required": true,
             "in": "path",
+            "description": "Freelance ID",
             "schema": {
               "type": "string"
             }
@@ -2359,7 +2415,7 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successfully retrieved portfolios for freelancer"
           }
         },
         "security": [
@@ -2367,6 +2423,7 @@
             "bearer": []
           }
         ],
+        "summary": "Get portfolios by freelance ID",
         "tags": [
           "Portfolio"
         ]
@@ -2374,12 +2431,13 @@
     },
     "/portfolio/industry/{industrySlug}": {
       "get": {
-        "operationId": "PortfolioController_getPortfolioByIndustry",
+        "operationId": "getPortfoliosByIndustry",
         "parameters": [
           {
             "name": "industrySlug",
             "required": true,
             "in": "path",
+            "description": "Industry slug",
             "schema": {
               "type": "string"
             }
@@ -2387,7 +2445,7 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successfully retrieved portfolios for industry"
           }
         },
         "security": [
@@ -2395,6 +2453,7 @@
             "bearer": []
           }
         ],
+        "summary": "Get portfolios by industry",
         "tags": [
           "Portfolio"
         ]
@@ -2402,7 +2461,7 @@
     },
     "/portfolio/favorite": {
       "post": {
-        "operationId": "PortfolioController_toggleFavorite",
+        "operationId": "togglePortfolioFavorite",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2415,8 +2474,11 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Favorite status toggled successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "security": [
@@ -2424,6 +2486,7 @@
             "bearer": []
           }
         ],
+        "summary": "Toggle favorite status for a portfolio",
         "tags": [
           "Portfolio"
         ]
@@ -2431,12 +2494,13 @@
     },
     "/portfolio/favorite/{portfolioId}": {
       "get": {
-        "operationId": "PortfolioController_getFavoriteStatus",
+        "operationId": "getPortfolioFavoriteStatus",
         "parameters": [
           {
             "name": "portfolioId",
             "required": true,
             "in": "path",
+            "description": "Portfolio ID",
             "schema": {
               "type": "string"
             }
@@ -2444,7 +2508,7 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successfully retrieved favorite status"
           }
         },
         "security": [
@@ -2452,6 +2516,7 @@
             "bearer": []
           }
         ],
+        "summary": "Get favorite status for a portfolio",
         "tags": [
           "Portfolio"
         ]
@@ -2459,11 +2524,14 @@
     },
     "/portfolio/favorites/user": {
       "get": {
-        "operationId": "PortfolioController_getUserFavorites",
+        "operationId": "getUserFavoritePortfolios",
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successfully retrieved user favorite portfolios"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "security": [
@@ -2471,6 +2539,7 @@
             "bearer": []
           }
         ],
+        "summary": "Get user favorite portfolios",
         "tags": [
           "Portfolio"
         ]
@@ -2478,7 +2547,7 @@
     },
     "/portfolio/{portfolioId}/comments": {
       "get": {
-        "operationId": "PortfolioController_getPortfolioComments",
+        "operationId": "getPortfolioComments",
         "parameters": [
           {
             "name": "portfolioId",
@@ -2511,7 +2580,7 @@
     },
     "/portfolio/comments": {
       "post": {
-        "operationId": "PortfolioController_createComment",
+        "operationId": "createPortfolioComment",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2547,7 +2616,7 @@
     },
     "/portfolio/comments/{commentId}": {
       "patch": {
-        "operationId": "PortfolioController_updateComment",
+        "operationId": "updatePortfolioComment",
         "parameters": [
           {
             "name": "commentId",
@@ -2599,7 +2668,7 @@
         ]
       },
       "delete": {
-        "operationId": "PortfolioController_deleteComment",
+        "operationId": "deletePortfolioComment",
         "parameters": [
           {
             "name": "commentId",
@@ -2638,7 +2707,7 @@
     },
     "/portfolio/random": {
       "get": {
-        "operationId": "PortfolioController_getPortfolioRandom",
+        "operationId": "getRandomPortfolios",
         "parameters": [
           {
             "name": "limit",
@@ -2668,7 +2737,7 @@
     },
     "/upload": {
       "post": {
-        "operationId": "UploadController_uploadFile",
+        "operationId": "uploadSingleFile",
         "parameters": [
           {
             "name": "folder",
@@ -2732,7 +2801,7 @@
     },
     "/upload/multiple": {
       "post": {
-        "operationId": "UploadController_uploadMultipleFiles",
+        "operationId": "uploadMultipleFiles",
         "parameters": [
           {
             "name": "folder",
@@ -2800,7 +2869,7 @@
     "/standards": {
       "get": {
         "description": "Retrieves all standards with pagination, filtering and sorting",
-        "operationId": "StandardsController_getStandards",
+        "operationId": "getStandards",
         "parameters": [
           {
             "name": "page",
@@ -2866,21 +2935,50 @@
         ]
       },
       "post": {
-        "operationId": "StandardsController_createStandard",
+        "operationId": "createStandard",
         "parameters": [],
         "requestBody": {
           "required": true,
+          "description": "Standard creation data with optional image",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CreateStandardDto"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "industrySlug": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Optional image file"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Standard created successfully"
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "security": [
@@ -2888,6 +2986,7 @@
             "bearer": []
           }
         ],
+        "summary": "Create a new standard with optional image",
         "tags": [
           "Standards"
         ]
@@ -2895,7 +2994,7 @@
     },
     "/standards/all": {
       "get": {
-        "operationId": "StandardsController_getAllStandards",
+        "operationId": "getAllStandards",
         "parameters": [],
         "responses": {
           "200": {
@@ -2915,12 +3014,13 @@
     },
     "/standards/{id}": {
       "patch": {
-        "operationId": "StandardsController_updateStandard",
+        "operationId": "updateStandard",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Standard ID",
             "schema": {
               "type": "string"
             }
@@ -2928,17 +3028,46 @@
         ],
         "requestBody": {
           "required": true,
+          "description": "Standard update data with optional image",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateStandardDto"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "industrySlug": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Optional image file"
+                  }
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Standard updated successfully"
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Standard not found"
           }
         },
         "security": [
@@ -2946,17 +3075,19 @@
             "bearer": []
           }
         ],
+        "summary": "Update a standard with optional image",
         "tags": [
           "Standards"
         ]
       },
       "delete": {
-        "operationId": "StandardsController_deleteStandard",
+        "operationId": "deleteStandard",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Standard ID",
             "schema": {
               "type": "string"
             }
@@ -2964,7 +3095,13 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Standard deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Standard not found"
           }
         },
         "security": [
@@ -2972,17 +3109,19 @@
             "bearer": []
           }
         ],
+        "summary": "Delete a standard by ID",
         "tags": [
           "Standards"
         ]
       },
       "get": {
-        "operationId": "StandardsController_getStandard",
+        "operationId": "getStandardById",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Standard ID",
             "schema": {
               "type": "string"
             }
@@ -2990,7 +3129,10 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Standard retrieved successfully"
+          },
+          "404": {
+            "description": "Standard not found"
           }
         },
         "security": [
@@ -2998,6 +3140,7 @@
             "bearer": []
           }
         ],
+        "summary": "Get a standard by ID",
         "tags": [
           "Standards"
         ]
@@ -3005,10 +3148,11 @@
     },
     "/industry": {
       "post": {
-        "operationId": "IndustryController_createIndustry",
+        "operationId": "createIndustry",
         "parameters": [],
         "requestBody": {
           "required": true,
+          "description": "Industry data to create",
           "content": {
             "application/json": {
               "schema": {
@@ -3060,7 +3204,7 @@
         ]
       },
       "get": {
-        "operationId": "IndustryController_getIndustries",
+        "operationId": "getIndustries",
         "parameters": [],
         "responses": {
           "200": {
@@ -3087,7 +3231,7 @@
     },
     "/industry/all": {
       "get": {
-        "operationId": "IndustryController_findAllIndustries",
+        "operationId": "findAllIndustries",
         "parameters": [
           {
             "name": "skip",
@@ -3143,7 +3287,7 @@
     },
     "/industry/{id}": {
       "get": {
-        "operationId": "IndustryController_findIndustryById",
+        "operationId": "findIndustryById",
         "parameters": [
           {
             "name": "id",
@@ -3188,7 +3332,7 @@
         ]
       },
       "put": {
-        "operationId": "IndustryController_updateIndustry",
+        "operationId": "updateIndustry",
         "parameters": [
           {
             "name": "id",
@@ -3202,6 +3346,7 @@
         ],
         "requestBody": {
           "required": true,
+          "description": "Industry data to update",
           "content": {
             "application/json": {
               "schema": {
@@ -3263,7 +3408,7 @@
         ]
       },
       "delete": {
-        "operationId": "IndustryController_deleteIndustry",
+        "operationId": "deleteIndustry",
         "parameters": [
           {
             "name": "id",
@@ -3320,7 +3465,7 @@
     },
     "/industry/slug/{slug}": {
       "get": {
-        "operationId": "IndustryController_findIndustryBySlug",
+        "operationId": "findIndustryBySlug",
         "parameters": [
           {
             "name": "slug",
@@ -3367,10 +3512,11 @@
     },
     "/industry/skills": {
       "post": {
-        "operationId": "IndustryController_createSkill",
+        "operationId": "createSkill",
         "parameters": [],
         "requestBody": {
           "required": true,
+          "description": "Skill data to create",
           "content": {
             "application/json": {
               "schema": {
@@ -3418,13 +3564,13 @@
         ],
         "summary": "Create a new skill",
         "tags": [
-          "Industry"
+          "Industry - Skills"
         ]
       }
     },
     "/industry/skills/all": {
       "get": {
-        "operationId": "IndustryController_findAllSkills",
+        "operationId": "findAllSkills",
         "parameters": [
           {
             "name": "skip",
@@ -3486,13 +3632,13 @@
         ],
         "summary": "Get all skills with optional filtering",
         "tags": [
-          "Industry"
+          "Industry - Skills"
         ]
       }
     },
     "/industry/skills/{slug}": {
       "get": {
-        "operationId": "IndustryController_findSkillBySlug",
+        "operationId": "findSkillBySlug",
         "parameters": [
           {
             "name": "slug",
@@ -3542,11 +3688,11 @@
         ],
         "summary": "Get a skill by its slug",
         "tags": [
-          "Industry"
+          "Industry - Skills"
         ]
       },
       "put": {
-        "operationId": "IndustryController_updateSkill",
+        "operationId": "updateSkill",
         "parameters": [
           {
             "name": "slug",
@@ -3560,6 +3706,7 @@
         ],
         "requestBody": {
           "required": true,
+          "description": "Skill data to update",
           "content": {
             "application/json": {
               "schema": {
@@ -3617,11 +3764,11 @@
         ],
         "summary": "Update an existing skill",
         "tags": [
-          "Industry"
+          "Industry - Skills"
         ]
       },
       "delete": {
-        "operationId": "IndustryController_deleteSkill",
+        "operationId": "deleteSkill",
         "parameters": [
           {
             "name": "slug",
@@ -3643,6 +3790,26 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Skill not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3652,16 +3819,17 @@
         ],
         "summary": "Delete a skill",
         "tags": [
-          "Industry"
+          "Industry - Skills"
         ]
       }
     },
     "/industry/tags": {
       "post": {
-        "operationId": "IndustryController_createTag",
+        "operationId": "createTag",
         "parameters": [],
         "requestBody": {
           "required": true,
+          "description": "Tag data to create",
           "content": {
             "application/json": {
               "schema": {
@@ -3709,13 +3877,13 @@
         ],
         "summary": "Create a new tag",
         "tags": [
-          "Industry"
+          "Industry - Tags"
         ]
       }
     },
     "/industry/tags/all": {
       "get": {
-        "operationId": "IndustryController_findAllTags",
+        "operationId": "findAllTags",
         "parameters": [
           {
             "name": "skip",
@@ -3777,13 +3945,13 @@
         ],
         "summary": "Get all tags with optional filtering",
         "tags": [
-          "Industry"
+          "Industry - Tags"
         ]
       }
     },
     "/industry/tags/{slug}": {
       "get": {
-        "operationId": "IndustryController_findTagBySlug",
+        "operationId": "findTagBySlug",
         "parameters": [
           {
             "name": "slug",
@@ -3814,6 +3982,16 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Tag not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3823,11 +4001,11 @@
         ],
         "summary": "Get a tag by its slug",
         "tags": [
-          "Industry"
+          "Industry - Tags"
         ]
       },
       "put": {
-        "operationId": "IndustryController_updateTag",
+        "operationId": "updateTag",
         "parameters": [
           {
             "name": "slug",
@@ -3841,6 +4019,7 @@
         ],
         "requestBody": {
           "required": true,
+          "description": "Tag data to update",
           "content": {
             "application/json": {
               "schema": {
@@ -3859,6 +4038,36 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tag not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3868,11 +4077,11 @@
         ],
         "summary": "Update an existing tag",
         "tags": [
-          "Industry"
+          "Industry - Tags"
         ]
       },
       "delete": {
-        "operationId": "IndustryController_deleteTag",
+        "operationId": "deleteTag",
         "parameters": [
           {
             "name": "slug",
@@ -3894,6 +4103,26 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tag not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -3903,16 +4132,17 @@
         ],
         "summary": "Delete a tag",
         "tags": [
-          "Industry"
+          "Industry - Tags"
         ]
       }
     },
     "/industry/channels": {
       "post": {
-        "operationId": "IndustryController_createChannel",
+        "operationId": "createChannel",
         "parameters": [],
         "requestBody": {
           "required": true,
+          "description": "Channel data to create",
           "content": {
             "application/json": {
               "schema": {
@@ -3940,13 +4170,13 @@
         ],
         "summary": "Create a new channel",
         "tags": [
-          "Industry"
+          "Industry - Channels"
         ]
       }
     },
     "/industry/channels/all": {
       "get": {
-        "operationId": "IndustryController_findAllChannels",
+        "operationId": "findAllChannels",
         "parameters": [
           {
             "name": "skip",
@@ -4008,13 +4238,13 @@
         ],
         "summary": "Get all channels with optional filtering",
         "tags": [
-          "Industry"
+          "Industry - Channels"
         ]
       }
     },
     "/industry/channels/{slug}": {
       "get": {
-        "operationId": "IndustryController_findChannelBySlug",
+        "operationId": "findChannelBySlug",
         "parameters": [
           {
             "name": "slug",
@@ -4054,11 +4284,11 @@
         ],
         "summary": "Get a channel by its slug",
         "tags": [
-          "Industry"
+          "Industry - Channels"
         ]
       },
       "put": {
-        "operationId": "IndustryController_updateChannel",
+        "operationId": "updateChannel",
         "parameters": [
           {
             "name": "slug",
@@ -4072,6 +4302,7 @@
         ],
         "requestBody": {
           "required": true,
+          "description": "Channel data to update",
           "content": {
             "application/json": {
               "schema": {
@@ -4099,11 +4330,11 @@
         ],
         "summary": "Update an existing channel",
         "tags": [
-          "Industry"
+          "Industry - Channels"
         ]
       },
       "delete": {
-        "operationId": "IndustryController_deleteChannel",
+        "operationId": "deleteChannel",
         "parameters": [
           {
             "name": "slug",
@@ -4134,21 +4365,1612 @@
         ],
         "summary": "Delete a channel",
         "tags": [
-          "Industry"
+          "Industry - Channels"
+        ]
+      }
+    },
+    "/industry/categories": {
+      "post": {
+        "operationId": "createCategory",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Category data to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The category has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new category",
+        "tags": [
+          "Industry - Categories"
+        ]
+      }
+    },
+    "/industry/categories/all": {
+      "get": {
+        "operationId": "findAllCategories",
+        "parameters": [
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Filter by industry slug",
+            "schema": {
+              "example": "game",
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search by name or slug",
+            "schema": {
+              "example": "mobile",
+              "type": "string"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "Number of records to skip",
+            "schema": {
+              "example": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "Number of records to take",
+            "schema": {
+              "example": 10,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of categories matching the query criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryListResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all categories with optional filtering",
+        "tags": [
+          "Industry - Categories"
+        ]
+      }
+    },
+    "/industry/categories/{slug}": {
+      "get": {
+        "operationId": "findCategoryBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Category slug identifier",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Optional industry slug to filter by",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The category data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a category by its slug",
+        "tags": [
+          "Industry - Categories"
+        ]
+      },
+      "put": {
+        "operationId": "updateCategory",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Category slug identifier to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Category data to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The category has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an existing category",
+        "tags": [
+          "Industry - Categories"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteCategory",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Category slug identifier to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The category has been successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a category",
+        "tags": [
+          "Industry - Categories"
+        ]
+      }
+    },
+    "/industry/sources": {
+      "post": {
+        "operationId": "createSource",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Source data to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSourceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The source has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourceResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new source",
+        "tags": [
+          "Industry - Sources"
+        ]
+      }
+    },
+    "/industry/sources/all": {
+      "get": {
+        "operationId": "findAllSources",
+        "parameters": [
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Filter by industry slug",
+            "schema": {
+              "example": "game",
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search by name or slug",
+            "schema": {
+              "example": "steam",
+              "type": "string"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "Number of records to skip",
+            "schema": {
+              "example": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "Number of records to take",
+            "schema": {
+              "example": 10,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of sources matching the query criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourceListResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all sources with optional filtering",
+        "tags": [
+          "Industry - Sources"
+        ]
+      }
+    },
+    "/industry/sources/{slug}": {
+      "get": {
+        "operationId": "findSourceBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Source slug identifier",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Optional industry slug to filter by",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The source data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourceResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Source not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a source by its slug",
+        "tags": [
+          "Industry - Sources"
+        ]
+      },
+      "put": {
+        "operationId": "updateSource",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Source slug identifier to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Source data to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSourceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The source has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourceResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Source not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an existing source",
+        "tags": [
+          "Industry - Sources"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteSource",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Source slug identifier to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The source has been successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourceResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Source not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a source",
+        "tags": [
+          "Industry - Sources"
+        ]
+      }
+    },
+    "/industry/segments": {
+      "post": {
+        "operationId": "createSegment",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Segment data to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSegmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The segment has been successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmentResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new segment",
+        "tags": [
+          "Industry - Segments"
+        ]
+      }
+    },
+    "/industry/segments/all": {
+      "get": {
+        "operationId": "findAllSegments",
+        "parameters": [
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Filter by industry slug",
+            "schema": {
+              "example": "game",
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search by name or slug",
+            "schema": {
+              "example": "casual",
+              "type": "string"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "Number of records to skip",
+            "schema": {
+              "example": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "Number of records to take",
+            "schema": {
+              "example": 10,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of segments matching the query criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmentListResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all segments with optional filtering",
+        "tags": [
+          "Industry - Segments"
+        ]
+      }
+    },
+    "/industry/segments/{slug}": {
+      "get": {
+        "operationId": "findSegmentBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Segment slug identifier",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Optional industry slug to filter by",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The segment data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmentResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Segment not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a segment by its slug",
+        "tags": [
+          "Industry - Segments"
+        ]
+      },
+      "put": {
+        "operationId": "updateSegment",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Segment slug identifier to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Segment data to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSegmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The segment has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmentResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Segment not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an existing segment",
+        "tags": [
+          "Industry - Segments"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteSegment",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Segment slug identifier to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The segment has been successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmentResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Segment not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a segment",
+        "tags": [
+          "Industry - Segments"
+        ]
+      }
+    },
+    "/industry/project-tags": {
+      "post": {
+        "operationId": "ProjectTagController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProjectTagDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The project tag has been successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectTagResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "409": {
+            "description": "Project tag already exists."
+          }
+        },
+        "summary": "Create a new project tag",
+        "tags": [
+          "Project Tags"
+        ]
+      }
+    },
+    "/industry/project-tags/all": {
+      "get": {
+        "operationId": "ProjectTagController_findAll",
+        "parameters": [
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Industry slug to filter project tags",
+            "schema": {
+              "example": "technology",
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "Project tag name to search for",
+            "schema": {
+              "example": "Gaming",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all project tags.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectTagResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all project tags",
+        "tags": [
+          "Project Tags"
+        ]
+      }
+    },
+    "/industry/project-tags/{slug}": {
+      "get": {
+        "operationId": "ProjectTagController_findOne",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Project tag slug",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the project tag.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectTagResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project tag not found."
+          }
+        },
+        "summary": "Get a project tag by slug",
+        "tags": [
+          "Project Tags"
+        ]
+      },
+      "put": {
+        "operationId": "ProjectTagController_update",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Project tag slug",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProjectTagDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The project tag has been successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectTagResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project tag not found."
+          },
+          "409": {
+            "description": "Project tag slug already exists."
+          }
+        },
+        "summary": "Update a project tag",
+        "tags": [
+          "Project Tags"
+        ]
+      },
+      "delete": {
+        "operationId": "ProjectTagController_remove",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Project tag slug",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The project tag has been successfully deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectTagResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project tag not found."
+          }
+        },
+        "summary": "Delete a project tag",
+        "tags": [
+          "Project Tags"
+        ]
+      }
+    },
+    "/industry/standards": {
+      "post": {
+        "operationId": "StandardsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStandardsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The standards has been successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardsResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "409": {
+            "description": "Standards already exists."
+          }
+        },
+        "summary": "Create a new standards",
+        "tags": [
+          "Standards"
+        ]
+      }
+    },
+    "/industry/standards/all": {
+      "get": {
+        "operationId": "StandardsController_findAll",
+        "parameters": [
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Industry slug to filter standards",
+            "schema": {
+              "example": "technology",
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "Standards name to search for",
+            "schema": {
+              "example": "ESRB",
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "description": "Standards type to filter by",
+            "schema": {
+              "example": "ESRB",
+              "type": "string",
+              "enum": [
+                "ERSB",
+                "PEGI",
+                "CERO",
+                "USK",
+                "ACB",
+                "IARC",
+                "GRAC",
+                "VSC",
+                "OFLC",
+                "BBFC",
+                "FPB",
+                "RARS",
+                "GSRB",
+                "GSRR",
+                "MPA",
+                "EIRIN",
+                "NBTC",
+                "ESRB"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all standards.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StandardsResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all standards",
+        "tags": [
+          "Standards"
+        ]
+      }
+    },
+    "/industry/standards/{id}": {
+      "get": {
+        "operationId": "StandardsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Standards ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the standards.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardsResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Standards not found."
+          }
+        },
+        "summary": "Get a standards by ID",
+        "tags": [
+          "Standards"
+        ]
+      },
+      "put": {
+        "operationId": "StandardsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Standards ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStandardsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The standards has been successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardsResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Standards not found."
+          }
+        },
+        "summary": "Update a standards",
+        "tags": [
+          "Standards"
+        ]
+      },
+      "delete": {
+        "operationId": "StandardsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Standards ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The standards has been successfully deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardsResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Standards not found."
+          }
+        },
+        "summary": "Delete a standards",
+        "tags": [
+          "Standards"
+        ]
+      }
+    },
+    "/industry/looking-for": {
+      "post": {
+        "operationId": "LookingForController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLookingForDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The looking for has been successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookingForResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "409": {
+            "description": "Looking for already exists."
+          }
+        },
+        "summary": "Create a new looking for",
+        "tags": [
+          "Looking For"
+        ]
+      }
+    },
+    "/industry/looking-for/all": {
+      "get": {
+        "operationId": "LookingForController_findAll",
+        "parameters": [
+          {
+            "name": "industrySlug",
+            "required": false,
+            "in": "query",
+            "description": "Industry slug to filter looking for items",
+            "schema": {
+              "example": "technology",
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "Looking for name to search for",
+            "schema": {
+              "example": "Developer",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all looking for items.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LookingForResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all looking for items",
+        "tags": [
+          "Looking For"
+        ]
+      }
+    },
+    "/industry/looking-for/{slug}": {
+      "get": {
+        "operationId": "LookingForController_findOne",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Looking for slug",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the looking for.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookingForResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Looking for not found."
+          }
+        },
+        "summary": "Get a looking for by slug",
+        "tags": [
+          "Looking For"
+        ]
+      },
+      "put": {
+        "operationId": "LookingForController_update",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Looking for slug",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLookingForDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The looking for has been successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookingForResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Looking for not found."
+          },
+          "409": {
+            "description": "Looking for slug already exists."
+          }
+        },
+        "summary": "Update a looking for",
+        "tags": [
+          "Looking For"
+        ]
+      },
+      "delete": {
+        "operationId": "LookingForController_remove",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "description": "Looking for slug",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The looking for has been successfully deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookingForResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Looking for not found."
+          }
+        },
+        "summary": "Delete a looking for",
+        "tags": [
+          "Looking For"
         ]
       }
     },
     "/freelance": {
       "get": {
-        "operationId": "FreelanceController_getFreelances",
+        "operationId": "getFreelances",
         "parameters": [
           {
             "name": "page",
             "required": false,
             "in": "query",
-            "description": "Page number (1-based)",
+            "description": "Page number (default: 1)",
             "schema": {
               "default": 1,
+              "example": 1,
               "type": "number"
             }
           },
@@ -4156,9 +5978,10 @@
             "name": "limit",
             "required": false,
             "in": "query",
-            "description": "Number of items per page",
+            "description": "Items per page (default: 10)",
             "schema": {
               "default": 10,
+              "example": 10,
               "type": "number"
             }
           },
@@ -4166,7 +5989,7 @@
             "name": "search",
             "required": false,
             "in": "query",
-            "description": "Search term that will be applied to configured fields",
+            "description": "Search term for freelancer name or skills",
             "schema": {
               "type": "string"
             }
@@ -4223,10 +6046,11 @@
         ]
       },
       "post": {
-        "operationId": "FreelanceController_create",
+        "operationId": "createFreelance",
         "parameters": [],
         "requestBody": {
           "required": true,
+          "description": "Freelance data to create",
           "content": {
             "application/json": {
               "schema": {
@@ -4280,7 +6104,7 @@
     },
     "/freelance/all": {
       "get": {
-        "operationId": "FreelanceController_getAl",
+        "operationId": "getAllFreelances",
         "parameters": [
           {
             "name": "industry",
@@ -4330,7 +6154,7 @@
     },
     "/freelance/user/{userId}": {
       "get": {
-        "operationId": "FreelanceController_getByUserId",
+        "operationId": "getFreelanceByUserId",
         "parameters": [
           {
             "name": "userId",
@@ -4377,7 +6201,7 @@
     },
     "/freelance/{id}": {
       "get": {
-        "operationId": "FreelanceController_getById",
+        "operationId": "getFreelanceById",
         "parameters": [
           {
             "name": "id",
@@ -4424,7 +6248,7 @@
     },
     "/freelance/juristic/{juristicId}": {
       "get": {
-        "operationId": "FreelanceController_getByJuristicId",
+        "operationId": "getFreelanceByJuristicId",
         "parameters": [
           {
             "name": "juristicId",
@@ -4471,7 +6295,7 @@
     },
     "/freelance/{freelanceId}": {
       "patch": {
-        "operationId": "FreelanceController_update",
+        "operationId": "updateFreelance",
         "parameters": [
           {
             "name": "freelanceId",
@@ -4483,6 +6307,17 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "description": "Freelance data to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFreelanceDto"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "The freelance has been successfully updated",
@@ -4538,7 +6373,7 @@
     },
     "/auth/techhunt-login": {
       "post": {
-        "operationId": "AuthController_techhuntLogin",
+        "operationId": "techHuntLogin",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -4566,7 +6401,7 @@
     },
     "/auth/admin/signup": {
       "post": {
-        "operationId": "AuthController_adminSignup",
+        "operationId": "adminSignup",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -4623,7 +6458,7 @@
     },
     "/auth/admin/signin": {
       "post": {
-        "operationId": "AuthController_adminSignin",
+        "operationId": "adminSignin",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -4680,7 +6515,7 @@
     },
     "/auth/refresh": {
       "post": {
-        "operationId": "AuthController_refreshTokens",
+        "operationId": "refreshToken",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -4708,7 +6543,7 @@
     },
     "/auth/admin/me": {
       "get": {
-        "operationId": "AuthController_getAdminProfile",
+        "operationId": "getAdminProfile",
         "parameters": [],
         "responses": {
           "200": {
@@ -4757,7 +6592,7 @@
     },
     "/auth/logout": {
       "post": {
-        "operationId": "AuthController_logout",
+        "operationId": "logout",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -4790,7 +6625,7 @@
     },
     "/auth/admin/logout": {
       "post": {
-        "operationId": "AuthController_adminLogout",
+        "operationId": "adminLogout",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -4823,7 +6658,7 @@
     },
     "/auth/logout-all": {
       "post": {
-        "operationId": "AuthController_logoutAll",
+        "operationId": "logoutAll",
         "parameters": [],
         "responses": {
           "200": {
@@ -4846,7 +6681,7 @@
     },
     "/auth/admin/logout-all": {
       "post": {
-        "operationId": "AuthController_adminLogoutAll",
+        "operationId": "adminLogoutAll",
         "parameters": [],
         "responses": {
           "200": {
@@ -4869,7 +6704,7 @@
     },
     "/channel": {
       "post": {
-        "operationId": "ChannelController_create",
+        "operationId": "createChannel",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -4884,6 +6719,12 @@
         "responses": {
           "201": {
             "description": "Channel created successfully"
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "security": [
@@ -4897,7 +6738,7 @@
         ]
       },
       "get": {
-        "operationId": "ChannelController_findAll",
+        "operationId": "getChannels",
         "parameters": [
           {
             "name": "page",
@@ -4913,7 +6754,7 @@
             "name": "limit",
             "required": false,
             "in": "query",
-            "description": "Number of items per page",
+            "description": "Items per page",
             "schema": {
               "default": 10,
               "type": "number"
@@ -4923,7 +6764,7 @@
             "name": "search",
             "required": false,
             "in": "query",
-            "description": "Search term that will be applied to configured fields",
+            "description": "Search term",
             "schema": {
               "type": "string"
             }
@@ -4932,7 +6773,7 @@
             "name": "sort",
             "required": false,
             "in": "query",
-            "description": "Field to sort by, with optional direction (e.g., \"name:asc\", \"createdAt:desc\")",
+            "description": "Sort field and direction",
             "schema": {
               "type": "string"
             }
@@ -4952,7 +6793,7 @@
             "description": "List of channels"
           }
         },
-        "summary": "Get all channels",
+        "summary": "Get all channels with pagination, filtering, and sorting",
         "tags": [
           "Channel"
         ]
@@ -4960,12 +6801,13 @@
     },
     "/channel/{id}": {
       "get": {
-        "operationId": "ChannelController_findOne",
+        "operationId": "getChannelById",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Channel ID",
             "schema": {
               "type": "string"
             }
@@ -4985,12 +6827,13 @@
         ]
       },
       "put": {
-        "operationId": "ChannelController_update",
+        "operationId": "updateChannel",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Channel ID",
             "schema": {
               "type": "string"
             }
@@ -5009,6 +6852,15 @@
         "responses": {
           "200": {
             "description": "Channel updated successfully"
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Channel not found"
           }
         },
         "security": [
@@ -5022,12 +6874,13 @@
         ]
       },
       "delete": {
-        "operationId": "ChannelController_remove",
+        "operationId": "deleteChannel",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Channel ID",
             "schema": {
               "type": "string"
             }
@@ -5036,6 +6889,12 @@
         "responses": {
           "200": {
             "description": "Channel deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Channel not found"
           }
         },
         "security": [
@@ -5051,7 +6910,7 @@
     },
     "/looking-for": {
       "post": {
-        "operationId": "LookingForController_create",
+        "operationId": "createLookingFor",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -5065,44 +6924,60 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Looking for item created successfully"
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new looking for item",
         "tags": [
-          "LookingFor"
+          "Looking For"
         ]
       },
       "get": {
-        "operationId": "LookingForController_findAll",
+        "operationId": "getLookingForItems",
         "parameters": [
           {
             "name": "skip",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Number of items to skip",
             "schema": {
               "type": "number"
             }
           },
           {
             "name": "take",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Number of items to take",
             "schema": {
               "type": "number"
             }
           },
           {
             "name": "search",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Search term for name",
             "schema": {
               "type": "string"
             }
           },
           {
             "name": "industrySlug",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Filter by industry slug",
             "schema": {
               "type": "string"
             }
@@ -5110,36 +6985,39 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successfully retrieved looking for items"
           }
         },
+        "summary": "Get looking for items with filtering and pagination",
         "tags": [
-          "LookingFor"
+          "Looking For"
         ]
       }
     },
     "/looking-for/all": {
       "get": {
-        "operationId": "LookingForController_findAllNoPaginate",
+        "operationId": "getAllLookingForItems",
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successfully retrieved all looking for items"
           }
         },
+        "summary": "Get all looking for items without pagination",
         "tags": [
-          "LookingFor"
+          "Looking For"
         ]
       }
     },
     "/looking-for/{id}": {
       "get": {
-        "operationId": "LookingForController_findOne",
+        "operationId": "getLookingForItemById",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Looking for item ID",
             "schema": {
               "type": "string"
             }
@@ -5147,20 +7025,25 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successfully retrieved looking for item"
+          },
+          "404": {
+            "description": "Looking for item not found"
           }
         },
+        "summary": "Get looking for item by ID",
         "tags": [
-          "LookingFor"
+          "Looking For"
         ]
       },
       "patch": {
-        "operationId": "LookingForController_update",
+        "operationId": "updateLookingFor",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Looking for item ID",
             "schema": {
               "type": "string"
             }
@@ -5178,20 +7061,36 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Looking for item updated successfully"
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Looking for item not found"
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update looking for item by ID",
         "tags": [
-          "LookingFor"
+          "Looking For"
         ]
       },
       "delete": {
-        "operationId": "LookingForController_remove",
+        "operationId": "deleteLookingFor",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Looking for item ID",
             "schema": {
               "type": "string"
             }
@@ -5199,11 +7098,23 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Looking for item deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Looking for item not found"
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete looking for item by ID",
         "tags": [
-          "LookingFor"
+          "Looking For"
         ]
       }
     }
@@ -6546,6 +8457,101 @@
           "path"
         ]
       },
+      "UpdateCompanyDto": {
+        "type": "object",
+        "properties": {
+          "juristicId": {
+            "type": "string",
+            "description": "Company juristic ID",
+            "example": "1234567890123"
+          },
+          "nameTh": {
+            "type": "string",
+            "description": "Company name in Thai",
+            "example": "บริษัท เทคโนโลยี จำกัด"
+          },
+          "nameEn": {
+            "type": "string",
+            "description": "Company name in English",
+            "example": "Technology Company Limited"
+          },
+          "description": {
+            "type": "string",
+            "description": "Company description",
+            "example": "A leading technology company specializing in software development"
+          },
+          "address": {
+            "type": "string",
+            "description": "Company address",
+            "example": "123 Technology Street"
+          },
+          "subDistrict": {
+            "type": "string",
+            "description": "Sub-district",
+            "example": "Silom"
+          },
+          "district": {
+            "type": "string",
+            "description": "District",
+            "example": "Bang Rak"
+          },
+          "province": {
+            "type": "string",
+            "description": "Province",
+            "example": "Bangkok"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Postal code",
+            "example": "10500"
+          },
+          "registerdCapital": {
+            "type": "number",
+            "description": "Registered capital amount",
+            "example": 1000000
+          },
+          "employeeCount": {
+            "type": "number",
+            "description": "Number of employees",
+            "example": 50
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Company phone number",
+            "example": "+66-2-123-4567"
+          },
+          "email": {
+            "type": "string",
+            "description": "Company email address",
+            "example": "contact@company.com"
+          },
+          "website": {
+            "type": "string",
+            "description": "Company website URL",
+            "example": "https://www.company.com"
+          },
+          "logo": {
+            "type": "string",
+            "description": "Company logo URL",
+            "example": "https://example.com/logo.png"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Associated user ID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "image": {
+            "type": "string",
+            "description": "Company image URL",
+            "example": "https://example.com/image.jpg"
+          },
+          "cover_image": {
+            "type": "string",
+            "description": "Company cover image URL",
+            "example": "https://example.com/cover.jpg"
+          }
+        }
+      },
       "CompanyRevenueDto": {
         "type": "object",
         "properties": {
@@ -6943,14 +8949,6 @@
           "success",
           "message"
         ]
-      },
-      "CreateStandardDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "UpdateStandardDto": {
-        "type": "object",
-        "properties": {}
       },
       "CreateIndustryDto": {
         "type": "object",
@@ -7509,6 +9507,751 @@
           }
         }
       },
+      "CreateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the category",
+            "example": "Mobile Games"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique slug identifier for the category",
+            "example": "mobile-games"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the category",
+            "example": "Games designed for mobile platforms"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL for the category",
+            "example": "https://example.com/mobile-games.jpg"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug this category belongs to",
+            "example": "game"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "industrySlug"
+        ]
+      },
+      "CategoryResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the category",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the category",
+            "example": "Mobile Games"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique slug identifier for the category",
+            "example": "mobile-games"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the category",
+            "example": "Games designed for mobile platforms"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL for the category",
+            "example": "https://example.com/mobile-games.jpg"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug this category belongs to",
+            "example": "game"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp",
+            "example": "2024-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp",
+            "example": "2024-01-01T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "industrySlug",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CategoryListResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "List of categories",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryResponseDto"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "Total number of categories",
+            "example": 25
+          }
+        },
+        "required": [
+          "data",
+          "total"
+        ]
+      },
+      "UpdateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the category",
+            "example": "Mobile Games"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique slug identifier for the category",
+            "example": "mobile-games"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the category",
+            "example": "Games designed for mobile platforms"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL for the category",
+            "example": "https://example.com/mobile-games.jpg"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug this category belongs to",
+            "example": "game"
+          }
+        }
+      },
+      "CreateSourceDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the source",
+            "example": "Steam"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique slug identifier for the source",
+            "example": "steam"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the source",
+            "example": "Digital distribution platform for games"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL for the source",
+            "example": "https://example.com/steam.jpg"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug this source belongs to",
+            "example": "game"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "industrySlug"
+        ]
+      },
+      "SourceResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the source",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the source",
+            "example": "Steam"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique slug identifier for the source",
+            "example": "steam"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the source",
+            "example": "Digital distribution platform for games"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL for the source",
+            "example": "https://example.com/steam.jpg"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug this source belongs to",
+            "example": "game"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp",
+            "example": "2024-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp",
+            "example": "2024-01-01T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "industrySlug",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "SourceListResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "List of sources",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceResponseDto"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "Total number of sources",
+            "example": 25
+          }
+        },
+        "required": [
+          "data",
+          "total"
+        ]
+      },
+      "UpdateSourceDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the source",
+            "example": "Steam"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique slug identifier for the source",
+            "example": "steam"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the source",
+            "example": "Digital distribution platform for games"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL for the source",
+            "example": "https://example.com/steam.jpg"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug this source belongs to",
+            "example": "game"
+          }
+        }
+      },
+      "CreateSegmentDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the segment",
+            "example": "Casual Gamers"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique slug identifier for the segment",
+            "example": "casual-gamers"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the segment",
+            "example": "Games for casual gaming audience"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL for the segment",
+            "example": "https://example.com/casual-gamers.jpg"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug this segment belongs to",
+            "example": "game"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "industrySlug"
+        ]
+      },
+      "SegmentResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the segment",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the segment",
+            "example": "Casual Gamers"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique slug identifier for the segment",
+            "example": "casual-gamers"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the segment",
+            "example": "Games for casual gaming audience"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL for the segment",
+            "example": "https://example.com/casual-gamers.jpg"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug this segment belongs to",
+            "example": "game"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp",
+            "example": "2024-01-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp",
+            "example": "2024-01-01T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "industrySlug",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "SegmentListResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "List of segments",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SegmentResponseDto"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "Total number of segments",
+            "example": 25
+          }
+        },
+        "required": [
+          "data",
+          "total"
+        ]
+      },
+      "UpdateSegmentDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the segment",
+            "example": "Casual Gamers"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique slug identifier for the segment",
+            "example": "casual-gamers"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the segment",
+            "example": "Games for casual gaming audience"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL for the segment",
+            "example": "https://example.com/casual-gamers.jpg"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug this segment belongs to",
+            "example": "game"
+          }
+        }
+      },
+      "CreateProjectTagDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Project tag name",
+            "example": "Gaming"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Project tag slug (optional, will be auto-generated if not provided)",
+            "example": "gaming"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug that this project tag belongs to",
+            "example": "technology"
+          }
+        },
+        "required": [
+          "name",
+          "industrySlug"
+        ]
+      },
+      "ProjectTagResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Project tag unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Project tag name",
+            "example": "Gaming"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Project tag slug",
+            "example": "gaming"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug that this project tag belongs to",
+            "example": "technology"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Created timestamp",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Updated timestamp",
+            "example": "2024-01-01T00:00:00Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "industrySlug",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateProjectTagDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Project tag name",
+            "example": "Gaming"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Project tag slug (optional, will be auto-generated if not provided)",
+            "example": "gaming"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug that this project tag belongs to",
+            "example": "technology"
+          }
+        }
+      },
+      "CreateStandardsDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Standards name",
+            "example": "ESRB Mature"
+          },
+          "description": {
+            "type": "string",
+            "description": "Standards description",
+            "example": "Entertainment Software Rating Board - Mature 17+"
+          },
+          "type": {
+            "type": "string",
+            "description": "Standards type",
+            "example": "ESRB",
+            "enum": [
+              "ERSB",
+              "PEGI",
+              "CERO",
+              "USK",
+              "ACB",
+              "IARC",
+              "GRAC",
+              "VSC",
+              "OFLC",
+              "BBFC",
+              "FPB",
+              "RARS",
+              "GSRB",
+              "GSRR",
+              "MPA",
+              "EIRIN",
+              "NBTC",
+              "ESRB"
+            ]
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug that this standards belongs to",
+            "example": "technology"
+          },
+          "image": {
+            "type": "string",
+            "description": "Standards image URL",
+            "example": "https://example.com/esrb-mature.png"
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "industrySlug"
+        ]
+      },
+      "StandardsResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Standards unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Standards name",
+            "example": "ESRB Mature"
+          },
+          "description": {
+            "type": "string",
+            "description": "Standards description",
+            "example": "Entertainment Software Rating Board - Mature 17+"
+          },
+          "type": {
+            "type": "string",
+            "description": "Standards type",
+            "example": "ESRB",
+            "enum": [
+              "ERSB",
+              "PEGI",
+              "CERO",
+              "USK",
+              "ACB",
+              "IARC",
+              "GRAC",
+              "VSC",
+              "OFLC",
+              "BBFC",
+              "FPB",
+              "RARS",
+              "GSRB",
+              "GSRR",
+              "MPA",
+              "EIRIN",
+              "NBTC",
+              "ESRB"
+            ]
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug that this standards belongs to",
+            "example": "technology"
+          },
+          "image": {
+            "type": "string",
+            "description": "Standards image URL",
+            "example": "https://example.com/esrb-mature.png"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Created timestamp",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Updated timestamp",
+            "example": "2024-01-01T00:00:00Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type",
+          "industrySlug",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateStandardsDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Standards name",
+            "example": "ESRB Mature"
+          },
+          "description": {
+            "type": "string",
+            "description": "Standards description",
+            "example": "Entertainment Software Rating Board - Mature 17+"
+          },
+          "type": {
+            "type": "string",
+            "description": "Standards type",
+            "example": "ESRB",
+            "enum": [
+              "ERSB",
+              "PEGI",
+              "CERO",
+              "USK",
+              "ACB",
+              "IARC",
+              "GRAC",
+              "VSC",
+              "OFLC",
+              "BBFC",
+              "FPB",
+              "RARS",
+              "GSRB",
+              "GSRR",
+              "MPA",
+              "EIRIN",
+              "NBTC",
+              "ESRB"
+            ]
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug that this standards belongs to",
+            "example": "technology"
+          },
+          "image": {
+            "type": "string",
+            "description": "Standards image URL",
+            "example": "https://example.com/esrb-mature.png"
+          }
+        }
+      },
+      "CreateLookingForDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "LookingForResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Looking for unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Looking for name",
+            "example": "Game Developer"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Looking for slug",
+            "example": "game-developer"
+          },
+          "industrySlug": {
+            "type": "string",
+            "description": "Industry slug that this looking for belongs to",
+            "example": "technology"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Created timestamp",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Updated timestamp",
+            "example": "2024-01-01T00:00:00Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "industrySlug",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateLookingForDto": {
+        "type": "object",
+        "properties": {}
+      },
       "PortfolioImageDto": {
         "type": "object",
         "properties": {
@@ -7886,55 +10629,68 @@
         "properties": {
           "userId": {
             "type": "string",
-            "description": "User ID associated with this freelance"
+            "description": "User ID associated with this freelance",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
           },
           "firstNameTh": {
             "type": "string",
-            "description": "First name in Thai"
+            "description": "First name in Thai",
+            "example": "สมชาย"
           },
           "lastNameTh": {
             "type": "string",
-            "description": "Last name in Thai"
+            "description": "Last name in Thai",
+            "example": "ใจดี"
           },
           "firstNameEn": {
             "type": "string",
-            "description": "First name in English"
+            "description": "First name in English",
+            "example": "John"
           },
           "lastNameEn": {
             "type": "string",
-            "description": "Last name in English"
+            "description": "Last name in English",
+            "example": "Doe"
           },
           "address": {
             "type": "string",
-            "description": "Address"
+            "description": "Address",
+            "example": "123 Main Street"
           },
           "subDistrict": {
             "type": "string",
-            "description": "Sub-district/Tambon"
+            "description": "Sub-district/Tambon",
+            "example": "Silom"
           },
           "district": {
             "type": "string",
-            "description": "District/Amphoe"
+            "description": "District/Amphoe",
+            "example": "Bang Rak"
           },
           "province": {
             "type": "string",
-            "description": "Province/Changwat"
+            "description": "Province/Changwat",
+            "example": "Bangkok"
           },
           "postalCode": {
             "type": "string",
-            "description": "Postal code"
+            "description": "Postal code",
+            "example": "10500"
           },
           "phoneNumber": {
             "type": "string",
-            "description": "Contact phone number"
+            "description": "Contact phone number",
+            "example": "+66-123-456-789"
           },
           "email": {
             "type": "string",
-            "description": "Email address"
+            "description": "Email address",
+            "example": "john.doe@example.com"
           },
           "juristicId": {
             "type": "string",
-            "description": "Juristic ID (if applicable)"
+            "description": "Juristic ID (if applicable)",
+            "example": "1234567890123"
           },
           "industryTypes": {
             "description": "Types of industries the freelancer works in",
@@ -7949,11 +10705,13 @@
           },
           "image": {
             "type": "string",
-            "description": "Profile image URL"
+            "description": "Profile image URL",
+            "example": "https://example.com/profile.jpg"
           },
           "cover_image": {
             "type": "string",
-            "description": "Cover image URL"
+            "description": "Cover image URL",
+            "example": "https://example.com/cover.jpg"
           }
         },
         "required": [
@@ -8080,6 +10838,97 @@
           "updatedAt"
         ]
       },
+      "UpdateFreelanceDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User ID associated with this freelance",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "firstNameTh": {
+            "type": "string",
+            "description": "First name in Thai",
+            "example": "สมชาย"
+          },
+          "lastNameTh": {
+            "type": "string",
+            "description": "Last name in Thai",
+            "example": "ใจดี"
+          },
+          "firstNameEn": {
+            "type": "string",
+            "description": "First name in English",
+            "example": "John"
+          },
+          "lastNameEn": {
+            "type": "string",
+            "description": "Last name in English",
+            "example": "Doe"
+          },
+          "address": {
+            "type": "string",
+            "description": "Address",
+            "example": "123 Main Street"
+          },
+          "subDistrict": {
+            "type": "string",
+            "description": "Sub-district/Tambon",
+            "example": "Silom"
+          },
+          "district": {
+            "type": "string",
+            "description": "District/Amphoe",
+            "example": "Bang Rak"
+          },
+          "province": {
+            "type": "string",
+            "description": "Province/Changwat",
+            "example": "Bangkok"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Postal code",
+            "example": "10500"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Contact phone number",
+            "example": "+66-123-456-789"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address",
+            "example": "john.doe@example.com"
+          },
+          "juristicId": {
+            "type": "string",
+            "description": "Juristic ID (if applicable)",
+            "example": "1234567890123"
+          },
+          "industryTypes": {
+            "description": "Types of industries the freelancer works in",
+            "example": [
+              "game",
+              "animation"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "image": {
+            "type": "string",
+            "description": "Profile image URL",
+            "example": "https://example.com/profile.jpg"
+          },
+          "cover_image": {
+            "type": "string",
+            "description": "Cover image URL",
+            "example": "https://example.com/cover.jpg"
+          }
+        }
+      },
       "TechhuntLoginDto": {
         "type": "object",
         "properties": {
@@ -8155,14 +11004,6 @@
         "required": [
           "refreshToken"
         ]
-      },
-      "CreateLookingForDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "UpdateLookingForDto": {
-        "type": "object",
-        "properties": {}
       }
     }
   }

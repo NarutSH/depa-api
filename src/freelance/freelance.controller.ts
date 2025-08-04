@@ -9,8 +9,10 @@ import {
 } from '@nestjs/common';
 import { FreelanceService } from './freelance.service';
 import { CreateFreelanceDto } from './dto/create-freelance.dto';
+import { UpdateFreelanceDto } from './dto/update-freelance.dto';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiParam,
   ApiQuery,
@@ -39,7 +41,27 @@ export class FreelanceController {
 
   @Get()
   @Public()
-  @ApiOperation({ summary: 'Get all freelances with filtering and pagination' })
+  @ApiOperation({
+    summary: 'Get all freelances with filtering and pagination',
+    operationId: 'getFreelances',
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'Page number (default: 1)',
+    example: 1,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Items per page (default: 10)',
+    example: 10,
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    description: 'Search term for freelancer name or skills',
+  })
   @ApiResponse({
     status: 200,
     description: 'Return a paginated list of freelances with their details',
@@ -58,7 +80,10 @@ export class FreelanceController {
 
   @Get('all')
   @Public()
-  @ApiOperation({ summary: 'Get all freelances with optional industry filter' })
+  @ApiOperation({
+    summary: 'Get all freelances with optional industry filter',
+    operationId: 'getAllFreelances',
+  })
   @ApiQuery({
     name: 'industry',
     required: false,
@@ -81,7 +106,10 @@ export class FreelanceController {
   }
 
   @Get('/user/:userId')
-  @ApiOperation({ summary: 'Get freelance by user ID' })
+  @ApiOperation({
+    summary: 'Get freelance by user ID',
+    operationId: 'getFreelanceByUserId',
+  })
   @ApiParam({ name: 'userId', description: 'The user ID of the freelance' })
   @ApiResponse({
     status: 200,
@@ -101,7 +129,10 @@ export class FreelanceController {
 
   @Get('/:id')
   @Public()
-  @ApiOperation({ summary: 'Get freelance by ID' })
+  @ApiOperation({
+    summary: 'Get freelance by ID',
+    operationId: 'getFreelanceById',
+  })
   @ApiParam({ name: 'id', description: 'The ID of the freelance' })
   @ApiResponse({
     status: 200,
@@ -120,7 +151,15 @@ export class FreelanceController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create new freelance' })
+  @ApiOperation({
+    summary: 'Create new freelance',
+    operationId: 'createFreelance',
+  })
+  @ApiBody({
+    type: CreateFreelanceDto,
+    description: 'Freelance data to create',
+    required: true,
+  })
   @ApiResponse({
     status: 201,
     description: 'The freelance has been successfully created',
@@ -143,7 +182,10 @@ export class FreelanceController {
   }
 
   @Get('/juristic/:juristicId')
-  @ApiOperation({ summary: 'Get freelance by juristic ID' })
+  @ApiOperation({
+    summary: 'Get freelance by juristic ID',
+    operationId: 'getFreelanceByJuristicId',
+  })
   @ApiParam({
     name: 'juristicId',
     description: 'The juristic ID of the freelance',
@@ -165,10 +207,18 @@ export class FreelanceController {
   }
 
   @Patch(':freelanceId')
-  @ApiOperation({ summary: 'Update freelance details' })
+  @ApiOperation({
+    summary: 'Update freelance details',
+    operationId: 'updateFreelance',
+  })
   @ApiParam({
     name: 'freelanceId',
     description: 'The ID of the freelance to update',
+  })
+  @ApiBody({
+    type: UpdateFreelanceDto,
+    description: 'Freelance data to update',
+    required: true,
   })
   @ApiResponse({
     status: 200,
@@ -192,7 +242,7 @@ export class FreelanceController {
   })
   async update(
     @Param('freelanceId') freelanceId: string,
-    @Body() data: Partial<CreateFreelanceDto>,
+    @Body() data: UpdateFreelanceDto,
   ): Promise<FreelanceResponseDto> {
     return this.freelanceService.update(freelanceId, data);
   }

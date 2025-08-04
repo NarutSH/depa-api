@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateFreelanceDto } from './dto/create-freelance.dto';
+import { UpdateFreelanceDto } from './dto/update-freelance.dto';
 import { QueryMetadataDto, ResponseMetadata } from 'src/utils';
 import { QueryUtilsService } from 'src/utils/services/query-utils.service';
 import {
@@ -261,7 +262,7 @@ export class FreelanceService {
 
   async update(
     freelanceId: string,
-    data: Partial<CreateFreelanceDto>,
+    data: UpdateFreelanceDto,
   ): Promise<FreelanceResponseDto> {
     try {
       const updatedFreelance = await this.prismaService.freelance.update({

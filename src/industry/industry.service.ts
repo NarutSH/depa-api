@@ -18,6 +18,18 @@ import {
 } from './dto/skill-response.dto';
 import { TagListResponseDto, TagResponseDto } from './dto/tag-response.dto';
 import { UpdateIndustryDto } from './dto/update-industry.dto';
+import { CreateProjectTagDto } from './dto/create-project-tag.dto';
+import { UpdateProjectTagDto } from './dto/update-project-tag.dto';
+import { FindProjectTagDto } from './dto/find-project-tag.dto';
+import { ProjectTagResponseDto } from './dto/project-tag-response.dto';
+import { CreateStandardsDto } from './dto/create-standards.dto';
+import { UpdateStandardsDto } from './dto/update-standards.dto';
+import { FindStandardsDto } from './dto/find-standards.dto';
+import { StandardsResponseDto } from './dto/standards-response.dto';
+import { CreateLookingForDto } from './dto/create-looking-for.dto';
+import { UpdateLookingForDto } from './dto/update-looking-for.dto';
+import { FindLookingForDto } from './dto/find-looking-for.dto';
+import { LookingForResponseDto } from './dto/looking-for-response.dto';
 
 @Injectable()
 export class IndustryService {
@@ -691,6 +703,916 @@ export class IndustryService {
     }
 
     return this.prismaService.channel.delete({
+      where: { slug },
+    });
+  }
+
+  // Category CRUD methods
+  async createCategory(data: {
+    name: string;
+    slug: string;
+    description?: string;
+    image?: string;
+    industrySlug: string;
+  }) {
+    // Check if industry exists
+    const industry = await this.prismaService.industry.findUnique({
+      where: { slug: data.industrySlug },
+    });
+
+    if (!industry) {
+      throw new NotFoundException(
+        `Industry with slug ${data.industrySlug} not found`,
+      );
+    }
+
+    // Check if category with same slug already exists for this industry
+    const existingCategory = await this.prismaService.category.findUnique({
+      where: {
+        slug_industrySlug: {
+          slug: data.slug,
+          industrySlug: data.industrySlug,
+        },
+      },
+    });
+
+    if (existingCategory) {
+      throw new ConflictException(
+        `Category with slug ${data.slug} already exists for industry ${data.industrySlug}`,
+      );
+    }
+
+    return this.prismaService.category.create({
+      data: {
+        name: data.name,
+        slug: data.slug,
+        description: data.description,
+        image: data.image,
+        industrySlug: data.industrySlug,
+      },
+    });
+  }
+
+  async findAllCategories(query: {
+    industrySlug?: string;
+    search?: string;
+    skip?: number;
+    take?: number;
+  }) {
+    const where: Prisma.CategoryWhereInput = {};
+
+    if (query.industrySlug) {
+      where.industrySlug = query.industrySlug;
+    }
+
+    if (query.search) {
+      where.OR = [
+        { name: { contains: query.search, mode: 'insensitive' } },
+        { slug: { contains: query.search, mode: 'insensitive' } },
+      ];
+    }
+
+    const [data, total] = await Promise.all([
+      this.prismaService.category.findMany({
+        where,
+        skip: query.skip,
+        take: query.take,
+        include: {
+          industry: {
+            select: {
+              name: true,
+              slug: true,
+            },
+          },
+        },
+        orderBy: {
+          name: 'asc',
+        },
+      }),
+      this.prismaService.category.count({ where }),
+    ]);
+
+    return { data, total };
+  }
+
+  async findCategoryBySlug(slug: string, industrySlug?: string) {
+    const where: Prisma.CategoryWhereInput = { slug };
+
+    if (industrySlug) {
+      where.industrySlug = industrySlug;
+    }
+
+    const category = await this.prismaService.category.findFirst({
+      where,
+      include: {
+        industry: {
+          select: {
+            name: true,
+            slug: true,
+          },
+        },
+      },
+    });
+
+    if (!category) {
+      throw new NotFoundException(`Category with slug ${slug} not found`);
+    }
+
+    return category;
+  }
+
+  async updateCategory(
+    slug: string,
+    data: {
+      name?: string;
+      newSlug?: string;
+      description?: string;
+      image?: string;
+      industrySlug?: string;
+    },
+  ) {
+    const category = await this.prismaService.category.findUnique({
+      where: { slug },
+    });
+
+    if (!category) {
+      throw new NotFoundException(`Category with slug ${slug} not found`);
+    }
+
+    // If updating industry, check if it exists
+    if (data.industrySlug && data.industrySlug !== category.industrySlug) {
+      const industry = await this.prismaService.industry.findUnique({
+        where: { slug: data.industrySlug },
+      });
+
+      if (!industry) {
+        throw new NotFoundException(
+          `Industry with slug ${data.industrySlug} not found`,
+        );
+      }
+    }
+
+    return this.prismaService.category.update({
+      where: { slug },
+      data: {
+        name: data.name,
+        slug: data.newSlug || category.slug,
+        description: data.description,
+        image: data.image,
+        industrySlug: data.industrySlug,
+      },
+    });
+  }
+
+  async deleteCategory(slug: string) {
+    const category = await this.prismaService.category.findUnique({
+      where: { slug },
+    });
+
+    if (!category) {
+      throw new NotFoundException(`Category with slug ${slug} not found`);
+    }
+
+    return this.prismaService.category.delete({
+      where: { slug },
+    });
+  }
+
+  // Source CRUD methods
+  async createSource(data: {
+    name: string;
+    slug: string;
+    description?: string;
+    image?: string;
+    industrySlug: string;
+  }) {
+    // Check if industry exists
+    const industry = await this.prismaService.industry.findUnique({
+      where: { slug: data.industrySlug },
+    });
+
+    if (!industry) {
+      throw new NotFoundException(
+        `Industry with slug ${data.industrySlug} not found`,
+      );
+    }
+
+    // Check if source with same slug already exists for this industry
+    const existingSource = await this.prismaService.source.findUnique({
+      where: {
+        slug_industrySlug: {
+          slug: data.slug,
+          industrySlug: data.industrySlug,
+        },
+      },
+    });
+
+    if (existingSource) {
+      throw new ConflictException(
+        `Source with slug ${data.slug} already exists for industry ${data.industrySlug}`,
+      );
+    }
+
+    return this.prismaService.source.create({
+      data: {
+        name: data.name,
+        slug: data.slug,
+        description: data.description,
+        image: data.image,
+        industrySlug: data.industrySlug,
+      },
+    });
+  }
+
+  async findAllSources(query: {
+    industrySlug?: string;
+    search?: string;
+    skip?: number;
+    take?: number;
+  }) {
+    const where: Prisma.SourceWhereInput = {};
+
+    if (query.industrySlug) {
+      where.industrySlug = query.industrySlug;
+    }
+
+    if (query.search) {
+      where.OR = [
+        { name: { contains: query.search, mode: 'insensitive' } },
+        { slug: { contains: query.search, mode: 'insensitive' } },
+      ];
+    }
+
+    const [data, total] = await Promise.all([
+      this.prismaService.source.findMany({
+        where,
+        skip: query.skip,
+        take: query.take,
+        include: {
+          industry: {
+            select: {
+              name: true,
+              slug: true,
+            },
+          },
+        },
+        orderBy: {
+          name: 'asc',
+        },
+      }),
+      this.prismaService.source.count({ where }),
+    ]);
+
+    return { data, total };
+  }
+
+  async findSourceBySlug(slug: string, industrySlug?: string) {
+    const where: Prisma.SourceWhereInput = { slug };
+
+    if (industrySlug) {
+      where.industrySlug = industrySlug;
+    }
+
+    const source = await this.prismaService.source.findFirst({
+      where,
+      include: {
+        industry: {
+          select: {
+            name: true,
+            slug: true,
+          },
+        },
+      },
+    });
+
+    if (!source) {
+      throw new NotFoundException(`Source with slug ${slug} not found`);
+    }
+
+    return source;
+  }
+
+  async updateSource(
+    slug: string,
+    data: {
+      name?: string;
+      newSlug?: string;
+      description?: string;
+      image?: string;
+      industrySlug?: string;
+    },
+  ) {
+    const source = await this.prismaService.source.findUnique({
+      where: { slug },
+    });
+
+    if (!source) {
+      throw new NotFoundException(`Source with slug ${slug} not found`);
+    }
+
+    return this.prismaService.source.update({
+      where: { slug },
+      data: {
+        name: data.name,
+        slug: data.newSlug || source.slug,
+        description: data.description,
+        image: data.image,
+        industrySlug: data.industrySlug,
+      },
+    });
+  }
+
+  async deleteSource(slug: string) {
+    const source = await this.prismaService.source.findUnique({
+      where: { slug },
+    });
+
+    if (!source) {
+      throw new NotFoundException(`Source with slug ${slug} not found`);
+    }
+
+    return this.prismaService.source.delete({
+      where: { slug },
+    });
+  }
+
+  // Segment CRUD methods
+  async createSegment(data: {
+    name: string;
+    slug: string;
+    description?: string;
+    image?: string;
+    industrySlug: string;
+  }) {
+    // Check if industry exists
+    const industry = await this.prismaService.industry.findUnique({
+      where: { slug: data.industrySlug },
+    });
+
+    if (!industry) {
+      throw new NotFoundException(
+        `Industry with slug ${data.industrySlug} not found`,
+      );
+    }
+
+    // Check if segment with same slug already exists for this industry
+    const existingSegment = await this.prismaService.segment.findUnique({
+      where: {
+        slug_industrySlug: {
+          slug: data.slug,
+          industrySlug: data.industrySlug,
+        },
+      },
+    });
+
+    if (existingSegment) {
+      throw new ConflictException(
+        `Segment with slug ${data.slug} already exists for industry ${data.industrySlug}`,
+      );
+    }
+
+    return this.prismaService.segment.create({
+      data: {
+        name: data.name,
+        slug: data.slug,
+        description: data.description,
+        image: data.image,
+        industrySlug: data.industrySlug,
+      },
+    });
+  }
+
+  async findAllSegments(query: {
+    industrySlug?: string;
+    search?: string;
+    skip?: number;
+    take?: number;
+  }) {
+    const where: Prisma.SegmentWhereInput = {};
+
+    if (query.industrySlug) {
+      where.industrySlug = query.industrySlug;
+    }
+
+    if (query.search) {
+      where.OR = [
+        { name: { contains: query.search, mode: 'insensitive' } },
+        { slug: { contains: query.search, mode: 'insensitive' } },
+      ];
+    }
+
+    const [data, total] = await Promise.all([
+      this.prismaService.segment.findMany({
+        where,
+        skip: query.skip,
+        take: query.take,
+        include: {
+          industry: {
+            select: {
+              name: true,
+              slug: true,
+            },
+          },
+        },
+        orderBy: {
+          name: 'asc',
+        },
+      }),
+      this.prismaService.segment.count({ where }),
+    ]);
+
+    return { data, total };
+  }
+
+  async findSegmentBySlug(slug: string, industrySlug?: string) {
+    const where: Prisma.SegmentWhereInput = { slug };
+
+    if (industrySlug) {
+      where.industrySlug = industrySlug;
+    }
+
+    const segment = await this.prismaService.segment.findFirst({
+      where,
+      include: {
+        industry: {
+          select: {
+            name: true,
+            slug: true,
+          },
+        },
+      },
+    });
+
+    if (!segment) {
+      throw new NotFoundException(`Segment with slug ${slug} not found`);
+    }
+
+    return segment;
+  }
+
+  async updateSegment(
+    slug: string,
+    data: {
+      name?: string;
+      newSlug?: string;
+      description?: string;
+      image?: string;
+      industrySlug?: string;
+    },
+  ) {
+    const segment = await this.prismaService.segment.findUnique({
+      where: { slug },
+    });
+
+    if (!segment) {
+      throw new NotFoundException(`Segment with slug ${slug} not found`);
+    }
+
+    return this.prismaService.segment.update({
+      where: { slug },
+      data: {
+        name: data.name,
+        slug: data.newSlug || segment.slug,
+        description: data.description,
+        image: data.image,
+        industrySlug: data.industrySlug,
+      },
+    });
+  }
+
+  async deleteSegment(slug: string) {
+    const segment = await this.prismaService.segment.findUnique({
+      where: { slug },
+    });
+
+    if (!segment) {
+      throw new NotFoundException(`Segment with slug ${slug} not found`);
+    }
+
+    return this.prismaService.segment.delete({
+      where: { slug },
+    });
+  }
+
+  // Project Tag methods
+  async createProjectTag(
+    createProjectTagDto: CreateProjectTagDto,
+  ): Promise<ProjectTagResponseDto> {
+    const { name, slug, industrySlug } = createProjectTagDto;
+
+    // Generate slug if not provided
+    const projectTagSlug = slug || name.toLowerCase().replace(/\s+/g, '-');
+
+    // Check if project tag with this slug already exists
+    const existingProjectTag = await this.prismaService.projectTag.findUnique({
+      where: { slug: projectTagSlug },
+    });
+
+    if (existingProjectTag) {
+      throw new ConflictException(
+        `Project tag with slug '${projectTagSlug}' already exists`,
+      );
+    }
+
+    // Check if industry exists
+    const industry = await this.prismaService.industry.findUnique({
+      where: { slug: industrySlug },
+    });
+
+    if (!industry) {
+      throw new NotFoundException(
+        `Industry with slug '${industrySlug}' not found`,
+      );
+    }
+
+    return this.prismaService.projectTag.create({
+      data: {
+        name,
+        slug: projectTagSlug,
+        industrySlug,
+      },
+    });
+  }
+
+  async findAllProjectTags(
+    findProjectTagDto: FindProjectTagDto,
+  ): Promise<ProjectTagResponseDto[]> {
+    const { industrySlug, name } = findProjectTagDto;
+
+    const where: Prisma.ProjectTagWhereInput = {};
+
+    if (industrySlug) {
+      where.industrySlug = industrySlug;
+    }
+
+    if (name) {
+      where.name = {
+        contains: name,
+        mode: 'insensitive',
+      };
+    }
+
+    return this.prismaService.projectTag.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async findOneProjectTag(slug: string): Promise<ProjectTagResponseDto> {
+    const projectTag = await this.prismaService.projectTag.findUnique({
+      where: { slug },
+    });
+
+    if (!projectTag) {
+      throw new NotFoundException(`Project tag with slug '${slug}' not found`);
+    }
+
+    return projectTag;
+  }
+
+  async updateProjectTag(
+    slug: string,
+    updateProjectTagDto: UpdateProjectTagDto,
+  ): Promise<ProjectTagResponseDto> {
+    const projectTag = await this.prismaService.projectTag.findUnique({
+      where: { slug },
+    });
+
+    if (!projectTag) {
+      throw new NotFoundException(`Project tag with slug '${slug}' not found`);
+    }
+
+    const { name, slug: newSlug, industrySlug } = updateProjectTagDto;
+
+    // If updating slug, check if new slug already exists
+    if (newSlug && newSlug !== slug) {
+      const existingProjectTag = await this.prismaService.projectTag.findUnique(
+        {
+          where: { slug: newSlug },
+        },
+      );
+
+      if (existingProjectTag) {
+        throw new ConflictException(
+          `Project tag with slug '${newSlug}' already exists`,
+        );
+      }
+    }
+
+    // If updating industry, check if industry exists
+    if (industrySlug && industrySlug !== projectTag.industrySlug) {
+      const industry = await this.prismaService.industry.findUnique({
+        where: { slug: industrySlug },
+      });
+
+      if (!industry) {
+        throw new NotFoundException(
+          `Industry with slug '${industrySlug}' not found`,
+        );
+      }
+    }
+
+    const updateData: Prisma.ProjectTagUpdateInput = {};
+
+    if (name) updateData.name = name;
+    if (newSlug) updateData.slug = newSlug;
+    if (industrySlug) {
+      updateData.industry = {
+        connect: { slug: industrySlug },
+      };
+    }
+
+    return this.prismaService.projectTag.update({
+      where: { slug },
+      data: updateData,
+    });
+  }
+
+  async removeProjectTag(slug: string): Promise<ProjectTagResponseDto> {
+    const projectTag = await this.prismaService.projectTag.findUnique({
+      where: { slug },
+    });
+
+    if (!projectTag) {
+      throw new NotFoundException(`Project tag with slug '${slug}' not found`);
+    }
+
+    return this.prismaService.projectTag.delete({
+      where: { slug },
+    });
+  }
+
+  // Standards methods
+  async createStandards(
+    createStandardsDto: CreateStandardsDto,
+  ): Promise<StandardsResponseDto> {
+    const { name, description, type, industrySlug, image } = createStandardsDto;
+
+    // Check if industry exists
+    const industry = await this.prismaService.industry.findUnique({
+      where: { slug: industrySlug },
+    });
+
+    if (!industry) {
+      throw new NotFoundException(
+        `Industry with slug '${industrySlug}' not found`,
+      );
+    }
+
+    return this.prismaService.standards.create({
+      data: {
+        name,
+        description,
+        type,
+        industrySlug,
+        image,
+      },
+    });
+  }
+
+  async findAllStandards(
+    findStandardsDto: FindStandardsDto,
+  ): Promise<StandardsResponseDto[]> {
+    const { industrySlug, name, type } = findStandardsDto;
+
+    const where: Prisma.StandardsWhereInput = {};
+
+    if (industrySlug) {
+      where.industrySlug = industrySlug;
+    }
+
+    if (name) {
+      where.name = {
+        contains: name,
+        mode: 'insensitive',
+      };
+    }
+
+    if (type) {
+      where.type = type;
+    }
+
+    return this.prismaService.standards.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async findOneStandards(id: string): Promise<StandardsResponseDto> {
+    const standards = await this.prismaService.standards.findUnique({
+      where: { id },
+    });
+
+    if (!standards) {
+      throw new NotFoundException(`Standards with ID '${id}' not found`);
+    }
+
+    return standards;
+  }
+
+  async updateStandards(
+    id: string,
+    updateStandardsDto: UpdateStandardsDto,
+  ): Promise<StandardsResponseDto> {
+    const standards = await this.prismaService.standards.findUnique({
+      where: { id },
+    });
+
+    if (!standards) {
+      throw new NotFoundException(`Standards with ID '${id}' not found`);
+    }
+
+    const { name, description, type, industrySlug, image } = updateStandardsDto;
+
+    // If updating industry, check if industry exists
+    if (industrySlug && industrySlug !== standards.industrySlug) {
+      const industry = await this.prismaService.industry.findUnique({
+        where: { slug: industrySlug },
+      });
+
+      if (!industry) {
+        throw new NotFoundException(
+          `Industry with slug '${industrySlug}' not found`,
+        );
+      }
+    }
+
+    const updateData: Prisma.StandardsUpdateInput = {};
+
+    if (name) updateData.name = name;
+    if (description !== undefined) updateData.description = description;
+    if (type) updateData.type = type;
+    if (image !== undefined) updateData.image = image;
+    if (industrySlug) {
+      updateData.industry = {
+        connect: { slug: industrySlug },
+      };
+    }
+
+    return this.prismaService.standards.update({
+      where: { id },
+      data: updateData,
+    });
+  }
+
+  async removeStandards(id: string): Promise<StandardsResponseDto> {
+    const standards = await this.prismaService.standards.findUnique({
+      where: { id },
+    });
+
+    if (!standards) {
+      throw new NotFoundException(`Standards with ID '${id}' not found`);
+    }
+
+    return this.prismaService.standards.delete({
+      where: { id },
+    });
+  }
+
+  // LookingFor methods
+  async createLookingFor(
+    createLookingForDto: CreateLookingForDto,
+  ): Promise<LookingForResponseDto> {
+    const { name, slug, industrySlug } = createLookingForDto;
+
+    // Generate slug if not provided
+    const lookingForSlug = slug || name.toLowerCase().replace(/\s+/g, '-');
+
+    // Check if looking for with this slug already exists
+    const existingLookingFor = await this.prismaService.lookingFor.findUnique({
+      where: { slug: lookingForSlug },
+    });
+
+    if (existingLookingFor) {
+      throw new ConflictException(
+        `Looking for with slug '${lookingForSlug}' already exists`,
+      );
+    }
+
+    // Check if industry exists
+    const industry = await this.prismaService.industry.findUnique({
+      where: { slug: industrySlug },
+    });
+
+    if (!industry) {
+      throw new NotFoundException(
+        `Industry with slug '${industrySlug}' not found`,
+      );
+    }
+
+    return this.prismaService.lookingFor.create({
+      data: {
+        name,
+        slug: lookingForSlug,
+        industrySlug,
+      },
+    });
+  }
+
+  async findAllLookingFor(
+    findLookingForDto: FindLookingForDto,
+  ): Promise<LookingForResponseDto[]> {
+    const { industrySlug, name } = findLookingForDto;
+
+    const where: Prisma.LookingForWhereInput = {};
+
+    if (industrySlug) {
+      where.industrySlug = industrySlug;
+    }
+
+    if (name) {
+      where.name = {
+        contains: name,
+        mode: 'insensitive',
+      };
+    }
+
+    return this.prismaService.lookingFor.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async findOneLookingFor(slug: string): Promise<LookingForResponseDto> {
+    const lookingFor = await this.prismaService.lookingFor.findUnique({
+      where: { slug },
+    });
+
+    if (!lookingFor) {
+      throw new NotFoundException(`Looking for with slug '${slug}' not found`);
+    }
+
+    return lookingFor;
+  }
+
+  async updateLookingFor(
+    slug: string,
+    updateLookingForDto: UpdateLookingForDto,
+  ): Promise<LookingForResponseDto> {
+    const lookingFor = await this.prismaService.lookingFor.findUnique({
+      where: { slug },
+    });
+
+    if (!lookingFor) {
+      throw new NotFoundException(`Looking for with slug '${slug}' not found`);
+    }
+
+    const { name, slug: newSlug, industrySlug } = updateLookingForDto;
+
+    // If updating slug, check if new slug already exists
+    if (newSlug && newSlug !== slug) {
+      const existingLookingFor = await this.prismaService.lookingFor.findUnique(
+        {
+          where: { slug: newSlug },
+        },
+      );
+
+      if (existingLookingFor) {
+        throw new ConflictException(
+          `Looking for with slug '${newSlug}' already exists`,
+        );
+      }
+    }
+
+    // If updating industry, check if industry exists
+    if (industrySlug && industrySlug !== lookingFor.industrySlug) {
+      const industry = await this.prismaService.industry.findUnique({
+        where: { slug: industrySlug },
+      });
+
+      if (!industry) {
+        throw new NotFoundException(
+          `Industry with slug '${industrySlug}' not found`,
+        );
+      }
+    }
+
+    const updateData: Prisma.LookingForUpdateInput = {};
+
+    if (name) updateData.name = name;
+    if (newSlug) updateData.slug = newSlug;
+    if (industrySlug) {
+      updateData.industry = {
+        connect: { slug: industrySlug },
+      };
+    }
+
+    return this.prismaService.lookingFor.update({
+      where: { slug },
+      data: updateData,
+    });
+  }
+
+  async removeLookingFor(slug: string): Promise<LookingForResponseDto> {
+    const lookingFor = await this.prismaService.lookingFor.findUnique({
+      where: { slug },
+    });
+
+    if (!lookingFor) {
+      throw new NotFoundException(`Looking for with slug '${slug}' not found`);
+    }
+
+    return this.prismaService.lookingFor.delete({
       where: { slug },
     });
   }
