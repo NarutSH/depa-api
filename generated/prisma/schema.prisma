@@ -500,8 +500,8 @@ model Portfolio {
   looking_for String[]
 
   // New relations
-  categorySlug String
-  category     Category @relation(fields: [categorySlug], references: [slug])
+  categorySlug String?
+  category     Category? @relation(fields: [categorySlug], references: [slug])
 
   industryTags       PortfolioTag[]
   industryLookingFor PortfolioLookingFor[]
