@@ -63,6 +63,7 @@ export class PortfolioService {
         },
         company: {
           select: {
+            id: true,
             juristicId: true,
             nameTh: true,
             nameEn: true,
@@ -114,6 +115,15 @@ export class PortfolioService {
         type: img.type,
         description: img.description,
       })),
+      company: item.company
+        ? {
+            id: item.company.id,
+            juristicId: item.company.juristicId,
+            nameTh: item.company.nameTh,
+            nameEn: item.company.nameEn,
+          }
+        : undefined,
+      freelance: item.freelance ? { id: item.freelance.id } : undefined,
     }));
   }
 
@@ -163,6 +173,7 @@ export class PortfolioService {
           },
           company: {
             select: {
+              id: true,
               juristicId: true,
               nameTh: true,
               nameEn: true,
@@ -218,6 +229,7 @@ export class PortfolioService {
       })),
       company: item.company
         ? {
+            id: item.company.id,
             juristicId: item.company.juristicId,
             nameTh: item.company.nameTh,
             nameEn: item.company.nameEn,
@@ -287,6 +299,7 @@ export class PortfolioService {
       })),
       company: model.company
         ? {
+            id: model.company.id,
             juristicId: model.company.juristicId,
             nameTh: model.company.nameTh,
             nameEn: model.company.nameEn,
@@ -436,7 +449,14 @@ export class PortfolioService {
             },
           },
         },
-        company: true,
+        company: {
+          select: {
+            id: true,
+            juristicId: true,
+            nameTh: true,
+            nameEn: true,
+          },
+        },
         Image: {
           select: {
             url: true,
@@ -470,6 +490,7 @@ export class PortfolioService {
       })),
       company: item.company
         ? {
+            id: item.company.id,
             juristicId: item.company.juristicId,
             nameTh: item.company.nameTh,
             nameEn: item.company.nameEn,
@@ -731,14 +752,55 @@ export class PortfolioService {
                 description: true,
               },
             },
-            company: true,
+            company: {
+              select: {
+                id: true,
+                juristicId: true,
+                nameTh: true,
+                nameEn: true,
+              },
+            },
             freelance: true,
           },
         },
       },
     });
 
-    return favorites;
+    return favorites.map((fav) => {
+      const item = fav.portfolio;
+      return {
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        industryTypeSlug: item.industryTypeSlug,
+        link: item.link,
+        freelanceId: item.freelanceId,
+        companyId: item.companyId,
+        companyJuristicId: item.companyJuristicId,
+        tags: item.tags,
+        looking_for: item.looking_for,
+        standards: item.standards?.map((s) => ({
+          name: s.standards?.name,
+          description: s.standards?.description,
+          type: s.standards?.type,
+          image: s.standards?.image,
+        })),
+        Image: item.Image?.map((img) => ({
+          url: img.url,
+          type: img.type,
+          description: img.description,
+        })),
+        company: item.company
+          ? {
+              id: item.company.id,
+              juristicId: item.company.juristicId,
+              nameTh: item.company.nameTh,
+              nameEn: item.company.nameEn,
+            }
+          : undefined,
+        freelance: item.freelance ? { id: item.freelance.id } : undefined,
+      };
+    });
   }
 
   async createComment(
@@ -872,7 +934,14 @@ export class PortfolioService {
         portfolio: {
           include: {
             freelance: true,
-            company: true,
+            company: {
+              select: {
+                id: true,
+                juristicId: true,
+                nameTh: true,
+                nameEn: true,
+              },
+            },
           },
         },
       },
@@ -1080,69 +1149,104 @@ export class PortfolioService {
       const total = await this.prismaService.portfolio.count();
       if (total === 0) return [];
       // If less than limit, just return all
+      let portfolios;
       if (total <= limit) {
-        return this.prismaService.portfolio.findMany({
+        portfolios = await this.prismaService.portfolio.findMany({
           take: limit,
+          include: {
+            standards: {
+              select: {
+                standards: {
+                  select: {
+                    name: true,
+                    description: true,
+                    type: true,
+                    image: true,
+                  },
+                },
+              },
+            },
+            Image: {
+              select: {
+                url: true,
+                type: true,
+                description: true,
+              },
+            },
+            company: {
+              select: {
+                id: true,
+                juristicId: true,
+                nameTh: true,
+                nameEn: true,
+              },
+            },
+            freelance: true,
+          },
+        });
+      } else {
+        const maxSkip = Math.max(0, total - limit);
+        const skip = Math.floor(Math.random() * (maxSkip + 1));
+        portfolios = await this.prismaService.portfolio.findMany({
+          skip,
+          take: limit,
+          include: {
+            standards: {
+              select: {
+                standards: {
+                  select: {
+                    name: true,
+                    description: true,
+                    type: true,
+                    image: true,
+                  },
+                },
+              },
+            },
+            Image: {
+              select: {
+                url: true,
+                type: true,
+                description: true,
+              },
+            },
+            company: true,
+            freelance: true,
+          },
         });
       }
-      // Get random skip positions
-      const maxSkip = Math.max(0, total - limit);
-      const skip = Math.floor(Math.random() * (maxSkip + 1));
-
-      console.log('Random skip:', skip, 'Limit:', limit);
-      return this.prismaService.portfolio.findMany({
-        skip,
-        take: limit,
-        include: {
-          standards: {
-            select: {
-              standards: {
-                select: {
-                  name: true,
-                  description: true,
-                  type: true,
-                  image: true,
-                },
-              },
-            },
-          },
-          Image: {
-            select: {
-              url: true,
-              type: true,
-              description: true,
-            },
-          },
-          company: {
-            select: {
-              juristicId: true,
-              nameTh: true,
-              nameEn: true,
-              user: {
-                select: {
-                  fullnameTh: true,
-                  fullnameEn: true,
-                  email: true,
-                  image: true,
-                },
-              },
-            },
-          },
-          freelance: {
-            select: {
-              id: true,
-              user: {
-                select: {
-                  fullnameTh: true,
-                  fullnameEn: true,
-                  email: true,
-                  image: true,
-                },
-              },
-            },
-          },
-        },
-      });
+      return portfolios.map((item) => ({
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        industryTypeSlug: item.industryTypeSlug,
+        link: item.link,
+        freelanceId: item.freelanceId,
+        companyId: item.companyId,
+        companyJuristicId: item.companyJuristicId,
+        tags: item.tags,
+        looking_for: item.looking_for,
+        standards: item.standards?.map((s) => ({
+          name: s.standards?.name,
+          description: s.standards?.description,
+          type: s.standards?.type,
+          image: s.standards?.image,
+        })),
+        Image: item.Image?.map((img) => ({
+          url: img.url,
+          type: img.type,
+          description: img.description,
+        })),
+        company: item.company
+          ? {
+              id: item.company.id,
+              juristicId: item.company.juristicId,
+              nameTh: item.company.nameTh,
+              nameEn: item.company.nameEn,
+            }
+          : undefined,
+        freelance: item.freelance ? { id: item.freelance.id } : undefined,
+      }));
     } catch (error) {
       console.log('===>', error);
       throw error;

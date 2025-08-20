@@ -76,7 +76,9 @@ export class PortfolioController {
     type: Object,
     description: 'Filter criteria (e.g., industryTypeSlug)',
   })
-  async getAllPortfolios(@Query() query: QueryMetadataDto) {
+  async getAllPortfolios(
+    @Query() query: QueryMetadataDto,
+  ): Promise<PortfolioByIndustryResponseDto[]> {
     return this.portfolioService.getAllPortfolios(query);
   }
 
@@ -123,7 +125,9 @@ export class PortfolioController {
     type: Object,
     description: 'Filter criteria (e.g., industryTypeSlug)',
   })
-  async getPortfolios(@Query() query: QueryMetadataDto) {
+  async getPortfolios(
+    @Query() query: QueryMetadataDto,
+  ): Promise<ResponseMetadata<PortfolioByIndustryResponseDto[]>> {
     return this.portfolioService.getPortfolios(query);
   }
 
@@ -142,7 +146,9 @@ export class PortfolioController {
     status: 404,
     description: 'Portfolio not found',
   })
-  async getPortfolio(@Param('id') id: string) {
+  async getPortfolio(
+    @Param('id') id: string,
+  ): Promise<PortfolioByIndustryResponseDto | null> {
     return this.portfolioService.getPortfolioById(id);
   }
 
@@ -159,7 +165,7 @@ export class PortfolioController {
   })
   async getPortfolioByCompanyJuristicId(
     @Param('companyJuristicId') companyJuristicId: string,
-  ) {
+  ): Promise<PortfolioByIndustryResponseDto[]> {
     return this.portfolioService.getPortfolioByCompanyJuristicId(
       companyJuristicId,
     );
@@ -176,7 +182,9 @@ export class PortfolioController {
     status: 200,
     description: 'Successfully retrieved portfolios for freelancer',
   })
-  async getPortfolioByFreelanceId(@Param('freelanceId') freelanceId: string) {
+  async getPortfolioByFreelanceId(
+    @Param('freelanceId') freelanceId: string,
+  ): Promise<PortfolioByIndustryResponseDto[]> {
     return this.portfolioService.getPortfolioByFreelanceId(freelanceId);
   }
 
@@ -368,7 +376,9 @@ export class PortfolioController {
     status: 401,
     description: 'Unauthorized',
   })
-  async getUserFavorites(@Req() req: Request) {
+  async getUserFavorites(
+    @Req() req: Request,
+  ): Promise<PortfolioByIndustryResponseDto[]> {
     const user = req.user as CurrentUser;
     return this.portfolioService.getUserFavorites(user.id);
   }
@@ -613,7 +623,9 @@ export class PortfolioController {
     type: Number,
     description: 'Number of random portfolios to return (default 10)',
   })
-  async getPortfolioRandom(@Query('limit') limit?: number) {
+  async getPortfolioRandom(
+    @Query('limit') limit?: number,
+  ): Promise<PortfolioByIndustryResponseDto[]> {
     console.log('getPortfolioRandom limit', limit);
     return this.portfolioService.getPortfolioRandom(limit ?? 10);
   }
