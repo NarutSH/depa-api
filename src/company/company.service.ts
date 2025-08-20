@@ -36,7 +36,20 @@ export class CompanyService {
       if (filter.industry) {
         whereConditions.industries = { has: filter.industry };
       }
+
       // Add more filters as needed
+      // Filter by user.industryTags.tagSlug (nested relation, support multiple tags)
+      if (filter.tags) {
+        const tagsArray = Array.isArray(filter.tags)
+          ? filter.tags
+          : [filter.tags];
+        if (!whereConditions.user) whereConditions.user = {};
+        whereConditions.user.industryTags = {
+          some: {
+            tagSlug: { in: tagsArray },
+          },
+        };
+      }
     }
 
     // Get total count
@@ -51,7 +64,30 @@ export class CompanyService {
       take: limit,
       orderBy: sortObj || { createdAt: 'desc' },
       include: {
-        user: true,
+        user: {
+          include: {
+            industriesRelated: {
+              include: {
+                industry: true,
+              },
+            },
+            industryChannels: {
+              include: {
+                channel: true,
+              },
+            },
+            industrySkills: {
+              include: {
+                skill: true,
+              },
+            },
+            industryTags: {
+              include: {
+                tag: true,
+              },
+            },
+          },
+        },
         companyRevenue: {
           orderBy: {
             year: 'desc',
@@ -86,10 +122,26 @@ export class CompanyService {
         include: {
           user: {
             include: {
-              industriesRelated: true,
-              industryChannels: true,
-              industrySkills: true,
-              industryTags: true,
+              industriesRelated: {
+                include: {
+                  industry: true,
+                },
+              },
+              industryChannels: {
+                include: {
+                  channel: true,
+                },
+              },
+              industrySkills: {
+                include: {
+                  skill: true,
+                },
+              },
+              industryTags: {
+                include: {
+                  tag: true,
+                },
+              },
             },
           },
         },
