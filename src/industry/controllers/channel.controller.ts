@@ -8,10 +8,6 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { IndustryService } from '../industry.service';
-import { CreateChannelDto } from '../dto/create-channel.dto';
-import { UpdateChannelDto } from '../dto/update-channel.dto';
-import { FindChannelsQueryDto } from '../dto/find-channels-query.dto';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -23,15 +19,15 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { ValidationErrorResponseDto } from 'src/utils/dtos/error-response.dto';
 import {
-  ChannelResponseDto,
   ChannelListResponseDto,
+  ChannelResponseDto,
 } from '../dto/channel-response.dto';
-import {
-  ValidationErrorResponseDto,
-  NotFoundErrorResponseDto,
-  UnauthorizedErrorResponseDto,
-} from 'src/utils/dtos/error-response.dto';
+import { CreateChannelDto } from '../dto/create-channel.dto';
+import { FindChannelsQueryDto } from '../dto/find-channels-query.dto';
+import { UpdateChannelDto } from '../dto/update-channel.dto';
+import { IndustryService } from '../industry.service';
 
 @ApiTags('Industry - Channels')
 @ApiBearerAuth()
