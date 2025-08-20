@@ -654,7 +654,8 @@ export class PortfolioService {
     await this.prismaService.portfolioStandards.deleteMany({
       where: { portfolioId: id },
     });
-    return this.prismaService.portfolio.delete({ where: { id } });
+    await this.prismaService.portfolio.delete({ where: { id } });
+    return { message: 'Portfolio deleted successfully' };
   }
 
   async toggleFavorite(
@@ -680,11 +681,11 @@ export class PortfolioService {
     });
 
     if (existingFavorite && existingFavorite.action === action) {
-      return existingFavorite;
+      return { message: 'Favorite status unchanged' };
     }
 
     if (existingFavorite) {
-      return this.prismaService.favorite.update({
+      await this.prismaService.favorite.update({
         where: {
           userId_portfolioId: {
             userId,
@@ -695,15 +696,17 @@ export class PortfolioService {
           action,
         },
       });
+      return { message: 'Favorite status updated' };
     }
 
-    return this.prismaService.favorite.create({
+    await this.prismaService.favorite.create({
       data: {
         portfolioId,
         userId,
         action,
       },
     });
+    return { message: 'Favorite status created' };
   }
 
   async getFavoriteStatus(portfolioId: string, userId: string) {

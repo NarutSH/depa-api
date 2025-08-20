@@ -37,6 +37,12 @@ import { PortfolioService } from './portfolio.service';
 import { PortfolioImageType } from 'generated/prisma';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { PortfolioByIndustryResponseDto } from './dto/portfolio-response.dto';
+import {
+  GetAllCommentsResponse,
+  CreateCommentResponse,
+  UpdateCommentResponse,
+  DeleteCommentResponse,
+} from './types/comment.types';
 // import { PortfolioImageType } from 'src/generated/prisma';
 
 @ApiTags('Portfolio')
@@ -244,7 +250,7 @@ export class PortfolioController {
       main_image: Express.Multer.File[];
     },
     @Req() req: Request,
-  ) {
+  ): Promise<PortfolioByIndustryResponseDto> {
     const user = req.user as CurrentUser;
 
     console.log('createPortfolio user', user);
@@ -332,7 +338,7 @@ export class PortfolioController {
   async toggleFavorite(
     @Body() favoriteDto: FavoritePortfolioDto,
     @Req() req: Request,
-  ) {
+  ): Promise<{ message: string }> {
     const user = req.user as CurrentUser;
     return this.portfolioService.toggleFavorite(
       favoriteDto.portfolioId,
@@ -356,7 +362,7 @@ export class PortfolioController {
   async getFavoriteStatus(
     @Param('portfolioId') portfolioId: string,
     @Req() req: Request,
-  ) {
+  ): Promise<{ isFavorite: boolean }> {
     const user = req.user as CurrentUser;
     return this.portfolioService.getFavoriteStatus(portfolioId, user.id);
   }
@@ -410,7 +416,7 @@ export class PortfolioController {
   async deletePortfolio(
     @Param('id') id: string,
     //  @Req() req: Request
-  ) {
+  ): Promise<{ message: string }> {
     // const user = req.user as any;
 
     // // If not admin, verify ownership before delete
@@ -445,7 +451,9 @@ export class PortfolioController {
   @ApiResponse({ status: 404, description: 'Portfolio not found' })
   @Get(':portfolioId/comments')
   @Public()
-  async getPortfolioComments(@Param('portfolioId') portfolioId: string) {
+  async getPortfolioComments(
+    @Param('portfolioId') portfolioId: string,
+  ): Promise<GetAllCommentsResponse> {
     return this.portfolioService.getPortfolioComments(portfolioId);
   }
 
@@ -462,7 +470,7 @@ export class PortfolioController {
   async createComment(
     @Body() commentDto: CreateCommentDto,
     @Req() req: Request,
-  ) {
+  ): Promise<CreateCommentResponse> {
     const user = req.user as CurrentUser;
     return this.portfolioService.createComment(user.id, commentDto);
   }
@@ -485,7 +493,7 @@ export class PortfolioController {
     @Param('commentId') commentId: string,
     @Body('content') content: string,
     @Req() req: Request,
-  ) {
+  ): Promise<UpdateCommentResponse> {
     const user = req.user as CurrentUser;
     return this.portfolioService.updateComment(commentId, user.id, content);
   }
@@ -507,7 +515,7 @@ export class PortfolioController {
   async deleteComment(
     @Param('commentId') commentId: string,
     @Req() req: Request,
-  ) {
+  ): Promise<DeleteCommentResponse> {
     const user = req.user as CurrentUser;
     return this.portfolioService.deleteComment(
       commentId,
@@ -555,7 +563,7 @@ export class PortfolioController {
       cover: Express.Multer.File[];
       main_image: Express.Multer.File[];
     },
-  ) {
+  ): Promise<PortfolioByIndustryResponseDto> {
     // Prepare payload for update
     const payload = {
       ...data,
