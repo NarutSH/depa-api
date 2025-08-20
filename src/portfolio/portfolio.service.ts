@@ -92,16 +92,29 @@ export class PortfolioService {
       },
     });
 
-    // Transform the data if needed (like handling nested objects or arrays)
-    const transformedPortfolios = portfolios.map((portfolio) => ({
-      ...portfolio,
-      standards: portfolio.standards.map((s) => s.standards),
+    return portfolios.map((item) => ({
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      industryTypeSlug: item.industryTypeSlug,
+      link: item.link,
+      freelanceId: item.freelanceId,
+      companyId: item.companyId,
+      companyJuristicId: item.companyJuristicId,
+      tags: item.tags,
+      looking_for: item.looking_for,
+      standards: item.standards?.map((s) => ({
+        name: s.standards?.name,
+        description: s.standards?.description,
+        type: s.standards?.type,
+        image: s.standards?.image,
+      })),
+      Image: item.Image?.map((img) => ({
+        url: img.url,
+        type: img.type,
+        description: img.description,
+      })),
     }));
-
-    return {
-      data: transformedPortfolios,
-      message: 'All portfolios retrieved successfully',
-    };
   }
 
   async getPortfolios(queryDto: QueryMetadataDto) {
@@ -181,15 +194,39 @@ export class PortfolioService {
       this.prismaService.portfolio.count({ where }),
     ]);
 
-    // Transform the data if needed (like handling nested objects or arrays)
-    const transformedPortfolios = portfolios.map((portfolio) => ({
-      ...portfolio,
-      standards: portfolio.standards.map((s) => s.standards),
+    const mapped = portfolios.map((item) => ({
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      industryTypeSlug: item.industryTypeSlug,
+      link: item.link,
+      freelanceId: item.freelanceId,
+      companyId: item.companyId,
+      companyJuristicId: item.companyJuristicId,
+      tags: item.tags,
+      looking_for: item.looking_for,
+      standards: item.standards?.map((s) => ({
+        name: s.standards?.name,
+        description: s.standards?.description,
+        type: s.standards?.type,
+        image: s.standards?.image,
+      })),
+      Image: item.Image?.map((img) => ({
+        url: img.url,
+        type: img.type,
+        description: img.description,
+      })),
+      company: item.company
+        ? {
+            juristicId: item.company.juristicId,
+            nameTh: item.company.nameTh,
+            nameEn: item.company.nameEn,
+          }
+        : undefined,
+      freelance: item.freelance ? { id: item.freelance.id } : undefined,
     }));
-
-    // Return paginated response with metadata
     return ResponseMetadata.paginated(
-      transformedPortfolios,
+      mapped,
       total,
       page,
       limit,
@@ -225,15 +262,42 @@ export class PortfolioService {
       },
     });
 
+    if (!model) return null;
     return {
-      ...model,
-      standards: model.standards.map((s) => s.standards),
+      id: model.id,
+      title: model.title,
+      description: model.description,
+      industryTypeSlug: model.industryTypeSlug,
+      link: model.link,
+      freelanceId: model.freelanceId,
+      companyId: model.companyId,
+      companyJuristicId: model.companyJuristicId,
+      tags: model.tags,
+      looking_for: model.looking_for,
+      standards: model.standards?.map((s) => ({
+        name: s.standards?.name,
+        description: s.standards?.description,
+        type: s.standards?.type,
+        image: s.standards?.image,
+      })),
+      Image: model.Image?.map((img) => ({
+        url: img.url,
+        type: img.type,
+        description: img.description,
+      })),
+      company: model.company
+        ? {
+            juristicId: model.company.juristicId,
+            nameTh: model.company.nameTh,
+            nameEn: model.company.nameEn,
+          }
+        : undefined,
+      freelance: model.freelance ? { id: model.freelance.id } : undefined,
     };
   }
 
   async getPortfolioByIndustry(industrySlug: string) {
-    console.log('industrySlug', industrySlug);
-    return this.prismaService.portfolio.findMany({
+    const raw = await this.prismaService.portfolio.findMany({
       where: {
         industryTypeSlug: industrySlug,
       },
@@ -283,12 +347,82 @@ export class PortfolioService {
         },
       },
     });
+    return raw.map((item) => ({
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      industryTypeSlug: item.industryTypeSlug,
+      link: item.link,
+      freelanceId: item.freelanceId,
+      companyId: item.companyId,
+      companyJuristicId: item.companyJuristicId,
+      tags: item.tags,
+      looking_for: item.looking_for,
+      standards: item.standards?.map((s) => ({
+        name: s.standards?.name,
+        description: s.standards?.description,
+        type: s.standards?.type,
+        image: s.standards?.image,
+      })),
+      Image: item.Image?.map((img) => ({
+        url: img.url,
+        type: img.type,
+        description: img.description,
+      })),
+      company: item.company
+        ? {
+            id: item.company.id,
+            user: item.company.user
+              ? {
+                  id: item.company.user.id,
+                  industriesRelated:
+                    item.company.user.industriesRelated?.map(
+                      (i) => i.industrySlug,
+                    ) ?? [],
+                  industryChannels:
+                    item.company.user.industryChannels?.map(
+                      (c) => c.channelSlug,
+                    ) ?? [],
+                  industrySkills:
+                    item.company.user.industrySkills?.map((s) => s.skillSlug) ??
+                    [],
+                  industryTags:
+                    item.company.user.industryTags?.map((t) => t.tagSlug) ?? [],
+                }
+              : undefined,
+          }
+        : undefined,
+      freelance: item.freelance
+        ? {
+            id: item.freelance.id,
+            user: item.freelance.user
+              ? {
+                  id: item.freelance.user.id,
+                  industriesRelated:
+                    item.freelance.user.industriesRelated?.map(
+                      (i) => i.industrySlug,
+                    ) ?? [],
+                  industryChannels:
+                    item.freelance.user.industryChannels?.map(
+                      (c) => c.channelSlug,
+                    ) ?? [],
+                  industrySkills:
+                    item.freelance.user.industrySkills?.map(
+                      (s) => s.skillSlug,
+                    ) ?? [],
+                  industryTags:
+                    item.freelance.user.industryTags?.map((t) => t.tagSlug) ??
+                    [],
+                }
+              : undefined,
+          }
+        : undefined,
+    }));
   }
 
   async getPortfolioByCompanyJuristicId(companyJuristicId: string) {
-    return this.prismaService.portfolio.findMany({
+    const items = await this.prismaService.portfolio.findMany({
       where: { companyJuristicId },
-
       include: {
         standards: {
           select: {
@@ -312,11 +446,40 @@ export class PortfolioService {
         },
       },
     });
+    return items.map((item) => ({
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      industryTypeSlug: item.industryTypeSlug,
+      link: item.link,
+      freelanceId: item.freelanceId,
+      companyId: item.companyId,
+      companyJuristicId: item.companyJuristicId,
+      tags: item.tags,
+      looking_for: item.looking_for,
+      standards: item.standards?.map((s) => ({
+        name: s.standards?.name,
+        description: s.standards?.description,
+        type: s.standards?.type,
+        image: s.standards?.image,
+      })),
+      Image: item.Image?.map((img) => ({
+        url: img.url,
+        type: img.type,
+        description: img.description,
+      })),
+      company: item.company
+        ? {
+            juristicId: item.company.juristicId,
+            nameTh: item.company.nameTh,
+            nameEn: item.company.nameEn,
+          }
+        : undefined,
+    }));
   }
   async getPortfolioByFreelanceId(freelanceId: string) {
-    return this.prismaService.portfolio.findMany({
+    const items = await this.prismaService.portfolio.findMany({
       where: { freelanceId },
-
       include: {
         standards: {
           select: {
@@ -340,6 +503,30 @@ export class PortfolioService {
         },
       },
     });
+    return items.map((item) => ({
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      industryTypeSlug: item.industryTypeSlug,
+      link: item.link,
+      freelanceId: item.freelanceId,
+      companyId: item.companyId,
+      companyJuristicId: item.companyJuristicId,
+      tags: item.tags,
+      looking_for: item.looking_for,
+      standards: item.standards?.map((s) => ({
+        name: s.standards?.name,
+        description: s.standards?.description,
+        type: s.standards?.type,
+        image: s.standards?.image,
+      })),
+      Image: item.Image?.map((img) => ({
+        url: img.url,
+        type: img.type,
+        description: img.description,
+      })),
+      freelance: item.freelance ? { id: item.freelance.id } : undefined,
+    }));
   }
 
   async createPortfolio(

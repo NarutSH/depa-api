@@ -2445,7 +2445,17 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved portfolios for industry"
+            "description": "Successfully retrieved portfolios for industry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PortfolioByIndustryResponseDto"
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -8823,6 +8833,173 @@
           "data",
           "meta",
           "success"
+        ]
+      },
+      "StandardDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ImageDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "industriesRelated": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "industryChannels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "industrySkills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "industryTags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "CompanyDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "FreelanceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "PortfolioByIndustryResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "industryTypeSlug": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "freelanceId": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "companyJuristicId": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "looking_for": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "standards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StandardDto"
+            }
+          },
+          "Image": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageDto"
+            }
+          },
+          "company": {
+            "$ref": "#/components/schemas/CompanyDto"
+          },
+          "freelance": {
+            "$ref": "#/components/schemas/FreelanceDto"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "industryTypeSlug"
         ]
       },
       "CreatePortfolioWithImagesAndStandardsDto": {

@@ -36,6 +36,7 @@ import { UpdatePortfolioDto } from './dto/update-portfolio.dto';
 import { PortfolioService } from './portfolio.service';
 import { PortfolioImageType } from 'generated/prisma';
 import { Public } from 'src/auth/decorators/public.decorator';
+import { PortfolioByIndustryResponseDto } from './dto/portfolio-response.dto';
 // import { PortfolioImageType } from 'src/generated/prisma';
 
 @ApiTags('Portfolio')
@@ -189,8 +190,12 @@ export class PortfolioController {
   @ApiResponse({
     status: 200,
     description: 'Successfully retrieved portfolios for industry',
+    type: PortfolioByIndustryResponseDto,
+    isArray: true,
   })
-  async getPortfolioByIndustry(@Param('industrySlug') industrySlug: string) {
+  async getPortfolioByIndustry(
+    @Param('industrySlug') industrySlug: string,
+  ): Promise<PortfolioByIndustryResponseDto[]> {
     return this.portfolioService.getPortfolioByIndustry(industrySlug);
   }
 
