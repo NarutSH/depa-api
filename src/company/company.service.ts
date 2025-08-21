@@ -50,6 +50,19 @@ export class CompanyService {
           },
         };
       }
+
+      // Filter by user.industryChannels.channelSlug (nested relation, support multiple channels)
+      if (filter.channel) {
+        const channelArray = Array.isArray(filter.channel)
+          ? filter.channel
+          : [filter.channel];
+        if (!whereConditions.user) whereConditions.user = {};
+        whereConditions.user.industryChannels = {
+          some: {
+            channelSlug: { in: channelArray },
+          },
+        };
+      }
     }
 
     // Get total count

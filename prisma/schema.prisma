@@ -505,7 +505,7 @@ model Portfolio {
 
   industryTags       PortfolioTag[]
   industryLookingFor PortfolioLookingFor[]
-  
+
   freelanceId String?    @db.Uuid
   freelance   Freelance? @relation(fields: [freelanceId], references: [id])
 

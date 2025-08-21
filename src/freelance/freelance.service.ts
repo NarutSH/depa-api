@@ -36,7 +36,48 @@ export class FreelanceService {
     ];
 
     // Build where clause for filtering and searching
-    const where = this.queryUtils.buildWhereClause(queryDto, searchableFields);
+    const where: any = this.queryUtils.buildWhereClause(
+      queryDto,
+      searchableFields,
+    );
+
+    // Apply additional filters if provided
+    const filter = queryDto.filter;
+    if (filter) {
+      // Filter by user.industryTags.tagSlug (nested relation, support multiple tags)
+      if (filter.tags) {
+        const tagsArray = Array.isArray(filter.tags)
+          ? filter.tags
+          : [filter.tags];
+        if (!where.user) where.user = {};
+        where.user.industryTags = {
+          some: {
+            tagSlug: { in: tagsArray },
+          },
+        };
+      }
+
+      // Filter by user.industryChannels.channelSlug (nested relation, support multiple channels)
+      if (filter.channel) {
+        const channelArray = Array.isArray(filter.channel)
+          ? filter.channel
+          : [filter.channel];
+        if (!where.user) where.user = {};
+        where.user.industryChannels = {
+          some: {
+            channelSlug: { in: channelArray },
+          },
+        };
+      }
+
+      // Filter by freelance.skills[] (array of string, support multiple skills)
+      if (filter.skill) {
+        const skillArray = Array.isArray(filter.skill)
+          ? filter.skill
+          : [filter.skill];
+        where.skills = { hasSome: skillArray };
+      }
+    }
 
     // Build orderBy clause for sorting
     const orderBy = this.queryUtils.buildOrderByClause(queryDto, {
